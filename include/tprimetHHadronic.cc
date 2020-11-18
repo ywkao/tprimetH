@@ -463,6 +463,28 @@ void tprimetHHadronic::Init(TTree *tree) {
   if (jet3_pt_branch) jet3_pt_branch->SetAddress(&jet3_pt_);
   jet4_pt_branch = tree->GetBranch("jet4_pt");
   if (jet4_pt_branch) jet4_pt_branch->SetAddress(&jet4_pt_);
+  jet5_pt_branch = tree->GetBranch("jet5_pt");
+  if (jet5_pt_branch) jet5_pt_branch->SetAddress(&jet5_pt_);
+  jet6_pt_branch = tree->GetBranch("jet6_pt");
+  if (jet6_pt_branch) jet6_pt_branch->SetAddress(&jet6_pt_);
+  jet7_pt_branch = tree->GetBranch("jet7_pt");
+  if (jet7_pt_branch) jet7_pt_branch->SetAddress(&jet7_pt_);
+  jet8_pt_branch = tree->GetBranch("jet8_pt");
+  if (jet8_pt_branch) jet8_pt_branch->SetAddress(&jet8_pt_);
+  jet9_pt_branch = tree->GetBranch("jet9_pt");
+  if (jet9_pt_branch) jet9_pt_branch->SetAddress(&jet9_pt_);
+  jet10_pt_branch = tree->GetBranch("jet10_pt");
+  if (jet10_pt_branch) jet10_pt_branch->SetAddress(&jet10_pt_);
+  jet11_pt_branch = tree->GetBranch("jet11_pt");
+  if (jet11_pt_branch) jet11_pt_branch->SetAddress(&jet11_pt_);
+  jet12_pt_branch = tree->GetBranch("jet12_pt");
+  if (jet12_pt_branch) jet12_pt_branch->SetAddress(&jet12_pt_);
+  jet13_pt_branch = tree->GetBranch("jet13_pt");
+  if (jet13_pt_branch) jet13_pt_branch->SetAddress(&jet13_pt_);
+  jet14_pt_branch = tree->GetBranch("jet14_pt");
+  if (jet14_pt_branch) jet14_pt_branch->SetAddress(&jet14_pt_);
+  jet15_pt_branch = tree->GetBranch("jet15_pt");
+  if (jet15_pt_branch) jet15_pt_branch->SetAddress(&jet15_pt_);
   jet1_eta_branch = tree->GetBranch("jet1_eta");
   if (jet1_eta_branch) jet1_eta_branch->SetAddress(&jet1_eta_);
   jet2_eta_branch = tree->GetBranch("jet2_eta");
@@ -471,6 +493,28 @@ void tprimetHHadronic::Init(TTree *tree) {
   if (jet3_eta_branch) jet3_eta_branch->SetAddress(&jet3_eta_);
   jet4_eta_branch = tree->GetBranch("jet4_eta");
   if (jet4_eta_branch) jet4_eta_branch->SetAddress(&jet4_eta_);
+  jet5_eta_branch = tree->GetBranch("jet5_eta");
+  if (jet5_eta_branch) jet5_eta_branch->SetAddress(&jet5_eta_);
+  jet6_eta_branch = tree->GetBranch("jet6_eta");
+  if (jet6_eta_branch) jet6_eta_branch->SetAddress(&jet6_eta_);
+  jet7_eta_branch = tree->GetBranch("jet7_eta");
+  if (jet7_eta_branch) jet7_eta_branch->SetAddress(&jet7_eta_);
+  jet8_eta_branch = tree->GetBranch("jet8_eta");
+  if (jet8_eta_branch) jet8_eta_branch->SetAddress(&jet8_eta_);
+  jet9_eta_branch = tree->GetBranch("jet9_eta");
+  if (jet9_eta_branch) jet9_eta_branch->SetAddress(&jet9_eta_);
+  jet10_eta_branch = tree->GetBranch("jet10_eta");
+  if (jet10_eta_branch) jet10_eta_branch->SetAddress(&jet10_eta_);
+  jet11_eta_branch = tree->GetBranch("jet11_eta");
+  if (jet11_eta_branch) jet11_eta_branch->SetAddress(&jet11_eta_);
+  jet12_eta_branch = tree->GetBranch("jet12_eta");
+  if (jet12_eta_branch) jet12_eta_branch->SetAddress(&jet12_eta_);
+  jet13_eta_branch = tree->GetBranch("jet13_eta");
+  if (jet13_eta_branch) jet13_eta_branch->SetAddress(&jet13_eta_);
+  jet14_eta_branch = tree->GetBranch("jet14_eta");
+  if (jet14_eta_branch) jet14_eta_branch->SetAddress(&jet14_eta_);
+  jet15_eta_branch = tree->GetBranch("jet15_eta");
+  if (jet15_eta_branch) jet15_eta_branch->SetAddress(&jet15_eta_);
   jet1_phi_branch = tree->GetBranch("jet1_phi");
   if (jet1_phi_branch) jet1_phi_branch->SetAddress(&jet1_phi_);
   jet2_phi_branch = tree->GetBranch("jet2_phi");
@@ -479,6 +523,28 @@ void tprimetHHadronic::Init(TTree *tree) {
   if (jet3_phi_branch) jet3_phi_branch->SetAddress(&jet3_phi_);
   jet4_phi_branch = tree->GetBranch("jet4_phi");
   if (jet4_phi_branch) jet4_phi_branch->SetAddress(&jet4_phi_);
+  jet5_phi_branch = tree->GetBranch("jet5_phi");
+  if (jet5_phi_branch) jet5_phi_branch->SetAddress(&jet5_phi_);
+  jet6_phi_branch = tree->GetBranch("jet6_phi");
+  if (jet6_phi_branch) jet6_phi_branch->SetAddress(&jet6_phi_);
+  jet7_phi_branch = tree->GetBranch("jet7_phi");
+  if (jet7_phi_branch) jet7_phi_branch->SetAddress(&jet7_phi_);
+  jet8_phi_branch = tree->GetBranch("jet8_phi");
+  if (jet8_phi_branch) jet8_phi_branch->SetAddress(&jet8_phi_);
+  jet9_phi_branch = tree->GetBranch("jet9_phi");
+  if (jet9_phi_branch) jet9_phi_branch->SetAddress(&jet9_phi_);
+  jet10_phi_branch = tree->GetBranch("jet10_phi");
+  if (jet10_phi_branch) jet10_phi_branch->SetAddress(&jet10_phi_);
+  jet11_phi_branch = tree->GetBranch("jet11_phi");
+  if (jet11_phi_branch) jet11_phi_branch->SetAddress(&jet11_phi_);
+  jet12_phi_branch = tree->GetBranch("jet12_phi");
+  if (jet12_phi_branch) jet12_phi_branch->SetAddress(&jet12_phi_);
+  jet13_phi_branch = tree->GetBranch("jet13_phi");
+  if (jet13_phi_branch) jet13_phi_branch->SetAddress(&jet13_phi_);
+  jet14_phi_branch = tree->GetBranch("jet14_phi");
+  if (jet14_phi_branch) jet14_phi_branch->SetAddress(&jet14_phi_);
+  jet15_phi_branch = tree->GetBranch("jet15_phi");
+  if (jet15_phi_branch) jet15_phi_branch->SetAddress(&jet15_phi_);
   jet1_e_branch = tree->GetBranch("jet1_e");
   if (jet1_e_branch) jet1_e_branch->SetAddress(&jet1_e_);
   jet2_e_branch = tree->GetBranch("jet2_e");
@@ -487,12 +553,58 @@ void tprimetHHadronic::Init(TTree *tree) {
   if (jet3_e_branch) jet3_e_branch->SetAddress(&jet3_e_);
   jet4_e_branch = tree->GetBranch("jet4_e");
   if (jet4_e_branch) jet4_e_branch->SetAddress(&jet4_e_);
+  jet5_e_branch = tree->GetBranch("jet5_e");
+  if (jet5_e_branch) jet5_e_branch->SetAddress(&jet5_e_);
+  jet6_e_branch = tree->GetBranch("jet6_e");
+  if (jet6_e_branch) jet6_e_branch->SetAddress(&jet6_e_);
+  jet7_e_branch = tree->GetBranch("jet7_e");
+  if (jet7_e_branch) jet7_e_branch->SetAddress(&jet7_e_);
+  jet8_e_branch = tree->GetBranch("jet8_e");
+  if (jet8_e_branch) jet8_e_branch->SetAddress(&jet8_e_);
+  jet9_e_branch = tree->GetBranch("jet9_e");
+  if (jet9_e_branch) jet9_e_branch->SetAddress(&jet9_e_);
+  jet10_e_branch = tree->GetBranch("jet10_e");
+  if (jet10_e_branch) jet10_e_branch->SetAddress(&jet10_e_);
+  jet11_e_branch = tree->GetBranch("jet11_e");
+  if (jet11_e_branch) jet11_e_branch->SetAddress(&jet11_e_);
+  jet12_e_branch = tree->GetBranch("jet12_e");
+  if (jet12_e_branch) jet12_e_branch->SetAddress(&jet12_e_);
+  jet13_e_branch = tree->GetBranch("jet13_e");
+  if (jet13_e_branch) jet13_e_branch->SetAddress(&jet13_e_);
+  jet14_e_branch = tree->GetBranch("jet14_e");
+  if (jet14_e_branch) jet14_e_branch->SetAddress(&jet14_e_);
+  jet15_e_branch = tree->GetBranch("jet15_e");
+  if (jet15_e_branch) jet15_e_branch->SetAddress(&jet15_e_);
   jet1_discr_branch = tree->GetBranch("jet1_discr");
   if (jet1_discr_branch) jet1_discr_branch->SetAddress(&jet1_discr_);
   jet2_discr_branch = tree->GetBranch("jet2_discr");
   if (jet2_discr_branch) jet2_discr_branch->SetAddress(&jet2_discr_);
   jet3_discr_branch = tree->GetBranch("jet3_discr");
   if (jet3_discr_branch) jet3_discr_branch->SetAddress(&jet3_discr_);
+  jet4_discr_branch = tree->GetBranch("jet4_discr");
+  if (jet4_discr_branch) jet4_discr_branch->SetAddress(&jet4_discr_);
+  jet5_discr_branch = tree->GetBranch("jet5_discr");
+  if (jet5_discr_branch) jet5_discr_branch->SetAddress(&jet5_discr_);
+  jet6_discr_branch = tree->GetBranch("jet6_discr");
+  if (jet6_discr_branch) jet6_discr_branch->SetAddress(&jet6_discr_);
+  jet7_discr_branch = tree->GetBranch("jet7_discr");
+  if (jet7_discr_branch) jet7_discr_branch->SetAddress(&jet7_discr_);
+  jet8_discr_branch = tree->GetBranch("jet8_discr");
+  if (jet8_discr_branch) jet8_discr_branch->SetAddress(&jet8_discr_);
+  jet9_discr_branch = tree->GetBranch("jet9_discr");
+  if (jet9_discr_branch) jet9_discr_branch->SetAddress(&jet9_discr_);
+  jet10_discr_branch = tree->GetBranch("jet10_discr");
+  if (jet10_discr_branch) jet10_discr_branch->SetAddress(&jet10_discr_);
+  jet11_discr_branch = tree->GetBranch("jet11_discr");
+  if (jet11_discr_branch) jet11_discr_branch->SetAddress(&jet11_discr_);
+  jet12_discr_branch = tree->GetBranch("jet12_discr");
+  if (jet12_discr_branch) jet12_discr_branch->SetAddress(&jet12_discr_);
+  jet13_discr_branch = tree->GetBranch("jet13_discr");
+  if (jet13_discr_branch) jet13_discr_branch->SetAddress(&jet13_discr_);
+  jet14_discr_branch = tree->GetBranch("jet14_discr");
+  if (jet14_discr_branch) jet14_discr_branch->SetAddress(&jet14_discr_);
+  jet15_discr_branch = tree->GetBranch("jet15_discr");
+  if (jet15_discr_branch) jet15_discr_branch->SetAddress(&jet15_discr_);
   recoMET_pt_branch = tree->GetBranch("recoMET_pt");
   if (recoMET_pt_branch) recoMET_pt_branch->SetAddress(&recoMET_pt_);
   recoMET_eta_branch = tree->GetBranch("recoMET_eta");
@@ -771,21 +883,77 @@ void tprimetHHadronic::GetEntry(unsigned int idx) {
   jet2_pt_isLoaded = false;
   jet3_pt_isLoaded = false;
   jet4_pt_isLoaded = false;
+  jet5_pt_isLoaded = false;
+  jet6_pt_isLoaded = false;
+  jet7_pt_isLoaded = false;
+  jet8_pt_isLoaded = false;
+  jet9_pt_isLoaded = false;
+  jet10_pt_isLoaded = false;
+  jet11_pt_isLoaded = false;
+  jet12_pt_isLoaded = false;
+  jet13_pt_isLoaded = false;
+  jet14_pt_isLoaded = false;
+  jet15_pt_isLoaded = false;
   jet1_eta_isLoaded = false;
   jet2_eta_isLoaded = false;
   jet3_eta_isLoaded = false;
   jet4_eta_isLoaded = false;
+  jet5_eta_isLoaded = false;
+  jet6_eta_isLoaded = false;
+  jet7_eta_isLoaded = false;
+  jet8_eta_isLoaded = false;
+  jet9_eta_isLoaded = false;
+  jet10_eta_isLoaded = false;
+  jet11_eta_isLoaded = false;
+  jet12_eta_isLoaded = false;
+  jet13_eta_isLoaded = false;
+  jet14_eta_isLoaded = false;
+  jet15_eta_isLoaded = false;
   jet1_phi_isLoaded = false;
   jet2_phi_isLoaded = false;
   jet3_phi_isLoaded = false;
   jet4_phi_isLoaded = false;
+  jet5_phi_isLoaded = false;
+  jet6_phi_isLoaded = false;
+  jet7_phi_isLoaded = false;
+  jet8_phi_isLoaded = false;
+  jet9_phi_isLoaded = false;
+  jet10_phi_isLoaded = false;
+  jet11_phi_isLoaded = false;
+  jet12_phi_isLoaded = false;
+  jet13_phi_isLoaded = false;
+  jet14_phi_isLoaded = false;
+  jet15_phi_isLoaded = false;
   jet1_e_isLoaded = false;
   jet2_e_isLoaded = false;
   jet3_e_isLoaded = false;
   jet4_e_isLoaded = false;
+  jet5_e_isLoaded = false;
+  jet6_e_isLoaded = false;
+  jet7_e_isLoaded = false;
+  jet8_e_isLoaded = false;
+  jet9_e_isLoaded = false;
+  jet10_e_isLoaded = false;
+  jet11_e_isLoaded = false;
+  jet12_e_isLoaded = false;
+  jet13_e_isLoaded = false;
+  jet14_e_isLoaded = false;
+  jet15_e_isLoaded = false;
   jet1_discr_isLoaded = false;
   jet2_discr_isLoaded = false;
   jet3_discr_isLoaded = false;
+  jet4_discr_isLoaded = false;
+  jet5_discr_isLoaded = false;
+  jet6_discr_isLoaded = false;
+  jet7_discr_isLoaded = false;
+  jet8_discr_isLoaded = false;
+  jet9_discr_isLoaded = false;
+  jet10_discr_isLoaded = false;
+  jet11_discr_isLoaded = false;
+  jet12_discr_isLoaded = false;
+  jet13_discr_isLoaded = false;
+  jet14_discr_isLoaded = false;
+  jet15_discr_isLoaded = false;
   recoMET_pt_isLoaded = false;
   recoMET_eta_isLoaded = false;
   recoMET_phi_isLoaded = false;
@@ -1040,21 +1208,77 @@ void tprimetHHadronic::LoadAllBranches() {
   if (jet2_pt_branch != 0) jet2_pt();
   if (jet3_pt_branch != 0) jet3_pt();
   if (jet4_pt_branch != 0) jet4_pt();
+  if (jet5_pt_branch != 0) jet5_pt();
+  if (jet6_pt_branch != 0) jet6_pt();
+  if (jet7_pt_branch != 0) jet7_pt();
+  if (jet8_pt_branch != 0) jet8_pt();
+  if (jet9_pt_branch != 0) jet9_pt();
+  if (jet10_pt_branch != 0) jet10_pt();
+  if (jet11_pt_branch != 0) jet11_pt();
+  if (jet12_pt_branch != 0) jet12_pt();
+  if (jet13_pt_branch != 0) jet13_pt();
+  if (jet14_pt_branch != 0) jet14_pt();
+  if (jet15_pt_branch != 0) jet15_pt();
   if (jet1_eta_branch != 0) jet1_eta();
   if (jet2_eta_branch != 0) jet2_eta();
   if (jet3_eta_branch != 0) jet3_eta();
   if (jet4_eta_branch != 0) jet4_eta();
+  if (jet5_eta_branch != 0) jet5_eta();
+  if (jet6_eta_branch != 0) jet6_eta();
+  if (jet7_eta_branch != 0) jet7_eta();
+  if (jet8_eta_branch != 0) jet8_eta();
+  if (jet9_eta_branch != 0) jet9_eta();
+  if (jet10_eta_branch != 0) jet10_eta();
+  if (jet11_eta_branch != 0) jet11_eta();
+  if (jet12_eta_branch != 0) jet12_eta();
+  if (jet13_eta_branch != 0) jet13_eta();
+  if (jet14_eta_branch != 0) jet14_eta();
+  if (jet15_eta_branch != 0) jet15_eta();
   if (jet1_phi_branch != 0) jet1_phi();
   if (jet2_phi_branch != 0) jet2_phi();
   if (jet3_phi_branch != 0) jet3_phi();
   if (jet4_phi_branch != 0) jet4_phi();
+  if (jet5_phi_branch != 0) jet5_phi();
+  if (jet6_phi_branch != 0) jet6_phi();
+  if (jet7_phi_branch != 0) jet7_phi();
+  if (jet8_phi_branch != 0) jet8_phi();
+  if (jet9_phi_branch != 0) jet9_phi();
+  if (jet10_phi_branch != 0) jet10_phi();
+  if (jet11_phi_branch != 0) jet11_phi();
+  if (jet12_phi_branch != 0) jet12_phi();
+  if (jet13_phi_branch != 0) jet13_phi();
+  if (jet14_phi_branch != 0) jet14_phi();
+  if (jet15_phi_branch != 0) jet15_phi();
   if (jet1_e_branch != 0) jet1_e();
   if (jet2_e_branch != 0) jet2_e();
   if (jet3_e_branch != 0) jet3_e();
   if (jet4_e_branch != 0) jet4_e();
+  if (jet5_e_branch != 0) jet5_e();
+  if (jet6_e_branch != 0) jet6_e();
+  if (jet7_e_branch != 0) jet7_e();
+  if (jet8_e_branch != 0) jet8_e();
+  if (jet9_e_branch != 0) jet9_e();
+  if (jet10_e_branch != 0) jet10_e();
+  if (jet11_e_branch != 0) jet11_e();
+  if (jet12_e_branch != 0) jet12_e();
+  if (jet13_e_branch != 0) jet13_e();
+  if (jet14_e_branch != 0) jet14_e();
+  if (jet15_e_branch != 0) jet15_e();
   if (jet1_discr_branch != 0) jet1_discr();
   if (jet2_discr_branch != 0) jet2_discr();
   if (jet3_discr_branch != 0) jet3_discr();
+  if (jet4_discr_branch != 0) jet4_discr();
+  if (jet5_discr_branch != 0) jet5_discr();
+  if (jet6_discr_branch != 0) jet6_discr();
+  if (jet7_discr_branch != 0) jet7_discr();
+  if (jet8_discr_branch != 0) jet8_discr();
+  if (jet9_discr_branch != 0) jet9_discr();
+  if (jet10_discr_branch != 0) jet10_discr();
+  if (jet11_discr_branch != 0) jet11_discr();
+  if (jet12_discr_branch != 0) jet12_discr();
+  if (jet13_discr_branch != 0) jet13_discr();
+  if (jet14_discr_branch != 0) jet14_discr();
+  if (jet15_discr_branch != 0) jet15_discr();
   if (recoMET_pt_branch != 0) recoMET_pt();
   if (recoMET_eta_branch != 0) recoMET_eta();
   if (recoMET_phi_branch != 0) recoMET_phi();
@@ -4055,6 +4279,149 @@ const float &tprimetHHadronic::jet4_pt() {
   return jet4_pt_;
 }
 
+const float &tprimetHHadronic::jet5_pt() {
+  if (not jet5_pt_isLoaded) {
+    if (jet5_pt_branch != 0) {
+      jet5_pt_branch->GetEntry(index);
+    } else {
+      printf("branch jet5_pt_branch does not exist!\n");
+      exit(1);
+    }
+    jet5_pt_isLoaded = true;
+  }
+  return jet5_pt_;
+}
+
+const float &tprimetHHadronic::jet6_pt() {
+  if (not jet6_pt_isLoaded) {
+    if (jet6_pt_branch != 0) {
+      jet6_pt_branch->GetEntry(index);
+    } else {
+      printf("branch jet6_pt_branch does not exist!\n");
+      exit(1);
+    }
+    jet6_pt_isLoaded = true;
+  }
+  return jet6_pt_;
+}
+
+const float &tprimetHHadronic::jet7_pt() {
+  if (not jet7_pt_isLoaded) {
+    if (jet7_pt_branch != 0) {
+      jet7_pt_branch->GetEntry(index);
+    } else {
+      printf("branch jet7_pt_branch does not exist!\n");
+      exit(1);
+    }
+    jet7_pt_isLoaded = true;
+  }
+  return jet7_pt_;
+}
+
+const float &tprimetHHadronic::jet8_pt() {
+  if (not jet8_pt_isLoaded) {
+    if (jet8_pt_branch != 0) {
+      jet8_pt_branch->GetEntry(index);
+    } else {
+      printf("branch jet8_pt_branch does not exist!\n");
+      exit(1);
+    }
+    jet8_pt_isLoaded = true;
+  }
+  return jet8_pt_;
+}
+
+const float &tprimetHHadronic::jet9_pt() {
+  if (not jet9_pt_isLoaded) {
+    if (jet9_pt_branch != 0) {
+      jet9_pt_branch->GetEntry(index);
+    } else {
+      printf("branch jet9_pt_branch does not exist!\n");
+      exit(1);
+    }
+    jet9_pt_isLoaded = true;
+  }
+  return jet9_pt_;
+}
+
+const float &tprimetHHadronic::jet10_pt() {
+  if (not jet10_pt_isLoaded) {
+    if (jet10_pt_branch != 0) {
+      jet10_pt_branch->GetEntry(index);
+    } else {
+      printf("branch jet10_pt_branch does not exist!\n");
+      exit(1);
+    }
+    jet10_pt_isLoaded = true;
+  }
+  return jet10_pt_;
+}
+
+const float &tprimetHHadronic::jet11_pt() {
+  if (not jet11_pt_isLoaded) {
+    if (jet11_pt_branch != 0) {
+      jet11_pt_branch->GetEntry(index);
+    } else {
+      printf("branch jet11_pt_branch does not exist!\n");
+      exit(1);
+    }
+    jet11_pt_isLoaded = true;
+  }
+  return jet11_pt_;
+}
+
+const float &tprimetHHadronic::jet12_pt() {
+  if (not jet12_pt_isLoaded) {
+    if (jet12_pt_branch != 0) {
+      jet12_pt_branch->GetEntry(index);
+    } else {
+      printf("branch jet12_pt_branch does not exist!\n");
+      exit(1);
+    }
+    jet12_pt_isLoaded = true;
+  }
+  return jet12_pt_;
+}
+
+const float &tprimetHHadronic::jet13_pt() {
+  if (not jet13_pt_isLoaded) {
+    if (jet13_pt_branch != 0) {
+      jet13_pt_branch->GetEntry(index);
+    } else {
+      printf("branch jet13_pt_branch does not exist!\n");
+      exit(1);
+    }
+    jet13_pt_isLoaded = true;
+  }
+  return jet13_pt_;
+}
+
+const float &tprimetHHadronic::jet14_pt() {
+  if (not jet14_pt_isLoaded) {
+    if (jet14_pt_branch != 0) {
+      jet14_pt_branch->GetEntry(index);
+    } else {
+      printf("branch jet14_pt_branch does not exist!\n");
+      exit(1);
+    }
+    jet14_pt_isLoaded = true;
+  }
+  return jet14_pt_;
+}
+
+const float &tprimetHHadronic::jet15_pt() {
+  if (not jet15_pt_isLoaded) {
+    if (jet15_pt_branch != 0) {
+      jet15_pt_branch->GetEntry(index);
+    } else {
+      printf("branch jet15_pt_branch does not exist!\n");
+      exit(1);
+    }
+    jet15_pt_isLoaded = true;
+  }
+  return jet15_pt_;
+}
+
 const float &tprimetHHadronic::jet1_eta() {
   if (not jet1_eta_isLoaded) {
     if (jet1_eta_branch != 0) {
@@ -4105,6 +4472,149 @@ const float &tprimetHHadronic::jet4_eta() {
     jet4_eta_isLoaded = true;
   }
   return jet4_eta_;
+}
+
+const float &tprimetHHadronic::jet5_eta() {
+  if (not jet5_eta_isLoaded) {
+    if (jet5_eta_branch != 0) {
+      jet5_eta_branch->GetEntry(index);
+    } else {
+      printf("branch jet5_eta_branch does not exist!\n");
+      exit(1);
+    }
+    jet5_eta_isLoaded = true;
+  }
+  return jet5_eta_;
+}
+
+const float &tprimetHHadronic::jet6_eta() {
+  if (not jet6_eta_isLoaded) {
+    if (jet6_eta_branch != 0) {
+      jet6_eta_branch->GetEntry(index);
+    } else {
+      printf("branch jet6_eta_branch does not exist!\n");
+      exit(1);
+    }
+    jet6_eta_isLoaded = true;
+  }
+  return jet6_eta_;
+}
+
+const float &tprimetHHadronic::jet7_eta() {
+  if (not jet7_eta_isLoaded) {
+    if (jet7_eta_branch != 0) {
+      jet7_eta_branch->GetEntry(index);
+    } else {
+      printf("branch jet7_eta_branch does not exist!\n");
+      exit(1);
+    }
+    jet7_eta_isLoaded = true;
+  }
+  return jet7_eta_;
+}
+
+const float &tprimetHHadronic::jet8_eta() {
+  if (not jet8_eta_isLoaded) {
+    if (jet8_eta_branch != 0) {
+      jet8_eta_branch->GetEntry(index);
+    } else {
+      printf("branch jet8_eta_branch does not exist!\n");
+      exit(1);
+    }
+    jet8_eta_isLoaded = true;
+  }
+  return jet8_eta_;
+}
+
+const float &tprimetHHadronic::jet9_eta() {
+  if (not jet9_eta_isLoaded) {
+    if (jet9_eta_branch != 0) {
+      jet9_eta_branch->GetEntry(index);
+    } else {
+      printf("branch jet9_eta_branch does not exist!\n");
+      exit(1);
+    }
+    jet9_eta_isLoaded = true;
+  }
+  return jet9_eta_;
+}
+
+const float &tprimetHHadronic::jet10_eta() {
+  if (not jet10_eta_isLoaded) {
+    if (jet10_eta_branch != 0) {
+      jet10_eta_branch->GetEntry(index);
+    } else {
+      printf("branch jet10_eta_branch does not exist!\n");
+      exit(1);
+    }
+    jet10_eta_isLoaded = true;
+  }
+  return jet10_eta_;
+}
+
+const float &tprimetHHadronic::jet11_eta() {
+  if (not jet11_eta_isLoaded) {
+    if (jet11_eta_branch != 0) {
+      jet11_eta_branch->GetEntry(index);
+    } else {
+      printf("branch jet11_eta_branch does not exist!\n");
+      exit(1);
+    }
+    jet11_eta_isLoaded = true;
+  }
+  return jet11_eta_;
+}
+
+const float &tprimetHHadronic::jet12_eta() {
+  if (not jet12_eta_isLoaded) {
+    if (jet12_eta_branch != 0) {
+      jet12_eta_branch->GetEntry(index);
+    } else {
+      printf("branch jet12_eta_branch does not exist!\n");
+      exit(1);
+    }
+    jet12_eta_isLoaded = true;
+  }
+  return jet12_eta_;
+}
+
+const float &tprimetHHadronic::jet13_eta() {
+  if (not jet13_eta_isLoaded) {
+    if (jet13_eta_branch != 0) {
+      jet13_eta_branch->GetEntry(index);
+    } else {
+      printf("branch jet13_eta_branch does not exist!\n");
+      exit(1);
+    }
+    jet13_eta_isLoaded = true;
+  }
+  return jet13_eta_;
+}
+
+const float &tprimetHHadronic::jet14_eta() {
+  if (not jet14_eta_isLoaded) {
+    if (jet14_eta_branch != 0) {
+      jet14_eta_branch->GetEntry(index);
+    } else {
+      printf("branch jet14_eta_branch does not exist!\n");
+      exit(1);
+    }
+    jet14_eta_isLoaded = true;
+  }
+  return jet14_eta_;
+}
+
+const float &tprimetHHadronic::jet15_eta() {
+  if (not jet15_eta_isLoaded) {
+    if (jet15_eta_branch != 0) {
+      jet15_eta_branch->GetEntry(index);
+    } else {
+      printf("branch jet15_eta_branch does not exist!\n");
+      exit(1);
+    }
+    jet15_eta_isLoaded = true;
+  }
+  return jet15_eta_;
 }
 
 const float &tprimetHHadronic::jet1_phi() {
@@ -4159,6 +4669,149 @@ const float &tprimetHHadronic::jet4_phi() {
   return jet4_phi_;
 }
 
+const float &tprimetHHadronic::jet5_phi() {
+  if (not jet5_phi_isLoaded) {
+    if (jet5_phi_branch != 0) {
+      jet5_phi_branch->GetEntry(index);
+    } else {
+      printf("branch jet5_phi_branch does not exist!\n");
+      exit(1);
+    }
+    jet5_phi_isLoaded = true;
+  }
+  return jet5_phi_;
+}
+
+const float &tprimetHHadronic::jet6_phi() {
+  if (not jet6_phi_isLoaded) {
+    if (jet6_phi_branch != 0) {
+      jet6_phi_branch->GetEntry(index);
+    } else {
+      printf("branch jet6_phi_branch does not exist!\n");
+      exit(1);
+    }
+    jet6_phi_isLoaded = true;
+  }
+  return jet6_phi_;
+}
+
+const float &tprimetHHadronic::jet7_phi() {
+  if (not jet7_phi_isLoaded) {
+    if (jet7_phi_branch != 0) {
+      jet7_phi_branch->GetEntry(index);
+    } else {
+      printf("branch jet7_phi_branch does not exist!\n");
+      exit(1);
+    }
+    jet7_phi_isLoaded = true;
+  }
+  return jet7_phi_;
+}
+
+const float &tprimetHHadronic::jet8_phi() {
+  if (not jet8_phi_isLoaded) {
+    if (jet8_phi_branch != 0) {
+      jet8_phi_branch->GetEntry(index);
+    } else {
+      printf("branch jet8_phi_branch does not exist!\n");
+      exit(1);
+    }
+    jet8_phi_isLoaded = true;
+  }
+  return jet8_phi_;
+}
+
+const float &tprimetHHadronic::jet9_phi() {
+  if (not jet9_phi_isLoaded) {
+    if (jet9_phi_branch != 0) {
+      jet9_phi_branch->GetEntry(index);
+    } else {
+      printf("branch jet9_phi_branch does not exist!\n");
+      exit(1);
+    }
+    jet9_phi_isLoaded = true;
+  }
+  return jet9_phi_;
+}
+
+const float &tprimetHHadronic::jet10_phi() {
+  if (not jet10_phi_isLoaded) {
+    if (jet10_phi_branch != 0) {
+      jet10_phi_branch->GetEntry(index);
+    } else {
+      printf("branch jet10_phi_branch does not exist!\n");
+      exit(1);
+    }
+    jet10_phi_isLoaded = true;
+  }
+  return jet10_phi_;
+}
+
+const float &tprimetHHadronic::jet11_phi() {
+  if (not jet11_phi_isLoaded) {
+    if (jet11_phi_branch != 0) {
+      jet11_phi_branch->GetEntry(index);
+    } else {
+      printf("branch jet11_phi_branch does not exist!\n");
+      exit(1);
+    }
+    jet11_phi_isLoaded = true;
+  }
+  return jet11_phi_;
+}
+
+const float &tprimetHHadronic::jet12_phi() {
+  if (not jet12_phi_isLoaded) {
+    if (jet12_phi_branch != 0) {
+      jet12_phi_branch->GetEntry(index);
+    } else {
+      printf("branch jet12_phi_branch does not exist!\n");
+      exit(1);
+    }
+    jet12_phi_isLoaded = true;
+  }
+  return jet12_phi_;
+}
+
+const float &tprimetHHadronic::jet13_phi() {
+  if (not jet13_phi_isLoaded) {
+    if (jet13_phi_branch != 0) {
+      jet13_phi_branch->GetEntry(index);
+    } else {
+      printf("branch jet13_phi_branch does not exist!\n");
+      exit(1);
+    }
+    jet13_phi_isLoaded = true;
+  }
+  return jet13_phi_;
+}
+
+const float &tprimetHHadronic::jet14_phi() {
+  if (not jet14_phi_isLoaded) {
+    if (jet14_phi_branch != 0) {
+      jet14_phi_branch->GetEntry(index);
+    } else {
+      printf("branch jet14_phi_branch does not exist!\n");
+      exit(1);
+    }
+    jet14_phi_isLoaded = true;
+  }
+  return jet14_phi_;
+}
+
+const float &tprimetHHadronic::jet15_phi() {
+  if (not jet15_phi_isLoaded) {
+    if (jet15_phi_branch != 0) {
+      jet15_phi_branch->GetEntry(index);
+    } else {
+      printf("branch jet15_phi_branch does not exist!\n");
+      exit(1);
+    }
+    jet15_phi_isLoaded = true;
+  }
+  return jet15_phi_;
+}
+
 const float &tprimetHHadronic::jet1_e() {
   if (not jet1_e_isLoaded) {
     if (jet1_e_branch != 0) {
@@ -4211,6 +4864,149 @@ const float &tprimetHHadronic::jet4_e() {
   return jet4_e_;
 }
 
+const float &tprimetHHadronic::jet5_e() {
+  if (not jet5_e_isLoaded) {
+    if (jet5_e_branch != 0) {
+      jet5_e_branch->GetEntry(index);
+    } else {
+      printf("branch jet5_e_branch does not exist!\n");
+      exit(1);
+    }
+    jet5_e_isLoaded = true;
+  }
+  return jet5_e_;
+}
+
+const float &tprimetHHadronic::jet6_e() {
+  if (not jet6_e_isLoaded) {
+    if (jet6_e_branch != 0) {
+      jet6_e_branch->GetEntry(index);
+    } else {
+      printf("branch jet6_e_branch does not exist!\n");
+      exit(1);
+    }
+    jet6_e_isLoaded = true;
+  }
+  return jet6_e_;
+}
+
+const float &tprimetHHadronic::jet7_e() {
+  if (not jet7_e_isLoaded) {
+    if (jet7_e_branch != 0) {
+      jet7_e_branch->GetEntry(index);
+    } else {
+      printf("branch jet7_e_branch does not exist!\n");
+      exit(1);
+    }
+    jet7_e_isLoaded = true;
+  }
+  return jet7_e_;
+}
+
+const float &tprimetHHadronic::jet8_e() {
+  if (not jet8_e_isLoaded) {
+    if (jet8_e_branch != 0) {
+      jet8_e_branch->GetEntry(index);
+    } else {
+      printf("branch jet8_e_branch does not exist!\n");
+      exit(1);
+    }
+    jet8_e_isLoaded = true;
+  }
+  return jet8_e_;
+}
+
+const float &tprimetHHadronic::jet9_e() {
+  if (not jet9_e_isLoaded) {
+    if (jet9_e_branch != 0) {
+      jet9_e_branch->GetEntry(index);
+    } else {
+      printf("branch jet9_e_branch does not exist!\n");
+      exit(1);
+    }
+    jet9_e_isLoaded = true;
+  }
+  return jet9_e_;
+}
+
+const float &tprimetHHadronic::jet10_e() {
+  if (not jet10_e_isLoaded) {
+    if (jet10_e_branch != 0) {
+      jet10_e_branch->GetEntry(index);
+    } else {
+      printf("branch jet10_e_branch does not exist!\n");
+      exit(1);
+    }
+    jet10_e_isLoaded = true;
+  }
+  return jet10_e_;
+}
+
+const float &tprimetHHadronic::jet11_e() {
+  if (not jet11_e_isLoaded) {
+    if (jet11_e_branch != 0) {
+      jet11_e_branch->GetEntry(index);
+    } else {
+      printf("branch jet11_e_branch does not exist!\n");
+      exit(1);
+    }
+    jet11_e_isLoaded = true;
+  }
+  return jet11_e_;
+}
+
+const float &tprimetHHadronic::jet12_e() {
+  if (not jet12_e_isLoaded) {
+    if (jet12_e_branch != 0) {
+      jet12_e_branch->GetEntry(index);
+    } else {
+      printf("branch jet12_e_branch does not exist!\n");
+      exit(1);
+    }
+    jet12_e_isLoaded = true;
+  }
+  return jet12_e_;
+}
+
+const float &tprimetHHadronic::jet13_e() {
+  if (not jet13_e_isLoaded) {
+    if (jet13_e_branch != 0) {
+      jet13_e_branch->GetEntry(index);
+    } else {
+      printf("branch jet13_e_branch does not exist!\n");
+      exit(1);
+    }
+    jet13_e_isLoaded = true;
+  }
+  return jet13_e_;
+}
+
+const float &tprimetHHadronic::jet14_e() {
+  if (not jet14_e_isLoaded) {
+    if (jet14_e_branch != 0) {
+      jet14_e_branch->GetEntry(index);
+    } else {
+      printf("branch jet14_e_branch does not exist!\n");
+      exit(1);
+    }
+    jet14_e_isLoaded = true;
+  }
+  return jet14_e_;
+}
+
+const float &tprimetHHadronic::jet15_e() {
+  if (not jet15_e_isLoaded) {
+    if (jet15_e_branch != 0) {
+      jet15_e_branch->GetEntry(index);
+    } else {
+      printf("branch jet15_e_branch does not exist!\n");
+      exit(1);
+    }
+    jet15_e_isLoaded = true;
+  }
+  return jet15_e_;
+}
+
 const float &tprimetHHadronic::jet1_discr() {
   if (not jet1_discr_isLoaded) {
     if (jet1_discr_branch != 0) {
@@ -4248,6 +5044,162 @@ const float &tprimetHHadronic::jet3_discr() {
     jet3_discr_isLoaded = true;
   }
   return jet3_discr_;
+}
+
+const float &tprimetHHadronic::jet4_discr() {
+  if (not jet4_discr_isLoaded) {
+    if (jet4_discr_branch != 0) {
+      jet4_discr_branch->GetEntry(index);
+    } else {
+      printf("branch jet4_discr_branch does not exist!\n");
+      exit(1);
+    }
+    jet4_discr_isLoaded = true;
+  }
+  return jet4_discr_;
+}
+
+const float &tprimetHHadronic::jet5_discr() {
+  if (not jet5_discr_isLoaded) {
+    if (jet5_discr_branch != 0) {
+      jet5_discr_branch->GetEntry(index);
+    } else {
+      printf("branch jet5_discr_branch does not exist!\n");
+      exit(1);
+    }
+    jet5_discr_isLoaded = true;
+  }
+  return jet5_discr_;
+}
+
+const float &tprimetHHadronic::jet6_discr() {
+  if (not jet6_discr_isLoaded) {
+    if (jet6_discr_branch != 0) {
+      jet6_discr_branch->GetEntry(index);
+    } else {
+      printf("branch jet6_discr_branch does not exist!\n");
+      exit(1);
+    }
+    jet6_discr_isLoaded = true;
+  }
+  return jet6_discr_;
+}
+
+const float &tprimetHHadronic::jet7_discr() {
+  if (not jet7_discr_isLoaded) {
+    if (jet7_discr_branch != 0) {
+      jet7_discr_branch->GetEntry(index);
+    } else {
+      printf("branch jet7_discr_branch does not exist!\n");
+      exit(1);
+    }
+    jet7_discr_isLoaded = true;
+  }
+  return jet7_discr_;
+}
+
+const float &tprimetHHadronic::jet8_discr() {
+  if (not jet8_discr_isLoaded) {
+    if (jet8_discr_branch != 0) {
+      jet8_discr_branch->GetEntry(index);
+    } else {
+      printf("branch jet8_discr_branch does not exist!\n");
+      exit(1);
+    }
+    jet8_discr_isLoaded = true;
+  }
+  return jet8_discr_;
+}
+
+const float &tprimetHHadronic::jet9_discr() {
+  if (not jet9_discr_isLoaded) {
+    if (jet9_discr_branch != 0) {
+      jet9_discr_branch->GetEntry(index);
+    } else {
+      printf("branch jet9_discr_branch does not exist!\n");
+      exit(1);
+    }
+    jet9_discr_isLoaded = true;
+  }
+  return jet9_discr_;
+}
+
+const float &tprimetHHadronic::jet10_discr() {
+  if (not jet10_discr_isLoaded) {
+    if (jet10_discr_branch != 0) {
+      jet10_discr_branch->GetEntry(index);
+    } else {
+      printf("branch jet10_discr_branch does not exist!\n");
+      exit(1);
+    }
+    jet10_discr_isLoaded = true;
+  }
+  return jet10_discr_;
+}
+
+const float &tprimetHHadronic::jet11_discr() {
+  if (not jet11_discr_isLoaded) {
+    if (jet11_discr_branch != 0) {
+      jet11_discr_branch->GetEntry(index);
+    } else {
+      printf("branch jet11_discr_branch does not exist!\n");
+      exit(1);
+    }
+    jet11_discr_isLoaded = true;
+  }
+  return jet11_discr_;
+}
+
+const float &tprimetHHadronic::jet12_discr() {
+  if (not jet12_discr_isLoaded) {
+    if (jet12_discr_branch != 0) {
+      jet12_discr_branch->GetEntry(index);
+    } else {
+      printf("branch jet12_discr_branch does not exist!\n");
+      exit(1);
+    }
+    jet12_discr_isLoaded = true;
+  }
+  return jet12_discr_;
+}
+
+const float &tprimetHHadronic::jet13_discr() {
+  if (not jet13_discr_isLoaded) {
+    if (jet13_discr_branch != 0) {
+      jet13_discr_branch->GetEntry(index);
+    } else {
+      printf("branch jet13_discr_branch does not exist!\n");
+      exit(1);
+    }
+    jet13_discr_isLoaded = true;
+  }
+  return jet13_discr_;
+}
+
+const float &tprimetHHadronic::jet14_discr() {
+  if (not jet14_discr_isLoaded) {
+    if (jet14_discr_branch != 0) {
+      jet14_discr_branch->GetEntry(index);
+    } else {
+      printf("branch jet14_discr_branch does not exist!\n");
+      exit(1);
+    }
+    jet14_discr_isLoaded = true;
+  }
+  return jet14_discr_;
+}
+
+const float &tprimetHHadronic::jet15_discr() {
+  if (not jet15_discr_isLoaded) {
+    if (jet15_discr_branch != 0) {
+      jet15_discr_branch->GetEntry(index);
+    } else {
+      printf("branch jet15_discr_branch does not exist!\n");
+      exit(1);
+    }
+    jet15_discr_isLoaded = true;
+  }
+  return jet15_discr_;
 }
 
 const float &tprimetHHadronic::recoMET_pt() {
@@ -4775,21 +5727,77 @@ const float &jet1_pt() { return analyzer.jet1_pt(); }
 const float &jet2_pt() { return analyzer.jet2_pt(); }
 const float &jet3_pt() { return analyzer.jet3_pt(); }
 const float &jet4_pt() { return analyzer.jet4_pt(); }
+const float &jet5_pt() { return analyzer.jet5_pt(); }
+const float &jet6_pt() { return analyzer.jet6_pt(); }
+const float &jet7_pt() { return analyzer.jet7_pt(); }
+const float &jet8_pt() { return analyzer.jet8_pt(); }
+const float &jet9_pt() { return analyzer.jet9_pt(); }
+const float &jet10_pt() { return analyzer.jet10_pt(); }
+const float &jet11_pt() { return analyzer.jet11_pt(); }
+const float &jet12_pt() { return analyzer.jet12_pt(); }
+const float &jet13_pt() { return analyzer.jet13_pt(); }
+const float &jet14_pt() { return analyzer.jet14_pt(); }
+const float &jet15_pt() { return analyzer.jet15_pt(); }
 const float &jet1_eta() { return analyzer.jet1_eta(); }
 const float &jet2_eta() { return analyzer.jet2_eta(); }
 const float &jet3_eta() { return analyzer.jet3_eta(); }
 const float &jet4_eta() { return analyzer.jet4_eta(); }
+const float &jet5_eta() { return analyzer.jet5_eta(); }
+const float &jet6_eta() { return analyzer.jet6_eta(); }
+const float &jet7_eta() { return analyzer.jet7_eta(); }
+const float &jet8_eta() { return analyzer.jet8_eta(); }
+const float &jet9_eta() { return analyzer.jet9_eta(); }
+const float &jet10_eta() { return analyzer.jet10_eta(); }
+const float &jet11_eta() { return analyzer.jet11_eta(); }
+const float &jet12_eta() { return analyzer.jet12_eta(); }
+const float &jet13_eta() { return analyzer.jet13_eta(); }
+const float &jet14_eta() { return analyzer.jet14_eta(); }
+const float &jet15_eta() { return analyzer.jet15_eta(); }
 const float &jet1_phi() { return analyzer.jet1_phi(); }
 const float &jet2_phi() { return analyzer.jet2_phi(); }
 const float &jet3_phi() { return analyzer.jet3_phi(); }
 const float &jet4_phi() { return analyzer.jet4_phi(); }
+const float &jet5_phi() { return analyzer.jet5_phi(); }
+const float &jet6_phi() { return analyzer.jet6_phi(); }
+const float &jet7_phi() { return analyzer.jet7_phi(); }
+const float &jet8_phi() { return analyzer.jet8_phi(); }
+const float &jet9_phi() { return analyzer.jet9_phi(); }
+const float &jet10_phi() { return analyzer.jet10_phi(); }
+const float &jet11_phi() { return analyzer.jet11_phi(); }
+const float &jet12_phi() { return analyzer.jet12_phi(); }
+const float &jet13_phi() { return analyzer.jet13_phi(); }
+const float &jet14_phi() { return analyzer.jet14_phi(); }
+const float &jet15_phi() { return analyzer.jet15_phi(); }
 const float &jet1_e() { return analyzer.jet1_e(); }
 const float &jet2_e() { return analyzer.jet2_e(); }
 const float &jet3_e() { return analyzer.jet3_e(); }
 const float &jet4_e() { return analyzer.jet4_e(); }
+const float &jet5_e() { return analyzer.jet5_e(); }
+const float &jet6_e() { return analyzer.jet6_e(); }
+const float &jet7_e() { return analyzer.jet7_e(); }
+const float &jet8_e() { return analyzer.jet8_e(); }
+const float &jet9_e() { return analyzer.jet9_e(); }
+const float &jet10_e() { return analyzer.jet10_e(); }
+const float &jet11_e() { return analyzer.jet11_e(); }
+const float &jet12_e() { return analyzer.jet12_e(); }
+const float &jet13_e() { return analyzer.jet13_e(); }
+const float &jet14_e() { return analyzer.jet14_e(); }
+const float &jet15_e() { return analyzer.jet15_e(); }
 const float &jet1_discr() { return analyzer.jet1_discr(); }
 const float &jet2_discr() { return analyzer.jet2_discr(); }
 const float &jet3_discr() { return analyzer.jet3_discr(); }
+const float &jet4_discr() { return analyzer.jet4_discr(); }
+const float &jet5_discr() { return analyzer.jet5_discr(); }
+const float &jet6_discr() { return analyzer.jet6_discr(); }
+const float &jet7_discr() { return analyzer.jet7_discr(); }
+const float &jet8_discr() { return analyzer.jet8_discr(); }
+const float &jet9_discr() { return analyzer.jet9_discr(); }
+const float &jet10_discr() { return analyzer.jet10_discr(); }
+const float &jet11_discr() { return analyzer.jet11_discr(); }
+const float &jet12_discr() { return analyzer.jet12_discr(); }
+const float &jet13_discr() { return analyzer.jet13_discr(); }
+const float &jet14_discr() { return analyzer.jet14_discr(); }
+const float &jet15_discr() { return analyzer.jet15_discr(); }
 const float &recoMET_pt() { return analyzer.recoMET_pt(); }
 const float &recoMET_eta() { return analyzer.recoMET_eta(); }
 const float &recoMET_phi() { return analyzer.recoMET_phi(); }

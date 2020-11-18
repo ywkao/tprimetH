@@ -8,11 +8,15 @@ TARGET   := bin/tprimetHHadronicLooper
 
 all: ${TARGET}
 
-build/tprimetHHadronicLooper.o: src/tprimetHHadronicLooper.cpp src/ScanChain.C src/ScanChain.h
+build/chi2_helper.o: src/chi2_helper.cc include/chi2_helper.h
 	@mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
-bin/tprimetHHadronicLooper: build/tprimetHHadronicLooper.o
+build/tprimetHHadronicLooper.o: src/tprimetHHadronicLooper.cpp src/ScanChain_tprimetHHadronic.C include/ScanChain.h
+	@mkdir -p $(BUILDDIR)
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
+
+bin/tprimetHHadronicLooper: build/tprimetHHadronicLooper.o build/chi2_helper.o
 	@echo "Linking..." && mkdir -p bin
 	$(CC) -o $@ $^ $(CFLAGS) $(ROOTLIBS)
 

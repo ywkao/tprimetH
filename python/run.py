@@ -2,9 +2,9 @@
 import subprocess
 
 signals = [
-            "signal_ntuples_2016/TprimeBToTH_M-700_LH_TuneCUETP8M1_13TeV_Era2016.root",
-            "signal_ntuples_2017/TprimeBToTH_M-700_LH_TuneCP5_13TeV_Era2017.root",
-            "signal_ntuples_2018/TprimeBToTH_M-700_LH_TuneCP5_PSweights_13TeV_Era2018.root"
+            "rootfiles/ntuples_v1.4/TprimeBToTH_M-700_LH_TuneCUETP8M1_13TeV_Era2016_v1p4.root",
+            "rootfiles/ntuples_v1.4/TprimeBToTH_M-700_LH_TuneCP5_13TeV_Era2017_v1p4.root",
+            "rootfiles/ntuples_v1.4/TprimeBToTH_M-700_LH_TuneCP5_PSweights_13TeV_Era2018_v1p4.root"
 ]
 
 for file in signals:
