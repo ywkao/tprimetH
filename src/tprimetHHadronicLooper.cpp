@@ -14,11 +14,15 @@ int main(int argc, char* argv[])
     TString name = argv[1];
     TString fullname = location + "/" + name;
 
+    TString subversion = "7";
+    TString version = "v1." + subversion;
+    TString ver_str = "v1p" + subversion;
+
     TChain *ch = new TChain("tagsDumper/trees/tHq_13TeV_THQHadronicTag");
     //ch -> Add(fullname);
-    ch -> Add("rootfiles/ntuples_v1.4/TprimeBToTH_M-700_LH_TuneCUETP8M1_13TeV_Era2016_v1p4.root");
-    ch -> Add("rootfiles/ntuples_v1.4/TprimeBToTH_M-700_LH_TuneCP5_13TeV_Era2017_v1p4.root");
-    ch -> Add("rootfiles/ntuples_v1.4/TprimeBToTH_M-700_LH_TuneCP5_PSweights_13TeV_Era2018_v1p4.root");
+    ch -> Add("rootfiles/ntuples_" + version + "/TprimeBToTH_M-700_LH_TuneCUETP8M1_13TeV_Era2016_" + ver_str + ".root");
+    ch -> Add("rootfiles/ntuples_" + version + "/TprimeBToTH_M-700_LH_TuneCP5_13TeV_Era2017_" + ver_str + ".root");
+    ch -> Add("rootfiles/ntuples_" + version + "/TprimeBToTH_M-700_LH_TuneCP5_PSweights_13TeV_Era2018_" + ver_str + ".root");
 
     ScanChain_tprimetHHadronic(ch);
     //unsigned int entries = ch->GetEntries();

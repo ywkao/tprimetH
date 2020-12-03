@@ -9,6 +9,7 @@
 #include "TChain.h"
 #include "TDirectory.h"
 #include "TFile.h"
+#include "TPaveStats.h"
 #include "TROOT.h"
 #include "TTreeCache.h"
 #include "TLorentzVector.h"
@@ -23,16 +24,123 @@
 using namespace std;
 using namespace tprime;
 
-bool sortByValue(const std::pair<int,double>& pair1, const std::pair<int,double>& pair2 ) {
+bool sortByGreaterValue(const std::pair<int,double>& pair1, const std::pair<int,double>& pair2 ) {
   return pair1.second > pair2.second;
 }
 
-vector< std::pair<int, double> > sortVector(const vector<double> v) {
+bool sortBySmallerValue(const std::pair<int,double>& pair1, const std::pair<int,double>& pair2 ) {
+  return pair1.second < pair2.second;
+}
+
+vector< std::pair<int, double> > sortVectorGreater(const vector<double> v) {
   vector< std::pair<int, double> > v2;
   for (int i = 0; i < v.size(); i++)
     v2.push_back(std::pair<int, double>(i, v[i]));
-  std::sort(v2.begin(), v2.end(), sortByValue);
+  std::sort(v2.begin(), v2.end(), sortByGreaterValue);
   return v2;
+}
+
+vector< std::pair<int, double> > sortVectorSmaller(const vector<double> v) {
+  vector< std::pair<int, double> > v2;
+  for (int i = 0; i < v.size(); i++)
+    v2.push_back(std::pair<int, double>(i, v[i]));
+  std::sort(v2.begin(), v2.end(), sortBySmallerValue);
+  return v2;
+}
+
+vector<TLorentzVector> make_partons(vector<int> &pdgIds) {
+  vector<TLorentzVector> vPartons;
+  if (gen_parton1_pt() > 0) {
+    TLorentzVector gen_parton;
+    gen_parton.SetPtEtaPhiM(gen_parton1_pt(), gen_parton1_eta(), gen_parton1_phi(), gen_parton1_mass());
+    vPartons.push_back(gen_parton);
+    pdgIds.push_back(gen_parton1_pdgId());
+    //printf("gen_parton1: status = %.2f, pdgId = %.2f, pt = %.2f, eta = %.2f, energy = %.2f\n", \
+    //        gen_parton1_status(), gen_parton1_pdgId(), gen_parton1_pt(), gen_parton1_eta(), gen_parton.E());
+  }
+
+  if (gen_parton2_pt() > 0) {
+    TLorentzVector gen_parton;
+    gen_parton.SetPtEtaPhiM(gen_parton2_pt(), gen_parton2_eta(), gen_parton2_phi(), gen_parton2_mass());
+    vPartons.push_back(gen_parton);
+    pdgIds.push_back(gen_parton2_pdgId());
+    //printf("gen_parton2: status = %.2f, pdgId = %.2f, pt = %.2f, eta = %.2f, energy = %.2f\n", \
+    //        gen_parton2_status(), gen_parton2_pdgId(), gen_parton2_pt(), gen_parton2_eta(), gen_parton.E());
+  }
+
+  if (gen_parton3_pt() > 0) {
+    TLorentzVector gen_parton;
+    gen_parton.SetPtEtaPhiM(gen_parton3_pt(), gen_parton3_eta(), gen_parton3_phi(), gen_parton3_mass());
+    vPartons.push_back(gen_parton);
+    pdgIds.push_back(gen_parton3_pdgId());
+    //printf("gen_parton3: status = %.2f, pdgId = %.2f, pt = %.2f, eta = %.2f, energy = %.2f\n", \
+    //        gen_parton3_status(), gen_parton3_pdgId(), gen_parton3_pt(), gen_parton3_eta(), gen_parton.E());
+  }
+
+  if (gen_parton4_pt() > 0) {
+    TLorentzVector gen_parton;
+    gen_parton.SetPtEtaPhiM(gen_parton4_pt(), gen_parton4_eta(), gen_parton4_phi(), gen_parton4_mass());
+    vPartons.push_back(gen_parton);
+    pdgIds.push_back(gen_parton4_pdgId());
+    //printf("gen_parton4: status = %.2f, pdgId = %.2f, pt = %.2f, eta = %.2f, energy = %.2f\n", \
+    //        gen_parton4_status(), gen_parton4_pdgId(), gen_parton4_pt(), gen_parton4_eta(), gen_parton.E());
+  }
+
+  if (gen_parton5_pt() > 0) {
+    TLorentzVector gen_parton;
+    gen_parton.SetPtEtaPhiM(gen_parton5_pt(), gen_parton5_eta(), gen_parton5_phi(), gen_parton5_mass());
+    vPartons.push_back(gen_parton);
+    pdgIds.push_back(gen_parton5_pdgId());
+    //printf("gen_parton5: status = %.2f, pdgId = %.2f, pt = %.2f, eta = %.2f, energy = %.2f\n", \
+    //        gen_parton5_status(), gen_parton5_pdgId(), gen_parton5_pt(), gen_parton5_eta(), gen_parton.E());
+  }
+
+  if (gen_parton6_pt() > 0) {
+    TLorentzVector gen_parton;
+    gen_parton.SetPtEtaPhiM(gen_parton6_pt(), gen_parton6_eta(), gen_parton6_phi(), gen_parton6_mass());
+    vPartons.push_back(gen_parton);
+    pdgIds.push_back(gen_parton6_pdgId());
+    //printf("gen_parton6: status = %.2f, pdgId = %.2f, pt = %.2f, eta = %.2f, energy = %.2f\n", \
+    //        gen_parton6_status(), gen_parton6_pdgId(), gen_parton6_pt(), gen_parton6_eta(), gen_parton.E());
+  }
+
+  if (gen_parton7_pt() > 0) {
+    TLorentzVector gen_parton;
+    gen_parton.SetPtEtaPhiM(gen_parton7_pt(), gen_parton7_eta(), gen_parton7_phi(), gen_parton7_mass());
+    vPartons.push_back(gen_parton);
+    pdgIds.push_back(gen_parton7_pdgId());
+    //printf("gen_parton7: status = %.2f, pdgId = %.2f, pt = %.2f, eta = %.2f, energy = %.2f\n", \
+    //        gen_parton7_status(), gen_parton7_pdgId(), gen_parton7_pt(), gen_parton7_eta(), gen_parton.E());
+  }
+
+  if (gen_parton8_pt() > 0) {
+    TLorentzVector gen_parton;
+    gen_parton.SetPtEtaPhiM(gen_parton8_pt(), gen_parton8_eta(), gen_parton8_phi(), gen_parton8_mass());
+    vPartons.push_back(gen_parton);
+    pdgIds.push_back(gen_parton8_pdgId());
+    //printf("gen_parton8: status = %.2f, pdgId = %.2f, pt = %.2f, eta = %.2f, energy = %.2f\n", \
+    //        gen_parton8_status(), gen_parton8_pdgId(), gen_parton8_pt(), gen_parton8_eta(), gen_parton.E());
+  }
+
+  if (gen_parton9_pt() > 0) {
+    TLorentzVector gen_parton;
+    gen_parton.SetPtEtaPhiM(gen_parton9_pt(), gen_parton9_eta(), gen_parton9_phi(), gen_parton9_mass());
+    vPartons.push_back(gen_parton);
+    pdgIds.push_back(gen_parton9_pdgId());
+    //printf("gen_parton9: status = %.2f, pdgId = %.2f, pt = %.2f, eta = %.2f, energy = %.2f\n", \
+    //        gen_parton9_status(), gen_parton9_pdgId(), gen_parton9_pt(), gen_parton9_eta(), gen_parton.E());
+  }
+
+  if (gen_parton10_pt() > 0) {
+    TLorentzVector gen_parton;
+    gen_parton.SetPtEtaPhiM(gen_parton10_pt(), gen_parton10_eta(), gen_parton10_phi(), gen_parton10_mass());
+    vPartons.push_back(gen_parton);
+    pdgIds.push_back(gen_parton10_pdgId());
+    //printf("gen_parton10: status = %.2f, pdgId = %.2f, pt = %.2f, eta = %.2f, energy = %.2f\n", \
+    //        gen_parton10_status(), gen_parton10_pdgId(), gen_parton10_pt(), gen_parton10_eta(), gen_parton.E());
+  }
+
+  return vPartons;
 }
 
 vector<TLorentzVector> make_jets(vector<double> &btag_scores) {
@@ -145,10 +253,172 @@ double helicity(const TLorentzVector particle_1, const TLorentzVector particle_2
   return abs(cos_theta_1);  
 }
 
+bool identify_bjet_and_wjets(int &index_bjet, vector<int> &indices_wjets, vector<int> &jets_index_genMatched, vector<int> &jets_pdgId_genMatched, vector<double> &jets_deltaR_genMatched)
+{
+    bool is_reasonable = true;
+
+    vector<int> vec_bjet_position;
+    vector<int> vec_bjet_index;
+    vector<double> vec_bjet_deltaR;
+    for(unsigned int i = 0; i<jets_index_genMatched.size(); ++i)
+    {
+        int index = jets_index_genMatched[i];
+        int pdgId = jets_pdgId_genMatched[i];
+        double deltaR = jets_deltaR_genMatched[i];
+        //printf("index: %d, pdgId: %d, deltaR: %.2f\n", index, pdgId, deltaR);
+        if(index >= 0 && abs(pdgId) == 5)
+        {
+            vec_bjet_position.push_back(i);
+            vec_bjet_index.push_back(index);
+            vec_bjet_deltaR.push_back(deltaR);
+        }
+    }
+
+    // determine bjet according to deltaR if there are multiple bjets
+    int position_bjet = -1;
+    if(vec_bjet_index.size() == 0) index_bjet = -1;
+    else if(vec_bjet_index.size() == 1)
+    {
+        position_bjet = vec_bjet_position[0];
+        index_bjet = vec_bjet_index[0];
+    }
+    else if (vec_bjet_index.size() == 2)
+    {
+        position_bjet = (vec_bjet_deltaR[0] < vec_bjet_deltaR[1]) ? vec_bjet_position[0] : vec_bjet_position[1];
+        index_bjet = (vec_bjet_deltaR[0] < vec_bjet_deltaR[1]) ? vec_bjet_index[0] : vec_bjet_index[1];
+    }
+    else
+    {
+        int minElementIndex = std::min_element(vec_bjet_deltaR.begin(),vec_bjet_deltaR.end()) - vec_bjet_deltaR.begin();
+        position_bjet = vec_bjet_position[minElementIndex];
+        index_bjet = vec_bjet_index[minElementIndex];
+    }
+
+    // the rest jets are wjets
+    for(unsigned int i = 0; i<jets_index_genMatched.size(); ++i)
+    {
+        if(i == position_bjet) continue;
+        int index = jets_index_genMatched[i];
+        indices_wjets.push_back(index);
+        if(index == -1) is_reasonable = false;
+    }
+
+    // no matched b-jet
+    if(indices_wjets.size() > 2) is_reasonable = false;
+
+    printf("[%d, %d, %d]\n", index_bjet, indices_wjets[0], indices_wjets[1]);
+
+    return is_reasonable;
+}
+
+bool get_gen_matched_jets(int &index_bjet, vector<int> &indices_wjets)
+{
+    // have a b-jet && all indices are non-negative
+    bool has_reasonable_match = true;
+    vector<int> jets_index_genMatched;
+    jets_index_genMatched.push_back(genMatched_jet0_index());
+    jets_index_genMatched.push_back(genMatched_jet1_index());
+    jets_index_genMatched.push_back(genMatched_jet2_index());
+    vector<int> jets_pdgId_genMatched;
+    jets_pdgId_genMatched.push_back(genMatched_jet0_pdgId());
+    jets_pdgId_genMatched.push_back(genMatched_jet1_pdgId());
+    jets_pdgId_genMatched.push_back(genMatched_jet2_pdgId());
+    vector<double> jets_deltaR_genMatched;
+    jets_deltaR_genMatched.push_back(genMatched_jet0_deltaR());
+    jets_deltaR_genMatched.push_back(genMatched_jet1_deltaR());
+    jets_deltaR_genMatched.push_back(genMatched_jet2_deltaR());
+
+    //for(int i=0; i<3; ++i)
+    //    printf("[check] get_gen_matched_jets: index = %d, pdgId = %d, deltaR = %.2f\n", jets_index_genMatched[i], jets_pdgId_genMatched[i], jets_deltaR_genMatched[i]);
+
+    has_reasonable_match = identify_bjet_and_wjets(index_bjet, indices_wjets, jets_index_genMatched, jets_pdgId_genMatched, jets_deltaR_genMatched);
+    return has_reasonable_match;
+}
+
+bool gen_matching(vector<TLorentzVector> &partons, vector<TLorentzVector> &jets, vector<int> pdgIds, TLorentzVector &bquark, TLorentzVector &wquark1, TLorentzVector &wquark2)
+{
+    bool has_reasonable_match = true;  
+
+    vector<int> vec_genIndex;
+    vector<int> vec_pdgId_register;
+    vector<int> vec_index_register;
+    vector<double> vec_deltaR_register;
+    for( unsigned int genLoop = 0 ; genLoop < partons.size(); genLoop++ ) {
+        TLorentzVector part = partons[genLoop];
+        vector<double> vec_deltaR;
+        for(unsigned int index = 0 ; index < jets.size(); index++){
+            TLorentzVector jet = jets[index];
+            double deltaR = sqrt( (jet.Eta()-part.Eta())*(jet.Eta()-part.Eta()) + (jet.Phi()-part.Phi())*(jet.Phi()-part.Phi()) );
+            vec_deltaR.push_back(deltaR);
+        }
+        vector<std::pair<int, double> > vec_deltaR_sorted = sortVectorSmaller(vec_deltaR);
+
+        if(vec_deltaR_sorted[0].second > 0.4) continue;
+
+        vec_genIndex.push_back(genLoop);
+        vec_pdgId_register.push_back(pdgIds[genLoop]);
+        vec_index_register.push_back(vec_deltaR_sorted[0].first);
+        vec_deltaR_register.push_back(vec_deltaR_sorted[0].second);
+    }
+
+    has_reasonable_match = vec_pdgId_register.size() >= 3;
+    if(has_reasonable_match)
+    {
+        // consistent check -> yes consistent
+        //printf("gen indices = [%d, %d, %d]\n", vec_genIndex[0], vec_genIndex[1], vec_genIndex[2] );
+        //printf("pdg codes   = [%d, %d, %d]\n", vec_pdgId_register[0], vec_pdgId_register[1], vec_pdgId_register[2] );
+        //printf("jet indices = [%d, %d, %d]\n", vec_index_register[0], vec_index_register[1], vec_index_register[2] );
+        //printf("jet flashgg = [%.0f, %.0f, %.0f]\n", genMatched_jet0_index(), genMatched_jet1_index(), genMatched_jet2_index() );
+
+        int index_bquark;
+        vector<int> indices_wquarks;
+        has_reasonable_match = identify_bjet_and_wjets(index_bquark, indices_wquarks, vec_genIndex, vec_pdgId_register, vec_deltaR_register);
+        //printf("quarks bww  = [%d, %d, %d]\n", index_bquark, indices_wquarks[0], indices_wquarks[1] );
+
+        bquark = partons[index_bquark];
+        wquark1 = partons[indices_wquarks[0]];
+        wquark2 = partons[indices_wquarks[1]];
+    }
+
+    return has_reasonable_match;
+}
+
 void makePlot(TCanvas *c1, TH1F *h, TString filename) {
   h->SetLineWidth(2);
   h->Draw("hist");
   c1->SaveAs(filename);
+}
+
+void makePlot_twoHists(TCanvas *c1, TH1F *h1, TH1F *h2, TString filename) {
+    //h1->SetStats(0);
+    //h2->SetStats(0);
+
+    h1->SetLineWidth(2);
+    h2->SetLineWidth(2);
+    h1->SetLineColor(kBlue);
+    h2->SetLineColor(kRed);
+
+    double scale = 1.2;
+    double value1 = h1->GetMaximum();
+    double value2 = h2->GetMaximum();
+    double max_scope = (value1 > value2) ? value1 : value2;
+    h1->SetMaximum(max_scope*scale);
+
+    h1->Draw("hist");
+    c1->Modified(); c1->Update();
+    TPaveStats *stats1 = (TPaveStats*) c1->GetPrimitive("stats");
+    stats1->SetName("Minimum chi-2");
+    stats1->SetTextColor(kBlue);
+
+    h2->Draw("hist;same");
+    c1->Modified(); c1->Update();
+    TPaveStats *stats2 = (TPaveStats*) c1->GetPrimitive("stats");
+    //stats2->SetName("Truth-Matched");
+    stats2->SetY1NDC(.4);
+    stats2->SetY2NDC(.6);
+    stats2->SetTextColor(kRed);
+
+    c1->SaveAs(filename);
 }
 
 void print_counter_percentage(TString title, int counter, int tot){

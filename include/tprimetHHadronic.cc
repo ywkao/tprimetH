@@ -631,6 +631,168 @@ void tprimetHHadronic::Init(TTree *tree) {
   if (top_mass_branch) top_mass_branch->SetAddress(&top_mass_);
   HT_branch = tree->GetBranch("HT");
   if (HT_branch) HT_branch->SetAddress(&HT_);
+  gen_parton1_pt_branch = tree->GetBranch("gen_parton1_pt");
+  if (gen_parton1_pt_branch) gen_parton1_pt_branch->SetAddress(&gen_parton1_pt_);
+  gen_parton2_pt_branch = tree->GetBranch("gen_parton2_pt");
+  if (gen_parton2_pt_branch) gen_parton2_pt_branch->SetAddress(&gen_parton2_pt_);
+  gen_parton3_pt_branch = tree->GetBranch("gen_parton3_pt");
+  if (gen_parton3_pt_branch) gen_parton3_pt_branch->SetAddress(&gen_parton3_pt_);
+  gen_parton4_pt_branch = tree->GetBranch("gen_parton4_pt");
+  if (gen_parton4_pt_branch) gen_parton4_pt_branch->SetAddress(&gen_parton4_pt_);
+  gen_parton5_pt_branch = tree->GetBranch("gen_parton5_pt");
+  if (gen_parton5_pt_branch) gen_parton5_pt_branch->SetAddress(&gen_parton5_pt_);
+  gen_parton6_pt_branch = tree->GetBranch("gen_parton6_pt");
+  if (gen_parton6_pt_branch) gen_parton6_pt_branch->SetAddress(&gen_parton6_pt_);
+  gen_parton7_pt_branch = tree->GetBranch("gen_parton7_pt");
+  if (gen_parton7_pt_branch) gen_parton7_pt_branch->SetAddress(&gen_parton7_pt_);
+  gen_parton8_pt_branch = tree->GetBranch("gen_parton8_pt");
+  if (gen_parton8_pt_branch) gen_parton8_pt_branch->SetAddress(&gen_parton8_pt_);
+  gen_parton9_pt_branch = tree->GetBranch("gen_parton9_pt");
+  if (gen_parton9_pt_branch) gen_parton9_pt_branch->SetAddress(&gen_parton9_pt_);
+  gen_parton10_pt_branch = tree->GetBranch("gen_parton10_pt");
+  if (gen_parton10_pt_branch) gen_parton10_pt_branch->SetAddress(&gen_parton10_pt_);
+  gen_parton1_eta_branch = tree->GetBranch("gen_parton1_eta");
+  if (gen_parton1_eta_branch) gen_parton1_eta_branch->SetAddress(&gen_parton1_eta_);
+  gen_parton2_eta_branch = tree->GetBranch("gen_parton2_eta");
+  if (gen_parton2_eta_branch) gen_parton2_eta_branch->SetAddress(&gen_parton2_eta_);
+  gen_parton3_eta_branch = tree->GetBranch("gen_parton3_eta");
+  if (gen_parton3_eta_branch) gen_parton3_eta_branch->SetAddress(&gen_parton3_eta_);
+  gen_parton4_eta_branch = tree->GetBranch("gen_parton4_eta");
+  if (gen_parton4_eta_branch) gen_parton4_eta_branch->SetAddress(&gen_parton4_eta_);
+  gen_parton5_eta_branch = tree->GetBranch("gen_parton5_eta");
+  if (gen_parton5_eta_branch) gen_parton5_eta_branch->SetAddress(&gen_parton5_eta_);
+  gen_parton6_eta_branch = tree->GetBranch("gen_parton6_eta");
+  if (gen_parton6_eta_branch) gen_parton6_eta_branch->SetAddress(&gen_parton6_eta_);
+  gen_parton7_eta_branch = tree->GetBranch("gen_parton7_eta");
+  if (gen_parton7_eta_branch) gen_parton7_eta_branch->SetAddress(&gen_parton7_eta_);
+  gen_parton8_eta_branch = tree->GetBranch("gen_parton8_eta");
+  if (gen_parton8_eta_branch) gen_parton8_eta_branch->SetAddress(&gen_parton8_eta_);
+  gen_parton9_eta_branch = tree->GetBranch("gen_parton9_eta");
+  if (gen_parton9_eta_branch) gen_parton9_eta_branch->SetAddress(&gen_parton9_eta_);
+  gen_parton10_eta_branch = tree->GetBranch("gen_parton10_eta");
+  if (gen_parton10_eta_branch) gen_parton10_eta_branch->SetAddress(&gen_parton10_eta_);
+  gen_parton1_phi_branch = tree->GetBranch("gen_parton1_phi");
+  if (gen_parton1_phi_branch) gen_parton1_phi_branch->SetAddress(&gen_parton1_phi_);
+  gen_parton2_phi_branch = tree->GetBranch("gen_parton2_phi");
+  if (gen_parton2_phi_branch) gen_parton2_phi_branch->SetAddress(&gen_parton2_phi_);
+  gen_parton3_phi_branch = tree->GetBranch("gen_parton3_phi");
+  if (gen_parton3_phi_branch) gen_parton3_phi_branch->SetAddress(&gen_parton3_phi_);
+  gen_parton4_phi_branch = tree->GetBranch("gen_parton4_phi");
+  if (gen_parton4_phi_branch) gen_parton4_phi_branch->SetAddress(&gen_parton4_phi_);
+  gen_parton5_phi_branch = tree->GetBranch("gen_parton5_phi");
+  if (gen_parton5_phi_branch) gen_parton5_phi_branch->SetAddress(&gen_parton5_phi_);
+  gen_parton6_phi_branch = tree->GetBranch("gen_parton6_phi");
+  if (gen_parton6_phi_branch) gen_parton6_phi_branch->SetAddress(&gen_parton6_phi_);
+  gen_parton7_phi_branch = tree->GetBranch("gen_parton7_phi");
+  if (gen_parton7_phi_branch) gen_parton7_phi_branch->SetAddress(&gen_parton7_phi_);
+  gen_parton8_phi_branch = tree->GetBranch("gen_parton8_phi");
+  if (gen_parton8_phi_branch) gen_parton8_phi_branch->SetAddress(&gen_parton8_phi_);
+  gen_parton9_phi_branch = tree->GetBranch("gen_parton9_phi");
+  if (gen_parton9_phi_branch) gen_parton9_phi_branch->SetAddress(&gen_parton9_phi_);
+  gen_parton10_phi_branch = tree->GetBranch("gen_parton10_phi");
+  if (gen_parton10_phi_branch) gen_parton10_phi_branch->SetAddress(&gen_parton10_phi_);
+  gen_parton1_mass_branch = tree->GetBranch("gen_parton1_mass");
+  if (gen_parton1_mass_branch) gen_parton1_mass_branch->SetAddress(&gen_parton1_mass_);
+  gen_parton2_mass_branch = tree->GetBranch("gen_parton2_mass");
+  if (gen_parton2_mass_branch) gen_parton2_mass_branch->SetAddress(&gen_parton2_mass_);
+  gen_parton3_mass_branch = tree->GetBranch("gen_parton3_mass");
+  if (gen_parton3_mass_branch) gen_parton3_mass_branch->SetAddress(&gen_parton3_mass_);
+  gen_parton4_mass_branch = tree->GetBranch("gen_parton4_mass");
+  if (gen_parton4_mass_branch) gen_parton4_mass_branch->SetAddress(&gen_parton4_mass_);
+  gen_parton5_mass_branch = tree->GetBranch("gen_parton5_mass");
+  if (gen_parton5_mass_branch) gen_parton5_mass_branch->SetAddress(&gen_parton5_mass_);
+  gen_parton6_mass_branch = tree->GetBranch("gen_parton6_mass");
+  if (gen_parton6_mass_branch) gen_parton6_mass_branch->SetAddress(&gen_parton6_mass_);
+  gen_parton7_mass_branch = tree->GetBranch("gen_parton7_mass");
+  if (gen_parton7_mass_branch) gen_parton7_mass_branch->SetAddress(&gen_parton7_mass_);
+  gen_parton8_mass_branch = tree->GetBranch("gen_parton8_mass");
+  if (gen_parton8_mass_branch) gen_parton8_mass_branch->SetAddress(&gen_parton8_mass_);
+  gen_parton9_mass_branch = tree->GetBranch("gen_parton9_mass");
+  if (gen_parton9_mass_branch) gen_parton9_mass_branch->SetAddress(&gen_parton9_mass_);
+  gen_parton10_mass_branch = tree->GetBranch("gen_parton10_mass");
+  if (gen_parton10_mass_branch) gen_parton10_mass_branch->SetAddress(&gen_parton10_mass_);
+  gen_parton1_pdgId_branch = tree->GetBranch("gen_parton1_pdgId");
+  if (gen_parton1_pdgId_branch) gen_parton1_pdgId_branch->SetAddress(&gen_parton1_pdgId_);
+  gen_parton2_pdgId_branch = tree->GetBranch("gen_parton2_pdgId");
+  if (gen_parton2_pdgId_branch) gen_parton2_pdgId_branch->SetAddress(&gen_parton2_pdgId_);
+  gen_parton3_pdgId_branch = tree->GetBranch("gen_parton3_pdgId");
+  if (gen_parton3_pdgId_branch) gen_parton3_pdgId_branch->SetAddress(&gen_parton3_pdgId_);
+  gen_parton4_pdgId_branch = tree->GetBranch("gen_parton4_pdgId");
+  if (gen_parton4_pdgId_branch) gen_parton4_pdgId_branch->SetAddress(&gen_parton4_pdgId_);
+  gen_parton5_pdgId_branch = tree->GetBranch("gen_parton5_pdgId");
+  if (gen_parton5_pdgId_branch) gen_parton5_pdgId_branch->SetAddress(&gen_parton5_pdgId_);
+  gen_parton6_pdgId_branch = tree->GetBranch("gen_parton6_pdgId");
+  if (gen_parton6_pdgId_branch) gen_parton6_pdgId_branch->SetAddress(&gen_parton6_pdgId_);
+  gen_parton7_pdgId_branch = tree->GetBranch("gen_parton7_pdgId");
+  if (gen_parton7_pdgId_branch) gen_parton7_pdgId_branch->SetAddress(&gen_parton7_pdgId_);
+  gen_parton8_pdgId_branch = tree->GetBranch("gen_parton8_pdgId");
+  if (gen_parton8_pdgId_branch) gen_parton8_pdgId_branch->SetAddress(&gen_parton8_pdgId_);
+  gen_parton9_pdgId_branch = tree->GetBranch("gen_parton9_pdgId");
+  if (gen_parton9_pdgId_branch) gen_parton9_pdgId_branch->SetAddress(&gen_parton9_pdgId_);
+  gen_parton10_pdgId_branch = tree->GetBranch("gen_parton10_pdgId");
+  if (gen_parton10_pdgId_branch) gen_parton10_pdgId_branch->SetAddress(&gen_parton10_pdgId_);
+  gen_parton1_status_branch = tree->GetBranch("gen_parton1_status");
+  if (gen_parton1_status_branch) gen_parton1_status_branch->SetAddress(&gen_parton1_status_);
+  gen_parton2_status_branch = tree->GetBranch("gen_parton2_status");
+  if (gen_parton2_status_branch) gen_parton2_status_branch->SetAddress(&gen_parton2_status_);
+  gen_parton3_status_branch = tree->GetBranch("gen_parton3_status");
+  if (gen_parton3_status_branch) gen_parton3_status_branch->SetAddress(&gen_parton3_status_);
+  gen_parton4_status_branch = tree->GetBranch("gen_parton4_status");
+  if (gen_parton4_status_branch) gen_parton4_status_branch->SetAddress(&gen_parton4_status_);
+  gen_parton5_status_branch = tree->GetBranch("gen_parton5_status");
+  if (gen_parton5_status_branch) gen_parton5_status_branch->SetAddress(&gen_parton5_status_);
+  gen_parton6_status_branch = tree->GetBranch("gen_parton6_status");
+  if (gen_parton6_status_branch) gen_parton6_status_branch->SetAddress(&gen_parton6_status_);
+  gen_parton7_status_branch = tree->GetBranch("gen_parton7_status");
+  if (gen_parton7_status_branch) gen_parton7_status_branch->SetAddress(&gen_parton7_status_);
+  gen_parton8_status_branch = tree->GetBranch("gen_parton8_status");
+  if (gen_parton8_status_branch) gen_parton8_status_branch->SetAddress(&gen_parton8_status_);
+  gen_parton9_status_branch = tree->GetBranch("gen_parton9_status");
+  if (gen_parton9_status_branch) gen_parton9_status_branch->SetAddress(&gen_parton9_status_);
+  gen_parton10_status_branch = tree->GetBranch("gen_parton10_status");
+  if (gen_parton10_status_branch) gen_parton10_status_branch->SetAddress(&gen_parton10_status_);
+  genMatched_jet0_pdgId_branch = tree->GetBranch("genMatched_jet0_pdgId");
+  if (genMatched_jet0_pdgId_branch) genMatched_jet0_pdgId_branch->SetAddress(&genMatched_jet0_pdgId_);
+  genMatched_jet1_pdgId_branch = tree->GetBranch("genMatched_jet1_pdgId");
+  if (genMatched_jet1_pdgId_branch) genMatched_jet1_pdgId_branch->SetAddress(&genMatched_jet1_pdgId_);
+  genMatched_jet2_pdgId_branch = tree->GetBranch("genMatched_jet2_pdgId");
+  if (genMatched_jet2_pdgId_branch) genMatched_jet2_pdgId_branch->SetAddress(&genMatched_jet2_pdgId_);
+  genMatched_jet0_index_branch = tree->GetBranch("genMatched_jet0_index");
+  if (genMatched_jet0_index_branch) genMatched_jet0_index_branch->SetAddress(&genMatched_jet0_index_);
+  genMatched_jet1_index_branch = tree->GetBranch("genMatched_jet1_index");
+  if (genMatched_jet1_index_branch) genMatched_jet1_index_branch->SetAddress(&genMatched_jet1_index_);
+  genMatched_jet2_index_branch = tree->GetBranch("genMatched_jet2_index");
+  if (genMatched_jet2_index_branch) genMatched_jet2_index_branch->SetAddress(&genMatched_jet2_index_);
+  genMatched_jet0_deltaR_branch = tree->GetBranch("genMatched_jet0_deltaR");
+  if (genMatched_jet0_deltaR_branch) genMatched_jet0_deltaR_branch->SetAddress(&genMatched_jet0_deltaR_);
+  genMatched_jet1_deltaR_branch = tree->GetBranch("genMatched_jet1_deltaR");
+  if (genMatched_jet1_deltaR_branch) genMatched_jet1_deltaR_branch->SetAddress(&genMatched_jet1_deltaR_);
+  genMatched_jet2_deltaR_branch = tree->GetBranch("genMatched_jet2_deltaR");
+  if (genMatched_jet2_deltaR_branch) genMatched_jet2_deltaR_branch->SetAddress(&genMatched_jet2_deltaR_);
+  genMET_pt_branch = tree->GetBranch("genMET_pt");
+  if (genMET_pt_branch) genMET_pt_branch->SetAddress(&genMET_pt_);
+  genMET_eta_branch = tree->GetBranch("genMET_eta");
+  if (genMET_eta_branch) genMET_eta_branch->SetAddress(&genMET_eta_);
+  genMET_phi_branch = tree->GetBranch("genMET_phi");
+  if (genMET_phi_branch) genMET_phi_branch->SetAddress(&genMET_phi_);
+  genMET_e_branch = tree->GetBranch("genMET_e");
+  if (genMET_e_branch) genMET_e_branch->SetAddress(&genMET_e_);
+  promptGenMET_pt_branch = tree->GetBranch("promptGenMET_pt");
+  if (promptGenMET_pt_branch) promptGenMET_pt_branch->SetAddress(&promptGenMET_pt_);
+  promptGenMET_eta_branch = tree->GetBranch("promptGenMET_eta");
+  if (promptGenMET_eta_branch) promptGenMET_eta_branch->SetAddress(&promptGenMET_eta_);
+  promptGenMET_phi_branch = tree->GetBranch("promptGenMET_phi");
+  if (promptGenMET_phi_branch) promptGenMET_phi_branch->SetAddress(&promptGenMET_phi_);
+  promptGenMET_e_branch = tree->GetBranch("promptGenMET_e");
+  if (promptGenMET_e_branch) promptGenMET_e_branch->SetAddress(&promptGenMET_e_);
+  genMETTrue_pt_branch = tree->GetBranch("genMETTrue_pt");
+  if (genMETTrue_pt_branch) genMETTrue_pt_branch->SetAddress(&genMETTrue_pt_);
+  genMETTrue_eta_branch = tree->GetBranch("genMETTrue_eta");
+  if (genMETTrue_eta_branch) genMETTrue_eta_branch->SetAddress(&genMETTrue_eta_);
+  genMETTrue_phi_branch = tree->GetBranch("genMETTrue_phi");
+  if (genMETTrue_phi_branch) genMETTrue_phi_branch->SetAddress(&genMETTrue_phi_);
+  genMETTrue_e_branch = tree->GetBranch("genMETTrue_e");
+  if (genMETTrue_e_branch) genMETTrue_e_branch->SetAddress(&genMETTrue_e_);
   rho_branch = tree->GetBranch("rho");
   if (rho_branch) rho_branch->SetAddress(&rho_);
   nvtx_branch = tree->GetBranch("nvtx");
@@ -967,6 +1129,87 @@ void tprimetHHadronic::GetEntry(unsigned int idx) {
   top_mt_isLoaded = false;
   top_mass_isLoaded = false;
   HT_isLoaded = false;
+  gen_parton1_pt_isLoaded = false;
+  gen_parton2_pt_isLoaded = false;
+  gen_parton3_pt_isLoaded = false;
+  gen_parton4_pt_isLoaded = false;
+  gen_parton5_pt_isLoaded = false;
+  gen_parton6_pt_isLoaded = false;
+  gen_parton7_pt_isLoaded = false;
+  gen_parton8_pt_isLoaded = false;
+  gen_parton9_pt_isLoaded = false;
+  gen_parton10_pt_isLoaded = false;
+  gen_parton1_eta_isLoaded = false;
+  gen_parton2_eta_isLoaded = false;
+  gen_parton3_eta_isLoaded = false;
+  gen_parton4_eta_isLoaded = false;
+  gen_parton5_eta_isLoaded = false;
+  gen_parton6_eta_isLoaded = false;
+  gen_parton7_eta_isLoaded = false;
+  gen_parton8_eta_isLoaded = false;
+  gen_parton9_eta_isLoaded = false;
+  gen_parton10_eta_isLoaded = false;
+  gen_parton1_phi_isLoaded = false;
+  gen_parton2_phi_isLoaded = false;
+  gen_parton3_phi_isLoaded = false;
+  gen_parton4_phi_isLoaded = false;
+  gen_parton5_phi_isLoaded = false;
+  gen_parton6_phi_isLoaded = false;
+  gen_parton7_phi_isLoaded = false;
+  gen_parton8_phi_isLoaded = false;
+  gen_parton9_phi_isLoaded = false;
+  gen_parton10_phi_isLoaded = false;
+  gen_parton1_mass_isLoaded = false;
+  gen_parton2_mass_isLoaded = false;
+  gen_parton3_mass_isLoaded = false;
+  gen_parton4_mass_isLoaded = false;
+  gen_parton5_mass_isLoaded = false;
+  gen_parton6_mass_isLoaded = false;
+  gen_parton7_mass_isLoaded = false;
+  gen_parton8_mass_isLoaded = false;
+  gen_parton9_mass_isLoaded = false;
+  gen_parton10_mass_isLoaded = false;
+  gen_parton1_pdgId_isLoaded = false;
+  gen_parton2_pdgId_isLoaded = false;
+  gen_parton3_pdgId_isLoaded = false;
+  gen_parton4_pdgId_isLoaded = false;
+  gen_parton5_pdgId_isLoaded = false;
+  gen_parton6_pdgId_isLoaded = false;
+  gen_parton7_pdgId_isLoaded = false;
+  gen_parton8_pdgId_isLoaded = false;
+  gen_parton9_pdgId_isLoaded = false;
+  gen_parton10_pdgId_isLoaded = false;
+  gen_parton1_status_isLoaded = false;
+  gen_parton2_status_isLoaded = false;
+  gen_parton3_status_isLoaded = false;
+  gen_parton4_status_isLoaded = false;
+  gen_parton5_status_isLoaded = false;
+  gen_parton6_status_isLoaded = false;
+  gen_parton7_status_isLoaded = false;
+  gen_parton8_status_isLoaded = false;
+  gen_parton9_status_isLoaded = false;
+  gen_parton10_status_isLoaded = false;
+  genMatched_jet0_pdgId_isLoaded = false;
+  genMatched_jet1_pdgId_isLoaded = false;
+  genMatched_jet2_pdgId_isLoaded = false;
+  genMatched_jet0_index_isLoaded = false;
+  genMatched_jet1_index_isLoaded = false;
+  genMatched_jet2_index_isLoaded = false;
+  genMatched_jet0_deltaR_isLoaded = false;
+  genMatched_jet1_deltaR_isLoaded = false;
+  genMatched_jet2_deltaR_isLoaded = false;
+  genMET_pt_isLoaded = false;
+  genMET_eta_isLoaded = false;
+  genMET_phi_isLoaded = false;
+  genMET_e_isLoaded = false;
+  promptGenMET_pt_isLoaded = false;
+  promptGenMET_eta_isLoaded = false;
+  promptGenMET_phi_isLoaded = false;
+  promptGenMET_e_isLoaded = false;
+  genMETTrue_pt_isLoaded = false;
+  genMETTrue_eta_isLoaded = false;
+  genMETTrue_phi_isLoaded = false;
+  genMETTrue_e_isLoaded = false;
   rho_isLoaded = false;
   nvtx_isLoaded = false;
   event_isLoaded = false;
@@ -1292,6 +1535,87 @@ void tprimetHHadronic::LoadAllBranches() {
   if (top_mt_branch != 0) top_mt();
   if (top_mass_branch != 0) top_mass();
   if (HT_branch != 0) HT();
+  if (gen_parton1_pt_branch != 0) gen_parton1_pt();
+  if (gen_parton2_pt_branch != 0) gen_parton2_pt();
+  if (gen_parton3_pt_branch != 0) gen_parton3_pt();
+  if (gen_parton4_pt_branch != 0) gen_parton4_pt();
+  if (gen_parton5_pt_branch != 0) gen_parton5_pt();
+  if (gen_parton6_pt_branch != 0) gen_parton6_pt();
+  if (gen_parton7_pt_branch != 0) gen_parton7_pt();
+  if (gen_parton8_pt_branch != 0) gen_parton8_pt();
+  if (gen_parton9_pt_branch != 0) gen_parton9_pt();
+  if (gen_parton10_pt_branch != 0) gen_parton10_pt();
+  if (gen_parton1_eta_branch != 0) gen_parton1_eta();
+  if (gen_parton2_eta_branch != 0) gen_parton2_eta();
+  if (gen_parton3_eta_branch != 0) gen_parton3_eta();
+  if (gen_parton4_eta_branch != 0) gen_parton4_eta();
+  if (gen_parton5_eta_branch != 0) gen_parton5_eta();
+  if (gen_parton6_eta_branch != 0) gen_parton6_eta();
+  if (gen_parton7_eta_branch != 0) gen_parton7_eta();
+  if (gen_parton8_eta_branch != 0) gen_parton8_eta();
+  if (gen_parton9_eta_branch != 0) gen_parton9_eta();
+  if (gen_parton10_eta_branch != 0) gen_parton10_eta();
+  if (gen_parton1_phi_branch != 0) gen_parton1_phi();
+  if (gen_parton2_phi_branch != 0) gen_parton2_phi();
+  if (gen_parton3_phi_branch != 0) gen_parton3_phi();
+  if (gen_parton4_phi_branch != 0) gen_parton4_phi();
+  if (gen_parton5_phi_branch != 0) gen_parton5_phi();
+  if (gen_parton6_phi_branch != 0) gen_parton6_phi();
+  if (gen_parton7_phi_branch != 0) gen_parton7_phi();
+  if (gen_parton8_phi_branch != 0) gen_parton8_phi();
+  if (gen_parton9_phi_branch != 0) gen_parton9_phi();
+  if (gen_parton10_phi_branch != 0) gen_parton10_phi();
+  if (gen_parton1_mass_branch != 0) gen_parton1_mass();
+  if (gen_parton2_mass_branch != 0) gen_parton2_mass();
+  if (gen_parton3_mass_branch != 0) gen_parton3_mass();
+  if (gen_parton4_mass_branch != 0) gen_parton4_mass();
+  if (gen_parton5_mass_branch != 0) gen_parton5_mass();
+  if (gen_parton6_mass_branch != 0) gen_parton6_mass();
+  if (gen_parton7_mass_branch != 0) gen_parton7_mass();
+  if (gen_parton8_mass_branch != 0) gen_parton8_mass();
+  if (gen_parton9_mass_branch != 0) gen_parton9_mass();
+  if (gen_parton10_mass_branch != 0) gen_parton10_mass();
+  if (gen_parton1_pdgId_branch != 0) gen_parton1_pdgId();
+  if (gen_parton2_pdgId_branch != 0) gen_parton2_pdgId();
+  if (gen_parton3_pdgId_branch != 0) gen_parton3_pdgId();
+  if (gen_parton4_pdgId_branch != 0) gen_parton4_pdgId();
+  if (gen_parton5_pdgId_branch != 0) gen_parton5_pdgId();
+  if (gen_parton6_pdgId_branch != 0) gen_parton6_pdgId();
+  if (gen_parton7_pdgId_branch != 0) gen_parton7_pdgId();
+  if (gen_parton8_pdgId_branch != 0) gen_parton8_pdgId();
+  if (gen_parton9_pdgId_branch != 0) gen_parton9_pdgId();
+  if (gen_parton10_pdgId_branch != 0) gen_parton10_pdgId();
+  if (gen_parton1_status_branch != 0) gen_parton1_status();
+  if (gen_parton2_status_branch != 0) gen_parton2_status();
+  if (gen_parton3_status_branch != 0) gen_parton3_status();
+  if (gen_parton4_status_branch != 0) gen_parton4_status();
+  if (gen_parton5_status_branch != 0) gen_parton5_status();
+  if (gen_parton6_status_branch != 0) gen_parton6_status();
+  if (gen_parton7_status_branch != 0) gen_parton7_status();
+  if (gen_parton8_status_branch != 0) gen_parton8_status();
+  if (gen_parton9_status_branch != 0) gen_parton9_status();
+  if (gen_parton10_status_branch != 0) gen_parton10_status();
+  if (genMatched_jet0_pdgId_branch != 0) genMatched_jet0_pdgId();
+  if (genMatched_jet1_pdgId_branch != 0) genMatched_jet1_pdgId();
+  if (genMatched_jet2_pdgId_branch != 0) genMatched_jet2_pdgId();
+  if (genMatched_jet0_index_branch != 0) genMatched_jet0_index();
+  if (genMatched_jet1_index_branch != 0) genMatched_jet1_index();
+  if (genMatched_jet2_index_branch != 0) genMatched_jet2_index();
+  if (genMatched_jet0_deltaR_branch != 0) genMatched_jet0_deltaR();
+  if (genMatched_jet1_deltaR_branch != 0) genMatched_jet1_deltaR();
+  if (genMatched_jet2_deltaR_branch != 0) genMatched_jet2_deltaR();
+  if (genMET_pt_branch != 0) genMET_pt();
+  if (genMET_eta_branch != 0) genMET_eta();
+  if (genMET_phi_branch != 0) genMET_phi();
+  if (genMET_e_branch != 0) genMET_e();
+  if (promptGenMET_pt_branch != 0) promptGenMET_pt();
+  if (promptGenMET_eta_branch != 0) promptGenMET_eta();
+  if (promptGenMET_phi_branch != 0) promptGenMET_phi();
+  if (promptGenMET_e_branch != 0) promptGenMET_e();
+  if (genMETTrue_pt_branch != 0) genMETTrue_pt();
+  if (genMETTrue_eta_branch != 0) genMETTrue_eta();
+  if (genMETTrue_phi_branch != 0) genMETTrue_phi();
+  if (genMETTrue_e_branch != 0) genMETTrue_e();
   if (rho_branch != 0) rho();
   if (nvtx_branch != 0) nvtx();
   if (event_branch != 0) event();
@@ -5371,6 +5695,1059 @@ const float &tprimetHHadronic::HT() {
   return HT_;
 }
 
+const float &tprimetHHadronic::gen_parton1_pt() {
+  if (not gen_parton1_pt_isLoaded) {
+    if (gen_parton1_pt_branch != 0) {
+      gen_parton1_pt_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton1_pt_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton1_pt_isLoaded = true;
+  }
+  return gen_parton1_pt_;
+}
+
+const float &tprimetHHadronic::gen_parton2_pt() {
+  if (not gen_parton2_pt_isLoaded) {
+    if (gen_parton2_pt_branch != 0) {
+      gen_parton2_pt_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton2_pt_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton2_pt_isLoaded = true;
+  }
+  return gen_parton2_pt_;
+}
+
+const float &tprimetHHadronic::gen_parton3_pt() {
+  if (not gen_parton3_pt_isLoaded) {
+    if (gen_parton3_pt_branch != 0) {
+      gen_parton3_pt_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton3_pt_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton3_pt_isLoaded = true;
+  }
+  return gen_parton3_pt_;
+}
+
+const float &tprimetHHadronic::gen_parton4_pt() {
+  if (not gen_parton4_pt_isLoaded) {
+    if (gen_parton4_pt_branch != 0) {
+      gen_parton4_pt_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton4_pt_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton4_pt_isLoaded = true;
+  }
+  return gen_parton4_pt_;
+}
+
+const float &tprimetHHadronic::gen_parton5_pt() {
+  if (not gen_parton5_pt_isLoaded) {
+    if (gen_parton5_pt_branch != 0) {
+      gen_parton5_pt_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton5_pt_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton5_pt_isLoaded = true;
+  }
+  return gen_parton5_pt_;
+}
+
+const float &tprimetHHadronic::gen_parton6_pt() {
+  if (not gen_parton6_pt_isLoaded) {
+    if (gen_parton6_pt_branch != 0) {
+      gen_parton6_pt_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton6_pt_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton6_pt_isLoaded = true;
+  }
+  return gen_parton6_pt_;
+}
+
+const float &tprimetHHadronic::gen_parton7_pt() {
+  if (not gen_parton7_pt_isLoaded) {
+    if (gen_parton7_pt_branch != 0) {
+      gen_parton7_pt_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton7_pt_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton7_pt_isLoaded = true;
+  }
+  return gen_parton7_pt_;
+}
+
+const float &tprimetHHadronic::gen_parton8_pt() {
+  if (not gen_parton8_pt_isLoaded) {
+    if (gen_parton8_pt_branch != 0) {
+      gen_parton8_pt_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton8_pt_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton8_pt_isLoaded = true;
+  }
+  return gen_parton8_pt_;
+}
+
+const float &tprimetHHadronic::gen_parton9_pt() {
+  if (not gen_parton9_pt_isLoaded) {
+    if (gen_parton9_pt_branch != 0) {
+      gen_parton9_pt_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton9_pt_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton9_pt_isLoaded = true;
+  }
+  return gen_parton9_pt_;
+}
+
+const float &tprimetHHadronic::gen_parton10_pt() {
+  if (not gen_parton10_pt_isLoaded) {
+    if (gen_parton10_pt_branch != 0) {
+      gen_parton10_pt_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton10_pt_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton10_pt_isLoaded = true;
+  }
+  return gen_parton10_pt_;
+}
+
+const float &tprimetHHadronic::gen_parton1_eta() {
+  if (not gen_parton1_eta_isLoaded) {
+    if (gen_parton1_eta_branch != 0) {
+      gen_parton1_eta_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton1_eta_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton1_eta_isLoaded = true;
+  }
+  return gen_parton1_eta_;
+}
+
+const float &tprimetHHadronic::gen_parton2_eta() {
+  if (not gen_parton2_eta_isLoaded) {
+    if (gen_parton2_eta_branch != 0) {
+      gen_parton2_eta_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton2_eta_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton2_eta_isLoaded = true;
+  }
+  return gen_parton2_eta_;
+}
+
+const float &tprimetHHadronic::gen_parton3_eta() {
+  if (not gen_parton3_eta_isLoaded) {
+    if (gen_parton3_eta_branch != 0) {
+      gen_parton3_eta_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton3_eta_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton3_eta_isLoaded = true;
+  }
+  return gen_parton3_eta_;
+}
+
+const float &tprimetHHadronic::gen_parton4_eta() {
+  if (not gen_parton4_eta_isLoaded) {
+    if (gen_parton4_eta_branch != 0) {
+      gen_parton4_eta_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton4_eta_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton4_eta_isLoaded = true;
+  }
+  return gen_parton4_eta_;
+}
+
+const float &tprimetHHadronic::gen_parton5_eta() {
+  if (not gen_parton5_eta_isLoaded) {
+    if (gen_parton5_eta_branch != 0) {
+      gen_parton5_eta_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton5_eta_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton5_eta_isLoaded = true;
+  }
+  return gen_parton5_eta_;
+}
+
+const float &tprimetHHadronic::gen_parton6_eta() {
+  if (not gen_parton6_eta_isLoaded) {
+    if (gen_parton6_eta_branch != 0) {
+      gen_parton6_eta_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton6_eta_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton6_eta_isLoaded = true;
+  }
+  return gen_parton6_eta_;
+}
+
+const float &tprimetHHadronic::gen_parton7_eta() {
+  if (not gen_parton7_eta_isLoaded) {
+    if (gen_parton7_eta_branch != 0) {
+      gen_parton7_eta_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton7_eta_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton7_eta_isLoaded = true;
+  }
+  return gen_parton7_eta_;
+}
+
+const float &tprimetHHadronic::gen_parton8_eta() {
+  if (not gen_parton8_eta_isLoaded) {
+    if (gen_parton8_eta_branch != 0) {
+      gen_parton8_eta_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton8_eta_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton8_eta_isLoaded = true;
+  }
+  return gen_parton8_eta_;
+}
+
+const float &tprimetHHadronic::gen_parton9_eta() {
+  if (not gen_parton9_eta_isLoaded) {
+    if (gen_parton9_eta_branch != 0) {
+      gen_parton9_eta_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton9_eta_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton9_eta_isLoaded = true;
+  }
+  return gen_parton9_eta_;
+}
+
+const float &tprimetHHadronic::gen_parton10_eta() {
+  if (not gen_parton10_eta_isLoaded) {
+    if (gen_parton10_eta_branch != 0) {
+      gen_parton10_eta_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton10_eta_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton10_eta_isLoaded = true;
+  }
+  return gen_parton10_eta_;
+}
+
+const float &tprimetHHadronic::gen_parton1_phi() {
+  if (not gen_parton1_phi_isLoaded) {
+    if (gen_parton1_phi_branch != 0) {
+      gen_parton1_phi_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton1_phi_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton1_phi_isLoaded = true;
+  }
+  return gen_parton1_phi_;
+}
+
+const float &tprimetHHadronic::gen_parton2_phi() {
+  if (not gen_parton2_phi_isLoaded) {
+    if (gen_parton2_phi_branch != 0) {
+      gen_parton2_phi_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton2_phi_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton2_phi_isLoaded = true;
+  }
+  return gen_parton2_phi_;
+}
+
+const float &tprimetHHadronic::gen_parton3_phi() {
+  if (not gen_parton3_phi_isLoaded) {
+    if (gen_parton3_phi_branch != 0) {
+      gen_parton3_phi_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton3_phi_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton3_phi_isLoaded = true;
+  }
+  return gen_parton3_phi_;
+}
+
+const float &tprimetHHadronic::gen_parton4_phi() {
+  if (not gen_parton4_phi_isLoaded) {
+    if (gen_parton4_phi_branch != 0) {
+      gen_parton4_phi_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton4_phi_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton4_phi_isLoaded = true;
+  }
+  return gen_parton4_phi_;
+}
+
+const float &tprimetHHadronic::gen_parton5_phi() {
+  if (not gen_parton5_phi_isLoaded) {
+    if (gen_parton5_phi_branch != 0) {
+      gen_parton5_phi_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton5_phi_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton5_phi_isLoaded = true;
+  }
+  return gen_parton5_phi_;
+}
+
+const float &tprimetHHadronic::gen_parton6_phi() {
+  if (not gen_parton6_phi_isLoaded) {
+    if (gen_parton6_phi_branch != 0) {
+      gen_parton6_phi_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton6_phi_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton6_phi_isLoaded = true;
+  }
+  return gen_parton6_phi_;
+}
+
+const float &tprimetHHadronic::gen_parton7_phi() {
+  if (not gen_parton7_phi_isLoaded) {
+    if (gen_parton7_phi_branch != 0) {
+      gen_parton7_phi_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton7_phi_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton7_phi_isLoaded = true;
+  }
+  return gen_parton7_phi_;
+}
+
+const float &tprimetHHadronic::gen_parton8_phi() {
+  if (not gen_parton8_phi_isLoaded) {
+    if (gen_parton8_phi_branch != 0) {
+      gen_parton8_phi_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton8_phi_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton8_phi_isLoaded = true;
+  }
+  return gen_parton8_phi_;
+}
+
+const float &tprimetHHadronic::gen_parton9_phi() {
+  if (not gen_parton9_phi_isLoaded) {
+    if (gen_parton9_phi_branch != 0) {
+      gen_parton9_phi_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton9_phi_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton9_phi_isLoaded = true;
+  }
+  return gen_parton9_phi_;
+}
+
+const float &tprimetHHadronic::gen_parton10_phi() {
+  if (not gen_parton10_phi_isLoaded) {
+    if (gen_parton10_phi_branch != 0) {
+      gen_parton10_phi_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton10_phi_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton10_phi_isLoaded = true;
+  }
+  return gen_parton10_phi_;
+}
+
+const float &tprimetHHadronic::gen_parton1_mass() {
+  if (not gen_parton1_mass_isLoaded) {
+    if (gen_parton1_mass_branch != 0) {
+      gen_parton1_mass_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton1_mass_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton1_mass_isLoaded = true;
+  }
+  return gen_parton1_mass_;
+}
+
+const float &tprimetHHadronic::gen_parton2_mass() {
+  if (not gen_parton2_mass_isLoaded) {
+    if (gen_parton2_mass_branch != 0) {
+      gen_parton2_mass_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton2_mass_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton2_mass_isLoaded = true;
+  }
+  return gen_parton2_mass_;
+}
+
+const float &tprimetHHadronic::gen_parton3_mass() {
+  if (not gen_parton3_mass_isLoaded) {
+    if (gen_parton3_mass_branch != 0) {
+      gen_parton3_mass_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton3_mass_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton3_mass_isLoaded = true;
+  }
+  return gen_parton3_mass_;
+}
+
+const float &tprimetHHadronic::gen_parton4_mass() {
+  if (not gen_parton4_mass_isLoaded) {
+    if (gen_parton4_mass_branch != 0) {
+      gen_parton4_mass_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton4_mass_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton4_mass_isLoaded = true;
+  }
+  return gen_parton4_mass_;
+}
+
+const float &tprimetHHadronic::gen_parton5_mass() {
+  if (not gen_parton5_mass_isLoaded) {
+    if (gen_parton5_mass_branch != 0) {
+      gen_parton5_mass_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton5_mass_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton5_mass_isLoaded = true;
+  }
+  return gen_parton5_mass_;
+}
+
+const float &tprimetHHadronic::gen_parton6_mass() {
+  if (not gen_parton6_mass_isLoaded) {
+    if (gen_parton6_mass_branch != 0) {
+      gen_parton6_mass_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton6_mass_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton6_mass_isLoaded = true;
+  }
+  return gen_parton6_mass_;
+}
+
+const float &tprimetHHadronic::gen_parton7_mass() {
+  if (not gen_parton7_mass_isLoaded) {
+    if (gen_parton7_mass_branch != 0) {
+      gen_parton7_mass_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton7_mass_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton7_mass_isLoaded = true;
+  }
+  return gen_parton7_mass_;
+}
+
+const float &tprimetHHadronic::gen_parton8_mass() {
+  if (not gen_parton8_mass_isLoaded) {
+    if (gen_parton8_mass_branch != 0) {
+      gen_parton8_mass_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton8_mass_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton8_mass_isLoaded = true;
+  }
+  return gen_parton8_mass_;
+}
+
+const float &tprimetHHadronic::gen_parton9_mass() {
+  if (not gen_parton9_mass_isLoaded) {
+    if (gen_parton9_mass_branch != 0) {
+      gen_parton9_mass_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton9_mass_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton9_mass_isLoaded = true;
+  }
+  return gen_parton9_mass_;
+}
+
+const float &tprimetHHadronic::gen_parton10_mass() {
+  if (not gen_parton10_mass_isLoaded) {
+    if (gen_parton10_mass_branch != 0) {
+      gen_parton10_mass_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton10_mass_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton10_mass_isLoaded = true;
+  }
+  return gen_parton10_mass_;
+}
+
+const float &tprimetHHadronic::gen_parton1_pdgId() {
+  if (not gen_parton1_pdgId_isLoaded) {
+    if (gen_parton1_pdgId_branch != 0) {
+      gen_parton1_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton1_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton1_pdgId_isLoaded = true;
+  }
+  return gen_parton1_pdgId_;
+}
+
+const float &tprimetHHadronic::gen_parton2_pdgId() {
+  if (not gen_parton2_pdgId_isLoaded) {
+    if (gen_parton2_pdgId_branch != 0) {
+      gen_parton2_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton2_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton2_pdgId_isLoaded = true;
+  }
+  return gen_parton2_pdgId_;
+}
+
+const float &tprimetHHadronic::gen_parton3_pdgId() {
+  if (not gen_parton3_pdgId_isLoaded) {
+    if (gen_parton3_pdgId_branch != 0) {
+      gen_parton3_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton3_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton3_pdgId_isLoaded = true;
+  }
+  return gen_parton3_pdgId_;
+}
+
+const float &tprimetHHadronic::gen_parton4_pdgId() {
+  if (not gen_parton4_pdgId_isLoaded) {
+    if (gen_parton4_pdgId_branch != 0) {
+      gen_parton4_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton4_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton4_pdgId_isLoaded = true;
+  }
+  return gen_parton4_pdgId_;
+}
+
+const float &tprimetHHadronic::gen_parton5_pdgId() {
+  if (not gen_parton5_pdgId_isLoaded) {
+    if (gen_parton5_pdgId_branch != 0) {
+      gen_parton5_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton5_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton5_pdgId_isLoaded = true;
+  }
+  return gen_parton5_pdgId_;
+}
+
+const float &tprimetHHadronic::gen_parton6_pdgId() {
+  if (not gen_parton6_pdgId_isLoaded) {
+    if (gen_parton6_pdgId_branch != 0) {
+      gen_parton6_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton6_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton6_pdgId_isLoaded = true;
+  }
+  return gen_parton6_pdgId_;
+}
+
+const float &tprimetHHadronic::gen_parton7_pdgId() {
+  if (not gen_parton7_pdgId_isLoaded) {
+    if (gen_parton7_pdgId_branch != 0) {
+      gen_parton7_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton7_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton7_pdgId_isLoaded = true;
+  }
+  return gen_parton7_pdgId_;
+}
+
+const float &tprimetHHadronic::gen_parton8_pdgId() {
+  if (not gen_parton8_pdgId_isLoaded) {
+    if (gen_parton8_pdgId_branch != 0) {
+      gen_parton8_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton8_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton8_pdgId_isLoaded = true;
+  }
+  return gen_parton8_pdgId_;
+}
+
+const float &tprimetHHadronic::gen_parton9_pdgId() {
+  if (not gen_parton9_pdgId_isLoaded) {
+    if (gen_parton9_pdgId_branch != 0) {
+      gen_parton9_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton9_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton9_pdgId_isLoaded = true;
+  }
+  return gen_parton9_pdgId_;
+}
+
+const float &tprimetHHadronic::gen_parton10_pdgId() {
+  if (not gen_parton10_pdgId_isLoaded) {
+    if (gen_parton10_pdgId_branch != 0) {
+      gen_parton10_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton10_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton10_pdgId_isLoaded = true;
+  }
+  return gen_parton10_pdgId_;
+}
+
+const float &tprimetHHadronic::gen_parton1_status() {
+  if (not gen_parton1_status_isLoaded) {
+    if (gen_parton1_status_branch != 0) {
+      gen_parton1_status_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton1_status_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton1_status_isLoaded = true;
+  }
+  return gen_parton1_status_;
+}
+
+const float &tprimetHHadronic::gen_parton2_status() {
+  if (not gen_parton2_status_isLoaded) {
+    if (gen_parton2_status_branch != 0) {
+      gen_parton2_status_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton2_status_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton2_status_isLoaded = true;
+  }
+  return gen_parton2_status_;
+}
+
+const float &tprimetHHadronic::gen_parton3_status() {
+  if (not gen_parton3_status_isLoaded) {
+    if (gen_parton3_status_branch != 0) {
+      gen_parton3_status_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton3_status_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton3_status_isLoaded = true;
+  }
+  return gen_parton3_status_;
+}
+
+const float &tprimetHHadronic::gen_parton4_status() {
+  if (not gen_parton4_status_isLoaded) {
+    if (gen_parton4_status_branch != 0) {
+      gen_parton4_status_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton4_status_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton4_status_isLoaded = true;
+  }
+  return gen_parton4_status_;
+}
+
+const float &tprimetHHadronic::gen_parton5_status() {
+  if (not gen_parton5_status_isLoaded) {
+    if (gen_parton5_status_branch != 0) {
+      gen_parton5_status_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton5_status_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton5_status_isLoaded = true;
+  }
+  return gen_parton5_status_;
+}
+
+const float &tprimetHHadronic::gen_parton6_status() {
+  if (not gen_parton6_status_isLoaded) {
+    if (gen_parton6_status_branch != 0) {
+      gen_parton6_status_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton6_status_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton6_status_isLoaded = true;
+  }
+  return gen_parton6_status_;
+}
+
+const float &tprimetHHadronic::gen_parton7_status() {
+  if (not gen_parton7_status_isLoaded) {
+    if (gen_parton7_status_branch != 0) {
+      gen_parton7_status_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton7_status_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton7_status_isLoaded = true;
+  }
+  return gen_parton7_status_;
+}
+
+const float &tprimetHHadronic::gen_parton8_status() {
+  if (not gen_parton8_status_isLoaded) {
+    if (gen_parton8_status_branch != 0) {
+      gen_parton8_status_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton8_status_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton8_status_isLoaded = true;
+  }
+  return gen_parton8_status_;
+}
+
+const float &tprimetHHadronic::gen_parton9_status() {
+  if (not gen_parton9_status_isLoaded) {
+    if (gen_parton9_status_branch != 0) {
+      gen_parton9_status_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton9_status_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton9_status_isLoaded = true;
+  }
+  return gen_parton9_status_;
+}
+
+const float &tprimetHHadronic::gen_parton10_status() {
+  if (not gen_parton10_status_isLoaded) {
+    if (gen_parton10_status_branch != 0) {
+      gen_parton10_status_branch->GetEntry(index);
+    } else {
+      printf("branch gen_parton10_status_branch does not exist!\n");
+      exit(1);
+    }
+    gen_parton10_status_isLoaded = true;
+  }
+  return gen_parton10_status_;
+}
+
+const float &tprimetHHadronic::genMatched_jet0_pdgId() {
+  if (not genMatched_jet0_pdgId_isLoaded) {
+    if (genMatched_jet0_pdgId_branch != 0) {
+      genMatched_jet0_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch genMatched_jet0_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    genMatched_jet0_pdgId_isLoaded = true;
+  }
+  return genMatched_jet0_pdgId_;
+}
+
+const float &tprimetHHadronic::genMatched_jet1_pdgId() {
+  if (not genMatched_jet1_pdgId_isLoaded) {
+    if (genMatched_jet1_pdgId_branch != 0) {
+      genMatched_jet1_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch genMatched_jet1_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    genMatched_jet1_pdgId_isLoaded = true;
+  }
+  return genMatched_jet1_pdgId_;
+}
+
+const float &tprimetHHadronic::genMatched_jet2_pdgId() {
+  if (not genMatched_jet2_pdgId_isLoaded) {
+    if (genMatched_jet2_pdgId_branch != 0) {
+      genMatched_jet2_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch genMatched_jet2_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    genMatched_jet2_pdgId_isLoaded = true;
+  }
+  return genMatched_jet2_pdgId_;
+}
+
+const float &tprimetHHadronic::genMatched_jet0_index() {
+  if (not genMatched_jet0_index_isLoaded) {
+    if (genMatched_jet0_index_branch != 0) {
+      genMatched_jet0_index_branch->GetEntry(index);
+    } else {
+      printf("branch genMatched_jet0_index_branch does not exist!\n");
+      exit(1);
+    }
+    genMatched_jet0_index_isLoaded = true;
+  }
+  return genMatched_jet0_index_;
+}
+
+const float &tprimetHHadronic::genMatched_jet1_index() {
+  if (not genMatched_jet1_index_isLoaded) {
+    if (genMatched_jet1_index_branch != 0) {
+      genMatched_jet1_index_branch->GetEntry(index);
+    } else {
+      printf("branch genMatched_jet1_index_branch does not exist!\n");
+      exit(1);
+    }
+    genMatched_jet1_index_isLoaded = true;
+  }
+  return genMatched_jet1_index_;
+}
+
+const float &tprimetHHadronic::genMatched_jet2_index() {
+  if (not genMatched_jet2_index_isLoaded) {
+    if (genMatched_jet2_index_branch != 0) {
+      genMatched_jet2_index_branch->GetEntry(index);
+    } else {
+      printf("branch genMatched_jet2_index_branch does not exist!\n");
+      exit(1);
+    }
+    genMatched_jet2_index_isLoaded = true;
+  }
+  return genMatched_jet2_index_;
+}
+
+const float &tprimetHHadronic::genMatched_jet0_deltaR() {
+  if (not genMatched_jet0_deltaR_isLoaded) {
+    if (genMatched_jet0_deltaR_branch != 0) {
+      genMatched_jet0_deltaR_branch->GetEntry(index);
+    } else {
+      printf("branch genMatched_jet0_deltaR_branch does not exist!\n");
+      exit(1);
+    }
+    genMatched_jet0_deltaR_isLoaded = true;
+  }
+  return genMatched_jet0_deltaR_;
+}
+
+const float &tprimetHHadronic::genMatched_jet1_deltaR() {
+  if (not genMatched_jet1_deltaR_isLoaded) {
+    if (genMatched_jet1_deltaR_branch != 0) {
+      genMatched_jet1_deltaR_branch->GetEntry(index);
+    } else {
+      printf("branch genMatched_jet1_deltaR_branch does not exist!\n");
+      exit(1);
+    }
+    genMatched_jet1_deltaR_isLoaded = true;
+  }
+  return genMatched_jet1_deltaR_;
+}
+
+const float &tprimetHHadronic::genMatched_jet2_deltaR() {
+  if (not genMatched_jet2_deltaR_isLoaded) {
+    if (genMatched_jet2_deltaR_branch != 0) {
+      genMatched_jet2_deltaR_branch->GetEntry(index);
+    } else {
+      printf("branch genMatched_jet2_deltaR_branch does not exist!\n");
+      exit(1);
+    }
+    genMatched_jet2_deltaR_isLoaded = true;
+  }
+  return genMatched_jet2_deltaR_;
+}
+
+const float &tprimetHHadronic::genMET_pt() {
+  if (not genMET_pt_isLoaded) {
+    if (genMET_pt_branch != 0) {
+      genMET_pt_branch->GetEntry(index);
+    } else {
+      printf("branch genMET_pt_branch does not exist!\n");
+      exit(1);
+    }
+    genMET_pt_isLoaded = true;
+  }
+  return genMET_pt_;
+}
+
+const float &tprimetHHadronic::genMET_eta() {
+  if (not genMET_eta_isLoaded) {
+    if (genMET_eta_branch != 0) {
+      genMET_eta_branch->GetEntry(index);
+    } else {
+      printf("branch genMET_eta_branch does not exist!\n");
+      exit(1);
+    }
+    genMET_eta_isLoaded = true;
+  }
+  return genMET_eta_;
+}
+
+const float &tprimetHHadronic::genMET_phi() {
+  if (not genMET_phi_isLoaded) {
+    if (genMET_phi_branch != 0) {
+      genMET_phi_branch->GetEntry(index);
+    } else {
+      printf("branch genMET_phi_branch does not exist!\n");
+      exit(1);
+    }
+    genMET_phi_isLoaded = true;
+  }
+  return genMET_phi_;
+}
+
+const float &tprimetHHadronic::genMET_e() {
+  if (not genMET_e_isLoaded) {
+    if (genMET_e_branch != 0) {
+      genMET_e_branch->GetEntry(index);
+    } else {
+      printf("branch genMET_e_branch does not exist!\n");
+      exit(1);
+    }
+    genMET_e_isLoaded = true;
+  }
+  return genMET_e_;
+}
+
+const float &tprimetHHadronic::promptGenMET_pt() {
+  if (not promptGenMET_pt_isLoaded) {
+    if (promptGenMET_pt_branch != 0) {
+      promptGenMET_pt_branch->GetEntry(index);
+    } else {
+      printf("branch promptGenMET_pt_branch does not exist!\n");
+      exit(1);
+    }
+    promptGenMET_pt_isLoaded = true;
+  }
+  return promptGenMET_pt_;
+}
+
+const float &tprimetHHadronic::promptGenMET_eta() {
+  if (not promptGenMET_eta_isLoaded) {
+    if (promptGenMET_eta_branch != 0) {
+      promptGenMET_eta_branch->GetEntry(index);
+    } else {
+      printf("branch promptGenMET_eta_branch does not exist!\n");
+      exit(1);
+    }
+    promptGenMET_eta_isLoaded = true;
+  }
+  return promptGenMET_eta_;
+}
+
+const float &tprimetHHadronic::promptGenMET_phi() {
+  if (not promptGenMET_phi_isLoaded) {
+    if (promptGenMET_phi_branch != 0) {
+      promptGenMET_phi_branch->GetEntry(index);
+    } else {
+      printf("branch promptGenMET_phi_branch does not exist!\n");
+      exit(1);
+    }
+    promptGenMET_phi_isLoaded = true;
+  }
+  return promptGenMET_phi_;
+}
+
+const float &tprimetHHadronic::promptGenMET_e() {
+  if (not promptGenMET_e_isLoaded) {
+    if (promptGenMET_e_branch != 0) {
+      promptGenMET_e_branch->GetEntry(index);
+    } else {
+      printf("branch promptGenMET_e_branch does not exist!\n");
+      exit(1);
+    }
+    promptGenMET_e_isLoaded = true;
+  }
+  return promptGenMET_e_;
+}
+
+const float &tprimetHHadronic::genMETTrue_pt() {
+  if (not genMETTrue_pt_isLoaded) {
+    if (genMETTrue_pt_branch != 0) {
+      genMETTrue_pt_branch->GetEntry(index);
+    } else {
+      printf("branch genMETTrue_pt_branch does not exist!\n");
+      exit(1);
+    }
+    genMETTrue_pt_isLoaded = true;
+  }
+  return genMETTrue_pt_;
+}
+
+const float &tprimetHHadronic::genMETTrue_eta() {
+  if (not genMETTrue_eta_isLoaded) {
+    if (genMETTrue_eta_branch != 0) {
+      genMETTrue_eta_branch->GetEntry(index);
+    } else {
+      printf("branch genMETTrue_eta_branch does not exist!\n");
+      exit(1);
+    }
+    genMETTrue_eta_isLoaded = true;
+  }
+  return genMETTrue_eta_;
+}
+
+const float &tprimetHHadronic::genMETTrue_phi() {
+  if (not genMETTrue_phi_isLoaded) {
+    if (genMETTrue_phi_branch != 0) {
+      genMETTrue_phi_branch->GetEntry(index);
+    } else {
+      printf("branch genMETTrue_phi_branch does not exist!\n");
+      exit(1);
+    }
+    genMETTrue_phi_isLoaded = true;
+  }
+  return genMETTrue_phi_;
+}
+
+const float &tprimetHHadronic::genMETTrue_e() {
+  if (not genMETTrue_e_isLoaded) {
+    if (genMETTrue_e_branch != 0) {
+      genMETTrue_e_branch->GetEntry(index);
+    } else {
+      printf("branch genMETTrue_e_branch does not exist!\n");
+      exit(1);
+    }
+    genMETTrue_e_isLoaded = true;
+  }
+  return genMETTrue_e_;
+}
+
 const float &tprimetHHadronic::rho() {
   if (not rho_isLoaded) {
     if (rho_branch != 0) {
@@ -5811,6 +7188,87 @@ const float &dr_leptonfwdjet() { return analyzer.dr_leptonfwdjet(); }
 const float &top_mt() { return analyzer.top_mt(); }
 const float &top_mass() { return analyzer.top_mass(); }
 const float &HT() { return analyzer.HT(); }
+const float &gen_parton1_pt() { return analyzer.gen_parton1_pt(); }
+const float &gen_parton2_pt() { return analyzer.gen_parton2_pt(); }
+const float &gen_parton3_pt() { return analyzer.gen_parton3_pt(); }
+const float &gen_parton4_pt() { return analyzer.gen_parton4_pt(); }
+const float &gen_parton5_pt() { return analyzer.gen_parton5_pt(); }
+const float &gen_parton6_pt() { return analyzer.gen_parton6_pt(); }
+const float &gen_parton7_pt() { return analyzer.gen_parton7_pt(); }
+const float &gen_parton8_pt() { return analyzer.gen_parton8_pt(); }
+const float &gen_parton9_pt() { return analyzer.gen_parton9_pt(); }
+const float &gen_parton10_pt() { return analyzer.gen_parton10_pt(); }
+const float &gen_parton1_eta() { return analyzer.gen_parton1_eta(); }
+const float &gen_parton2_eta() { return analyzer.gen_parton2_eta(); }
+const float &gen_parton3_eta() { return analyzer.gen_parton3_eta(); }
+const float &gen_parton4_eta() { return analyzer.gen_parton4_eta(); }
+const float &gen_parton5_eta() { return analyzer.gen_parton5_eta(); }
+const float &gen_parton6_eta() { return analyzer.gen_parton6_eta(); }
+const float &gen_parton7_eta() { return analyzer.gen_parton7_eta(); }
+const float &gen_parton8_eta() { return analyzer.gen_parton8_eta(); }
+const float &gen_parton9_eta() { return analyzer.gen_parton9_eta(); }
+const float &gen_parton10_eta() { return analyzer.gen_parton10_eta(); }
+const float &gen_parton1_phi() { return analyzer.gen_parton1_phi(); }
+const float &gen_parton2_phi() { return analyzer.gen_parton2_phi(); }
+const float &gen_parton3_phi() { return analyzer.gen_parton3_phi(); }
+const float &gen_parton4_phi() { return analyzer.gen_parton4_phi(); }
+const float &gen_parton5_phi() { return analyzer.gen_parton5_phi(); }
+const float &gen_parton6_phi() { return analyzer.gen_parton6_phi(); }
+const float &gen_parton7_phi() { return analyzer.gen_parton7_phi(); }
+const float &gen_parton8_phi() { return analyzer.gen_parton8_phi(); }
+const float &gen_parton9_phi() { return analyzer.gen_parton9_phi(); }
+const float &gen_parton10_phi() { return analyzer.gen_parton10_phi(); }
+const float &gen_parton1_mass() { return analyzer.gen_parton1_mass(); }
+const float &gen_parton2_mass() { return analyzer.gen_parton2_mass(); }
+const float &gen_parton3_mass() { return analyzer.gen_parton3_mass(); }
+const float &gen_parton4_mass() { return analyzer.gen_parton4_mass(); }
+const float &gen_parton5_mass() { return analyzer.gen_parton5_mass(); }
+const float &gen_parton6_mass() { return analyzer.gen_parton6_mass(); }
+const float &gen_parton7_mass() { return analyzer.gen_parton7_mass(); }
+const float &gen_parton8_mass() { return analyzer.gen_parton8_mass(); }
+const float &gen_parton9_mass() { return analyzer.gen_parton9_mass(); }
+const float &gen_parton10_mass() { return analyzer.gen_parton10_mass(); }
+const float &gen_parton1_pdgId() { return analyzer.gen_parton1_pdgId(); }
+const float &gen_parton2_pdgId() { return analyzer.gen_parton2_pdgId(); }
+const float &gen_parton3_pdgId() { return analyzer.gen_parton3_pdgId(); }
+const float &gen_parton4_pdgId() { return analyzer.gen_parton4_pdgId(); }
+const float &gen_parton5_pdgId() { return analyzer.gen_parton5_pdgId(); }
+const float &gen_parton6_pdgId() { return analyzer.gen_parton6_pdgId(); }
+const float &gen_parton7_pdgId() { return analyzer.gen_parton7_pdgId(); }
+const float &gen_parton8_pdgId() { return analyzer.gen_parton8_pdgId(); }
+const float &gen_parton9_pdgId() { return analyzer.gen_parton9_pdgId(); }
+const float &gen_parton10_pdgId() { return analyzer.gen_parton10_pdgId(); }
+const float &gen_parton1_status() { return analyzer.gen_parton1_status(); }
+const float &gen_parton2_status() { return analyzer.gen_parton2_status(); }
+const float &gen_parton3_status() { return analyzer.gen_parton3_status(); }
+const float &gen_parton4_status() { return analyzer.gen_parton4_status(); }
+const float &gen_parton5_status() { return analyzer.gen_parton5_status(); }
+const float &gen_parton6_status() { return analyzer.gen_parton6_status(); }
+const float &gen_parton7_status() { return analyzer.gen_parton7_status(); }
+const float &gen_parton8_status() { return analyzer.gen_parton8_status(); }
+const float &gen_parton9_status() { return analyzer.gen_parton9_status(); }
+const float &gen_parton10_status() { return analyzer.gen_parton10_status(); }
+const float &genMatched_jet0_pdgId() { return analyzer.genMatched_jet0_pdgId(); }
+const float &genMatched_jet1_pdgId() { return analyzer.genMatched_jet1_pdgId(); }
+const float &genMatched_jet2_pdgId() { return analyzer.genMatched_jet2_pdgId(); }
+const float &genMatched_jet0_index() { return analyzer.genMatched_jet0_index(); }
+const float &genMatched_jet1_index() { return analyzer.genMatched_jet1_index(); }
+const float &genMatched_jet2_index() { return analyzer.genMatched_jet2_index(); }
+const float &genMatched_jet0_deltaR() { return analyzer.genMatched_jet0_deltaR(); }
+const float &genMatched_jet1_deltaR() { return analyzer.genMatched_jet1_deltaR(); }
+const float &genMatched_jet2_deltaR() { return analyzer.genMatched_jet2_deltaR(); }
+const float &genMET_pt() { return analyzer.genMET_pt(); }
+const float &genMET_eta() { return analyzer.genMET_eta(); }
+const float &genMET_phi() { return analyzer.genMET_phi(); }
+const float &genMET_e() { return analyzer.genMET_e(); }
+const float &promptGenMET_pt() { return analyzer.promptGenMET_pt(); }
+const float &promptGenMET_eta() { return analyzer.promptGenMET_eta(); }
+const float &promptGenMET_phi() { return analyzer.promptGenMET_phi(); }
+const float &promptGenMET_e() { return analyzer.promptGenMET_e(); }
+const float &genMETTrue_pt() { return analyzer.genMETTrue_pt(); }
+const float &genMETTrue_eta() { return analyzer.genMETTrue_eta(); }
+const float &genMETTrue_phi() { return analyzer.genMETTrue_phi(); }
+const float &genMETTrue_e() { return analyzer.genMETTrue_e(); }
 const float &rho() { return analyzer.rho(); }
 const int &nvtx() { return analyzer.nvtx(); }
 const unsigned long long &event() { return analyzer.event(); }
