@@ -11,6 +11,8 @@ void tprimetHHadronic::Init(TTree *tree) {
   if (weight_branch) weight_branch->SetAddress(&weight_);
   CMS_hgg_mass_branch = tree->GetBranch("CMS_hgg_mass");
   if (CMS_hgg_mass_branch) CMS_hgg_mass_branch->SetAddress(&CMS_hgg_mass_);
+  sigmaMoM_decorr_branch = tree->GetBranch("sigmaMoM_decorr");
+  if (sigmaMoM_decorr_branch) sigmaMoM_decorr_branch->SetAddress(&sigmaMoM_decorr_);
   dZ_branch = tree->GetBranch("dZ");
   if (dZ_branch) dZ_branch->SetAddress(&dZ_);
   centralObjectWeight_branch = tree->GetBranch("centralObjectWeight");
@@ -819,6 +821,7 @@ void tprimetHHadronic::GetEntry(unsigned int idx) {
   candidate_id_isLoaded = false;
   weight_isLoaded = false;
   CMS_hgg_mass_isLoaded = false;
+  sigmaMoM_decorr_isLoaded = false;
   dZ_isLoaded = false;
   centralObjectWeight_isLoaded = false;
   vtxprob_isLoaded = false;
@@ -1225,6 +1228,7 @@ void tprimetHHadronic::LoadAllBranches() {
   if (candidate_id_branch != 0) candidate_id();
   if (weight_branch != 0) weight();
   if (CMS_hgg_mass_branch != 0) CMS_hgg_mass();
+  if (sigmaMoM_decorr_branch != 0) sigmaMoM_decorr();
   if (dZ_branch != 0) dZ();
   if (centralObjectWeight_branch != 0) centralObjectWeight();
   if (vtxprob_branch != 0) vtxprob();
@@ -1663,6 +1667,19 @@ const float &tprimetHHadronic::CMS_hgg_mass() {
     CMS_hgg_mass_isLoaded = true;
   }
   return CMS_hgg_mass_;
+}
+
+const float &tprimetHHadronic::sigmaMoM_decorr() {
+  if (not sigmaMoM_decorr_isLoaded) {
+    if (sigmaMoM_decorr_branch != 0) {
+      sigmaMoM_decorr_branch->GetEntry(index);
+    } else {
+      printf("branch sigmaMoM_decorr_branch does not exist!\n");
+      exit(1);
+    }
+    sigmaMoM_decorr_isLoaded = true;
+  }
+  return sigmaMoM_decorr_;
 }
 
 const float &tprimetHHadronic::dZ() {
@@ -6878,6 +6895,7 @@ namespace tprime {
 const int &candidate_id() { return analyzer.candidate_id(); }
 const float &weight() { return analyzer.weight(); }
 const float &CMS_hgg_mass() { return analyzer.CMS_hgg_mass(); }
+const float &sigmaMoM_decorr() { return analyzer.sigmaMoM_decorr(); }
 const float &dZ() { return analyzer.dZ(); }
 const float &centralObjectWeight() { return analyzer.centralObjectWeight(); }
 const float &vtxprob() { return analyzer.vtxprob(); }

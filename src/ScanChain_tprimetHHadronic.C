@@ -1,8 +1,8 @@
 #include "ScanChain.h"
 #include "chi2_helper.h"
 
-int ScanChain_tprimetHHadronic(TChain* chain, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
-  TFile *output_file = new TFile("plots/test.root", "RECREATE");
+int ScanChain_tprimetHHadronic(TChain* chain, TString name_output_file, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
+  TFile *output_file = new TFile(name_output_file, "RECREATE");
   //TFile* f1 = new TFile(tag + "_" + ext + "_histograms" + year + idx + ".root", "RECREATE");
 
   float n_lep;
@@ -104,7 +104,7 @@ int ScanChain_tprimetHHadronic(TChain* chain, bool fast = true, int nEvents = -1
       vector<int> pdgIds;
       vector<TLorentzVector> partons = make_partons(pdgIds);
       TLorentzVector bquark, wquark1, wquark2;
-      printf("gen-indices  : ");
+      //printf("gen-indices  : ");
       bool has_reasonable_gen_matching = gen_matching(partons, jets, pdgIds, bquark, wquark1, wquark2);
       if(has_reasonable_gen_matching)
       {
@@ -117,7 +117,7 @@ int ScanChain_tprimetHHadronic(TChain* chain, bool fast = true, int nEvents = -1
 
       //--------------- Reco. information ---------------//
       // MC-truth matching
-      printf("truth-matched: ");
+      //printf("truth-matched: ");
       int truthMatched_index_bjet;
       vector<int> truthMatched_indices_wjets;
       bool has_reasonable_match = get_gen_matched_jets(truthMatched_index_bjet, truthMatched_indices_wjets);
@@ -144,8 +144,8 @@ int ScanChain_tprimetHHadronic(TChain* chain, bool fast = true, int nEvents = -1
       int index_bjet = btag_scores_sorted[0].first;
       vector<int> indices_wjets = get_the_best_wjets_candidate(jets, index_bjet, min_chi2_value);
 
-      printf("minimum chi-2: ");
-      printf("[%d, %d, %d]\n", index_bjet, indices_wjets[0], indices_wjets[1]);
+      //printf("minimum chi-2: ");
+      //printf("[%d, %d, %d]\n", index_bjet, indices_wjets[0], indices_wjets[1]);
 
       TLorentzVector bjet = jets[index_bjet];
       TLorentzVector wjet1 = jets[indices_wjets[0]];
@@ -187,7 +187,7 @@ int ScanChain_tprimetHHadronic(TChain* chain, bool fast = true, int nEvents = -1
       //--------------- Other info ---------------//
       //for(int i=0; i<jets.size(); ++i)
       //    printf("(%d) idx = %d, btag_scores = %.2f\n", i, btag_scores_sorted[i].first, btag_scores_sorted[i].second);
-      printf("\n");
+      //printf("\n");
 
       if(jets.size() > 9) counter_more_than_nine_jets += 1;
       counter_total_selected_events += 1;
@@ -204,36 +204,6 @@ int ScanChain_tprimetHHadronic(TChain* chain, bool fast = true, int nEvents = -1
   print_counter_percentage("Number of jets more than 9", counter_more_than_nine_jets, counter_total_selected_events);
   print_counter_percentage("After the cut of resonable match", counter_has_reasonable_match, counter_total_selected_events);
   print_counter_percentage("Percentage of resonable gen match", counter_has_reasonable_gen_match, counter_total_selected_events);
-
-  // Make plots
-  TCanvas *c1 = new TCanvas("c1", "", 800, 600);
-
-  makePlot(c1 , h_num_jets         , "plots/h_num_jets.pdf"         );
-  makePlot(c1 , h_mass_diphoton    , "plots/h_mass_diphoton.pdf"    );
-  makePlot(c1 , h_mass_diphoton_v2 , "plots/h_mass_diphoton_v2.pdf" );
-  makePlot(c1 , h_mass_wboson      , "plots/h_mass_wboson.pdf"      );
-  makePlot(c1 , h_mass_top         , "plots/h_mass_top.pdf"         );
-  makePlot(c1 , h_mass_gen_wboson  , "plots/h_mass_gen_wboson.pdf"  );
-  makePlot(c1 , h_mass_gen_top     , "plots/h_mass_gen_top.pdf"     );
-  makePlot(c1 , h_mass_tm_wboson   , "plots/h_mass_tm_wboson.pdf"   );
-  makePlot(c1 , h_mass_tm_top      , "plots/h_mass_tm_top.pdf"      );
-  makePlot(c1 , h_mass_tprime      , "plots/h_mass_tprime.pdf"      );
-  makePlot(c1 , h_deltaR_wjets     , "plots/h_deltaR_wjets.pdf"     );
-  makePlot(c1 , h_deltaR_photons   , "plots/h_deltaR_photons.pdf"   );
-  makePlot(c1 , h_deltaR_bW        , "plots/h_deltaR_bW.pdf"        );
-  makePlot(c1 , h_deltaR_tH        , "plots/h_deltaR_tH.pdf"        );
-  makePlot(c1 , h_helicity_tprime  , "plots/h_helicity_tprime.pdf"  );
-  makePlot(c1 , h_helicity_top     , "plots/h_helicity_top.pdf"     );
-  makePlot(c1 , h_helicity_higgs   , "plots/h_helicity_higgs.pdf"   );
-  makePlot(c1 , h_chi2_value       , "plots/h_chi2_value.pdf"       );
-  makePlot(c1 , h_genIndices       , "plots/h_genIndices.pdf"       );
-  makePlot(c1 , h_genPdgId         , "plots/h_genPdgId.pdf"         );
-  makePlot(c1 , h_genDeltaR        , "plots/h_genDeltaR.pdf"        );
-
-  makePlot_twoHists(c1 , h_mass_wboson , h_mass_gen_wboson , "plots/h_genReco_mass_wboson.pdf" );
-  makePlot_twoHists(c1 , h_mass_top    , h_mass_gen_top    , "plots/h_genReco_mass_top.pdf"    );
-  makePlot_twoHists(c1 , h_mass_wboson , h_mass_tm_wboson  , "plots/h_tmReco_mass_wboson.pdf"  );
-  makePlot_twoHists(c1 , h_mass_top    , h_mass_tm_top     , "plots/h_tmReco_mass_top.pdf"     );
 
   // Example Histograms
   output_file->cd();

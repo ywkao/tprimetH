@@ -306,7 +306,7 @@ bool identify_bjet_and_wjets(int &index_bjet, vector<int> &indices_wjets, vector
     // no matched b-jet
     if(indices_wjets.size() > 2) is_reasonable = false;
 
-    printf("[%d, %d, %d]\n", index_bjet, indices_wjets[0], indices_wjets[1]);
+    //printf("[%d, %d, %d]\n", index_bjet, indices_wjets[0], indices_wjets[1]);
 
     return is_reasonable;
 }
@@ -413,11 +413,12 @@ void makePlot_twoHists(TCanvas *c1, TH1F *h1, TH1F *h2, TString filename) {
     h2->Draw("hist;same");
     c1->Modified(); c1->Update();
     TPaveStats *stats2 = (TPaveStats*) c1->GetPrimitive("stats");
-    //stats2->SetName("Truth-Matched");
+    stats2->SetName("Truth-Matched");
     stats2->SetY1NDC(.4);
     stats2->SetY2NDC(.6);
     stats2->SetTextColor(kRed);
 
+    c1->Modified(); c1->Update();
     c1->SaveAs(filename);
 }
 

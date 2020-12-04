@@ -1,6 +1,6 @@
 // -*- C++ -*-
 // This is a header file generated with the command:
-// makeCMS3ClassFiles("/wk_cms/ykao/work/CMSSW_10_6_8/rootfiles/ntuples_v1.7/TprimeBToTH_M-700_LH_TuneCUETP8M1_13TeV_Era2016_v1p7.root", "tagsDumper/trees/tHq_13TeV_THQHadronicTag", "tprimetHHadronic", "tprime", "analyzer")
+// makeCMS3ClassFiles("/wk_cms/ykao/work/CMSSW_10_6_8/rootfiles/ntuples_v2.8/TprimeBToTH_M-1000_Era2016_v2p8.root", "tagsDumper/trees/tHq_13TeV_THQHadronicTag", "tprimetHHadronic", "tprime", "analyzer")
 
 #ifndef tprimetHHadronic_H
 #define tprimetHHadronic_H
@@ -31,6 +31,9 @@ class tprimetHHadronic {
   float    CMS_hgg_mass_;
   TBranch *CMS_hgg_mass_branch;
   bool     CMS_hgg_mass_isLoaded;
+  float    sigmaMoM_decorr_;
+  TBranch *sigmaMoM_decorr_branch;
+  bool     sigmaMoM_decorr_isLoaded;
   float    dZ_;
   TBranch *dZ_branch;
   bool     dZ_isLoaded;
@@ -1235,6 +1238,7 @@ void LoadAllBranches();
   const int &candidate_id();
   const float &weight();
   const float &CMS_hgg_mass();
+  const float &sigmaMoM_decorr();
   const float &dZ();
   const float &centralObjectWeight();
   const float &vtxprob();
@@ -1646,6 +1650,7 @@ namespace tprime {
   const int &candidate_id();
   const float &weight();
   const float &CMS_hgg_mass();
+  const float &sigmaMoM_decorr();
   const float &dZ();
   const float &centralObjectWeight();
   const float &vtxprob();
