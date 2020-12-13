@@ -753,6 +753,126 @@ void tprimetHHadronic::Init(TTree *tree) {
   if (gen_parton9_status_branch) gen_parton9_status_branch->SetAddress(&gen_parton9_status_);
   gen_parton10_status_branch = tree->GetBranch("gen_parton10_status");
   if (gen_parton10_status_branch) gen_parton10_status_branch->SetAddress(&gen_parton10_status_);
+  mom_parton1_pt_branch = tree->GetBranch("mom_parton1_pt");
+  if (mom_parton1_pt_branch) mom_parton1_pt_branch->SetAddress(&mom_parton1_pt_);
+  mom_parton2_pt_branch = tree->GetBranch("mom_parton2_pt");
+  if (mom_parton2_pt_branch) mom_parton2_pt_branch->SetAddress(&mom_parton2_pt_);
+  mom_parton3_pt_branch = tree->GetBranch("mom_parton3_pt");
+  if (mom_parton3_pt_branch) mom_parton3_pt_branch->SetAddress(&mom_parton3_pt_);
+  mom_parton4_pt_branch = tree->GetBranch("mom_parton4_pt");
+  if (mom_parton4_pt_branch) mom_parton4_pt_branch->SetAddress(&mom_parton4_pt_);
+  mom_parton5_pt_branch = tree->GetBranch("mom_parton5_pt");
+  if (mom_parton5_pt_branch) mom_parton5_pt_branch->SetAddress(&mom_parton5_pt_);
+  mom_parton6_pt_branch = tree->GetBranch("mom_parton6_pt");
+  if (mom_parton6_pt_branch) mom_parton6_pt_branch->SetAddress(&mom_parton6_pt_);
+  mom_parton7_pt_branch = tree->GetBranch("mom_parton7_pt");
+  if (mom_parton7_pt_branch) mom_parton7_pt_branch->SetAddress(&mom_parton7_pt_);
+  mom_parton8_pt_branch = tree->GetBranch("mom_parton8_pt");
+  if (mom_parton8_pt_branch) mom_parton8_pt_branch->SetAddress(&mom_parton8_pt_);
+  mom_parton9_pt_branch = tree->GetBranch("mom_parton9_pt");
+  if (mom_parton9_pt_branch) mom_parton9_pt_branch->SetAddress(&mom_parton9_pt_);
+  mom_parton10_pt_branch = tree->GetBranch("mom_parton10_pt");
+  if (mom_parton10_pt_branch) mom_parton10_pt_branch->SetAddress(&mom_parton10_pt_);
+  mom_parton1_eta_branch = tree->GetBranch("mom_parton1_eta");
+  if (mom_parton1_eta_branch) mom_parton1_eta_branch->SetAddress(&mom_parton1_eta_);
+  mom_parton2_eta_branch = tree->GetBranch("mom_parton2_eta");
+  if (mom_parton2_eta_branch) mom_parton2_eta_branch->SetAddress(&mom_parton2_eta_);
+  mom_parton3_eta_branch = tree->GetBranch("mom_parton3_eta");
+  if (mom_parton3_eta_branch) mom_parton3_eta_branch->SetAddress(&mom_parton3_eta_);
+  mom_parton4_eta_branch = tree->GetBranch("mom_parton4_eta");
+  if (mom_parton4_eta_branch) mom_parton4_eta_branch->SetAddress(&mom_parton4_eta_);
+  mom_parton5_eta_branch = tree->GetBranch("mom_parton5_eta");
+  if (mom_parton5_eta_branch) mom_parton5_eta_branch->SetAddress(&mom_parton5_eta_);
+  mom_parton6_eta_branch = tree->GetBranch("mom_parton6_eta");
+  if (mom_parton6_eta_branch) mom_parton6_eta_branch->SetAddress(&mom_parton6_eta_);
+  mom_parton7_eta_branch = tree->GetBranch("mom_parton7_eta");
+  if (mom_parton7_eta_branch) mom_parton7_eta_branch->SetAddress(&mom_parton7_eta_);
+  mom_parton8_eta_branch = tree->GetBranch("mom_parton8_eta");
+  if (mom_parton8_eta_branch) mom_parton8_eta_branch->SetAddress(&mom_parton8_eta_);
+  mom_parton9_eta_branch = tree->GetBranch("mom_parton9_eta");
+  if (mom_parton9_eta_branch) mom_parton9_eta_branch->SetAddress(&mom_parton9_eta_);
+  mom_parton10_eta_branch = tree->GetBranch("mom_parton10_eta");
+  if (mom_parton10_eta_branch) mom_parton10_eta_branch->SetAddress(&mom_parton10_eta_);
+  mom_parton1_phi_branch = tree->GetBranch("mom_parton1_phi");
+  if (mom_parton1_phi_branch) mom_parton1_phi_branch->SetAddress(&mom_parton1_phi_);
+  mom_parton2_phi_branch = tree->GetBranch("mom_parton2_phi");
+  if (mom_parton2_phi_branch) mom_parton2_phi_branch->SetAddress(&mom_parton2_phi_);
+  mom_parton3_phi_branch = tree->GetBranch("mom_parton3_phi");
+  if (mom_parton3_phi_branch) mom_parton3_phi_branch->SetAddress(&mom_parton3_phi_);
+  mom_parton4_phi_branch = tree->GetBranch("mom_parton4_phi");
+  if (mom_parton4_phi_branch) mom_parton4_phi_branch->SetAddress(&mom_parton4_phi_);
+  mom_parton5_phi_branch = tree->GetBranch("mom_parton5_phi");
+  if (mom_parton5_phi_branch) mom_parton5_phi_branch->SetAddress(&mom_parton5_phi_);
+  mom_parton6_phi_branch = tree->GetBranch("mom_parton6_phi");
+  if (mom_parton6_phi_branch) mom_parton6_phi_branch->SetAddress(&mom_parton6_phi_);
+  mom_parton7_phi_branch = tree->GetBranch("mom_parton7_phi");
+  if (mom_parton7_phi_branch) mom_parton7_phi_branch->SetAddress(&mom_parton7_phi_);
+  mom_parton8_phi_branch = tree->GetBranch("mom_parton8_phi");
+  if (mom_parton8_phi_branch) mom_parton8_phi_branch->SetAddress(&mom_parton8_phi_);
+  mom_parton9_phi_branch = tree->GetBranch("mom_parton9_phi");
+  if (mom_parton9_phi_branch) mom_parton9_phi_branch->SetAddress(&mom_parton9_phi_);
+  mom_parton10_phi_branch = tree->GetBranch("mom_parton10_phi");
+  if (mom_parton10_phi_branch) mom_parton10_phi_branch->SetAddress(&mom_parton10_phi_);
+  mom_parton1_mass_branch = tree->GetBranch("mom_parton1_mass");
+  if (mom_parton1_mass_branch) mom_parton1_mass_branch->SetAddress(&mom_parton1_mass_);
+  mom_parton2_mass_branch = tree->GetBranch("mom_parton2_mass");
+  if (mom_parton2_mass_branch) mom_parton2_mass_branch->SetAddress(&mom_parton2_mass_);
+  mom_parton3_mass_branch = tree->GetBranch("mom_parton3_mass");
+  if (mom_parton3_mass_branch) mom_parton3_mass_branch->SetAddress(&mom_parton3_mass_);
+  mom_parton4_mass_branch = tree->GetBranch("mom_parton4_mass");
+  if (mom_parton4_mass_branch) mom_parton4_mass_branch->SetAddress(&mom_parton4_mass_);
+  mom_parton5_mass_branch = tree->GetBranch("mom_parton5_mass");
+  if (mom_parton5_mass_branch) mom_parton5_mass_branch->SetAddress(&mom_parton5_mass_);
+  mom_parton6_mass_branch = tree->GetBranch("mom_parton6_mass");
+  if (mom_parton6_mass_branch) mom_parton6_mass_branch->SetAddress(&mom_parton6_mass_);
+  mom_parton7_mass_branch = tree->GetBranch("mom_parton7_mass");
+  if (mom_parton7_mass_branch) mom_parton7_mass_branch->SetAddress(&mom_parton7_mass_);
+  mom_parton8_mass_branch = tree->GetBranch("mom_parton8_mass");
+  if (mom_parton8_mass_branch) mom_parton8_mass_branch->SetAddress(&mom_parton8_mass_);
+  mom_parton9_mass_branch = tree->GetBranch("mom_parton9_mass");
+  if (mom_parton9_mass_branch) mom_parton9_mass_branch->SetAddress(&mom_parton9_mass_);
+  mom_parton10_mass_branch = tree->GetBranch("mom_parton10_mass");
+  if (mom_parton10_mass_branch) mom_parton10_mass_branch->SetAddress(&mom_parton10_mass_);
+  mom_parton1_pdgId_branch = tree->GetBranch("mom_parton1_pdgId");
+  if (mom_parton1_pdgId_branch) mom_parton1_pdgId_branch->SetAddress(&mom_parton1_pdgId_);
+  mom_parton2_pdgId_branch = tree->GetBranch("mom_parton2_pdgId");
+  if (mom_parton2_pdgId_branch) mom_parton2_pdgId_branch->SetAddress(&mom_parton2_pdgId_);
+  mom_parton3_pdgId_branch = tree->GetBranch("mom_parton3_pdgId");
+  if (mom_parton3_pdgId_branch) mom_parton3_pdgId_branch->SetAddress(&mom_parton3_pdgId_);
+  mom_parton4_pdgId_branch = tree->GetBranch("mom_parton4_pdgId");
+  if (mom_parton4_pdgId_branch) mom_parton4_pdgId_branch->SetAddress(&mom_parton4_pdgId_);
+  mom_parton5_pdgId_branch = tree->GetBranch("mom_parton5_pdgId");
+  if (mom_parton5_pdgId_branch) mom_parton5_pdgId_branch->SetAddress(&mom_parton5_pdgId_);
+  mom_parton6_pdgId_branch = tree->GetBranch("mom_parton6_pdgId");
+  if (mom_parton6_pdgId_branch) mom_parton6_pdgId_branch->SetAddress(&mom_parton6_pdgId_);
+  mom_parton7_pdgId_branch = tree->GetBranch("mom_parton7_pdgId");
+  if (mom_parton7_pdgId_branch) mom_parton7_pdgId_branch->SetAddress(&mom_parton7_pdgId_);
+  mom_parton8_pdgId_branch = tree->GetBranch("mom_parton8_pdgId");
+  if (mom_parton8_pdgId_branch) mom_parton8_pdgId_branch->SetAddress(&mom_parton8_pdgId_);
+  mom_parton9_pdgId_branch = tree->GetBranch("mom_parton9_pdgId");
+  if (mom_parton9_pdgId_branch) mom_parton9_pdgId_branch->SetAddress(&mom_parton9_pdgId_);
+  mom_parton10_pdgId_branch = tree->GetBranch("mom_parton10_pdgId");
+  if (mom_parton10_pdgId_branch) mom_parton10_pdgId_branch->SetAddress(&mom_parton10_pdgId_);
+  mom_parton1_status_branch = tree->GetBranch("mom_parton1_status");
+  if (mom_parton1_status_branch) mom_parton1_status_branch->SetAddress(&mom_parton1_status_);
+  mom_parton2_status_branch = tree->GetBranch("mom_parton2_status");
+  if (mom_parton2_status_branch) mom_parton2_status_branch->SetAddress(&mom_parton2_status_);
+  mom_parton3_status_branch = tree->GetBranch("mom_parton3_status");
+  if (mom_parton3_status_branch) mom_parton3_status_branch->SetAddress(&mom_parton3_status_);
+  mom_parton4_status_branch = tree->GetBranch("mom_parton4_status");
+  if (mom_parton4_status_branch) mom_parton4_status_branch->SetAddress(&mom_parton4_status_);
+  mom_parton5_status_branch = tree->GetBranch("mom_parton5_status");
+  if (mom_parton5_status_branch) mom_parton5_status_branch->SetAddress(&mom_parton5_status_);
+  mom_parton6_status_branch = tree->GetBranch("mom_parton6_status");
+  if (mom_parton6_status_branch) mom_parton6_status_branch->SetAddress(&mom_parton6_status_);
+  mom_parton7_status_branch = tree->GetBranch("mom_parton7_status");
+  if (mom_parton7_status_branch) mom_parton7_status_branch->SetAddress(&mom_parton7_status_);
+  mom_parton8_status_branch = tree->GetBranch("mom_parton8_status");
+  if (mom_parton8_status_branch) mom_parton8_status_branch->SetAddress(&mom_parton8_status_);
+  mom_parton9_status_branch = tree->GetBranch("mom_parton9_status");
+  if (mom_parton9_status_branch) mom_parton9_status_branch->SetAddress(&mom_parton9_status_);
+  mom_parton10_status_branch = tree->GetBranch("mom_parton10_status");
+  if (mom_parton10_status_branch) mom_parton10_status_branch->SetAddress(&mom_parton10_status_);
   genMatched_jet0_pdgId_branch = tree->GetBranch("genMatched_jet0_pdgId");
   if (genMatched_jet0_pdgId_branch) genMatched_jet0_pdgId_branch->SetAddress(&genMatched_jet0_pdgId_);
   genMatched_jet1_pdgId_branch = tree->GetBranch("genMatched_jet1_pdgId");
@@ -1192,6 +1312,66 @@ void tprimetHHadronic::GetEntry(unsigned int idx) {
   gen_parton8_status_isLoaded = false;
   gen_parton9_status_isLoaded = false;
   gen_parton10_status_isLoaded = false;
+  mom_parton1_pt_isLoaded = false;
+  mom_parton2_pt_isLoaded = false;
+  mom_parton3_pt_isLoaded = false;
+  mom_parton4_pt_isLoaded = false;
+  mom_parton5_pt_isLoaded = false;
+  mom_parton6_pt_isLoaded = false;
+  mom_parton7_pt_isLoaded = false;
+  mom_parton8_pt_isLoaded = false;
+  mom_parton9_pt_isLoaded = false;
+  mom_parton10_pt_isLoaded = false;
+  mom_parton1_eta_isLoaded = false;
+  mom_parton2_eta_isLoaded = false;
+  mom_parton3_eta_isLoaded = false;
+  mom_parton4_eta_isLoaded = false;
+  mom_parton5_eta_isLoaded = false;
+  mom_parton6_eta_isLoaded = false;
+  mom_parton7_eta_isLoaded = false;
+  mom_parton8_eta_isLoaded = false;
+  mom_parton9_eta_isLoaded = false;
+  mom_parton10_eta_isLoaded = false;
+  mom_parton1_phi_isLoaded = false;
+  mom_parton2_phi_isLoaded = false;
+  mom_parton3_phi_isLoaded = false;
+  mom_parton4_phi_isLoaded = false;
+  mom_parton5_phi_isLoaded = false;
+  mom_parton6_phi_isLoaded = false;
+  mom_parton7_phi_isLoaded = false;
+  mom_parton8_phi_isLoaded = false;
+  mom_parton9_phi_isLoaded = false;
+  mom_parton10_phi_isLoaded = false;
+  mom_parton1_mass_isLoaded = false;
+  mom_parton2_mass_isLoaded = false;
+  mom_parton3_mass_isLoaded = false;
+  mom_parton4_mass_isLoaded = false;
+  mom_parton5_mass_isLoaded = false;
+  mom_parton6_mass_isLoaded = false;
+  mom_parton7_mass_isLoaded = false;
+  mom_parton8_mass_isLoaded = false;
+  mom_parton9_mass_isLoaded = false;
+  mom_parton10_mass_isLoaded = false;
+  mom_parton1_pdgId_isLoaded = false;
+  mom_parton2_pdgId_isLoaded = false;
+  mom_parton3_pdgId_isLoaded = false;
+  mom_parton4_pdgId_isLoaded = false;
+  mom_parton5_pdgId_isLoaded = false;
+  mom_parton6_pdgId_isLoaded = false;
+  mom_parton7_pdgId_isLoaded = false;
+  mom_parton8_pdgId_isLoaded = false;
+  mom_parton9_pdgId_isLoaded = false;
+  mom_parton10_pdgId_isLoaded = false;
+  mom_parton1_status_isLoaded = false;
+  mom_parton2_status_isLoaded = false;
+  mom_parton3_status_isLoaded = false;
+  mom_parton4_status_isLoaded = false;
+  mom_parton5_status_isLoaded = false;
+  mom_parton6_status_isLoaded = false;
+  mom_parton7_status_isLoaded = false;
+  mom_parton8_status_isLoaded = false;
+  mom_parton9_status_isLoaded = false;
+  mom_parton10_status_isLoaded = false;
   genMatched_jet0_pdgId_isLoaded = false;
   genMatched_jet1_pdgId_isLoaded = false;
   genMatched_jet2_pdgId_isLoaded = false;
@@ -1599,6 +1779,66 @@ void tprimetHHadronic::LoadAllBranches() {
   if (gen_parton8_status_branch != 0) gen_parton8_status();
   if (gen_parton9_status_branch != 0) gen_parton9_status();
   if (gen_parton10_status_branch != 0) gen_parton10_status();
+  if (mom_parton1_pt_branch != 0) mom_parton1_pt();
+  if (mom_parton2_pt_branch != 0) mom_parton2_pt();
+  if (mom_parton3_pt_branch != 0) mom_parton3_pt();
+  if (mom_parton4_pt_branch != 0) mom_parton4_pt();
+  if (mom_parton5_pt_branch != 0) mom_parton5_pt();
+  if (mom_parton6_pt_branch != 0) mom_parton6_pt();
+  if (mom_parton7_pt_branch != 0) mom_parton7_pt();
+  if (mom_parton8_pt_branch != 0) mom_parton8_pt();
+  if (mom_parton9_pt_branch != 0) mom_parton9_pt();
+  if (mom_parton10_pt_branch != 0) mom_parton10_pt();
+  if (mom_parton1_eta_branch != 0) mom_parton1_eta();
+  if (mom_parton2_eta_branch != 0) mom_parton2_eta();
+  if (mom_parton3_eta_branch != 0) mom_parton3_eta();
+  if (mom_parton4_eta_branch != 0) mom_parton4_eta();
+  if (mom_parton5_eta_branch != 0) mom_parton5_eta();
+  if (mom_parton6_eta_branch != 0) mom_parton6_eta();
+  if (mom_parton7_eta_branch != 0) mom_parton7_eta();
+  if (mom_parton8_eta_branch != 0) mom_parton8_eta();
+  if (mom_parton9_eta_branch != 0) mom_parton9_eta();
+  if (mom_parton10_eta_branch != 0) mom_parton10_eta();
+  if (mom_parton1_phi_branch != 0) mom_parton1_phi();
+  if (mom_parton2_phi_branch != 0) mom_parton2_phi();
+  if (mom_parton3_phi_branch != 0) mom_parton3_phi();
+  if (mom_parton4_phi_branch != 0) mom_parton4_phi();
+  if (mom_parton5_phi_branch != 0) mom_parton5_phi();
+  if (mom_parton6_phi_branch != 0) mom_parton6_phi();
+  if (mom_parton7_phi_branch != 0) mom_parton7_phi();
+  if (mom_parton8_phi_branch != 0) mom_parton8_phi();
+  if (mom_parton9_phi_branch != 0) mom_parton9_phi();
+  if (mom_parton10_phi_branch != 0) mom_parton10_phi();
+  if (mom_parton1_mass_branch != 0) mom_parton1_mass();
+  if (mom_parton2_mass_branch != 0) mom_parton2_mass();
+  if (mom_parton3_mass_branch != 0) mom_parton3_mass();
+  if (mom_parton4_mass_branch != 0) mom_parton4_mass();
+  if (mom_parton5_mass_branch != 0) mom_parton5_mass();
+  if (mom_parton6_mass_branch != 0) mom_parton6_mass();
+  if (mom_parton7_mass_branch != 0) mom_parton7_mass();
+  if (mom_parton8_mass_branch != 0) mom_parton8_mass();
+  if (mom_parton9_mass_branch != 0) mom_parton9_mass();
+  if (mom_parton10_mass_branch != 0) mom_parton10_mass();
+  if (mom_parton1_pdgId_branch != 0) mom_parton1_pdgId();
+  if (mom_parton2_pdgId_branch != 0) mom_parton2_pdgId();
+  if (mom_parton3_pdgId_branch != 0) mom_parton3_pdgId();
+  if (mom_parton4_pdgId_branch != 0) mom_parton4_pdgId();
+  if (mom_parton5_pdgId_branch != 0) mom_parton5_pdgId();
+  if (mom_parton6_pdgId_branch != 0) mom_parton6_pdgId();
+  if (mom_parton7_pdgId_branch != 0) mom_parton7_pdgId();
+  if (mom_parton8_pdgId_branch != 0) mom_parton8_pdgId();
+  if (mom_parton9_pdgId_branch != 0) mom_parton9_pdgId();
+  if (mom_parton10_pdgId_branch != 0) mom_parton10_pdgId();
+  if (mom_parton1_status_branch != 0) mom_parton1_status();
+  if (mom_parton2_status_branch != 0) mom_parton2_status();
+  if (mom_parton3_status_branch != 0) mom_parton3_status();
+  if (mom_parton4_status_branch != 0) mom_parton4_status();
+  if (mom_parton5_status_branch != 0) mom_parton5_status();
+  if (mom_parton6_status_branch != 0) mom_parton6_status();
+  if (mom_parton7_status_branch != 0) mom_parton7_status();
+  if (mom_parton8_status_branch != 0) mom_parton8_status();
+  if (mom_parton9_status_branch != 0) mom_parton9_status();
+  if (mom_parton10_status_branch != 0) mom_parton10_status();
   if (genMatched_jet0_pdgId_branch != 0) genMatched_jet0_pdgId();
   if (genMatched_jet1_pdgId_branch != 0) genMatched_jet1_pdgId();
   if (genMatched_jet2_pdgId_branch != 0) genMatched_jet2_pdgId();
@@ -6492,6 +6732,786 @@ const float &tprimetHHadronic::gen_parton10_status() {
   return gen_parton10_status_;
 }
 
+const float &tprimetHHadronic::mom_parton1_pt() {
+  if (not mom_parton1_pt_isLoaded) {
+    if (mom_parton1_pt_branch != 0) {
+      mom_parton1_pt_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton1_pt_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton1_pt_isLoaded = true;
+  }
+  return mom_parton1_pt_;
+}
+
+const float &tprimetHHadronic::mom_parton2_pt() {
+  if (not mom_parton2_pt_isLoaded) {
+    if (mom_parton2_pt_branch != 0) {
+      mom_parton2_pt_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton2_pt_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton2_pt_isLoaded = true;
+  }
+  return mom_parton2_pt_;
+}
+
+const float &tprimetHHadronic::mom_parton3_pt() {
+  if (not mom_parton3_pt_isLoaded) {
+    if (mom_parton3_pt_branch != 0) {
+      mom_parton3_pt_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton3_pt_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton3_pt_isLoaded = true;
+  }
+  return mom_parton3_pt_;
+}
+
+const float &tprimetHHadronic::mom_parton4_pt() {
+  if (not mom_parton4_pt_isLoaded) {
+    if (mom_parton4_pt_branch != 0) {
+      mom_parton4_pt_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton4_pt_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton4_pt_isLoaded = true;
+  }
+  return mom_parton4_pt_;
+}
+
+const float &tprimetHHadronic::mom_parton5_pt() {
+  if (not mom_parton5_pt_isLoaded) {
+    if (mom_parton5_pt_branch != 0) {
+      mom_parton5_pt_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton5_pt_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton5_pt_isLoaded = true;
+  }
+  return mom_parton5_pt_;
+}
+
+const float &tprimetHHadronic::mom_parton6_pt() {
+  if (not mom_parton6_pt_isLoaded) {
+    if (mom_parton6_pt_branch != 0) {
+      mom_parton6_pt_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton6_pt_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton6_pt_isLoaded = true;
+  }
+  return mom_parton6_pt_;
+}
+
+const float &tprimetHHadronic::mom_parton7_pt() {
+  if (not mom_parton7_pt_isLoaded) {
+    if (mom_parton7_pt_branch != 0) {
+      mom_parton7_pt_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton7_pt_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton7_pt_isLoaded = true;
+  }
+  return mom_parton7_pt_;
+}
+
+const float &tprimetHHadronic::mom_parton8_pt() {
+  if (not mom_parton8_pt_isLoaded) {
+    if (mom_parton8_pt_branch != 0) {
+      mom_parton8_pt_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton8_pt_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton8_pt_isLoaded = true;
+  }
+  return mom_parton8_pt_;
+}
+
+const float &tprimetHHadronic::mom_parton9_pt() {
+  if (not mom_parton9_pt_isLoaded) {
+    if (mom_parton9_pt_branch != 0) {
+      mom_parton9_pt_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton9_pt_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton9_pt_isLoaded = true;
+  }
+  return mom_parton9_pt_;
+}
+
+const float &tprimetHHadronic::mom_parton10_pt() {
+  if (not mom_parton10_pt_isLoaded) {
+    if (mom_parton10_pt_branch != 0) {
+      mom_parton10_pt_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton10_pt_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton10_pt_isLoaded = true;
+  }
+  return mom_parton10_pt_;
+}
+
+const float &tprimetHHadronic::mom_parton1_eta() {
+  if (not mom_parton1_eta_isLoaded) {
+    if (mom_parton1_eta_branch != 0) {
+      mom_parton1_eta_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton1_eta_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton1_eta_isLoaded = true;
+  }
+  return mom_parton1_eta_;
+}
+
+const float &tprimetHHadronic::mom_parton2_eta() {
+  if (not mom_parton2_eta_isLoaded) {
+    if (mom_parton2_eta_branch != 0) {
+      mom_parton2_eta_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton2_eta_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton2_eta_isLoaded = true;
+  }
+  return mom_parton2_eta_;
+}
+
+const float &tprimetHHadronic::mom_parton3_eta() {
+  if (not mom_parton3_eta_isLoaded) {
+    if (mom_parton3_eta_branch != 0) {
+      mom_parton3_eta_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton3_eta_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton3_eta_isLoaded = true;
+  }
+  return mom_parton3_eta_;
+}
+
+const float &tprimetHHadronic::mom_parton4_eta() {
+  if (not mom_parton4_eta_isLoaded) {
+    if (mom_parton4_eta_branch != 0) {
+      mom_parton4_eta_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton4_eta_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton4_eta_isLoaded = true;
+  }
+  return mom_parton4_eta_;
+}
+
+const float &tprimetHHadronic::mom_parton5_eta() {
+  if (not mom_parton5_eta_isLoaded) {
+    if (mom_parton5_eta_branch != 0) {
+      mom_parton5_eta_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton5_eta_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton5_eta_isLoaded = true;
+  }
+  return mom_parton5_eta_;
+}
+
+const float &tprimetHHadronic::mom_parton6_eta() {
+  if (not mom_parton6_eta_isLoaded) {
+    if (mom_parton6_eta_branch != 0) {
+      mom_parton6_eta_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton6_eta_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton6_eta_isLoaded = true;
+  }
+  return mom_parton6_eta_;
+}
+
+const float &tprimetHHadronic::mom_parton7_eta() {
+  if (not mom_parton7_eta_isLoaded) {
+    if (mom_parton7_eta_branch != 0) {
+      mom_parton7_eta_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton7_eta_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton7_eta_isLoaded = true;
+  }
+  return mom_parton7_eta_;
+}
+
+const float &tprimetHHadronic::mom_parton8_eta() {
+  if (not mom_parton8_eta_isLoaded) {
+    if (mom_parton8_eta_branch != 0) {
+      mom_parton8_eta_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton8_eta_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton8_eta_isLoaded = true;
+  }
+  return mom_parton8_eta_;
+}
+
+const float &tprimetHHadronic::mom_parton9_eta() {
+  if (not mom_parton9_eta_isLoaded) {
+    if (mom_parton9_eta_branch != 0) {
+      mom_parton9_eta_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton9_eta_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton9_eta_isLoaded = true;
+  }
+  return mom_parton9_eta_;
+}
+
+const float &tprimetHHadronic::mom_parton10_eta() {
+  if (not mom_parton10_eta_isLoaded) {
+    if (mom_parton10_eta_branch != 0) {
+      mom_parton10_eta_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton10_eta_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton10_eta_isLoaded = true;
+  }
+  return mom_parton10_eta_;
+}
+
+const float &tprimetHHadronic::mom_parton1_phi() {
+  if (not mom_parton1_phi_isLoaded) {
+    if (mom_parton1_phi_branch != 0) {
+      mom_parton1_phi_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton1_phi_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton1_phi_isLoaded = true;
+  }
+  return mom_parton1_phi_;
+}
+
+const float &tprimetHHadronic::mom_parton2_phi() {
+  if (not mom_parton2_phi_isLoaded) {
+    if (mom_parton2_phi_branch != 0) {
+      mom_parton2_phi_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton2_phi_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton2_phi_isLoaded = true;
+  }
+  return mom_parton2_phi_;
+}
+
+const float &tprimetHHadronic::mom_parton3_phi() {
+  if (not mom_parton3_phi_isLoaded) {
+    if (mom_parton3_phi_branch != 0) {
+      mom_parton3_phi_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton3_phi_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton3_phi_isLoaded = true;
+  }
+  return mom_parton3_phi_;
+}
+
+const float &tprimetHHadronic::mom_parton4_phi() {
+  if (not mom_parton4_phi_isLoaded) {
+    if (mom_parton4_phi_branch != 0) {
+      mom_parton4_phi_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton4_phi_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton4_phi_isLoaded = true;
+  }
+  return mom_parton4_phi_;
+}
+
+const float &tprimetHHadronic::mom_parton5_phi() {
+  if (not mom_parton5_phi_isLoaded) {
+    if (mom_parton5_phi_branch != 0) {
+      mom_parton5_phi_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton5_phi_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton5_phi_isLoaded = true;
+  }
+  return mom_parton5_phi_;
+}
+
+const float &tprimetHHadronic::mom_parton6_phi() {
+  if (not mom_parton6_phi_isLoaded) {
+    if (mom_parton6_phi_branch != 0) {
+      mom_parton6_phi_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton6_phi_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton6_phi_isLoaded = true;
+  }
+  return mom_parton6_phi_;
+}
+
+const float &tprimetHHadronic::mom_parton7_phi() {
+  if (not mom_parton7_phi_isLoaded) {
+    if (mom_parton7_phi_branch != 0) {
+      mom_parton7_phi_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton7_phi_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton7_phi_isLoaded = true;
+  }
+  return mom_parton7_phi_;
+}
+
+const float &tprimetHHadronic::mom_parton8_phi() {
+  if (not mom_parton8_phi_isLoaded) {
+    if (mom_parton8_phi_branch != 0) {
+      mom_parton8_phi_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton8_phi_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton8_phi_isLoaded = true;
+  }
+  return mom_parton8_phi_;
+}
+
+const float &tprimetHHadronic::mom_parton9_phi() {
+  if (not mom_parton9_phi_isLoaded) {
+    if (mom_parton9_phi_branch != 0) {
+      mom_parton9_phi_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton9_phi_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton9_phi_isLoaded = true;
+  }
+  return mom_parton9_phi_;
+}
+
+const float &tprimetHHadronic::mom_parton10_phi() {
+  if (not mom_parton10_phi_isLoaded) {
+    if (mom_parton10_phi_branch != 0) {
+      mom_parton10_phi_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton10_phi_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton10_phi_isLoaded = true;
+  }
+  return mom_parton10_phi_;
+}
+
+const float &tprimetHHadronic::mom_parton1_mass() {
+  if (not mom_parton1_mass_isLoaded) {
+    if (mom_parton1_mass_branch != 0) {
+      mom_parton1_mass_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton1_mass_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton1_mass_isLoaded = true;
+  }
+  return mom_parton1_mass_;
+}
+
+const float &tprimetHHadronic::mom_parton2_mass() {
+  if (not mom_parton2_mass_isLoaded) {
+    if (mom_parton2_mass_branch != 0) {
+      mom_parton2_mass_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton2_mass_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton2_mass_isLoaded = true;
+  }
+  return mom_parton2_mass_;
+}
+
+const float &tprimetHHadronic::mom_parton3_mass() {
+  if (not mom_parton3_mass_isLoaded) {
+    if (mom_parton3_mass_branch != 0) {
+      mom_parton3_mass_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton3_mass_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton3_mass_isLoaded = true;
+  }
+  return mom_parton3_mass_;
+}
+
+const float &tprimetHHadronic::mom_parton4_mass() {
+  if (not mom_parton4_mass_isLoaded) {
+    if (mom_parton4_mass_branch != 0) {
+      mom_parton4_mass_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton4_mass_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton4_mass_isLoaded = true;
+  }
+  return mom_parton4_mass_;
+}
+
+const float &tprimetHHadronic::mom_parton5_mass() {
+  if (not mom_parton5_mass_isLoaded) {
+    if (mom_parton5_mass_branch != 0) {
+      mom_parton5_mass_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton5_mass_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton5_mass_isLoaded = true;
+  }
+  return mom_parton5_mass_;
+}
+
+const float &tprimetHHadronic::mom_parton6_mass() {
+  if (not mom_parton6_mass_isLoaded) {
+    if (mom_parton6_mass_branch != 0) {
+      mom_parton6_mass_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton6_mass_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton6_mass_isLoaded = true;
+  }
+  return mom_parton6_mass_;
+}
+
+const float &tprimetHHadronic::mom_parton7_mass() {
+  if (not mom_parton7_mass_isLoaded) {
+    if (mom_parton7_mass_branch != 0) {
+      mom_parton7_mass_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton7_mass_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton7_mass_isLoaded = true;
+  }
+  return mom_parton7_mass_;
+}
+
+const float &tprimetHHadronic::mom_parton8_mass() {
+  if (not mom_parton8_mass_isLoaded) {
+    if (mom_parton8_mass_branch != 0) {
+      mom_parton8_mass_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton8_mass_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton8_mass_isLoaded = true;
+  }
+  return mom_parton8_mass_;
+}
+
+const float &tprimetHHadronic::mom_parton9_mass() {
+  if (not mom_parton9_mass_isLoaded) {
+    if (mom_parton9_mass_branch != 0) {
+      mom_parton9_mass_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton9_mass_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton9_mass_isLoaded = true;
+  }
+  return mom_parton9_mass_;
+}
+
+const float &tprimetHHadronic::mom_parton10_mass() {
+  if (not mom_parton10_mass_isLoaded) {
+    if (mom_parton10_mass_branch != 0) {
+      mom_parton10_mass_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton10_mass_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton10_mass_isLoaded = true;
+  }
+  return mom_parton10_mass_;
+}
+
+const float &tprimetHHadronic::mom_parton1_pdgId() {
+  if (not mom_parton1_pdgId_isLoaded) {
+    if (mom_parton1_pdgId_branch != 0) {
+      mom_parton1_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton1_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton1_pdgId_isLoaded = true;
+  }
+  return mom_parton1_pdgId_;
+}
+
+const float &tprimetHHadronic::mom_parton2_pdgId() {
+  if (not mom_parton2_pdgId_isLoaded) {
+    if (mom_parton2_pdgId_branch != 0) {
+      mom_parton2_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton2_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton2_pdgId_isLoaded = true;
+  }
+  return mom_parton2_pdgId_;
+}
+
+const float &tprimetHHadronic::mom_parton3_pdgId() {
+  if (not mom_parton3_pdgId_isLoaded) {
+    if (mom_parton3_pdgId_branch != 0) {
+      mom_parton3_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton3_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton3_pdgId_isLoaded = true;
+  }
+  return mom_parton3_pdgId_;
+}
+
+const float &tprimetHHadronic::mom_parton4_pdgId() {
+  if (not mom_parton4_pdgId_isLoaded) {
+    if (mom_parton4_pdgId_branch != 0) {
+      mom_parton4_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton4_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton4_pdgId_isLoaded = true;
+  }
+  return mom_parton4_pdgId_;
+}
+
+const float &tprimetHHadronic::mom_parton5_pdgId() {
+  if (not mom_parton5_pdgId_isLoaded) {
+    if (mom_parton5_pdgId_branch != 0) {
+      mom_parton5_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton5_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton5_pdgId_isLoaded = true;
+  }
+  return mom_parton5_pdgId_;
+}
+
+const float &tprimetHHadronic::mom_parton6_pdgId() {
+  if (not mom_parton6_pdgId_isLoaded) {
+    if (mom_parton6_pdgId_branch != 0) {
+      mom_parton6_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton6_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton6_pdgId_isLoaded = true;
+  }
+  return mom_parton6_pdgId_;
+}
+
+const float &tprimetHHadronic::mom_parton7_pdgId() {
+  if (not mom_parton7_pdgId_isLoaded) {
+    if (mom_parton7_pdgId_branch != 0) {
+      mom_parton7_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton7_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton7_pdgId_isLoaded = true;
+  }
+  return mom_parton7_pdgId_;
+}
+
+const float &tprimetHHadronic::mom_parton8_pdgId() {
+  if (not mom_parton8_pdgId_isLoaded) {
+    if (mom_parton8_pdgId_branch != 0) {
+      mom_parton8_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton8_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton8_pdgId_isLoaded = true;
+  }
+  return mom_parton8_pdgId_;
+}
+
+const float &tprimetHHadronic::mom_parton9_pdgId() {
+  if (not mom_parton9_pdgId_isLoaded) {
+    if (mom_parton9_pdgId_branch != 0) {
+      mom_parton9_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton9_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton9_pdgId_isLoaded = true;
+  }
+  return mom_parton9_pdgId_;
+}
+
+const float &tprimetHHadronic::mom_parton10_pdgId() {
+  if (not mom_parton10_pdgId_isLoaded) {
+    if (mom_parton10_pdgId_branch != 0) {
+      mom_parton10_pdgId_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton10_pdgId_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton10_pdgId_isLoaded = true;
+  }
+  return mom_parton10_pdgId_;
+}
+
+const float &tprimetHHadronic::mom_parton1_status() {
+  if (not mom_parton1_status_isLoaded) {
+    if (mom_parton1_status_branch != 0) {
+      mom_parton1_status_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton1_status_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton1_status_isLoaded = true;
+  }
+  return mom_parton1_status_;
+}
+
+const float &tprimetHHadronic::mom_parton2_status() {
+  if (not mom_parton2_status_isLoaded) {
+    if (mom_parton2_status_branch != 0) {
+      mom_parton2_status_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton2_status_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton2_status_isLoaded = true;
+  }
+  return mom_parton2_status_;
+}
+
+const float &tprimetHHadronic::mom_parton3_status() {
+  if (not mom_parton3_status_isLoaded) {
+    if (mom_parton3_status_branch != 0) {
+      mom_parton3_status_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton3_status_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton3_status_isLoaded = true;
+  }
+  return mom_parton3_status_;
+}
+
+const float &tprimetHHadronic::mom_parton4_status() {
+  if (not mom_parton4_status_isLoaded) {
+    if (mom_parton4_status_branch != 0) {
+      mom_parton4_status_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton4_status_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton4_status_isLoaded = true;
+  }
+  return mom_parton4_status_;
+}
+
+const float &tprimetHHadronic::mom_parton5_status() {
+  if (not mom_parton5_status_isLoaded) {
+    if (mom_parton5_status_branch != 0) {
+      mom_parton5_status_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton5_status_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton5_status_isLoaded = true;
+  }
+  return mom_parton5_status_;
+}
+
+const float &tprimetHHadronic::mom_parton6_status() {
+  if (not mom_parton6_status_isLoaded) {
+    if (mom_parton6_status_branch != 0) {
+      mom_parton6_status_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton6_status_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton6_status_isLoaded = true;
+  }
+  return mom_parton6_status_;
+}
+
+const float &tprimetHHadronic::mom_parton7_status() {
+  if (not mom_parton7_status_isLoaded) {
+    if (mom_parton7_status_branch != 0) {
+      mom_parton7_status_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton7_status_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton7_status_isLoaded = true;
+  }
+  return mom_parton7_status_;
+}
+
+const float &tprimetHHadronic::mom_parton8_status() {
+  if (not mom_parton8_status_isLoaded) {
+    if (mom_parton8_status_branch != 0) {
+      mom_parton8_status_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton8_status_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton8_status_isLoaded = true;
+  }
+  return mom_parton8_status_;
+}
+
+const float &tprimetHHadronic::mom_parton9_status() {
+  if (not mom_parton9_status_isLoaded) {
+    if (mom_parton9_status_branch != 0) {
+      mom_parton9_status_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton9_status_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton9_status_isLoaded = true;
+  }
+  return mom_parton9_status_;
+}
+
+const float &tprimetHHadronic::mom_parton10_status() {
+  if (not mom_parton10_status_isLoaded) {
+    if (mom_parton10_status_branch != 0) {
+      mom_parton10_status_branch->GetEntry(index);
+    } else {
+      printf("branch mom_parton10_status_branch does not exist!\n");
+      exit(1);
+    }
+    mom_parton10_status_isLoaded = true;
+  }
+  return mom_parton10_status_;
+}
+
 const float &tprimetHHadronic::genMatched_jet0_pdgId() {
   if (not genMatched_jet0_pdgId_isLoaded) {
     if (genMatched_jet0_pdgId_branch != 0) {
@@ -7266,6 +8286,66 @@ const float &gen_parton7_status() { return analyzer.gen_parton7_status(); }
 const float &gen_parton8_status() { return analyzer.gen_parton8_status(); }
 const float &gen_parton9_status() { return analyzer.gen_parton9_status(); }
 const float &gen_parton10_status() { return analyzer.gen_parton10_status(); }
+const float &mom_parton1_pt() { return analyzer.mom_parton1_pt(); }
+const float &mom_parton2_pt() { return analyzer.mom_parton2_pt(); }
+const float &mom_parton3_pt() { return analyzer.mom_parton3_pt(); }
+const float &mom_parton4_pt() { return analyzer.mom_parton4_pt(); }
+const float &mom_parton5_pt() { return analyzer.mom_parton5_pt(); }
+const float &mom_parton6_pt() { return analyzer.mom_parton6_pt(); }
+const float &mom_parton7_pt() { return analyzer.mom_parton7_pt(); }
+const float &mom_parton8_pt() { return analyzer.mom_parton8_pt(); }
+const float &mom_parton9_pt() { return analyzer.mom_parton9_pt(); }
+const float &mom_parton10_pt() { return analyzer.mom_parton10_pt(); }
+const float &mom_parton1_eta() { return analyzer.mom_parton1_eta(); }
+const float &mom_parton2_eta() { return analyzer.mom_parton2_eta(); }
+const float &mom_parton3_eta() { return analyzer.mom_parton3_eta(); }
+const float &mom_parton4_eta() { return analyzer.mom_parton4_eta(); }
+const float &mom_parton5_eta() { return analyzer.mom_parton5_eta(); }
+const float &mom_parton6_eta() { return analyzer.mom_parton6_eta(); }
+const float &mom_parton7_eta() { return analyzer.mom_parton7_eta(); }
+const float &mom_parton8_eta() { return analyzer.mom_parton8_eta(); }
+const float &mom_parton9_eta() { return analyzer.mom_parton9_eta(); }
+const float &mom_parton10_eta() { return analyzer.mom_parton10_eta(); }
+const float &mom_parton1_phi() { return analyzer.mom_parton1_phi(); }
+const float &mom_parton2_phi() { return analyzer.mom_parton2_phi(); }
+const float &mom_parton3_phi() { return analyzer.mom_parton3_phi(); }
+const float &mom_parton4_phi() { return analyzer.mom_parton4_phi(); }
+const float &mom_parton5_phi() { return analyzer.mom_parton5_phi(); }
+const float &mom_parton6_phi() { return analyzer.mom_parton6_phi(); }
+const float &mom_parton7_phi() { return analyzer.mom_parton7_phi(); }
+const float &mom_parton8_phi() { return analyzer.mom_parton8_phi(); }
+const float &mom_parton9_phi() { return analyzer.mom_parton9_phi(); }
+const float &mom_parton10_phi() { return analyzer.mom_parton10_phi(); }
+const float &mom_parton1_mass() { return analyzer.mom_parton1_mass(); }
+const float &mom_parton2_mass() { return analyzer.mom_parton2_mass(); }
+const float &mom_parton3_mass() { return analyzer.mom_parton3_mass(); }
+const float &mom_parton4_mass() { return analyzer.mom_parton4_mass(); }
+const float &mom_parton5_mass() { return analyzer.mom_parton5_mass(); }
+const float &mom_parton6_mass() { return analyzer.mom_parton6_mass(); }
+const float &mom_parton7_mass() { return analyzer.mom_parton7_mass(); }
+const float &mom_parton8_mass() { return analyzer.mom_parton8_mass(); }
+const float &mom_parton9_mass() { return analyzer.mom_parton9_mass(); }
+const float &mom_parton10_mass() { return analyzer.mom_parton10_mass(); }
+const float &mom_parton1_pdgId() { return analyzer.mom_parton1_pdgId(); }
+const float &mom_parton2_pdgId() { return analyzer.mom_parton2_pdgId(); }
+const float &mom_parton3_pdgId() { return analyzer.mom_parton3_pdgId(); }
+const float &mom_parton4_pdgId() { return analyzer.mom_parton4_pdgId(); }
+const float &mom_parton5_pdgId() { return analyzer.mom_parton5_pdgId(); }
+const float &mom_parton6_pdgId() { return analyzer.mom_parton6_pdgId(); }
+const float &mom_parton7_pdgId() { return analyzer.mom_parton7_pdgId(); }
+const float &mom_parton8_pdgId() { return analyzer.mom_parton8_pdgId(); }
+const float &mom_parton9_pdgId() { return analyzer.mom_parton9_pdgId(); }
+const float &mom_parton10_pdgId() { return analyzer.mom_parton10_pdgId(); }
+const float &mom_parton1_status() { return analyzer.mom_parton1_status(); }
+const float &mom_parton2_status() { return analyzer.mom_parton2_status(); }
+const float &mom_parton3_status() { return analyzer.mom_parton3_status(); }
+const float &mom_parton4_status() { return analyzer.mom_parton4_status(); }
+const float &mom_parton5_status() { return analyzer.mom_parton5_status(); }
+const float &mom_parton6_status() { return analyzer.mom_parton6_status(); }
+const float &mom_parton7_status() { return analyzer.mom_parton7_status(); }
+const float &mom_parton8_status() { return analyzer.mom_parton8_status(); }
+const float &mom_parton9_status() { return analyzer.mom_parton9_status(); }
+const float &mom_parton10_status() { return analyzer.mom_parton10_status(); }
 const float &genMatched_jet0_pdgId() { return analyzer.genMatched_jet0_pdgId(); }
 const float &genMatched_jet1_pdgId() { return analyzer.genMatched_jet1_pdgId(); }
 const float &genMatched_jet2_pdgId() { return analyzer.genMatched_jet2_pdgId(); }
