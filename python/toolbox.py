@@ -2,13 +2,56 @@
 import ROOT
 ROOT.gROOT.SetBatch(True)
 
-def make_plot(h, filename):
+def make_plot(h, filename, option = "hist", removeStats = False, setOverflow = False):
+    c1 = ROOT.TCanvas("c1", "", 800, 600)
+
+    if removeStats:
+        h.SetStats(0)
+
+    if setOverflow:
+        ROOT.gStyle.SetOptStat("nemro");
+
+    h.SetLineWidth(2)
+    h.Draw(option)
+    c1.SaveAs(filename)
+
+def make_plot_cut_efficiency(h, filename, cut_value):
     c1 = ROOT.TCanvas("c1", "", 800, 600)
     h.SetLineWidth(2)
     h.Draw("hist")
+
+    c1.Update()
+    l = ROOT.TLine( cut_value, c1.GetUymin(), cut_value, c1.GetUymax() )
+    l.SetLineColor(ROOT.kBlack)
+    l.SetLineWidth(2)
+    l.Draw()
+
+    latex = ROOT.TLatex()
+    latex.SetNDC()
+    latex.SetTextFont(43)
+    latex.SetTextAlign(11)
+    latex.SetTextSize(28)
+    latex.DrawLatex( 0.40, 0.60, "Criterion: < %.1f" % cut_value )
+
+    passed_entries = 0.
+    for i in range(5):
+        passed_entries += h.GetBinContent(i+1)
+
+    efficiency = 100. * passed_entries / h.GetEntries()
+    latex.DrawLatex( 0.40, 0.50, "Efficiency: %.1f%%" % efficiency )
+
+
+    #c1.Update()
+    #box = ROOT.TBox( cut_value, c1.GetUymin(), cut_value, c1.GetUymax() )
+    ##box.SetFillStyle(3003);
+    #box.SetFillColor(ROOT.kBlack);
+    #box.SetLineColor(ROOT.kBlack);
+    #box.SetLineWidth(2);
+    #box.Draw("same");
+
     c1.SaveAs(filename)
 
-def make_plot_2D(h1, h2, filename):
+def make_plot_two_hists(h1, title1, h2, title2, filename):
     c1 = ROOT.TCanvas("c1", "", 800, 600)
 
     h1.SetLineWidth(2)
@@ -39,8 +82,8 @@ def make_plot_2D(h1, h2, filename):
     
     latex.SetTextSize(32)
 
-    draw_stats("Minimum chi-2", h1, latex, ROOT.kBlue, 0.20)
-    draw_stats("Truth-Matched", h2, latex, ROOT.kRed, 0.55)
+    draw_stats(title1, h1, latex, ROOT.kBlue, 0.20)
+    draw_stats(title2, h2, latex, ROOT.kRed, 0.55)
 
     c1.SaveAs(filename)
 
