@@ -34,7 +34,7 @@ def update_data_format(ref_root_file):
     subprocess.call(command, shell=True)
     subprocess.call("cp tprimetHHadronic.h tprimetHHadronic.cc ../../include/", shell=True)
     subprocess.call("ls -lhrt ../../include", shell=True)
-    print "Remember to modify input files in src/tprimetHHadronicLooper.cpp :)"
+    print "Remember to modify input files in python/run.py :)"
 
 #----------------------------------------------------------------------------------------------------#
 

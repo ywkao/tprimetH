@@ -25,30 +25,6 @@
 using namespace std;
 using namespace tprime;
 
-bool sortByGreaterValue(const std::pair<int,double>& pair1, const std::pair<int,double>& pair2 ) {
-  return pair1.second > pair2.second;
-}
-
-bool sortBySmallerValue(const std::pair<int,double>& pair1, const std::pair<int,double>& pair2 ) {
-  return pair1.second < pair2.second;
-}
-
-vector< std::pair<int, double> > sortVectorGreater(const vector<double> v) {
-  vector< std::pair<int, double> > v2;
-  for (int i = 0; i < v.size(); i++)
-    v2.push_back(std::pair<int, double>(i, v[i]));
-  std::sort(v2.begin(), v2.end(), sortByGreaterValue);
-  return v2;
-}
-
-vector< std::pair<int, double> > sortVectorSmaller(const vector<double> v) {
-  vector< std::pair<int, double> > v2;
-  for (int i = 0; i < v.size(); i++)
-    v2.push_back(std::pair<int, double>(i, v[i]));
-  std::sort(v2.begin(), v2.end(), sortBySmallerValue);
-  return v2;
-}
-
 vector<TLorentzVector> make_mom_particles(vector<float> &pdgIds, vector<float> &status) {
   vector<TLorentzVector> vPartons;
   // note: mom_parton1_pt() and mom_parton2_pt() can be zero
