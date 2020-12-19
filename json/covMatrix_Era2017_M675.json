@@ -1,0 +1,14 @@
+{
+    "mass_reco_w" : 82.95,
+    "mass_reco_top" : 170.58,
+    "mass_reco_tprime" : 659.63,
+    "covMatrix_00" : 200.48,
+    "covMatrix_01" : 219.00,
+    "covMatrix_02" : 369.94,
+    "covMatrix_10" : 219.00,
+    "covMatrix_11" : 542.35,
+    "covMatrix_12" : 898.02,
+    "covMatrix_20" : 369.94,
+    "covMatrix_21" : 898.02,
+    "covMatrix_22" : 2960.84
+}
