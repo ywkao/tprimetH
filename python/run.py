@@ -42,6 +42,8 @@ signals = [
     "TprimeBToTH_M-900_Era2016_v2p%s.root"   %  str(subversion)
 ]
 
+subprocess.call("mkdir -p plots", shell=True)
+
 command_list = []
 
 counter = 0
@@ -49,12 +51,11 @@ for rootfile in signals:
     counter += 1
     year = rootfile.split('_')[2].split('a')[1]
     mass = rootfile.split('_')[1].split('-')[1]
-    
-    command='./bin/tprimetHHadronicLooper %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, datetime_tag, counter)
+    command='./bin/tprimetHHadronicLooper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
     #command='./bin/covMatrix_Looper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
 
     command_list.append(command)
-    #break
+    break
 
 nPar = 12
 parallel_utils.submit_jobs(command_list, nPar)

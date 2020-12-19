@@ -8,6 +8,10 @@ TARGET   := bin/tprimetHHadronicLooper bin/covMatrix_Looper
 
 all: ${TARGET}
 
+build/jsoncpp.o: src/jsoncpp.cpp include/json/json.h
+	@mkdir -p $(BUILDDIR)
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
+
 build/sorting.o: src/sorting.cc include/sorting.h
 	@mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
@@ -16,7 +20,7 @@ build/truth_matching.o: src/truth_matching.cc include/truth_matching.h include/s
 	@mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
-build/chi2_helper.o: src/chi2_helper.cc include/chi2_helper.h
+build/chi2_helper.o: src/chi2_helper.cc include/chi2_helper.h include/json/json.h
 	@mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
@@ -24,7 +28,7 @@ build/tprimetHHadronicLooper.o: src/tprimetHHadronicLooper.cpp src/ScanChain_tpr
 	@mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
-bin/tprimetHHadronicLooper: build/tprimetHHadronicLooper.o build/chi2_helper.o build/truth_matching.o build/sorting.o
+bin/tprimetHHadronicLooper: build/tprimetHHadronicLooper.o build/chi2_helper.o build/truth_matching.o build/sorting.o build/jsoncpp.o
 	@echo "Linking..." && mkdir -p bin
 	$(CC) -o $@ $^ $(CFLAGS) $(ROOTLIBS)
 
