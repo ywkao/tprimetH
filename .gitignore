@@ -9,3 +9,7 @@ build
 rootfiles
 
 stashed
+
+src/history
+
+dir_log
