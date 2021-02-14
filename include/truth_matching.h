@@ -12,7 +12,9 @@ class truth_matching_helper
         truth_matching_helper(vector<TLorentzVector>, vector<TLorentzVector>, vector<float>, vector<float>, vector<float>);
         truth_matching_helper(vector<TLorentzVector>, vector<TLorentzVector>, vector<float>, vector<float>, vector<float>, TH1F*, TH1F*);
         ~truth_matching_helper();
-        bool perform_mc_truth_matching();
+        bool perform_mc_truth_matching()       ;
+        bool get_pass_gen_deltaR_criterion()   ;
+        bool get_pass_gen_pt_ratio_criterion() ;
         vector<int>    get_register_genIndex() ;
         vector<int>    get_register_jetIndex() ;
         vector<float>  get_register_pdgId()    ;
@@ -21,6 +23,9 @@ class truth_matching_helper
         vector<double> get_register_ptRatio()  ;
 
     private:
+        bool pass_gen_deltaR_criterion;
+        bool pass_gen_pt_ratio_criterion;
+
         bool bool_fill_histogram;
         TH1F *h_deltaR_partons;
         TH1F *h_ptRatio_partons;

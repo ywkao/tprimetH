@@ -5,6 +5,7 @@
 #include <vector>
 #include <TMatrixD.h>
 #include <TVectorD.h>
+#include <TH1D.h>
 #include <TString.h>
 #include <TLorentzVector.h>
 
@@ -16,5 +17,9 @@ double chi2_calculator_3x3(double w_mass, double t_mass, double tprime_mass, TSt
 bool get_the_best_wjets_candidate(std::vector<int> &indices_wjets, std::vector<TLorentzVector> jets, int index_bjet, double &min_chi2_value);
 bool get_the_best_bjj_candidate(std::vector<int> &indices_bjj, std::vector<TLorentzVector> jets, TLorentzVector diphoton, std::vector<double> btag_scores, double &min_chi2_value, TString json_file);
 bool matching_teller(std::vector<int> v_true, std::vector<int> v_test);
+void print_indices(bool to_print, TString title, std::vector<int> v);
+double calculate_efficiency_binomial_uncertainty(double eff, double entries);
+double calculate_matching_efficiency(double numerator, double denominator);
+void convert_to_matching_efficiency(TH1F *h_matching_eff, TH1F *h_numerator, TH1F *h_denominator, int xtt0_nbins, int chi2_entries, bool is_bin_by_bin);
 
 #endif

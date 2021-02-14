@@ -195,3 +195,34 @@ bool matching_teller(std::vector<int> v_true, std::vector<int> v_test)
 
     return is_matched;
 }
+
+void print_indices(bool to_print, TString title, std::vector<int> v)
+{
+    if(to_print) printf("%25s: bjj indices: %d %d %d \n", title.Data(), v[0], v[1], v[2]);
+}
+
+double calculate_matching_efficiency(double numerator, double denominator)
+{
+    double eff = denominator > 0. ? numerator / denominator : 0.;
+    return eff;
+}
+
+double calculate_efficiency_binomial_uncertainty(double eff, double entries)
+{
+    double err = entries > 0. ? sqrt( ( eff * (1-eff) ) / entries ) : 0.;
+    return err;
+}
+
+void convert_to_matching_efficiency(TH1F *h_matching_eff, TH1F *h_numerator, TH1F *h_denominator, int xtt0_nbins, int chi2_entries, bool is_bin_by_bin)
+{
+    for(int bin = 0; bin < xtt0_nbins; ++bin)
+    {
+        double N = is_bin_by_bin ? (double) h_denominator->GetBinContent(bin+1) : (double) chi2_entries;
+        double matching_eff = calculate_matching_efficiency( (double) h_numerator->GetBinContent(bin+1), N );
+        double matching_err = calculate_efficiency_binomial_uncertainty( matching_eff, N );
+        h_matching_eff -> SetBinContent( bin+1, matching_eff );
+        h_matching_eff -> SetBinError( bin+1, matching_err );
+
+        //printf("[check] matching_eff = %.2f (%.2f / %2.f)\n", matching_eff, h_numerator->GetBinContent(bin+1), h_denominator->GetBinContent(bin+1));
+    }
+}

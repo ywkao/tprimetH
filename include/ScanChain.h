@@ -19,6 +19,7 @@
 
 #include <TCanvas.h>
 #include <TH2F.h>
+#include <TNtuple.h>
 
 // tprimetHHadronic
 #include "tprimetHHadronic.cc"
@@ -530,18 +531,6 @@ void makePlot_twoHists(TCanvas *c1, TH1F *h1, TH1F *h2, TString filename) {
 
     c1->Modified(); c1->Update();
     c1->SaveAs(filename);
-}
-
-double calculate_matching_efficiency(double numerator, double denominator)
-{
-    double eff = denominator > 0. ? numerator / denominator : 0.;
-    return eff;
-}
-
-double calculate_efficiency_binomial_uncertainty(double eff, double entries)
-{
-    double err = entries > 0. ? sqrt( ( eff * (1-eff) ) / entries ) : 0.;
-    return err;
 }
 
 void print_counter_percentage(TString title, int counter, int tot){
