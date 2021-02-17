@@ -1,5 +1,4 @@
-void print_values(TString name, double mean, double error);
-void estimate_mean_and_error(TH1D* h_sig, double &mean_signal, double &width_signal);
+#include "toolbox.C"
 
 void fitdata_one_gaussian( TString object, TString year_str, TString mass_str, double init_mean, double lower_bound, double upper_bound, double init_sigma){
     TString filename = "plots/hist_TprimeBToTH_M-" + mass_str + "_Era" + year_str + "_v2p4.root";
@@ -58,36 +57,4 @@ void fitdata_one_gaussian( TString object, TString year_str, TString mass_str, d
 
     gPad->SetTicky();
     c1->SaveAs(png_name);
-}
-
-void print_values(TString name, double mean, double error)
-{
-    printf("%s: mass = %.2f \\pm %.2f \n", name.Data(), mean, error);
-}
-
-void estimate_mean_and_error(TH1D* h_sig, double &mean_signal, double &width_signal)
-{
-    //--- Do the mean and width calculation ---//
-    int bin_max = h_sig->GetMaximumBin();
-    mean_signal = h_sig->GetBinCenter(bin_max);
-    width_signal = 0.;
-    double binW = h_sig->GetBinWidth(1);
-
-    double all_integral = 0.;
-    for(int i=1;i<(int)h_sig->GetNbinsX();++i)
-        all_integral += h_sig->GetBinContent(i)*binW;
-
-    double acc_integral = h_sig->GetBinContent(bin_max)*binW;
-    for(int i=1;i<(int)h_sig->GetNbinsX();++i)
-    {
-        acc_integral += h_sig->GetBinContent(bin_max+i)*binW;
-        acc_integral += h_sig->GetBinContent(bin_max-i)*binW;
-        if( acc_integral/all_integral >= 0.682 ) {
-            width_signal = h_sig->GetBinCenter(bin_max+i) - mean_signal;
-            break;
-        }
-    }
-
-    printf("[self] ratio = %.2f (%.2f/%.2f)\n", acc_integral/all_integral, acc_integral, all_integral );
-    printf("[self] mass = %.2f \\pm %.2f\n", mean_signal, width_signal);
 }

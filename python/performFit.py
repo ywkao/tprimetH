@@ -4,18 +4,19 @@ import glob
 import subprocess
 import transfer_helper
 import parallel_utils
-#import datetime
-#today = datetime.datetime.today()
-#datetime_tag = today.strftime("%Y%m%d") 
+import datetime
+today = datetime.datetime.today()
+datetime_tag = today.strftime("%Y%m%d") 
 
 to_fit_chi2_value = True
 to_fit_mass = False
 
 #target = "/eos/user/y/ykao/www/plots/fit_result"
-target = "/eos/user/y/ykao/www/plots/20210208"
+target = "/eos/user/y/ykao/www/plots/%s" % datetime_tag
 transfer_helper.prepare_index_php(target)
 rootfiles = glob.glob("plots/hist_*root")
 
+subprocess.call("rm %s/*png" %(target), shell=True)
 
 if to_fit_chi2_value:
     command_list = []
@@ -25,12 +26,15 @@ if to_fit_chi2_value:
         mass = rootfile.split('_')[2].split('-')[1]
         log = "stashed/fit_result_chi2_value_" + mass + "_" + era + ".txt"
 
-        command = "root -l -b -q 'macro/fit_chi2_value.C(\"%s\", \"%s\", \"%s\", %f, %f, %f, %f, %f, %f, %f, %f)' | tee -a %s" % ("chi2_value", year, mass, 10, 0., 150, 20, 110, 100, 180, 50, log)
+        command = "root -l -b -q 'macro/fit_chi2_value.C(\"%s\", \"%s\", \"%s\", \"%s\", %f, %f, %f, %f)' | tee -a %s" % ("Fit on minimum #chi^{2} value", "nt_chi2_value", year, mass, 10, 0., 10., 100., log)
+        command_list.append(command)
+
+        command = "root -l -b -q 'macro/fit_chi2_value.C(\"%s\", \"%s\", \"%s\", \"%s\", %f, %f, %f, %f)' | tee -a %s" % ("Fit on minimum #chi^{2} value (cov. matrix)", "nt_chi2_value_cov", year, mass, 10, 0., 5., 100., log)
         command_list.append(command)
 
     nPar = 15
     parallel_utils.submit_jobs(command_list, nPar)
-    subprocess.call("mv plots/fit_chi2_* %s" %(target), shell=True)
+    subprocess.call("mv plots/fit*chi2_* %s" %(target), shell=True)
 
 
 if to_fit_mass:
