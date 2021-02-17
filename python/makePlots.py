@@ -10,13 +10,21 @@ import transfer_helper
 import ROOT
 ROOT.gROOT.SetBatch(True)
 
-
 # options
 trend_wrt_tprime_mass = False
+check_mass_diphoton = True
 check_mass_pt_dependency = False 
-make_all_plots = True
+make_all_plots = False
 make_individual_plots = False
-os.chdir("./plots")
+os.chdir("./plots") #os.chdir("./stashed/plots_20210213/")
+
+# common
+ext = "png"
+today = datetime.datetime.today()
+datetime_tag = today.strftime("%Y%m%d") 
+target = "/eos/user/y/ykao/www/plots/%s" % (datetime_tag)
+transfer_helper.prepare_index_php(target)
+    
 
 
 if trend_wrt_tprime_mass:
@@ -110,6 +118,37 @@ if trend_wrt_tprime_mass:
 
 
 
+if check_mass_diphoton:
+    # future study: fit with gaussian + DCB and then check mass trend !!
+    masses = [ 600, 700, 800, 900, 1000, 1100, 1200 ]
+    colors = [ ROOT.kRed-10, ROOT.kRed-7, ROOT.kRed-0, ROOT.kRed+1, ROOT.kRed+2, ROOT.kRed+3, ROOT.kBlack ]
+    styles = [1, 1, 1, 1, 1, 1, 1 ]
+    texts = []
+    xytitles = ["Diphoton invariant mass GeV /^{}c^{2}", "p.d.f."]
+    #colors = [ ROOT.kBlue-10, ROOT.kBlue-9, ROOT.kBlue-7, ROOT.kBlue-4, ROOT.kBlue+0, ROOT.kBlue+1, ROOT.kBlue+2, ROOT.kBlue+3, ROOT.kBlue+4 ]
+    #colors = [ ROOT.kBlack, ROOT.kRed+3, ROOT.kRed+2, ROOT.kRed+1, ROOT.kRed-0, ROOT.kRed-7, ROOT.kRed-10 ]
+    #xytitles = ["Diphoton invariant mass GeV /^{}c^{2}", "Entries"]
+
+    fin_collection = []
+    for mass in masses:
+        rootfile = "hist_TprimeBToTH_M-" + str(mass) + "_Era2017_v2p4.root"
+        fin = ROOT.TFile.Open(rootfile, "R")
+        fin_collection.append(fin)
+        print rootfile
+
+        text = "M_{T'} = %d" % mass
+        texts.append(text)
+
+    hists = []
+    for fin in fin_collection:
+        h = fin.Get("h_mass_diphoton")
+        hists.append(h)
+
+    toolbox.make_plot_multi_hists(hists, colors, styles, texts, xytitles, "h_mass_diphoton_check.%s" % ext, 2017, "hist", "l", False, [0.60, 0.20], [0.20, 0.60], True)
+    transfer_helper.move_files("*mass_diphoton*png", target)
+
+
+
 if check_mass_pt_dependency:
     fin_collection = []
     #masses = [ 600, 625, 650, 675, 700, 800, 900, 1000, 1100, 1200 ]
@@ -170,11 +209,6 @@ if check_mass_pt_dependency:
     #}}}
 
     # place png file to personal web
-    today = datetime.datetime.today()
-    datetime_tag = today.strftime("%Y%m%d") 
-    target = "/eos/user/y/ykao/www/plots/%s" % (datetime_tag)
-    transfer_helper.prepare_index_php(target)
-    
     transfer_helper.move_files("*wboson*png" , target )
     transfer_helper.move_files("*top*png"    , target )
     #transfer_helper.move_files("*wboson*png" , target + "/02_Wboson"       )
@@ -185,8 +219,6 @@ if check_mass_pt_dependency:
 if make_all_plots:
     rootfiles = glob.glob("hist_*root")
     #rootfiles = glob.glob("hist_*1000*2017*root")
-    
-    ext = "png"
     
     for file in rootfiles:
         print file
@@ -233,8 +265,10 @@ if make_all_plots:
         h_chi2_mass_top                      = fin.Get("h_chi2_mass_top"                      )
         h_chi2_value                         = fin.Get("h_chi2_value"                         )
         h_chi2_cut_eff                       = fin.Get("h_chi2_cut_eff"                       )
+        h_chi2_cut_eff_subspace                       = fin.Get("h_chi2_cut_eff_subspace"                       )
         h_cov_chi2_value                     = fin.Get("h_cov_chi2_value"                     )
         h_cov_chi2_cut_eff                   = fin.Get("h_cov_chi2_cut_eff"                   )
+        h_cov_chi2_cut_eff_subspace                   = fin.Get("h_cov_chi2_cut_eff_subspace"                   )
         h_cov_chi2_mass_wboson               = fin.Get("h_cov_chi2_mass_wboson"               )
         h_cov_chi2_mass_top                  = fin.Get("h_cov_chi2_mass_top"                  )
         h_numerator_vs_chi2Cut               = fin.Get("h_numerator_vs_chi2Cut"               )
@@ -259,7 +293,12 @@ if make_all_plots:
         h_cov_matchingEff_vs_chi2Bins_rebase = fin.Get("h_cov_matchingEff_vs_chi2Bins_rebase" )
         h_chi2_value_subspace                = fin.Get("h_chi2_value_subspace"                )
         h_cov_chi2_value_subspace            = fin.Get("h_cov_chi2_value_subspace"            )
-        
+
+        nt_chi2_matchingEff_vs_cutEff              = fin.Get("nt_chi2_matchingEff_vs_cutEff")
+        nt_chi2_matchingEff_vs_cutEff_subspace     = fin.Get("nt_chi2_matchingEff_vs_cutEff_subspace")
+        nt_cov_chi2_matchingEff_vs_cutEff          = fin.Get("nt_cov_chi2_matchingEff_vs_cutEff")
+        nt_cov_chi2_matchingEff_vs_cutEff_subspace = fin.Get("nt_cov_chi2_matchingEff_vs_cutEff_subspace")
+
 
         #------------------------------------------------- Make plots ---------------------------------------------------#
         if make_individual_plots:
@@ -334,33 +373,49 @@ if make_all_plots:
         toolbox.make_plot_multi_hists(hists, colors, styles, texts, xytitles, "h_matchingEff_chi2Bins_check_%s.%s" % (tag, ext))
     
         ### figures for presentation
+        xytitles = ["Selection efficiency", "Matching efficiency"]
+        labels = ["w/o covariance matrix", "with covariance matrix"]
+
+        nts = [nt_chi2_matchingEff_vs_cutEff, nt_cov_chi2_matchingEff_vs_cutEff]
+        histnames = ["h_chi2_matchingEff_vs_cutEff", "h_cov_chi2_matchingEff_vs_cutEff"]
+        toolbox.make_2d_plot_from_ntuple(nts, xytitles, labels, histnames, "matchingEff:cutEff" , "" , 100 , 0. , 1. , 100 , 0. , 1.)
+
+        nts = [nt_chi2_matchingEff_vs_cutEff_subspace, nt_cov_chi2_matchingEff_vs_cutEff_subspace]
+        histnames = ["h_chi2_matchingEff_vs_cutEff_subspace", "h_cov_chi2_matchingEff_vs_cutEff_subspace"]
+        toolbox.make_2d_plot_from_ntuple(nts, xytitles, labels, histnames, "matchingEff:cutEff" , "" , 100 , 0. , 1. , 100 , 0. , 1., True)
+
+        #toolbox.make_2d_plot_from_ntuple(nt_chi2_matchingEff_vs_cutEff              , "h_chi2_matchingEff_vs_cutEff"              , "matchingEff:cutEff" , "" , 100 , 0. , 1. , 100 , 0. , 1.)
+        #toolbox.make_2d_plot_from_ntuple(nt_chi2_matchingEff_vs_cutEff_subspace     , "h_chi2_matchingEff_vs_cutEff_subspace"     , "matchingEff:cutEff" , "" , 100 , 0. , 1. , 100 , 0. , 1.)
+        #toolbox.make_2d_plot_from_ntuple(nt_cov_chi2_matchingEff_vs_cutEff          , "h_cov_chi2_matchingEff_vs_cutEff"          , "matchingEff:cutEff" , "" , 100 , 0. , 1. , 100 , 0. , 1.)
+        #toolbox.make_2d_plot_from_ntuple(nt_cov_chi2_matchingEff_vs_cutEff_subspace , "h_cov_chi2_matchingEff_vs_cutEff_subspace" , "matchingEff:cutEff" , "" , 100 , 0. , 1. , 100 , 0. , 1.)
+
         colors = [ROOT.kBlue, ROOT.kRed]
         styles = [1, 1]
         texts = [ "w/o covariance matrix", "with covariance matrix" ]
 
-        xytitles = ["chi-2 cut values", "Efficiency"]
+        xytitles = ["chi-2 cut values", "Selection Efficiency"]
+        hists = [ h_chi2_cut_eff, h_cov_chi2_cut_eff ]
+        toolbox.make_plot_multi_hists(hists, colors, styles, texts, xytitles, "h_compare_selectionEff_vs_chi2Cut_%s.%s" % (tag, ext), 2017, "ep", "epl")
+        hists = [ h_chi2_cut_eff_subspace, h_cov_chi2_cut_eff_subspace ]
+        toolbox.make_plot_multi_hists(hists, colors, styles, texts, xytitles, "h_compare_selectionEff_vs_chi2Cut_subspace_%s.%s" % (tag, ext), 2017, "ep", "epl")
+
+        xytitles = ["chi-2 cut values", "Matching Efficiency"]
         hists = [ h_matchingEff_vs_chi2Cut, h_cov_matchingEff_vs_chi2Cut ]
         toolbox.make_plot_multi_hists(hists, colors, styles, texts, xytitles, "h_compare_matchingEff_vs_chi2Cut_%s.%s" % (tag, ext), 2017, "ep", "epl")
-
-        xytitles = ["chi-2 values", "Efficiency"]
-        hists = [ h_matchingEff_vs_chi2Bins, h_cov_matchingEff_vs_chi2Bins ]
-        toolbox.make_plot_multi_hists(hists, colors, styles, texts, xytitles, "h_compare_matchingEff_vs_chi2Bins_%s.%s" % (tag, ext), 2017, "ep", "epl")
-
-        xytitles = ["chi-2 cut values", "Efficiency"]
         hists = [ h_matchingEff_vs_chi2Cut_rebase, h_cov_matchingEff_vs_chi2Cut_rebase ]
         toolbox.make_plot_multi_hists(hists, colors, styles, texts, xytitles, "h_compare_matchingEff_vs_chi2Cut_rebase_%s.%s" % (tag, ext), 2017, "ep", "epl")
 
-        xytitles = ["chi-2 values", "Efficiency"]
+        xytitles = ["chi-2 values", "Matching Efficiency"]
+        hists = [ h_matchingEff_vs_chi2Bins, h_cov_matchingEff_vs_chi2Bins ]
+        toolbox.make_plot_multi_hists(hists, colors, styles, texts, xytitles, "h_compare_matchingEff_vs_chi2Bins_%s.%s" % (tag, ext), 2017, "ep", "epl")
         hists = [ h_matchingEff_vs_chi2Bins_rebase, h_cov_matchingEff_vs_chi2Bins_rebase ]
         toolbox.make_plot_multi_hists(hists, colors, styles, texts, xytitles, "h_compare_matchingEff_vs_chi2Bins_rebase_%s.%s" % (tag, ext), 2017, "ep", "epl")
 
         xytitles = ["chi-2 values", "Entries"]
         hists = [ h_chi2_value, h_cov_chi2_value ]
-        toolbox.make_plot_multi_hists(hists, colors, styles, texts, xytitles, "h_compare_chi2_values_%s.%s" % (tag, ext), 2017)
-
-        xytitles = ["chi-2 values", "Entries"]
+        toolbox.make_plot_multi_hists(hists, colors, styles, texts, xytitles, "h_compare_chi2_values_%s.%s" % (tag, ext), 2017, "hist", "l", True)
         hists = [ h_chi2_value_subspace, h_cov_chi2_value_subspace ]
-        toolbox.make_plot_multi_hists(hists, colors, styles, texts, xytitles, "h_compare_chi2_values_subspace_%s.%s" % (tag, ext), 2017)
+        toolbox.make_plot_multi_hists(hists, colors, styles, texts, xytitles, "h_compare_chi2_values_subspace_%s.%s" % (tag, ext), 2017, "hist", "l", True)
 
 
         # mass relatted
@@ -391,12 +446,7 @@ if make_all_plots:
     
     
     
-    today = datetime.datetime.today()
-    datetime_tag = today.strftime("%Y%m%d") 
-    target = "/eos/user/y/ykao/www/plots/%s" % (datetime_tag)
-    
     subprocess.call("rm -r %s;" % (target), shell=True)
-    transfer_helper.prepare_index_php(target)
     
     transfer_helper.copy_files("*gen*png"        , target + "/06_MCtruth"              )
     transfer_helper.copy_files("*quark*png"      , target + "/06_MCtruth"              )
@@ -404,8 +454,10 @@ if make_all_plots:
     transfer_helper.copy_files("*chi2*png"       , target + "/08_Minimum_Chi2_Methods" )
     transfer_helper.copy_files("*cov*png"        , target + "/09_CovMatrix"            )
 
-    transfer_helper.move_files("*chi2Bins*png"    , target + "/00_MatchingEff"          )
+    transfer_helper.move_files("*chi2*value*png" , target + "/00_MatchingEff"          )
+    transfer_helper.move_files("*chi2Bins*png"   , target + "/00_MatchingEff"          )
     transfer_helper.move_files("*chi2Cut*png"    , target + "/00_MatchingEff"          )
+    transfer_helper.move_files("*chi2*Eff*png"   , target + "/00_MatchingEff"          )
     transfer_helper.move_files("*num*png"        , target + "/01_Multiplicity"         )
     transfer_helper.move_files("*diphoton*png"   , target + "/02_Diphoton"             )
     transfer_helper.move_files("*wboson*png"     , target + "/03_Wboson"               )

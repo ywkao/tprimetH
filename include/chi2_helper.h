@@ -6,6 +6,7 @@
 #include <TMatrixD.h>
 #include <TVectorD.h>
 #include <TH1D.h>
+#include <TNtuple.h>
 #include <TString.h>
 #include <TLorentzVector.h>
 
@@ -20,6 +21,8 @@ bool matching_teller(std::vector<int> v_true, std::vector<int> v_test);
 void print_indices(bool to_print, TString title, std::vector<int> v);
 double calculate_efficiency_binomial_uncertainty(double eff, double entries);
 double calculate_matching_efficiency(double numerator, double denominator);
+void convert_to_selection_efficiency(TH1F *h_chi2_cut_eff, int xtt0_nbins, int chi2_entries);
 void convert_to_matching_efficiency(TH1F *h_matching_eff, TH1F *h_numerator, TH1F *h_denominator, int xtt0_nbins, int chi2_entries, bool is_bin_by_bin);
+void store_matchingEff_and_cutEff(TNtuple *nt, TH1F *h_matching_eff, TH1F *h_chi2_cut_eff, int xtt0_nbins, int chi2_entries, bool is_eff);
 
 #endif

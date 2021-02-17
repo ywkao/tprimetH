@@ -535,7 +535,7 @@ void makePlot_twoHists(TCanvas *c1, TH1F *h1, TH1F *h2, TString filename) {
 
 void print_counter_percentage(TString title, int counter, int tot){
     double percentage = (double) counter / (double) tot;
-    printf("%s: counter = %d / %d (%.2f)\n", title.Data(), counter, tot, percentage);
+    printf("%-80s: counter = %d / %d (%.3f)\n", title.Data(), counter, tot, percentage);
 }
 
 #endif

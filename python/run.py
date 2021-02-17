@@ -7,10 +7,10 @@ import sample_manager
 today = datetime.datetime.today()
 datetime_tag = today.strftime("%Y%m%d") 
 
-to_study_signal = False
-to_run_whole_samples = True
-#years = "2016,2017,2018"
-years = "2016"
+to_study_signal = True
+to_run_whole_samples = False
+years = "2016,2017,2018"
+#years = "2016"
 
 #----------------------------------------------------------------------------------------------------#
 
@@ -57,5 +57,7 @@ if to_run_whole_samples:
                 command_list.append(command)
                 idx += 1
 
-    nPar = 12
-    parallel_utils.submit_jobs(command_list, nPar)
+    for command in command_list:
+        print command
+    #nPar = 12
+    #parallel_utils.submit_jobs(command_list, nPar)

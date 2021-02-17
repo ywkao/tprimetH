@@ -7,6 +7,10 @@ def set_overflow_bin(h):
     overflow = h.GetBinContent(nbins) + h.GetBinContent(nbins + 1);
     h.SetBinContent(nbins, overflow);
 
+def set_normalize_to_unity(h):
+    Area = h.Integral(1, h.GetNbinsX())
+    h.Scale(1. / float(Area))
+
 def make_plot(h, filename, option = "hist", removeStats = False, setOverflow = False):
     c1 = ROOT.TCanvas("c1", "", 800, 600)
 
@@ -183,13 +187,13 @@ def make_plot_three_hists(h1, title1, h2, title2, h3, title3, year, mass, filena
     c1.SaveAs(filename)
     #c1.SaveAs("text_" + filename)
 
-def make_plot_multi_hists(hists, colors, styles, texts, xytitles, filename, year = 2017, draw_option = "hist", legend_option = "l", init_xy_position = [0.50, 0.20], width_xy = [0.30, 0.20]):
+def make_plot_multi_hists(hists, colors, styles, texts, xytitles, filename, year = 2017, draw_option = "hist", legend_option = "l", setOverflow = False, init_xy = [0.50, 0.20], width_xy = [0.30, 0.20], setNormalize = False):
     c1 = ROOT.TCanvas("c1", "", 800, 600)
     left_margin = 0.14
     c1.SetRightMargin(0.10)
     c1.SetLeftMargin(left_margin)
 
-    legend = ROOT.TLegend(init_xy_position[0], init_xy_position[1], init_xy_position[0] + width_xy[0], init_xy_position[1] + width_xy[1])
+    legend = ROOT.TLegend(init_xy[0], init_xy[1], init_xy[0] + width_xy[0], init_xy[1] + width_xy[1])
     legend.SetLineColor(0)
     legend.SetTextSize(0.04)
     
@@ -201,6 +205,13 @@ def make_plot_multi_hists(hists, colors, styles, texts, xytitles, filename, year
         h.SetLineStyle(styles[counter])
         h.SetLineColor(colors[counter])
         legend.AddEntry(h, texts[counter], legend_option)
+
+        if setNormalize:
+            set_normalize_to_unity(h)
+
+        if setOverflow:
+            set_overflow_bin(h)
+
         values.append(h.GetMaximum())
         h.Draw(draw_option) if counter == 0 else h.Draw("%s;same" % draw_option)
         counter += 1
@@ -275,6 +286,41 @@ def make_plot_from_ntuple_from_various_files(obj, var, nbins, hmin, hmax, fin_co
     draw_preliminary_tlatex(2017)
     c1.SaveAs("h_tm_"+var+"_"+obj+"_Era2017"+tag+".png")
 
+def make_2d_plot_from_ntuple(nts, xytitles, labels, histnames, var, selection, xnbins, xhmin, xhmax, ynbins, yhmin, yhmax, is_subspace = False):
+    colors = [ROOT.kBlue, ROOT.kRed]
+
+    c1 = ROOT.TCanvas("c1", "", 800, 600)
+    legend = ROOT.TLegend(0.45, 0.20, 0.85, 0.40)
+    legend.SetLineColor(0)
+    legend.SetTextSize(0.04)
+
+    h_collection = []
+    for histname in histnames:
+        h = ROOT.TH2D(histname, ";%s;%s" %(xytitles[0], xytitles[1]), xnbins, xhmin, xhmax, ynbins, yhmin, yhmax)
+        h_collection.append(h)
+
+    counter = 0
+    for nt in nts:
+        nt.Project(histnames[counter], var, selection)
+        set_hist_and_draw_v2(h_collection[counter], colors[counter], legend, labels[counter], counter)
+        counter += 1
+
+    if is_subspace:
+        c1.Update()
+        cut_eff = 0.34 # taken from log message; portion of events that truth-mathing criteria applicable within selected events
+        line = ROOT.TLine( cut_eff, c1.GetUymin(), cut_eff, c1.GetUymax() )
+        line.SetLineColor(ROOT.kBlack)
+        line.SetLineWidth(1)
+        line.Draw()
+        yposition = 0.80
+        spacing = 0.08
+        draw_tlatex(0.42, yposition, "Max. selection efficiency (34%)")
+        draw_tlatex(0.42, yposition - spacing, "after applying")
+        draw_tlatex(0.42, yposition - spacing * 2., "the turth-matching criteria")
+    
+    legend.Draw()
+    ROOT.gPad.SetTicks()
+    c1.SaveAs("%s.png" % histname)
 
 def set_hist_and_draw(h, mass, color, legend, counter):
     h.SetStats(0)
@@ -282,6 +328,13 @@ def set_hist_and_draw(h, mass, color, legend, counter):
     h.SetLineColor(color)
     h.Draw("hist") if counter == 0 else h.Draw("hist;same")
     legend.AddEntry(h, "M_{T'} = " + str(mass), "l")
+
+def set_hist_and_draw_v2(h, color, legend, label, counter):
+    h.SetStats(0)
+    h.SetMarkerStyle(20)
+    h.SetMarkerColor(color)
+    h.Draw("p") if counter == 0 else h.Draw("p;same")
+    legend.AddEntry(h, label, "p")
 
 def get_hist_collection_max_scope(h_collection):
     values = []

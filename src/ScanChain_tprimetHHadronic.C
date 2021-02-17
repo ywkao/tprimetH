@@ -75,11 +75,13 @@ int ScanChain_tprimetHHadronic(TChain* chain, TString name_output_file, TString 
   TH1F *h_chi2_value                         = new TH1F("h_chi2_value"                         , ";Xtt0;Entries"                                     , xtt0_nbins , 0 , xtt0_max  );
   TH1F *h_chi2_value_subspace                = new TH1F("h_chi2_value_subspace"                , ";Xtt0;Entries"                                     , xtt0_nbins , 0 , xtt0_max  );
   TH1F *h_chi2_cut_eff                       = new TH1F("h_chi2_cut_eff"                       , ";Xtt0 cut value;Efficiency"                        , xtt0_nbins , 0 , xtt0_max  );
+  TH1F *h_chi2_cut_eff_subspace              = new TH1F("h_chi2_cut_eff_subspace"              , ";Xtt0 cut value;Efficiency"                        , xtt0_nbins , 0 , xtt0_max  );
   TH2F *h_chi2_mass_wboson                   = new TH2F("h_chi2_mass_wboson"                   , ";Mass [GeV/c^{2}];Xtt0 cut value"                  , 32         , 0 , 160          , xtt0_nbins , 0 , xtt0_max_2d);
   TH2F *h_chi2_mass_top                      = new TH2F("h_chi2_mass_top"                      , ";Mass [GeV/c^{2}];Xtt0 cut value"                  , 35         , 0 , 350          , xtt0_nbins , 0 , xtt0_max_2d);
   TH1F *h_cov_chi2_value                     = new TH1F("h_cov_chi2_value"                     , ";(cov. matrix) Xtt0;Entries"                       , xtt0_nbins , 0 , xtt0_max  );
   TH1F *h_cov_chi2_value_subspace            = new TH1F("h_cov_chi2_value_subspace"            , ";(cov. matrix) Xtt0;Entries"                       , xtt0_nbins , 0 , xtt0_max  );
   TH1F *h_cov_chi2_cut_eff                   = new TH1F("h_cov_chi2_cut_eff"                   , ";(cov. matrix) Xtt0 cut value;Efficiency"          , xtt0_nbins , 0 , xtt0_max  );
+  TH1F *h_cov_chi2_cut_eff_subspace          = new TH1F("h_cov_chi2_cut_eff_subspace"          , ";(cov. matrix) Xtt0 cut value;Efficiency"          , xtt0_nbins , 0 , xtt0_max  );
   TH2F *h_cov_chi2_mass_wboson               = new TH2F("h_cov_chi2_mass_wboson"               , ";(cov. matrix) Mass [GeV/c^{2}];Xtt0 cut value"    , 32         , 0 , 160          , xtt0_nbins , 0 , xtt0_max_2d);
   TH2F *h_cov_chi2_mass_top                  = new TH2F("h_cov_chi2_mass_top"                  , ";(cov. matrix) Mass [GeV/c^{2}];Xtt0 cut value"    , 35         , 0 , 350          , xtt0_nbins , 0 , xtt0_max_2d);
 
@@ -104,6 +106,8 @@ int ScanChain_tprimetHHadronic(TChain* chain, TString name_output_file, TString 
 
   h_chi2_cut_eff->Sumw2();
   h_cov_chi2_cut_eff->Sumw2();
+  h_chi2_cut_eff_subspace->Sumw2();
+  h_cov_chi2_cut_eff_subspace->Sumw2();
 
   //h_mass_diphoton->SetDirectory(rootdir);
   //vector<Process*> vProcess = generate_processes(f1);
@@ -116,6 +120,10 @@ int ScanChain_tprimetHHadronic(TChain* chain, TString name_output_file, TString 
   TNtuple *nt_mass_diphoton  = new TNtuple("nt_mass_diphoton", "nt_mass_diphoton", "mass");
   TNtuple *nt_chi2_value     = new TNtuple("nt_chi2_value", "nt_chi2_value", "chi2_value");
   TNtuple *nt_chi2_value_cov = new TNtuple("nt_chi2_value_cov", "nt_chi2_value_cov", "chi2_value");
+  TNtuple *nt_chi2_matchingEff_vs_cutEff              = new TNtuple("nt_chi2_matchingEff_vs_cutEff", "", "matchingEff:cutEff");
+  TNtuple *nt_chi2_matchingEff_vs_cutEff_subspace     = new TNtuple("nt_chi2_matchingEff_vs_cutEff_subspace", "", "matchingEff:cutEff");
+  TNtuple *nt_cov_chi2_matchingEff_vs_cutEff          = new TNtuple("nt_cov_chi2_matchingEff_vs_cutEff", "", "matchingEff:cutEff");
+  TNtuple *nt_cov_chi2_matchingEff_vs_cutEff_subspace = new TNtuple("nt_cov_chi2_matchingEff_vs_cutEff_subspace", "", "matchingEff:cutEff");
 
   // Loop over events to Analyze
   unsigned int nEventsTotal = 0;
@@ -154,8 +162,9 @@ int ScanChain_tprimetHHadronic(TChain* chain, TString name_output_file, TString 
     // Loop over Events in current file
     if (nEventsTotal >= nEventsChain) continue;
     unsigned int nEventsTree = tree->GetEntriesFast();
-    for (unsigned int event = 0; event < nEventsTree; ++event) {
-    //for (unsigned int event = 0; event < 100; ++event) {
+    for (unsigned int event = 0; event < nEventsTree; ++event)
+    //for (unsigned int event = 0; event < 100; ++event)
+    {
 
       // Get Event Content
       if (nEventsTotal >= nEventsChain) continue;
@@ -323,6 +332,8 @@ int ScanChain_tprimetHHadronic(TChain* chain, TString name_output_file, TString 
                   h_chi2_mass_wboson -> Fill(wboson.M() , upper_bound_2d);
                   h_chi2_mass_top    -> Fill(top.M()    , upper_bound_2d);
                   h_chi2_cut_eff     -> Fill( upper_bound );
+                  if(MC_truth_matching_is_applicable)
+                      h_chi2_cut_eff_subspace -> Fill( upper_bound );
               }
           }
 
@@ -369,6 +380,8 @@ int ScanChain_tprimetHHadronic(TChain* chain, TString name_output_file, TString 
                     h_cov_chi2_mass_wboson -> Fill(cov_wboson.M() , upper_bound_2d);
                     h_cov_chi2_mass_top    -> Fill(cov_top.M()    , upper_bound_2d);
                     h_cov_chi2_cut_eff     -> Fill( upper_bound );
+                    if(MC_truth_matching_is_applicable)
+                        h_cov_chi2_cut_eff_subspace -> Fill( upper_bound );
                 }
             }
             if(MC_truth_matching_is_applicable){
@@ -399,16 +412,18 @@ int ScanChain_tprimetHHadronic(TChain* chain, TString name_output_file, TString 
       //h_genDeltaR        -> Fill(genMatched_jet1_deltaR());
       //h_genDeltaR        -> Fill(genMatched_jet2_deltaR());
       ////vProcess[processId]->fill_histogram("h" + syst_ext + "Mass", mass(), evt_weight, vId);   
+      
       if(MC_truth_matching_is_applicable)
       {
+          /* note: selection on eta of wjets is not applied in this section */
           bool chi2Method_is_matched = matching_teller(indices_bjj_truthMatching, indices_bjj_chi2Method);
           bool covMatrix_is_matched  = matching_teller(indices_bjj_truthMatching, indices_bjj_covMatrix);
 
-          if(debug){
-              if(chi2Method_is_matched) counter_matching_chi2Method += 1;
-              if(covMatrix_is_matched)  counter_matching_covMatrix  += 1;
-              counter_MC_applicable += 1;
+          if(chi2Method_is_matched) counter_matching_chi2Method += 1;
+          if(covMatrix_is_matched)  counter_matching_covMatrix  += 1;
+          counter_MC_applicable += 1;
 
+          if(debug){
               if(debug_deeper){
                   TString text;
                   text = chi2Method_is_matched ? "matched!" : "Nah";
@@ -465,25 +480,39 @@ int ScanChain_tprimetHHadronic(TChain* chain, TString name_output_file, TString 
 
     // evaluate matching efficiency
     chi2_entries = h_chi2_value -> GetEntries();
-    h_chi2_cut_eff -> Scale( 1./(double)chi2_entries );
-    for(int bin = 0; bin < xtt0_nbins; ++bin)
-    {
-        double eff = h_chi2_cut_eff->GetBinContent(bin+1);
-        double err = sqrt( ( eff * (1-eff) ) / chi2_entries );
-        h_chi2_cut_eff->SetBinError(bin+1, err);
-    }
-
+    convert_to_selection_efficiency( h_chi2_cut_eff, xtt0_nbins, chi2_entries);
+    convert_to_selection_efficiency( h_chi2_cut_eff_subspace, xtt0_nbins, chi2_entries);
     convert_to_matching_efficiency( h_matchingEff_vs_chi2Cut, h_numerator_vs_chi2Cut, h_denominator_vs_chi2Cut, xtt0_nbins, chi2_entries, true );
-    convert_to_matching_efficiency( h_cov_matchingEff_vs_chi2Cut, h_cov_numerator_vs_chi2Cut, h_cov_denominator_vs_chi2Cut, xtt0_nbins, chi2_entries, true );
     convert_to_matching_efficiency( h_matchingEff_vs_chi2Bins, h_numerator_vs_chi2Bins, h_denominator_vs_chi2Bins, xtt0_nbins, chi2_entries, true );
-    convert_to_matching_efficiency( h_cov_matchingEff_vs_chi2Bins, h_cov_numerator_vs_chi2Bins, h_cov_denominator_vs_chi2Bins, xtt0_nbins, chi2_entries, true );
-
     convert_to_matching_efficiency( h_matchingEff_vs_chi2Cut_rebase, h_numerator_vs_chi2Cut, h_denominator_vs_chi2Cut, xtt0_nbins, chi2_entries, false );
-    convert_to_matching_efficiency( h_cov_matchingEff_vs_chi2Cut_rebase, h_cov_numerator_vs_chi2Cut, h_cov_denominator_vs_chi2Cut, xtt0_nbins, chi2_entries, false );
     convert_to_matching_efficiency( h_matchingEff_vs_chi2Bins_rebase, h_numerator_vs_chi2Bins, h_denominator_vs_chi2Bins, xtt0_nbins, chi2_entries, false );
-    convert_to_matching_efficiency( h_cov_matchingEff_vs_chi2Bins_rebase, h_cov_numerator_vs_chi2Bins, h_cov_denominator_vs_chi2Bins, xtt0_nbins, chi2_entries, false );
+    store_matchingEff_and_cutEff(nt_chi2_matchingEff_vs_cutEff, h_matchingEff_vs_chi2Cut, h_chi2_cut_eff, xtt0_nbins, chi2_entries, true);
+    store_matchingEff_and_cutEff(nt_chi2_matchingEff_vs_cutEff_subspace, h_matchingEff_vs_chi2Cut, h_chi2_cut_eff_subspace, xtt0_nbins, chi2_entries, true);
+    //store_matchingEff_and_cutEff(nt_chi2_matchingEff_vs_cutEff_subspace, h_matchingEff_vs_chi2Cut, h_denominator_vs_chi2Cut, xtt0_nbins, chi2_entries, false);
 
+    chi2_entries = h_cov_chi2_value -> GetEntries();
+    convert_to_selection_efficiency( h_cov_chi2_cut_eff, xtt0_nbins, chi2_entries);
+    convert_to_selection_efficiency( h_cov_chi2_cut_eff_subspace, xtt0_nbins, chi2_entries);
+    convert_to_matching_efficiency( h_cov_matchingEff_vs_chi2Cut, h_cov_numerator_vs_chi2Cut, h_cov_denominator_vs_chi2Cut, xtt0_nbins, chi2_entries, true );
+    convert_to_matching_efficiency( h_cov_matchingEff_vs_chi2Bins, h_cov_numerator_vs_chi2Bins, h_cov_denominator_vs_chi2Bins, xtt0_nbins, chi2_entries, true );
+    convert_to_matching_efficiency( h_cov_matchingEff_vs_chi2Cut_rebase, h_cov_numerator_vs_chi2Cut, h_cov_denominator_vs_chi2Cut, xtt0_nbins, chi2_entries, false );
+    convert_to_matching_efficiency( h_cov_matchingEff_vs_chi2Bins_rebase, h_cov_numerator_vs_chi2Bins, h_cov_denominator_vs_chi2Bins, xtt0_nbins, chi2_entries, false );
+    store_matchingEff_and_cutEff(nt_cov_chi2_matchingEff_vs_cutEff, h_cov_matchingEff_vs_chi2Cut, h_cov_chi2_cut_eff, xtt0_nbins, chi2_entries, true);
+    store_matchingEff_and_cutEff(nt_cov_chi2_matchingEff_vs_cutEff_subspace, h_cov_matchingEff_vs_chi2Cut, h_cov_chi2_cut_eff_subspace, xtt0_nbins, chi2_entries, true);
+    //store_matchingEff_and_cutEff(nt_cov_chi2_matchingEff_vs_cutEff_subspace, h_cov_matchingEff_vs_chi2Cut, h_cov_denominator_vs_chi2Cut, xtt0_nbins, chi2_entries, false);
+
+    /* Note
+     * all based on preselection
+     * h_chi2_cut_eff: cut efficiency without truth matching criteria
+     * h_denominator_vs_chi2Cut: entries passing selections with truth matching criteria
+     * h_denominator_vs_chi2Bin: entries passing selections with truth matching criteria within a ragne of a bin width
+     *
+     * nt_chi2_matchingEff_vs_cutEff: matchingEff is in subspace while cutEff is not
+     * nt_chi2_matchingEff_vs_cutEff_subspace: both matchingEff and cutEff are in subspace
+     */
   
+
+
     // Clean Up
     delete tree;
     file.Close();
@@ -492,12 +521,16 @@ int ScanChain_tprimetHHadronic(TChain* chain, TString name_output_file, TString 
     cout << Form( "ERROR: number of events from files (%d) is not equal to total number of events (%d)", nEventsChain, nEventsTotal ) << endl;
   }
   
-  print_counter_percentage("Number of jets more than 9"              , counter_more_than_nine_jets         , counter_total_selected_events );
-  print_counter_percentage("Percentage of having bquark and wquarks" , counter_has_bquark_and_wquarks      , counter_total_selected_events );
-  print_counter_percentage("After the cut of resonable MC match"     , counter_has_reasonable_MC_match     , counter_total_selected_events );
-  print_counter_percentage("SelectionEff: wjets eta criteria"        , h_mass_wboson->GetEntries()         , counter_total_selected_events );
-  print_counter_percentage("Matching efficiency chi2Method"          , counter_matching_chi2Method         , counter_MC_applicable         );
-  print_counter_percentage("Matching efficiency covMatrix"           , counter_matching_covMatrix          , counter_MC_applicable         );
+  print_counter_percentage("Preselection (w/ selection on eta of wjets) (among whole events)"        , h_mass_wboson->GetEntries()                , nEventsTotal );
+  print_counter_percentage("Preselection (w/ selection on eta of wjets) (among whole events) (cov.)" , h_mass_wboson_cov->GetEntries()            , nEventsTotal );
+  print_counter_percentage("After the cut of resonable MC match (among whole events)"                , counter_has_reasonable_MC_match            , nEventsTotal );
+  print_counter_percentage("After the cut of resonable MC match (among selected events)"             , h_mass_wboson_subspace -> GetEntries()     , h_chi2_value -> GetEntries() );
+  print_counter_percentage("After the cut of resonable MC match (among selected events) (cov.)"      , h_mass_wboson_cov_subspace -> GetEntries() , h_chi2_value -> GetEntries() );
+  print_counter_percentage("Number of jets more than 9"                                              , counter_more_than_nine_jets                , counter_total_selected_events );
+  print_counter_percentage("Percentage of having bquark and wquarks"                                 , counter_has_bquark_and_wquarks             , counter_total_selected_events );
+  print_counter_percentage("SelectionEff: wjets eta criteria"                                        , h_mass_wboson->GetEntries()                , counter_total_selected_events );
+  print_counter_percentage("Matching efficiency chi2Method"                                          , counter_matching_chi2Method                , counter_MC_applicable         );
+  print_counter_percentage("Matching efficiency covMatrix"                                           , counter_matching_covMatrix                 , counter_MC_applicable         );
   // MC truth matching info (not fiexed yet; may abandom)
   //print_counter_percentage("pass_gen_deltaR_criterion"               , counter_pass_gen_deltaR_criterion   , counter_before_gen_criteria   );
   //print_counter_percentage("pass_gen_pt_ratio_criterion"             , counter_pass_gen_pt_ratio_criterion , counter_before_gen_criteria   );

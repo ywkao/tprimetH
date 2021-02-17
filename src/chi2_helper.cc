@@ -213,6 +213,17 @@ double calculate_efficiency_binomial_uncertainty(double eff, double entries)
     return err;
 }
 
+void convert_to_selection_efficiency(TH1F *h_chi2_cut_eff, int xtt0_nbins, int chi2_entries)
+{
+    h_chi2_cut_eff -> Scale( 1./(double)chi2_entries );
+    for(int bin = 0; bin < xtt0_nbins; ++bin)
+    {
+        double eff = h_chi2_cut_eff->GetBinContent(bin+1);
+        double err = sqrt( ( eff * (1-eff) ) / chi2_entries );
+        h_chi2_cut_eff->SetBinError(bin+1, err);
+    }
+}
+
 void convert_to_matching_efficiency(TH1F *h_matching_eff, TH1F *h_numerator, TH1F *h_denominator, int xtt0_nbins, int chi2_entries, bool is_bin_by_bin)
 {
     for(int bin = 0; bin < xtt0_nbins; ++bin)
@@ -224,5 +235,15 @@ void convert_to_matching_efficiency(TH1F *h_matching_eff, TH1F *h_numerator, TH1
         h_matching_eff -> SetBinError( bin+1, matching_err );
 
         //printf("[check] matching_eff = %.2f (%.2f / %2.f)\n", matching_eff, h_numerator->GetBinContent(bin+1), h_denominator->GetBinContent(bin+1));
+    }
+}
+
+void store_matchingEff_and_cutEff(TNtuple *nt, TH1F *h_matching_eff, TH1F *h_chi2_cut_eff, int xtt0_nbins, int chi2_entries, bool is_eff)
+{
+    for(int bin = 0; bin < xtt0_nbins; ++bin)
+    {
+        double matchingEff = h_matching_eff->GetBinContent(bin+1);
+        double cutEff = is_eff ? h_chi2_cut_eff->GetBinContent(bin+1) : h_chi2_cut_eff->GetBinContent(bin+1) / (double) chi2_entries;
+        nt->Fill(matchingEff, cutEff);
     }
 }
