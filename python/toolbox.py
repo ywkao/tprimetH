@@ -195,6 +195,7 @@ def make_plot_multi_hists(hists, colors, styles, texts, xytitles, filename, year
 
     legend = ROOT.TLegend(init_xy[0], init_xy[1], init_xy[0] + width_xy[0], init_xy[1] + width_xy[1])
     legend.SetLineColor(0)
+    legend.SetFillStyle(0)
     legend.SetTextSize(0.04)
     
     values = []
@@ -223,8 +224,9 @@ def make_plot_multi_hists(hists, colors, styles, texts, xytitles, filename, year
     hists[0].GetYaxis().SetTitle(xytitles[1])
     
     legend.Draw()
-    draw_preliminary_tlatex(year, left_margin)
+    #draw_preliminary_tlatex(year, left_margin)
 
+    ROOT.gPad.SetGrid()
     ROOT.gPad.SetTicks()
     c1.SaveAs(filename)
 

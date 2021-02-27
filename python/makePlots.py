@@ -12,9 +12,9 @@ ROOT.gROOT.SetBatch(True)
 
 # options
 trend_wrt_tprime_mass = False
-check_mass_diphoton = True
+check_mass_diphoton = False
 check_mass_pt_dependency = False 
-make_all_plots = False
+make_all_plots = True
 make_individual_plots = False
 os.chdir("./plots") #os.chdir("./stashed/plots_20210213/")
 
@@ -265,10 +265,10 @@ if make_all_plots:
         h_chi2_mass_top                      = fin.Get("h_chi2_mass_top"                      )
         h_chi2_value                         = fin.Get("h_chi2_value"                         )
         h_chi2_cut_eff                       = fin.Get("h_chi2_cut_eff"                       )
-        h_chi2_cut_eff_subspace                       = fin.Get("h_chi2_cut_eff_subspace"                       )
+        h_chi2_cut_eff_subspace              = fin.Get("h_chi2_cut_eff_subspace"              )
         h_cov_chi2_value                     = fin.Get("h_cov_chi2_value"                     )
         h_cov_chi2_cut_eff                   = fin.Get("h_cov_chi2_cut_eff"                   )
-        h_cov_chi2_cut_eff_subspace                   = fin.Get("h_cov_chi2_cut_eff_subspace"                   )
+        h_cov_chi2_cut_eff_subspace          = fin.Get("h_cov_chi2_cut_eff_subspace"          )
         h_cov_chi2_mass_wboson               = fin.Get("h_cov_chi2_mass_wboson"               )
         h_cov_chi2_mass_top                  = fin.Get("h_cov_chi2_mass_top"                  )
         h_numerator_vs_chi2Cut               = fin.Get("h_numerator_vs_chi2Cut"               )

@@ -320,6 +320,7 @@ int ScanChain_tprimetHHadronic(TChain* chain, TString name_output_file, TString 
           h_mass_tprime -> Fill(tprime.M());
           h_chi2_value  -> Fill(min_chi2_value);
           nt_chi2_value -> Fill(min_chi2_value);
+          if(top.M() > 200.) debug = true;
 
           for(int bin = 1; bin < xtt0_nbins + 1; ++bin )
           {
@@ -343,7 +344,7 @@ int ScanChain_tprimetHHadronic(TChain* chain, TString name_output_file, TString 
               h_mass_wboson_subspace -> Fill(wboson.M());
           }
 
-          if(min_chi2_value < 5.) debug = true;
+          //if(min_chi2_value < 5.) debug = true;
       } // end of eta selection for the chi-2 method
 
       //Minimum chi-2 with covaraince matrix
@@ -511,8 +512,6 @@ int ScanChain_tprimetHHadronic(TChain* chain, TString name_output_file, TString 
      * nt_chi2_matchingEff_vs_cutEff_subspace: both matchingEff and cutEff are in subspace
      */
   
-
-
     // Clean Up
     delete tree;
     file.Close();
