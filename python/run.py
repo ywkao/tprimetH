@@ -30,9 +30,8 @@ if to_study_signal:
         #command='./bin/covMatrix_Looper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
     
         command_list.append(command)
-        break
     
-    nPar = 12
+    nPar = 10
     parallel_utils.submit_jobs(command_list, nPar)
 
 #----------------------------------------------------------------------------------------------------#
