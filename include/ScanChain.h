@@ -22,6 +22,7 @@
 #include <TNtuple.h>
 
 // tprimetHHadronic
+#include "ttHLooper.h"
 #include "tprimetHHadronic.cc"
 
 using namespace std;
@@ -291,21 +292,6 @@ vector<TLorentzVector> make_jets(vector<double> &btag_scores) {
     btag_scores.push_back(jet15_discr());
   }
   return vJets;
-}
-
-double helicity(const TLorentzVector particle_1, const TLorentzVector particle_2) {
-  TLorentzVector p1 = particle_1;
-  TLorentzVector parent = particle_1 + particle_2;
-  
-  TVector3 boost_to_parent = -(parent.BoostVector());
-  p1.Boost(boost_to_parent);
-
-  TVector3 v1 = p1.Vect();
-  TVector3 vParent = parent.Vect();
-
-  double cos_theta_1 = (v1.Dot(vParent)) / (v1.Mag() * vParent.Mag());
-
-  return abs(cos_theta_1);  
 }
 
 //bool identify_bjet(int &index_bjet, vector<int> &indices, vector<int> &jets_pdgId_genMatched, vector<double> &jets_deltaR_genMatched)

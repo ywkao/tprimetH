@@ -16,6 +16,7 @@ years = "2016,2017,2018"
 
 if to_study_signal:
     subprocess.call("mkdir -p plots", shell=True)
+    subprocess.call("mkdir -p dir_log", shell=True)
     cwd = os.getcwd()
     location = cwd + "/rootfiles/ntuples_v2." + str(sample_manager.subversion)
     

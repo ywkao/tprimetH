@@ -4,6 +4,7 @@
 #include <TTree.h>
 #include <TChain.h>
 #include "ScanChain_tprimetHHadronic.C"
+#include "ScanChain_tprimetHHadronic_signal.C"
 
 int main(int argc, char* argv[])
 {
@@ -19,7 +20,8 @@ int main(int argc, char* argv[])
 
     TString name_output_file = "plots/hist_" + rootfile;
     printf("[check] name_output_file = %s\n", name_output_file.Data());
-    ScanChain_tprimetHHadronic(ch, name_output_file, year, mass);
+    ScanChain_tprimetHHadronic_signal(ch, name_output_file, year, mass);
+    //ScanChain_tprimetHHadronic(ch, name_output_file, year, mass);
 
     return 0;
 }

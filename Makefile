@@ -24,7 +24,7 @@ build/chi2_helper.o: src/chi2_helper.cc include/chi2_helper.h include/json/json.
 	@mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
-build/tprimetHHadronicLooper.o: src/tprimetHHadronicLooper.cpp src/ScanChain_tprimetHHadronic.C include/ScanChain.h include/chi2_helper.h include/truth_matching.h include/sorting.h
+build/tprimetHHadronicLooper.o: src/tprimetHHadronicLooper.cpp src/ScanChain_tprimetHHadronic.C src/ScanChain_tprimetHHadronic_signal.C include/ScanChain.h include/chi2_helper.h include/truth_matching.h include/sorting.h
 	@mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
