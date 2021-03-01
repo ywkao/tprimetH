@@ -4,7 +4,7 @@ INC 	 := -I include
 CFLAGS   := $(shell root-config --cflags) -g -O3 #-Wno-write-strings -D_FILE_OFFSET_BITS=64 -DDROP_CGAL #-Wall -Wextra
 ROOTLIBS := $(shell root-config --libs) -lMinuit -lMLP -lXMLIO -lTMVA -lGenVector
 
-TARGET   := bin/tprimetHHadronicLooper bin/covMatrix_Looper
+TARGET   := bin/tprimetHHadronicLooper bin/covMatrix_Looper bin/tprimetHHadronicMVABabyMaker
 
 all: ${TARGET}
 
@@ -28,7 +28,15 @@ build/tprimetHHadronicLooper.o: src/tprimetHHadronicLooper.cpp src/ScanChain_tpr
 	@mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
+build/tprimetHHadronicMVABabyMaker.o: src/tprimetHHadronicMVABabyMaker.cpp src/MakeMVABabies_tprimetHHadronic.C include/ScanChain.h include/chi2_helper.h include/sorting.h
+	@mkdir -p $(BUILDDIR)
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
+
 bin/tprimetHHadronicLooper: build/tprimetHHadronicLooper.o build/chi2_helper.o build/truth_matching.o build/sorting.o build/jsoncpp.o
+	@echo "Linking..." && mkdir -p bin
+	$(CC) -o $@ $^ $(CFLAGS) $(ROOTLIBS)
+
+bin/tprimetHHadronicMVABabyMaker: build/tprimetHHadronicMVABabyMaker.o build/chi2_helper.o build/sorting.o build/jsoncpp.o
 	@echo "Linking..." && mkdir -p bin
 	$(CC) -o $@ $^ $(CFLAGS) $(ROOTLIBS)
 

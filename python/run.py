@@ -26,8 +26,9 @@ if to_study_signal:
         counter += 1
         year = rootfile.split('_')[2].split('a')[1]
         mass = rootfile.split('_')[1].split('-')[1]
-        command='./bin/tprimetHHadronicLooper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
         #command='./bin/covMatrix_Looper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
+        #command='./bin/tprimetHHadronicLooper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
+        command='./bin/tprimetHHadronicLooper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
     
         command_list.append(command)
     
