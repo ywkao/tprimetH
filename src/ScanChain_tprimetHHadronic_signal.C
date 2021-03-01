@@ -60,7 +60,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       // Progress
       tprimetHHadronic::progress( nEventsTotal, nEventsChain );
 
-      float evt_weight = 1.;
+      float evt_weight = weight();
       int genLeptonId = 0; // isData ? -1 : categorize_leptons(nGoodEls(), nGoodMus()); // none of reco lepton exists
       int genPhotonId = 2; // isData ? -1 : categorize_photons(leadGenMatch(), subleadGenMatch()); // no effect for signal samples
       int genPhotonDetailId = 5; // isData ? -1 : categorize_photons_detail(lead_photon_type(), sublead_photon_type()); // assume prompt-prompt

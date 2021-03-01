@@ -61,7 +61,7 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         //v[i]->add_histogram("h" + syst_labels[j] + "mc_mva_score_st_v2", 50, -1.0, 1.0);
         //v[i]->add_histogram("h" + syst_labels[j] + "mc_mva_score_tt_v4", 50, -1.0, 1.0);
         //v[i]->add_histogram("h" + syst_labels[j] + "mc_mva_score_st_v4", 50, -1.0, 1.0);
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass", 50, 0, 250);
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass", 100, 0, 250);
         v[i]->add_histogram("h" + syst_labels[j] + "Mass_v2", 50, 0, 250);
         v[i]->add_histogram("h" + syst_labels[j] + "mass_wboson_cov" , 40, 0, 200);
         v[i]->add_histogram("h" + syst_labels[j] + "mass_top_cov"    , 36, 0, 360);
