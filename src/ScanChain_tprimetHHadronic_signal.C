@@ -104,6 +104,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       double mass_wboson = has_resonable_reco ? cov_wboson.M()     : -1.;
       double mass_top    = has_resonable_reco ? cov_top.M()        : -1.;
       double mass_tprime = has_resonable_reco ? cov_tprime.M()     : -1.;
+      double mass_tprime_tilde = has_resonable_reco ? ( cov_tprime.M() - cov_top.M() - diphoton.M() + 175.5 + 125.0 ) : -1.;
       min_chi2_value_2x2 = has_resonable_reco ? min_chi2_value_2x2 : -1.;
 
   
@@ -115,10 +116,11 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonDeltaR", lead_photon.DeltaR(sublead_photon), evt_weight, vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "Rapidity", diphoton.Rapidity(), evt_weight, vId);
 
-      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_wboson_cov" , mass_wboson        , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_top_cov"    , mass_top           , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_cov" , mass_tprime        , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "cov_chi2_value"  , min_chi2_value_2x2 , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_wboson_cov"   , mass_wboson        , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_top_cov"      , mass_top           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_cov"   , mass_tprime        , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_tilde" , mass_tprime_tilde  , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "cov_chi2_value"    , min_chi2_value_2x2 , evt_weight , vId);
 
       vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPt", dipho_leadPt(), evt_weight, vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadEta", dipho_leadEta(), evt_weight, vId);

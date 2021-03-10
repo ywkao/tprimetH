@@ -7,14 +7,12 @@ import sample_manager
 today = datetime.datetime.today()
 datetime_tag = today.strftime("%Y%m%d") 
 
-to_study_signal = True
-to_run_whole_samples = False
+years = "2016"
 years = "2016,2017,2018"
-#years = "2016"
 
 #----------------------------------------------------------------------------------------------------#
 
-if to_study_signal:
+def to_study_signal():
     subprocess.call("mkdir -p plots", shell=True)
     subprocess.call("mkdir -p dir_log", shell=True)
     cwd = os.getcwd()
@@ -28,8 +26,7 @@ if to_study_signal:
         mass = rootfile.split('_')[1].split('-')[1]
         #command='./bin/covMatrix_Looper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
         #command='./bin/tprimetHHadronicLooper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
-        command='./bin/tprimetHHadronicLooper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
-    
+        command='./bin/tprimetHHadronicMVABabyMaker %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
         command_list.append(command)
     
     nPar = 10
@@ -37,7 +34,7 @@ if to_study_signal:
 
 #----------------------------------------------------------------------------------------------------#
 
-if to_run_whole_samples:
+def to_run_whole_samples():
     idx = 0
     command_list = []
     if "2016" in years:
@@ -63,3 +60,9 @@ if to_run_whole_samples:
         print command
     #nPar = 12
     #parallel_utils.submit_jobs(command_list, nPar)
+
+#----------------------------------------------------------------------------------------------------#
+
+if __name__ == "__main__":
+    to_study_signal()
+    #to_run_whole_samples()

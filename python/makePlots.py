@@ -15,7 +15,7 @@ trend_wrt_tprime_mass = False
 check_mass_diphoton = False
 check_mass_pt_dependency = False 
 make_all_plots = True
-make_individual_plots = False
+make_individual_plots = True
 os.chdir("./plots") #os.chdir("./stashed/plots_20210213/")
 
 # common

@@ -28,7 +28,7 @@ build/tprimetHHadronicLooper.o: src/tprimetHHadronicLooper.cpp src/ScanChain_tpr
 	@mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
-build/tprimetHHadronicMVABabyMaker.o: src/tprimetHHadronicMVABabyMaker.cpp src/MakeMVABabies_tprimetHHadronic.C include/ScanChain.h include/chi2_helper.h include/sorting.h
+build/tprimetHHadronicMVABabyMaker.o: src/tprimetHHadronicMVABabyMaker.cpp src/MakeMVABabies_tprimetHHadronic.C include/MakeMVABabies_ttHHadronic.h include/ScanChain.h include/chi2_helper.h include/sorting.h
 	@mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 

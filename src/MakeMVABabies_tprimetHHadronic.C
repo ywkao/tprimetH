@@ -3,14 +3,17 @@
 #include "sorting.h"
 #include "chi2_helper.h"
 
-void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext, TString bkg_options, TString mYear = "", TString idx = "", bool fcnc = false, bool blind = false, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
-  // Init{{{
+void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year, TString ext, TString bkg_options, TString mYear = "", TString idx = "", bool fcnc = false, bool blind = false, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
+
+  printf("Hello World! (Warm greeting from MakeMVABabies_ttHHadronic.C)\n");
+  name_output_file = name_output_file.ReplaceAll("hist_", "MVABaby_");
+
   // Benchmark
   TBenchmark *bmark = new TBenchmark();
   bmark->Start("benchmark");
 
   // Make baby ntuple
-  MakeBabyNtuple( Form("%s.root", ("MVABaby_tprimetHHadronic_" + mYear + idx).Data()));
+  MakeBabyNtuple( name_output_file.Data() ); //MakeBabyNtuple( Form("plots/MVABaby_tprimetHHadronic_%s.root", (mYear + idx).Data()));
 
   // Loop over events to Analyze
   unsigned int nEventsTotal = 0;
@@ -20,20 +23,8 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
   TIter fileIter(listOfFiles);
   TFile *currentFile = 0;
 
-  // Dumb hacky stuff to use 2017 MC samples as placeholders for 2018
-  bool already_looped_dipho = false;
-  bool already_looped_qcd = false;
-  bool already_looped_dy = false;
-
-  TF1* gjet_minID_shape = get_photon_ID_shape("min");
-  TF1* gjet_maxID_shape = get_photon_ID_shape("max");
-  TF1* photon_fakeID_shape = get_photon_ID_shape("fake");
-  TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_runII");
-  //}}}
-
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
-    // Get File Content, label type of samples, btag norm factor{{{
     TString currentFileTitle = currentFile->GetTitle();
     cout << currentFileTitle << endl;
     TFile file(currentFileTitle);
@@ -45,22 +36,16 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
     analyzer.Init(tree);
 
     // Decide what type of sample this is
-    bool isData = false; //currentFileTitle.Contains("DoubleEG") || currentFileTitle.Contains("EGamma"); 
-    bool isSignal = true; //currentFileTitle.Contains("ttHJetToGG") || currentFileTitle.Contains("ttHToGG") || currentFileTitle.Contains("THQ") || currentFileTitle.Contains("THW") || currentFileTitle.Contains("VBF") || currentFileTitle.Contains("GluGluHToGG") || currentFileTitle.Contains("VHToGG") || currentFileTitle.Contains("FCNC"); 
-
-    //if (is_wrong_tt_jets_sample(currentFileTitle, "Hadronic"))                        continue;
-    //if (bkg_options.Contains("impute") && (currentFileTitle.Contains("GJets_HT") || currentFileTitle.Contains("QCD"))) {
-    //  cout << "Skipping this sample: " << currentFileTitle << ", since we are imputing." << endl;
-    //  continue;
-    //}
+    bool isData = false;
+    bool isSignal = true;
 
     cout << "mYear: " << mYear << endl;
-    set_json(mYear);
-    //}}}
+    //set_json(mYear); opening good run list
 
     // Loop over Events in current file
     unsigned int nEventsTree = tree->GetEntriesFast();
-    for (unsigned int event = 0; event < nEventsTree; ++event) {
+    for (unsigned int event = 0; event < nEventsTree; ++event)
+    {
       // Get Event Content, label type of samples, decide evt weight
       if (nEventsTotal >= nEventsChain) continue;
       if (fast) tree->LoadTree(event);
@@ -71,47 +56,11 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       tprimetHHadronic::progress( nEventsTotal, nEventsChain );
       InitBabyNtuple();
 
-      // Check golden json, blind signal region, skip low stat file
-      //if (isData) if (!pass_json(mYear, analyzer.run(), analyzer.lumi())) continue;
-      //if (isData && blind && mass() > 120 && mass() < 130) continue;
-      //if (is_low_stats_process(currentFileTitle)) continue;
-
       // Decide what type of sample this is
       int genPhotonId = 2; //categorize_photons(leadGenMatch(), subleadGenMatch());
       process_id_ = categorize_process(currentFileTitle, genPhotonId);
 
-      evt_weight_ = 1.;
-//      // Decide evt wight{{{
-//      if (year.Contains("RunII") && !isData) {
-//        double scale1fb = currentFileTitle.Contains("RunIISummer16MiniAOD") ? scale1fb_2016_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIFall17MiniAOD") ? scale1fb_2017_RunII(currentFileTitle) : ( currentFileTitle.Contains("RunIIAutumn18MiniAOD") ? scale1fb_2018_RunII(currentFileTitle) : 0 ));
-//        if (mYear == "2016")
-//          evt_weight_ *= scale1fb * lumi_2016 * weight();
-//        else if (mYear == "2017")
-//          evt_weight_ *= scale1fb * lumi_2017 * weight();
-//        else if (mYear == "2018")
-//          evt_weight_ *= scale1fb * lumi_2018 * weight();
-//      }
-//      else if (!isData) {
-//        if (year == "2018") // temporary hack to use 2017 mc with 2018 data
-//          evt_weight_ *= scale1fb_2017(currentFileTitle) * lumi_2018 * weight();
-//        else if (mYear == "2016")
-//          evt_weight_ *= scale1fb_2016(currentFileTitle) * lumi_2016 * weight();
-//        else if (mYear == "2017")
-//          evt_weight_ *= scale1fb_2017(currentFileTitle) * lumi_2017 * weight();
-//        else if (mYear == "2018")
-//          evt_weight_ *= scale1fb_2017(currentFileTitle) * lumi_2018 * weight();
-//      }
-//
-//      //pu weighting
-//      bool pu_weight = true;
-//      if (pu_weight) evt_weight_ *= puweight();
-//
-//      // Scale bkg weight
-//      evt_weight_ *= scale_bkg(currentFileTitle, bkg_options, process_id_, "Hadronic", fcnc);
-//
-//      // Scale FCNC to current best observed limit (ATLAS 2016 combination)
-//      if (currentFileTitle.Contains("FCNC")) evt_weight_ *= scale_fcnc(currentFileTitle);
-//      //}}}
+      evt_weight_ = weight();
 
       // Impute, if applicable
       maxIDMVA_ = dipho_leadIDMVA() >  dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
@@ -126,6 +75,7 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       signal_mass_label_ = categorize_signal_sample(currentFileTitle);
       signal_mass_category_ = categorize_signal_mass_label(currentFileTitle);
       data_sideband_label_ = 0;
+
       //------------------------------ Variable definitions ------------------------------//
       vector<double> btag_scores;
       vector<TLorentzVector> jets = make_jets(btag_scores);
@@ -224,7 +174,7 @@ void BabyMaker::ScanChain(TChain* chain, TString tag, TString year, TString ext,
       m_jjj_ = -1; //m_jjj_ > 0 ? log(m_jjj_) : -9;
 
       //------------------------------ Minimum chi-2 method (cov.) ------------------------------//
-      TString json_file = "tprimetH/json/covMatrix_Era2017_M1000.json";
+      TString json_file = "json/covMatrix_Era2017_M1000.json";
       double min_chi2_value_2x2 = 99999.;
       vector<int> indices_bjj_covMatrix(3, -1);
       bool has_resonable_reco = get_the_best_bjj_candidate(indices_bjj_covMatrix, jets, diphoton, btag_scores, min_chi2_value_2x2, json_file);

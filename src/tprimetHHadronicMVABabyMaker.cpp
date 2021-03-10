@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
     printf("[check] name_output_file = %s\n", name_output_file.Data());
 
     BabyMaker *looper = new BabyMaker();
-    looper->ScanChain(ch, "", "RunII", "", "impute", year, "", "");
+    looper->ScanChain(ch, name_output_file, "RunII", "", "impute", year, "", "");
 
     return 0;
 }
