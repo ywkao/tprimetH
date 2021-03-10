@@ -1168,7 +1168,7 @@ bool is_low_stats_process(TString currentFileTitle) {
 }
 
 int categorize_signal_sample(TString currentFileTitle) {
-  if (currentFileTitle.Contains("HToGG") || currentFileTitle.Contains("ttHJetToGG")) {
+  if (currentFileTitle.Contains("HToGG") || currentFileTitle.Contains("ttHJetToGG") || currentFileTitle.Contains("TprimeBToTH")) {
     if ((currentFileTitle.Contains("M125") || currentFileTitle.Contains("M120") || currentFileTitle.Contains("M130")) && !currentFileTitle.Contains("powheg")) { // save for fgg final fit purposes
       return 0; 
     }
@@ -1197,6 +1197,8 @@ int categorize_signal_mass_label(TString currentFileTitle) {
         return 127;
     else if (currentFileTitle.Contains("M130"))
         return 130;
+    else if (currentFileTitle.Contains("TprimeBToTH"))
+        return 125;
     else
         return -1;
 }

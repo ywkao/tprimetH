@@ -2,11 +2,13 @@
 #include "ScanChain.h"
 #include "sorting.h"
 #include "chi2_helper.h"
+#include <TRandom3.h>
 
 void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year, TString ext, TString bkg_options, TString mYear = "", TString idx = "", bool fcnc = false, bool blind = false, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
 
   printf("Hello World! (Warm greeting from MakeMVABabies_ttHHadronic.C)\n");
   name_output_file = name_output_file.ReplaceAll("hist_", "MVABaby_");
+  TRandom3 rndm(1234);
 
   // Benchmark
   TBenchmark *bmark = new TBenchmark();
@@ -71,7 +73,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       if (isnan(evt_weight_) || isinf(evt_weight_) || evt_weight_ == 0) continue; //some pu weights are nan/inf and this causes problems for histos 
 
       label_ = 1; // signal
-      multi_label_ = multiclassifier_label(currentFileTitle, genPhotonId, fcnc);
+      multi_label_ = 0; // signal
       signal_mass_label_ = categorize_signal_sample(currentFileTitle);
       signal_mass_category_ = categorize_signal_mass_label(currentFileTitle);
       data_sideband_label_ = 0;
@@ -210,7 +212,8 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
 
       //----------------------------------------------------------------------------------------------------//
 
-      rand_ = -1; // analyzer.rand();
+      
+      rand_ = rndm.Rndm(); // index for training and validation
       super_rand_ = -1; //rand_map->retrieve_rand(analyzer.event(), analyzer.run(), analyzer.lumi());
       mass_ = diphoton.M();
       lead_sigmaEtoE_ = dipho_lead_sigmaEoE();
