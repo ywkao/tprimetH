@@ -207,6 +207,7 @@ class BabyMaker {
     float       chi2_bjet_btagScores_;
     float       chi2_wjet1_btagScores_;
     float       chi2_wjet2_btagScores_;
+    float       tprime_pt_ratio_;
 };
 
 inline
@@ -347,6 +348,8 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_->Branch("chi2_tprime_deltaR_dipho_" , &chi2_tprime_deltaR_dipho_ );
   BabyTree_->Branch("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
   BabyTree_->Branch("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
+  BabyTree_->Branch("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
+  BabyTree_->Branch("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
 
   return;
 }

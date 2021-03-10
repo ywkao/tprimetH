@@ -92,7 +92,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       run_  = analyzer.run();
       lumi_ = analyzer.lumi();
 
-      ht_            = -1; //get_ht(jets);
+      ht_            = get_ht(jets);
       dipho_delta_R  = -1; //lead_photon.DeltaR(sublead_photon);
       top_tag_score_ = -1;
 	  top_tag_mass_  = -1;
@@ -209,11 +209,13 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       chi2_bjet_btagScores_     = (has_resonable_reco && pass_eta_criteria_on_wjets) ? btag_scores[indices_bjj_covMatrix[0]] : -999;
       chi2_wjet1_btagScores_    = (has_resonable_reco && pass_eta_criteria_on_wjets) ? btag_scores[indices_bjj_covMatrix[1]] : -999;
       chi2_wjet2_btagScores_    = (has_resonable_reco && pass_eta_criteria_on_wjets) ? btag_scores[indices_bjj_covMatrix[2]] : -999;
+      tprime_pt_ratio_          = (has_resonable_reco && pass_eta_criteria_on_wjets) ? (cov_top.Pt() + dipho_pt())/ ht_      : -999;
 
       //----------------------------------------------------------------------------------------------------//
 
       
       rand_ = rndm.Rndm(); // index for training and validation
+      printf("[check] rand_ = %.2f\n", rand_);
       super_rand_ = -1; //rand_map->retrieve_rand(analyzer.event(), analyzer.run(), analyzer.lumi());
       mass_ = diphoton.M();
       lead_sigmaEtoE_ = dipho_lead_sigmaEoE();
