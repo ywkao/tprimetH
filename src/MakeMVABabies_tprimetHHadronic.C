@@ -84,7 +84,9 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       vector< std::pair<int, double> > btag_scores_sorted = sortVectorGreater(btag_scores);
       if(jets.size() < 3) continue;
 
-      TLorentzVector diphoton;
+      TLorentzVector diphoton, lead_photon, sublead_photon;
+      lead_photon.SetPtEtaPhiM(dipho_leadPt(), dipho_leadEta(), dipho_leadPhi(), 0.);
+      sublead_photon.SetPtEtaPhiM(dipho_subleadPt(), dipho_subleadEta(), dipho_subleadPhi(), 0.);
       diphoton.SetPtEtaPhiE(dipho_pt(), dipho_eta(), dipho_phi(), dipho_e());
 
       year_ = mYear == "2016" ? 2016 : (mYear == "2017" ? 2017 : (mYear == "2018" ? 2018 : -1)); 
@@ -93,7 +95,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       lumi_ = analyzer.lumi();
 
       ht_            = get_ht(jets);
-      dipho_delta_R  = -1; //lead_photon.DeltaR(sublead_photon);
+      dipho_delta_R  = lead_photon.DeltaR(sublead_photon);
       top_tag_score_ = -1;
 	  top_tag_mass_  = -1;
       top_tag_pt_    = -1;
@@ -168,8 +170,8 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       log_met_ = log(recoMET_pt());
       met_phi_ = recoMET_phi();
 
-      dipho_rapidity_ = -1; //dipho_rapidity();
-      helicity_angle_ = -1; //helicity(lead_photon, sublead_photon);
+      dipho_rapidity_ = diphoton.Rapidity(); //dipho_rapidity();
+      helicity_angle_ = helicity(lead_photon, sublead_photon);
 
       //calculate_masses(diphoton, jets, m_ggj_, m_jjj_);
       m_ggj_ = -1; //m_ggj_ > 0 ? log(m_ggj_) : -9;
@@ -215,7 +217,6 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
 
       
       rand_ = rndm.Rndm(); // index for training and validation
-      printf("[check] rand_ = %.2f\n", rand_);
       super_rand_ = -1; //rand_map->retrieve_rand(analyzer.event(), analyzer.run(), analyzer.lumi());
       mass_ = diphoton.M();
       lead_sigmaEtoE_ = dipho_lead_sigmaEoE();
