@@ -524,4 +524,21 @@ void print_counter_percentage(TString title, int counter, int tot){
     printf("%-80s: counter = %d / %d (%.3f)\n", title.Data(), counter, tot, percentage);
 }
 
+const double min_photon_ID_presel_cut = -0.7;
+
+bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, float mva_value = -1) {
+  if (tag == "ttHHadronic_RunII_MVA_Presel") {
+    if (dipho_mass() < 100 || dipho_mass() > 180) 	return false;
+    if (n_jets() < 3)					return false;
+    if (n_L_bjets() < 1)					return false;
+    if (minIDMVA_ < min_photon_ID_presel_cut)		return false;
+    return true;
+  }
+  
+  else 
+    cout << "Did not recognize tag name" << endl;
+
+  return false;
+}
+
 #endif

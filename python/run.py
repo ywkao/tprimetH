@@ -18,6 +18,8 @@ def to_study_signal():
     cwd = os.getcwd()
     location = cwd + "/rootfiles/ntuples_v2." + str(sample_manager.subversion)
     
+    xml_file = "mva/Hadronic__tprime_impute_hct__bdt.xml"
+
     counter = 0
     command_list = []
     for rootfile in sample_manager.signals:
@@ -25,9 +27,10 @@ def to_study_signal():
         year = rootfile.split('_')[2].split('a')[1]
         mass = rootfile.split('_')[1].split('-')[1]
         #command='./bin/covMatrix_Looper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
-        #command='./bin/tprimetHHadronicLooper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
-        command='./bin/tprimetHHadronicMVABabyMaker %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
+        command='./bin/tprimetHHadronicLooper %s %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, xml_file, year, mass, datetime_tag, counter)
+        #command='./bin/tprimetHHadronicMVABabyMaker %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, xml_file, year, mass, datetime_tag, counter)
         command_list.append(command)
+        break
     
     nPar = 10
     parallel_utils.submit_jobs(command_list, nPar)

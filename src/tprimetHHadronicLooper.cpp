@@ -10,8 +10,9 @@ int main(int argc, char* argv[])
 {
     TString location = argv[1];
     TString rootfile = argv[2];
-    TString year     = argv[3];
-    TString mass     = argv[4];
+    TString xml_file = argv[3];
+    TString year     = argv[4];
+    TString mass     = argv[5];
     TString fullpath = location + "/" + rootfile;
     printf("[check] fullpath = %s\n", fullpath.Data());
 
@@ -20,7 +21,7 @@ int main(int argc, char* argv[])
 
     TString name_output_file = "plots/hist_" + rootfile;
     printf("[check] name_output_file = %s\n", name_output_file.Data());
-    ScanChain_tprimetHHadronic_signal(ch, name_output_file, year, mass);
+    ScanChain_tprimetHHadronic_signal(ch, name_output_file, xml_file, year, mass);
     //ScanChain_tprimetHHadronic(ch, name_output_file, year, mass);
 
     return 0;

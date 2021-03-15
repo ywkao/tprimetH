@@ -2,8 +2,9 @@
 #include "chi2_helper.h"
 #include "truth_matching.h"
 #include "sorting.h"
+#include "TMVA/Reader.h" 
 
-int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, TString mYear, TString mass_str, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
+int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, TString xml_file, TString mYear, TString mass_str, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
   printf("Hello World!\n");
   name_output_file = name_output_file.ReplaceAll("hist_", "myhist_");
   //name_output_file = name_output_file.ReplaceAll("hist_", "testOnly_");
@@ -14,6 +15,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   TString tag = "Hadronic";
   vector<Process*> vProcess = generate_processes(output_file);
   add_variables(vProcess, tag);
+
+  bool evaluate_mva = xml_file != "none";
 
   float n_lep;
   float n_jet;
@@ -31,6 +34,100 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   TObjArray *listOfFiles = chain->GetListOfFiles();
   TIter fileIter(listOfFiles);
   TFile *currentFile = 0;
+
+  float maxIDMVA_                 = 0.;
+  float minIDMVA_                 = 0.;
+  float max2_btag_                = 0.;
+  float max1_btag_                = 0.;
+  float dipho_delta_R             = 0.;
+  float njets_                    = 0.;
+  float ht_                       = 0.;
+  float leadptoM_                 = 0.;
+  float subleadptoM_              = 0.;
+  float lead_eta_                 = 0.;
+  float sublead_eta_              = 0.;
+  float jet1_pt_                  = 0.;
+  float jet1_eta_                 = 0.;
+  float jet1_btag_                = 0.;
+  float jet2_pt_                  = 0.;
+  float jet2_eta_                 = 0.;
+  float jet2_btag_                = 0.;
+  float jet3_pt_                  = 0.;
+  float jet3_eta_                 = 0.;
+  float jet3_btag_                = 0.;
+  float jet4_pt_                  = 0.;
+  float jet4_eta_                 = 0.;
+  float jet4_btag_                = 0.;
+  float leadPSV_                  = 0.;
+  float subleadPSV_               = 0.;
+  float dipho_cosphi_             = 0.;
+  float dipho_rapidity_           = 0.;
+  float met_                      = 0.;
+  float dipho_pt_over_mass_       = 0.;
+  float helicity_angle_           = 0.;
+  float chi2_value_               = 0.;
+  float chi2_tbw_mass_            = 0.;
+  float chi2_tbw_pt_              = 0.;
+  float chi2_tbw_eta_             = 0.;
+  float chi2_tbw_deltaR_dipho_    = 0.;
+  float chi2_tprime_ptOverM_      = 0.;
+  float chi2_tprime_eta_          = 0.;
+  float chi2_tprime_deltaR_tbw_   = 0.;
+  float chi2_tprime_deltaR_dipho_ = 0.;
+  float chi2_bjet_btagScores_     = 0.;
+  float chi2_wjet1_btagScores_    = 0.;
+  float chi2_wjet2_btagScores_    = 0.;
+  float tprime_pt_ratio_          = 0.;
+
+  unique_ptr<TMVA::Reader> mva;
+  if (evaluate_mva) {
+    mva.reset(new TMVA::Reader( "!Color:Silent" ));
+
+	mva->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
+	mva->AddVariable("minIDMVA_"                 , &minIDMVA_                 );
+	mva->AddVariable("max2_btag_"                , &max2_btag_                );
+	mva->AddVariable("max1_btag_"                , &max1_btag_                );
+	mva->AddVariable("dipho_delta_R"             , &dipho_delta_R             );
+	mva->AddVariable("njets_"                    , &njets_                    );
+	mva->AddVariable("ht_"                       , &ht_                       );
+	mva->AddVariable("leadptoM_"                 , &leadptoM_                 );
+	mva->AddVariable("subleadptoM_"              , &subleadptoM_              );
+	mva->AddVariable("lead_eta_"                 , &lead_eta_                 );
+	mva->AddVariable("sublead_eta_"              , &sublead_eta_              );
+	mva->AddVariable("jet1_pt_"                  , &jet1_pt_                  );
+	mva->AddVariable("jet1_eta_"                 , &jet1_eta_                 );
+	mva->AddVariable("jet1_btag_"                , &jet1_btag_                );
+	mva->AddVariable("jet2_pt_"                  , &jet2_pt_                  );
+	mva->AddVariable("jet2_eta_"                 , &jet2_eta_                 );
+	mva->AddVariable("jet2_btag_"                , &jet2_btag_                );
+	mva->AddVariable("jet3_pt_"                  , &jet3_pt_                  );
+	mva->AddVariable("jet3_eta_"                 , &jet3_eta_                 );
+	mva->AddVariable("jet3_btag_"                , &jet3_btag_                );
+	mva->AddVariable("jet4_pt_"                  , &jet4_pt_                  );
+	mva->AddVariable("jet4_eta_"                 , &jet4_eta_                 );
+	mva->AddVariable("jet4_btag_"                , &jet4_btag_                );
+	mva->AddVariable("leadPSV_"                  , &leadPSV_                  );
+	mva->AddVariable("subleadPSV_"               , &subleadPSV_               );
+	mva->AddVariable("dipho_cosphi_"             , &dipho_cosphi_             );
+	mva->AddVariable("dipho_rapidity_"           , &dipho_rapidity_           );
+	mva->AddVariable("met_"                      , &met_                      );
+	mva->AddVariable("dipho_pt_over_mass_"       , &dipho_pt_over_mass_       );
+	mva->AddVariable("helicity_angle_"           , &helicity_angle_           );
+	mva->AddVariable("chi2_value_"               , &chi2_value_               );
+	mva->AddVariable("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
+	mva->AddVariable("chi2_tbw_pt_"              , &chi2_tbw_pt_              );
+	mva->AddVariable("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
+	mva->AddVariable("chi2_tbw_deltaR_dipho_"    , &chi2_tbw_deltaR_dipho_    );
+	mva->AddVariable("chi2_tprime_ptOverM_"      , &chi2_tprime_ptOverM_      );
+	mva->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
+	mva->AddVariable("chi2_tprime_deltaR_tbw_"   , &chi2_tprime_deltaR_tbw_   );
+	mva->AddVariable("chi2_tprime_deltaR_dipho_" , &chi2_tprime_deltaR_dipho_ );
+	mva->AddVariable("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
+	mva->AddVariable("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
+	mva->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
+
+    mva->BookMVA("BDT", xml_file);
+  }
 
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
@@ -60,16 +157,6 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       // Progress
       tprimetHHadronic::progress( nEventsTotal, nEventsChain );
 
-      float evt_weight = weight();
-      int genLeptonId = 0; // isData ? -1 : categorize_leptons(nGoodEls(), nGoodMus()); // none of reco lepton exists
-      int genPhotonId = 2; // isData ? -1 : categorize_photons(leadGenMatch(), subleadGenMatch()); // no effect for signal samples
-      int genPhotonDetailId = 5; // isData ? -1 : categorize_photons_detail(lead_photon_type(), sublead_photon_type()); // assume prompt-prompt
-      int photonLocationId = categorize_photon_locations(dipho_leadEta(), dipho_subleadEta());
-      int mvaCategoryId = 1; // mva_value < -0.8 ? 0 : 1; // assume signal is 1
-      int yearId = mYear == "2016" ? 0 : (mYear == "2017" ? 1 : (mYear == "2018" ? 2 : -1));
-      int processId = categorize_process(currentFileTitle, genPhotonId);
-      vector<int> vId = {genLeptonId, genPhotonId, genPhotonDetailId, photonLocationId, mvaCategoryId, -1, yearId};
-
       // Jets
       vector<double> btag_scores;
       vector<TLorentzVector> jets = make_jets(btag_scores);
@@ -77,14 +164,52 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       if(jets.size() < 3) continue;
 
       // Di-Photon
-      TLorentzVector diphoton;
+      TLorentzVector diphoton, lead_photon, sublead_photon;
       diphoton.SetPtEtaPhiE(dipho_pt(), dipho_eta(), dipho_phi(), dipho_e());
-      TLorentzVector lead_photon;
-      lead_photon.SetPtEtaPhiE(dipho_leadPt(), dipho_leadEta(), dipho_leadPhi(), dipho_leadEt());
-      TLorentzVector sublead_photon;
-      sublead_photon.SetPtEtaPhiE(dipho_subleadPt(), dipho_subleadEta(), dipho_subleadPhi(), dipho_subleadEt());
+      lead_photon.SetPtEtaPhiM(dipho_leadPt(), dipho_leadEta(), dipho_leadPhi(), 0.);
+      sublead_photon.SetPtEtaPhiM(dipho_subleadPt(), dipho_subleadEta(), dipho_subleadPhi(), 0.);
       TLorentzVector diphoton_v2 = lead_photon + sublead_photon;
       
+      //------------------------------ Variable definitions ------------------------------//
+      maxIDMVA_ = dipho_leadIDMVA() >  dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
+      minIDMVA_ = dipho_leadIDMVA() <= dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
+
+      ht_            = get_ht(jets);
+
+      njets_ = n_jets();
+      max1_btag_ = btag_scores_sorted[0].second;
+      max2_btag_ = btag_scores_sorted[1].second;
+      jet1_pt_   = njets_ >= 1 ? jets[0].Pt()   : -999;
+      jet1_eta_  = njets_ >= 1 ? jets[0].Eta()  : -999;
+      jet1_btag_ = njets_ >= 1 ? btag_scores[0] : -999;
+      jet2_pt_   = njets_ >= 2 ? jets[1].Pt()   : -999; 
+      jet2_eta_  = njets_ >= 2 ? jets[1].Eta()  : -999;
+      jet2_btag_ = njets_ >= 2 ? btag_scores[1] : -999;
+      jet3_pt_   = njets_ >= 3 ? jets[2].Pt()   : -999;
+      jet3_eta_  = njets_ >= 3 ? jets[2].Eta()  : -999;
+      jet3_btag_ = njets_ >= 3 ? btag_scores[2] : -999;
+      jet4_pt_   = njets_ >= 4 ? jets[3].Pt()   : -999;
+      jet4_eta_  = njets_ >= 4 ? jets[3].Eta()  : -999;
+      jet4_btag_ = njets_ >= 4 ? btag_scores[3] : -999;
+
+      // photons, diphoton, helicity angle, top masses
+      dipho_delta_R  = lead_photon.DeltaR(sublead_photon);
+      leadptoM_     = dipho_lead_ptoM();
+      subleadptoM_  = dipho_sublead_ptoM();
+      lead_eta_     = dipho_leadEta();
+      sublead_eta_  = dipho_subleadEta();
+
+      leadPSV_ = dipho_lead_haspixelseed();
+      subleadPSV_ = dipho_sublead_haspixelseed();
+
+      dipho_cosphi_ = dipho_cosphi();
+      dipho_pt_over_mass_ = diphoton.Pt() / diphoton.M();
+      met_ = recoMET_pt();
+
+      dipho_rapidity_ = diphoton.Rapidity(); //dipho_rapidity();
+      helicity_angle_ = helicity(lead_photon, sublead_photon);
+
+
       //------------------------------ Minimum chi-2 method (cov.) ------------------------------//
       double min_chi2_value_2x2 = 99999.;
       vector<int> indices_bjj_covMatrix(3, -1);
@@ -107,14 +232,49 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       double mass_tprime_tilde = has_resonable_reco ? ( cov_tprime.M() - cov_top.M() - diphoton.M() + 175.5 + 125.0 ) : -1.;
       min_chi2_value_2x2 = has_resonable_reco ? min_chi2_value_2x2 : -1.;
 
+      chi2_value_               = min_chi2_value_2x2;
+      chi2_tbw_mass_            = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_top.M()                           : -999;
+      chi2_tbw_pt_              = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_top.Pt()                          : -999;
+      chi2_tbw_eta_             = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_top.Eta()                         : -999;
+      chi2_tbw_deltaR_dipho_    = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_top.DeltaR(diphoton)              : -999;
+      chi2_tprime_ptOverM_      = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_tprime.Pt()/cov_tprime.M()        : -999;
+      chi2_tprime_eta_          = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_tprime.Eta()                      : -999;
+      chi2_tprime_deltaR_tbw_   = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_tprime.DeltaR(cov_top)            : -999;
+      chi2_tprime_deltaR_dipho_ = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_tprime.DeltaR(diphoton)           : -999;
+      chi2_bjet_btagScores_     = (has_resonable_reco && pass_eta_criteria_on_wjets) ? btag_scores[indices_bjj_covMatrix[0]] : -999;
+      chi2_wjet1_btagScores_    = (has_resonable_reco && pass_eta_criteria_on_wjets) ? btag_scores[indices_bjj_covMatrix[1]] : -999;
+      chi2_wjet2_btagScores_    = (has_resonable_reco && pass_eta_criteria_on_wjets) ? btag_scores[indices_bjj_covMatrix[2]] : -999;
+      tprime_pt_ratio_          = (has_resonable_reco && pass_eta_criteria_on_wjets) ? (cov_top.Pt() + dipho_pt())/ ht_      : -999;
   
+
+      //------------------------------ MVA value & selection cut ------------------------------//
+      double mva_value = -999;
+      if (evaluate_mva) mva_value = convert_tmva_to_prob(mva->EvaluateMVA( "BDT" ));
+      int mvaCategoryId = mva_value < -0.8 ? 0 : 1;
+      //if (!passes_selection(tag, minIDMVA_, maxIDMVA_, mva_value))	continue;
+      if (!passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_, -999.))	continue;
+
+
+      float evt_weight = weight();
+      int genLeptonId = 0; // isData ? -1 : categorize_leptons(nGoodEls(), nGoodMus()); // none of reco lepton exists
+      int genPhotonId = 2; // isData ? -1 : categorize_photons(leadGenMatch(), subleadGenMatch()); // no effect for signal samples
+      int genPhotonDetailId = 5; // isData ? -1 : categorize_photons_detail(lead_photon_type(), sublead_photon_type()); // assume prompt-prompt
+      int photonLocationId = categorize_photon_locations(dipho_leadEta(), dipho_subleadEta());
+      int yearId = mYear == "2016" ? 0 : (mYear == "2017" ? 1 : (mYear == "2018" ? 2 : -1));
+      int processId = categorize_process(currentFileTitle, genPhotonId);
+      vector<int> vId = {genLeptonId, genPhotonId, genPhotonDetailId, photonLocationId, mvaCategoryId, -1, yearId};
+
+
       //------------------------------ Fill histograms ------------------------------//
       TString syst_ext = "";
-      vProcess[processId]->fill_histogram("h" + syst_ext + "Mass", diphoton.M(), evt_weight, vId);   
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PtHiggs", diphoton.Pt(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "DiphotonPtOverMass", diphoton.Pt() / diphoton.M(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonDeltaR", lead_photon.DeltaR(sublead_photon), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "Rapidity", diphoton.Rapidity(), evt_weight, vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_transf" , -log(1 - mva_value) , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value"  , mva_value           , evt_weight , vId);
+
+      vProcess[processId]->fill_histogram("h" + syst_ext + "Mass"               , diphoton.M()                       , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PtHiggs"            , diphoton.Pt()                      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "DiphotonPtOverMass" , diphoton.Pt() / diphoton.M()       , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonDeltaR"       , lead_photon.DeltaR(sublead_photon) , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "Rapidity"           , diphoton.Rapidity()                , evt_weight , vId);
 
       vProcess[processId]->fill_histogram("h" + syst_ext + "mass_wboson_cov"   , mass_wboson        , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "mass_top_cov"      , mass_top           , evt_weight , vId);
@@ -122,21 +282,21 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_tilde" , mass_tprime_tilde  , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "cov_chi2_value"    , min_chi2_value_2x2 , evt_weight , vId);
 
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPt", dipho_leadPt(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadEta", dipho_leadEta(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPhi", dipho_leadPhi(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadIDMVA", dipho_leadIDMVA(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPToM", dipho_lead_ptoM(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPt", dipho_subleadPt(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadEta", dipho_subleadEta(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPhi", dipho_subleadPhi(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadIDMVA", dipho_subleadIDMVA(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPToM", dipho_sublead_ptoM(), evt_weight, vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPt"       , dipho_leadPt()       , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadEta"      , dipho_leadEta()      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPhi"      , dipho_leadPhi()      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadIDMVA"    , dipho_leadIDMVA()    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPToM"     , dipho_lead_ptoM()    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPt"    , dipho_subleadPt()    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadEta"   , dipho_subleadEta()   , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPhi"   , dipho_subleadPhi()   , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadIDMVA" , dipho_subleadIDMVA() , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPToM"  , dipho_sublead_ptoM() , evt_weight , vId);
 
-      vProcess[processId]->fill_histogram("h" + syst_ext + "NJets", n_jets(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "NbLoose", n_L_bjets(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "NbMedium", n_M_bjets(), evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "NbTight", n_T_bjets(), evt_weight, vId); 
+      vProcess[processId]->fill_histogram("h" + syst_ext + "NJets"    , n_jets()    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "NbLoose"  , n_L_bjets() , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "NbMedium" , n_M_bjets() , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "NbTight"  , n_T_bjets() , evt_weight , vId);
 
       if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet1pT", jet1_pt(), evt_weight, vId);
       if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet2pT", jet2_pt(), evt_weight, vId);
