@@ -30,7 +30,6 @@ def to_study_signal():
         command='./bin/tprimetHHadronicLooper %s %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, xml_file, year, mass, datetime_tag, counter)
         #command='./bin/tprimetHHadronicMVABabyMaker %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, xml_file, year, mass, datetime_tag, counter)
         command_list.append(command)
-        break
     
     nPar = 10
     parallel_utils.submit_jobs(command_list, nPar)
