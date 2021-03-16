@@ -196,6 +196,17 @@ class BabyMaker {
 	float       dR_tH;
     //# chi-2 related
     float       chi2_value_;
+    float       chi2_bjet_pt_;
+    float       chi2_wjet1_pt_;
+    float       chi2_wjet2_pt_;
+    float       chi2_bjet_eta_;
+    float       chi2_wjet1_eta_;
+    float       chi2_wjet2_eta_;
+    float       chi2_wjets_deltaR_;
+    float       chi2_wboson_pt_;
+    float       chi2_wboson_eta_;
+    float       chi2_wboson_mass_;
+    float       chi2_wboson_deltaR_bjet_;
     float       chi2_tbw_mass_;
     float       chi2_tbw_pt_;
     float       chi2_tbw_eta_;
@@ -338,6 +349,17 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_->Branch("top_candidates_12_"  , &top_candidates_12_  );
   //#chi-2 related
   BabyTree_->Branch("chi2_value_"               , &chi2_value_               );
+  BabyTree_->Branch("chi2_bjet_pt_"             , &chi2_bjet_pt_             );
+  BabyTree_->Branch("chi2_wjet1_pt_"            , &chi2_wjet1_pt_            );
+  BabyTree_->Branch("chi2_wjet2_pt_"            , &chi2_wjet2_pt_            );
+  BabyTree_->Branch("chi2_bjet_eta_"            , &chi2_bjet_eta_            );
+  BabyTree_->Branch("chi2_wjet1_eta_"           , &chi2_wjet1_eta_           );
+  BabyTree_->Branch("chi2_wjet2_eta_"           , &chi2_wjet2_eta_           );
+  BabyTree_->Branch("chi2_wjets_deltaR_"        , &chi2_wjets_deltaR_        );
+  BabyTree_->Branch("chi2_wboson_pt_"           , &chi2_wboson_pt_           );
+  BabyTree_->Branch("chi2_wboson_eta_"          , &chi2_wboson_eta_          );
+  BabyTree_->Branch("chi2_wboson_mass_"         , &chi2_wboson_mass_         );
+  BabyTree_->Branch("chi2_wboson_deltaR_bjet_"  , &chi2_wboson_deltaR_bjet_  );
   BabyTree_->Branch("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
   BabyTree_->Branch("chi2_tbw_pt_"              , &chi2_tbw_pt_              );
   BabyTree_->Branch("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
