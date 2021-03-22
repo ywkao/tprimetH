@@ -224,6 +224,16 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       chi2_wjet2_btagScores_    = (has_resonable_reco && pass_eta_criteria_on_wjets) ? btag_scores[indices_bjj_covMatrix[2]] : -999;
       tprime_pt_ratio_          = (has_resonable_reco && pass_eta_criteria_on_wjets) ? (cov_top.Pt() + dipho_pt())/ ht_      : -999;
 
+      chi2_bjet_ptOverM_        = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_bjet.Pt() / cov_top.M()           : -999;
+      chi2_wjet1_ptOverM_       = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_wjet1.Pt() / cov_wboson.M()       : -999;
+      chi2_wjet2_ptOverM_       = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_wjet2.Pt() / cov_wboson.M()       : -999;
+      chi2_wboson_ptOverM_      = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_wboson.Pt() / cov_wboson.M()      : -999;
+      chi2_tbw_ptOverM_         = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_top.Pt() / cov_top.M()            : -999;
+
+      jet1_ptOverM_ = (njets_ >= 1 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[0].Pt() / cov_top.M()  : -999;
+      jet2_ptOverM_ = (njets_ >= 2 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[1].Pt() / cov_top.M()  : -999; 
+      jet3_ptOverM_ = (njets_ >= 3 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[2].Pt() / cov_top.M()  : -999;
+      jet4_ptOverM_ = (njets_ >= 4 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[3].Pt() / cov_top.M()  : -999;
       //----------------------------------------------------------------------------------------------------//
 
       

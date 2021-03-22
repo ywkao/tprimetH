@@ -78,6 +78,15 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   float chi2_wjet1_btagScores_    = 0.;
   float chi2_wjet2_btagScores_    = 0.;
   float tprime_pt_ratio_          = 0.;
+  float chi2_bjet_ptOverM_        = 0.;
+  float chi2_wjet1_ptOverM_       = 0.;
+  float chi2_wjet2_ptOverM_       = 0.;
+  float chi2_wboson_ptOverM_      = 0.;
+  float chi2_tbw_ptOverM_         = 0.;
+  float jet1_ptOverM_             = 0.;
+  float jet2_ptOverM_             = 0.; 
+  float jet3_ptOverM_             = 0.;
+  float jet4_ptOverM_             = 0.;
 
   unique_ptr<TMVA::Reader> mva;
   if (evaluate_mva) {
@@ -246,6 +255,16 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       chi2_wjet2_btagScores_    = (has_resonable_reco && pass_eta_criteria_on_wjets) ? btag_scores[indices_bjj_covMatrix[2]] : -999;
       tprime_pt_ratio_          = (has_resonable_reco && pass_eta_criteria_on_wjets) ? (cov_top.Pt() + dipho_pt())/ ht_      : -999;
   
+      chi2_bjet_ptOverM_        = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_bjet.Pt() / cov_top.M()           : -999;
+      chi2_wjet1_ptOverM_       = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_wjet1.Pt() / cov_wboson.M()       : -999;
+      chi2_wjet2_ptOverM_       = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_wjet2.Pt() / cov_wboson.M()       : -999;
+      chi2_wboson_ptOverM_      = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_wboson.Pt() / cov_wboson.M()      : -999;
+      chi2_tbw_ptOverM_         = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_top.Pt() / cov_top.M()            : -999;
+ 
+      jet1_ptOverM_ = (njets_ >= 1 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[0].Pt() / cov_top.M()  : -999;
+      jet2_ptOverM_ = (njets_ >= 2 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[1].Pt() / cov_top.M()  : -999; 
+      jet3_ptOverM_ = (njets_ >= 3 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[2].Pt() / cov_top.M()  : -999;
+      jet4_ptOverM_ = (njets_ >= 4 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[3].Pt() / cov_top.M()  : -999;
 
       //------------------------------ MVA value & selection cut ------------------------------//
       double mva_value = -999;
@@ -267,8 +286,10 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 
       //------------------------------ Fill histograms ------------------------------//
       TString syst_ext = "";
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_transf" , -log(1 - mva_value) , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value"  , mva_value           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_transf"     , -log(1 - mva_value) , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_n15"  , mva_value           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_n30"  , mva_value           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_n100" , mva_value           , evt_weight , vId);
 
       vProcess[processId]->fill_histogram("h" + syst_ext + "Mass"               , diphoton.M()                       , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "PtHiggs"            , diphoton.Pt()                      , evt_weight , vId);
@@ -281,6 +302,34 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_cov"   , mass_tprime        , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_tilde" , mass_tprime_tilde  , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "cov_chi2_value"    , min_chi2_value_2x2 , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_bjet_pt"             , chi2_bjet_pt_             , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet1_pt"            , chi2_wjet1_pt_            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_pt"            , chi2_wjet2_pt_            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_bjet_eta"            , chi2_bjet_eta_            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet1_eta"           , chi2_wjet1_eta_           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_eta"           , chi2_wjet2_eta_           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjets_deltaR"        , chi2_wjets_deltaR_        , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_pt"           , chi2_wboson_pt_           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_eta"          , chi2_wboson_eta_          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_mass"         , chi2_wboson_mass_         , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_deltaR_bjet"  , chi2_wboson_deltaR_bjet_  , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_mass"            , chi2_tbw_mass_            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_pt"              , chi2_tbw_pt_              , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_eta"             , chi2_tbw_eta_             , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_deltaR_dipho"    , chi2_tbw_deltaR_dipho_    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tprime_ptOverM"      , chi2_tprime_ptOverM_      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tprime_eta"          , chi2_tprime_eta_          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tprime_deltaR_tbw"   , chi2_tprime_deltaR_tbw_   , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tprime_deltaR_dipho" , chi2_tprime_deltaR_dipho_ , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_bjet_btagScores"     , chi2_bjet_btagScores_     , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet1_btagScores"    , chi2_wjet1_btagScores_    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_btagScores"    , chi2_wjet2_btagScores_    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "tprime_pt_ratio"          , tprime_pt_ratio_          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_bjet_ptOverM"        , chi2_bjet_ptOverM_        , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet1_ptOverM"       , chi2_wjet1_ptOverM_       , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_ptOverM"       , chi2_wjet2_ptOverM_       , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_ptOverM"      , chi2_wboson_ptOverM_      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_ptOverM"         , chi2_tbw_ptOverM_         , evt_weight , vId);
 
       vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPt"       , dipho_leadPt()       , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadEta"      , dipho_leadEta()      , evt_weight , vId);
@@ -298,18 +347,22 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       vProcess[processId]->fill_histogram("h" + syst_ext + "NbMedium" , n_M_bjets() , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "NbTight"  , n_T_bjets() , evt_weight , vId);
 
-      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet1pT", jet1_pt(), evt_weight, vId);
-      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet2pT", jet2_pt(), evt_weight, vId);
-      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet3pT", jet3_pt(), evt_weight, vId);
-      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet4pT", jet4_pt(), evt_weight, vId);
-      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet1Eta", jet1_eta(), evt_weight, vId);
-      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet2Eta", jet2_eta(), evt_weight, vId);
-      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet3Eta", jet3_eta(), evt_weight, vId);
-      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet4Eta", jet4_eta(), evt_weight, vId);
-      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet1BTag", jet1_discr(), evt_weight, vId);
-      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet2BTag", jet2_discr(), evt_weight, vId);
-      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet3BTag", jet3_discr(), evt_weight, vId);
-      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet4BTag", jet4_discr(), evt_weight, vId);
+      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet1pT"       , jet1_pt()     , evt_weight , vId);
+      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet2pT"       , jet2_pt()     , evt_weight , vId);
+      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet3pT"       , jet3_pt()     , evt_weight , vId);
+      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet4pT"       , jet4_pt()     , evt_weight , vId);
+      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet1Eta"      , jet1_eta()    , evt_weight , vId);
+      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet2Eta"      , jet2_eta()    , evt_weight , vId);
+      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet3Eta"      , jet3_eta()    , evt_weight , vId);
+      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet4Eta"      , jet4_eta()    , evt_weight , vId);
+      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet1BTag"     , jet1_discr()  , evt_weight , vId);
+      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet2BTag"     , jet2_discr()  , evt_weight , vId);
+      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet3BTag"     , jet3_discr()  , evt_weight , vId);
+      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet4BTag"     , jet4_discr()  , evt_weight , vId);
+      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet1_ptOverM" , jet1_ptOverM_ , evt_weight , vId);
+      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet2_ptOverM" , jet2_ptOverM_ , evt_weight , vId);
+      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet3_ptOverM" , jet3_ptOverM_ , evt_weight , vId);
+      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet4_ptOverM" , jet4_ptOverM_ , evt_weight , vId);
 
     } // end of event loop
 

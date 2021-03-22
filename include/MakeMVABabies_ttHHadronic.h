@@ -219,6 +219,17 @@ class BabyMaker {
     float       chi2_wjet1_btagScores_;
     float       chi2_wjet2_btagScores_;
     float       tprime_pt_ratio_;
+
+    float       chi2_bjet_ptOverM_;
+    float       chi2_wjet1_ptOverM_;
+    float       chi2_wjet2_ptOverM_;
+    float       chi2_wboson_ptOverM_;
+    float       chi2_tbw_ptOverM_;
+
+    float       jet1_ptOverM_;
+    float       jet2_ptOverM_; 
+    float       jet3_ptOverM_;
+    float       jet4_ptOverM_;
 };
 
 inline
@@ -372,6 +383,15 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_->Branch("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
   BabyTree_->Branch("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
   BabyTree_->Branch("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
+  BabyTree_->Branch("chi2_bjet_ptOverM_"        , &chi2_bjet_ptOverM_        );
+  BabyTree_->Branch("chi2_wjet1_ptOverM_"       , &chi2_wjet1_ptOverM_       );
+  BabyTree_->Branch("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
+  BabyTree_->Branch("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
+  BabyTree_->Branch("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
+  BabyTree_->Branch("jet1_ptOverM_"             , &jet1_ptOverM_             );
+  BabyTree_->Branch("jet2_ptOverM_"             , &jet2_ptOverM_             );
+  BabyTree_->Branch("jet3_ptOverM_"             , &jet3_ptOverM_             );
+  BabyTree_->Branch("jet4_ptOverM_"             , &jet4_ptOverM_             );
 
   return;
 }
