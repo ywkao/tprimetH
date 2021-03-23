@@ -35,6 +35,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   TIter fileIter(listOfFiles);
   TFile *currentFile = 0;
 
+  // Declare BDT vars {{{
   float maxIDMVA_                 = 0.;
   float minIDMVA_                 = 0.;
   float max2_btag_                = 0.;
@@ -66,17 +67,17 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   float dipho_pt_over_mass_       = 0.;
   float helicity_angle_           = 0.;
   float chi2_value_               = 0.;
-  float chi2_bjet_pt_ = 0.;
-  float chi2_wjet1_pt_ = 0.;
-  float chi2_wjet2_pt_ = 0.;
-  float chi2_bjet_eta_ = 0.;
-  float chi2_wjet1_eta_ = 0.;
-  float chi2_wjet2_eta_ = 0.;
-  float chi2_wjets_deltaR_ = 0.;
-  float chi2_wboson_pt_ = 0.;
-  float chi2_wboson_eta_ = 0.;
-  float chi2_wboson_mass_ = 0.;
-  float chi2_wboson_deltaR_bjet_ = 0.;
+  float chi2_bjet_pt_             = 0.;
+  float chi2_wjet1_pt_            = 0.;
+  float chi2_wjet2_pt_            = 0.;
+  float chi2_bjet_eta_            = 0.;
+  float chi2_wjet1_eta_           = 0.;
+  float chi2_wjet2_eta_           = 0.;
+  float chi2_wjets_deltaR_        = 0.;
+  float chi2_wboson_pt_           = 0.;
+  float chi2_wboson_eta_          = 0.;
+  float chi2_wboson_mass_         = 0.;
+  float chi2_wboson_deltaR_bjet_  = 0.;
   float chi2_tbw_mass_            = 0.;
   float chi2_tbw_pt_              = 0.;
   float chi2_tbw_eta_             = 0.;
@@ -95,12 +96,18 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   float chi2_wboson_ptOverM_      = 0.;
   float chi2_tbw_ptOverM_         = 0.;
   float jet1_ptOverM_             = 0.;
-  float jet2_ptOverM_             = 0.; 
+  float jet2_ptOverM_             = 0.;
   float jet3_ptOverM_             = 0.;
   float jet4_ptOverM_             = 0.;
+  //}}}
 
   unique_ptr<TMVA::Reader> mva;
+  unique_ptr<TMVA::Reader> mva_nrb_m600;
+  unique_ptr<TMVA::Reader> mva_smh_m600;
+  unique_ptr<TMVA::Reader> mva_smhnrb_m600;
+
   if (evaluate_mva) {
+    // mva very beginning version {{{
     mva.reset(new TMVA::Reader( "!Color:Silent" ));
 
 	mva->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
@@ -147,6 +154,184 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 	mva->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
 
     mva->BookMVA("BDT", xml_file);
+    //}}}
+    // mva_nrb_m600{{{
+    mva_nrb_m600.reset(new TMVA::Reader( "!Color:Silent" ));
+	mva_nrb_m600->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
+	mva_nrb_m600->AddVariable("minIDMVA_"                 , &minIDMVA_                 );
+	mva_nrb_m600->AddVariable("max1_btag_"                , &max1_btag_                );
+	mva_nrb_m600->AddVariable("max2_btag_"                , &max2_btag_                );
+	mva_nrb_m600->AddVariable("dipho_delta_R"             , &dipho_delta_R             );
+	mva_nrb_m600->AddVariable("njets_"                    , &njets_                    );
+	mva_nrb_m600->AddVariable("nbjets_"                   , &nbjets_                   );
+	mva_nrb_m600->AddVariable("ht_"                       , &ht_                       );
+	mva_nrb_m600->AddVariable("leadptoM_"                 , &leadptoM_                 );
+	mva_nrb_m600->AddVariable("subleadptoM_"              , &subleadptoM_              );
+	mva_nrb_m600->AddVariable("lead_eta_"                 , &lead_eta_                 );
+	mva_nrb_m600->AddVariable("sublead_eta_"              , &sublead_eta_              );
+	mva_nrb_m600->AddVariable("jet1_ptOverM_"             , &jet1_ptOverM_             );
+	mva_nrb_m600->AddVariable("jet1_eta_"                 , &jet1_eta_                 );
+	mva_nrb_m600->AddVariable("jet1_btag_"                , &jet1_btag_                );
+	mva_nrb_m600->AddVariable("jet2_ptOverM_"             , &jet2_ptOverM_             );
+	mva_nrb_m600->AddVariable("jet2_eta_"                 , &jet2_eta_                 );
+	mva_nrb_m600->AddVariable("jet2_btag_"                , &jet2_btag_                );
+	mva_nrb_m600->AddVariable("jet3_ptOverM_"             , &jet3_ptOverM_             );
+	mva_nrb_m600->AddVariable("jet3_eta_"                 , &jet3_eta_                 );
+	mva_nrb_m600->AddVariable("jet3_btag_"                , &jet3_btag_                );
+	mva_nrb_m600->AddVariable("jet4_ptOverM_"             , &jet4_ptOverM_             );
+	mva_nrb_m600->AddVariable("jet4_eta_"                 , &jet4_eta_                 );
+	mva_nrb_m600->AddVariable("jet4_btag_"                , &jet4_btag_                );
+	mva_nrb_m600->AddVariable("leadPSV_"                  , &leadPSV_                  );
+	mva_nrb_m600->AddVariable("subleadPSV_"               , &subleadPSV_               );
+	mva_nrb_m600->AddVariable("dipho_cosphi_"             , &dipho_cosphi_             );
+	mva_nrb_m600->AddVariable("dipho_rapidity_"           , &dipho_rapidity_           );
+	mva_nrb_m600->AddVariable("met_"                      , &met_                      );
+	mva_nrb_m600->AddVariable("dipho_pt_over_mass_"       , &dipho_pt_over_mass_       );
+	mva_nrb_m600->AddVariable("helicity_angle_"           , &helicity_angle_           );
+	mva_nrb_m600->AddVariable("chi2_value_"               , &chi2_value_               );
+	mva_nrb_m600->AddVariable("chi2_bjet_ptOverM_"        , &chi2_bjet_ptOverM_        );
+	mva_nrb_m600->AddVariable("chi2_bjet_eta_"            , &chi2_bjet_eta_            );
+	mva_nrb_m600->AddVariable("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
+	mva_nrb_m600->AddVariable("chi2_wjet1_ptOverM_"       , &chi2_wjet1_ptOverM_       );
+	mva_nrb_m600->AddVariable("chi2_wjet1_eta_"           , &chi2_wjet1_eta_           );
+	mva_nrb_m600->AddVariable("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
+	mva_nrb_m600->AddVariable("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
+	mva_nrb_m600->AddVariable("chi2_wjet2_eta_"           , &chi2_wjet2_eta_           );
+	mva_nrb_m600->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
+	mva_nrb_m600->AddVariable("chi2_wjets_deltaR_"        , &chi2_wjets_deltaR_        );
+	mva_nrb_m600->AddVariable("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
+	mva_nrb_m600->AddVariable("chi2_wboson_eta_"          , &chi2_wboson_eta_          );
+	mva_nrb_m600->AddVariable("chi2_wboson_mass_"         , &chi2_wboson_mass_         );
+	mva_nrb_m600->AddVariable("chi2_wboson_deltaR_bjet_"  , &chi2_wboson_deltaR_bjet_  );
+	mva_nrb_m600->AddVariable("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
+	mva_nrb_m600->AddVariable("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
+	mva_nrb_m600->AddVariable("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
+	mva_nrb_m600->AddVariable("chi2_tbw_deltaR_dipho_"    , &chi2_tbw_deltaR_dipho_    );
+	mva_nrb_m600->AddVariable("chi2_tprime_ptOverM_"      , &chi2_tprime_ptOverM_      );
+	mva_nrb_m600->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
+	mva_nrb_m600->AddVariable("chi2_tprime_deltaR_tbw_"   , &chi2_tprime_deltaR_tbw_   );
+	mva_nrb_m600->AddVariable("chi2_tprime_deltaR_dipho_" , &chi2_tprime_deltaR_dipho_ );
+	mva_nrb_m600->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
+    mva_nrb_m600->BookMVA("BDT", "../MVAs/Hadronic_tprime_NRB_varSet2_sigM600_bdt.xml");
+    //}}}
+    // mva_smh_m600{{{
+    mva_smh_m600.reset(new TMVA::Reader( "!Color:Silent" ));
+	mva_smh_m600->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
+	mva_smh_m600->AddVariable("minIDMVA_"                 , &minIDMVA_                 );
+	mva_smh_m600->AddVariable("max1_btag_"                , &max1_btag_                );
+	mva_smh_m600->AddVariable("max2_btag_"                , &max2_btag_                );
+	mva_smh_m600->AddVariable("dipho_delta_R"             , &dipho_delta_R             );
+	mva_smh_m600->AddVariable("njets_"                    , &njets_                    );
+	mva_smh_m600->AddVariable("nbjets_"                   , &nbjets_                   );
+	mva_smh_m600->AddVariable("ht_"                       , &ht_                       );
+	mva_smh_m600->AddVariable("leadptoM_"                 , &leadptoM_                 );
+	mva_smh_m600->AddVariable("subleadptoM_"              , &subleadptoM_              );
+	mva_smh_m600->AddVariable("lead_eta_"                 , &lead_eta_                 );
+	mva_smh_m600->AddVariable("sublead_eta_"              , &sublead_eta_              );
+	mva_smh_m600->AddVariable("jet1_ptOverM_"             , &jet1_ptOverM_             );
+	mva_smh_m600->AddVariable("jet1_eta_"                 , &jet1_eta_                 );
+	mva_smh_m600->AddVariable("jet1_btag_"                , &jet1_btag_                );
+	mva_smh_m600->AddVariable("jet2_ptOverM_"             , &jet2_ptOverM_             );
+	mva_smh_m600->AddVariable("jet2_eta_"                 , &jet2_eta_                 );
+	mva_smh_m600->AddVariable("jet2_btag_"                , &jet2_btag_                );
+	mva_smh_m600->AddVariable("jet3_ptOverM_"             , &jet3_ptOverM_             );
+	mva_smh_m600->AddVariable("jet3_eta_"                 , &jet3_eta_                 );
+	mva_smh_m600->AddVariable("jet3_btag_"                , &jet3_btag_                );
+	mva_smh_m600->AddVariable("jet4_ptOverM_"             , &jet4_ptOverM_             );
+	mva_smh_m600->AddVariable("jet4_eta_"                 , &jet4_eta_                 );
+	mva_smh_m600->AddVariable("jet4_btag_"                , &jet4_btag_                );
+	mva_smh_m600->AddVariable("leadPSV_"                  , &leadPSV_                  );
+	mva_smh_m600->AddVariable("subleadPSV_"               , &subleadPSV_               );
+	mva_smh_m600->AddVariable("dipho_cosphi_"             , &dipho_cosphi_             );
+	mva_smh_m600->AddVariable("dipho_rapidity_"           , &dipho_rapidity_           );
+	mva_smh_m600->AddVariable("met_"                      , &met_                      );
+	mva_smh_m600->AddVariable("dipho_pt_over_mass_"       , &dipho_pt_over_mass_       );
+	mva_smh_m600->AddVariable("helicity_angle_"           , &helicity_angle_           );
+	mva_smh_m600->AddVariable("chi2_value_"               , &chi2_value_               );
+	mva_smh_m600->AddVariable("chi2_bjet_ptOverM_"        , &chi2_bjet_ptOverM_        );
+	mva_smh_m600->AddVariable("chi2_bjet_eta_"            , &chi2_bjet_eta_            );
+	mva_smh_m600->AddVariable("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
+	mva_smh_m600->AddVariable("chi2_wjet1_ptOverM_"       , &chi2_wjet1_ptOverM_       );
+	mva_smh_m600->AddVariable("chi2_wjet1_eta_"           , &chi2_wjet1_eta_           );
+	mva_smh_m600->AddVariable("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
+	mva_smh_m600->AddVariable("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
+	mva_smh_m600->AddVariable("chi2_wjet2_eta_"           , &chi2_wjet2_eta_           );
+	mva_smh_m600->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
+	mva_smh_m600->AddVariable("chi2_wjets_deltaR_"        , &chi2_wjets_deltaR_        );
+	mva_smh_m600->AddVariable("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
+	mva_smh_m600->AddVariable("chi2_wboson_eta_"          , &chi2_wboson_eta_          );
+	mva_smh_m600->AddVariable("chi2_wboson_mass_"         , &chi2_wboson_mass_         );
+	mva_smh_m600->AddVariable("chi2_wboson_deltaR_bjet_"  , &chi2_wboson_deltaR_bjet_  );
+	mva_smh_m600->AddVariable("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
+	mva_smh_m600->AddVariable("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
+	mva_smh_m600->AddVariable("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
+	mva_smh_m600->AddVariable("chi2_tbw_deltaR_dipho_"    , &chi2_tbw_deltaR_dipho_    );
+	mva_smh_m600->AddVariable("chi2_tprime_ptOverM_"      , &chi2_tprime_ptOverM_      );
+	mva_smh_m600->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
+	mva_smh_m600->AddVariable("chi2_tprime_deltaR_tbw_"   , &chi2_tprime_deltaR_tbw_   );
+	mva_smh_m600->AddVariable("chi2_tprime_deltaR_dipho_" , &chi2_tprime_deltaR_dipho_ );
+	mva_smh_m600->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
+    mva_smh_m600->BookMVA("BDT", "../MVAs/Hadronic_tprime_SMH_varSet2_sigM600_bdt.xml");
+    //}}}
+    // mva_smhnrb_m600{{{
+    mva_smhnrb_m600.reset(new TMVA::Reader( "!Color:Silent" ));
+	mva_smhnrb_m600->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
+	mva_smhnrb_m600->AddVariable("minIDMVA_"                 , &minIDMVA_                 );
+	mva_smhnrb_m600->AddVariable("max1_btag_"                , &max1_btag_                );
+	mva_smhnrb_m600->AddVariable("max2_btag_"                , &max2_btag_                );
+	mva_smhnrb_m600->AddVariable("dipho_delta_R"             , &dipho_delta_R             );
+	mva_smhnrb_m600->AddVariable("njets_"                    , &njets_                    );
+	mva_smhnrb_m600->AddVariable("nbjets_"                   , &nbjets_                   );
+	mva_smhnrb_m600->AddVariable("ht_"                       , &ht_                       );
+	mva_smhnrb_m600->AddVariable("leadptoM_"                 , &leadptoM_                 );
+	mva_smhnrb_m600->AddVariable("subleadptoM_"              , &subleadptoM_              );
+	mva_smhnrb_m600->AddVariable("lead_eta_"                 , &lead_eta_                 );
+	mva_smhnrb_m600->AddVariable("sublead_eta_"              , &sublead_eta_              );
+	mva_smhnrb_m600->AddVariable("jet1_ptOverM_"             , &jet1_ptOverM_             );
+	mva_smhnrb_m600->AddVariable("jet1_eta_"                 , &jet1_eta_                 );
+	mva_smhnrb_m600->AddVariable("jet1_btag_"                , &jet1_btag_                );
+	mva_smhnrb_m600->AddVariable("jet2_ptOverM_"             , &jet2_ptOverM_             );
+	mva_smhnrb_m600->AddVariable("jet2_eta_"                 , &jet2_eta_                 );
+	mva_smhnrb_m600->AddVariable("jet2_btag_"                , &jet2_btag_                );
+	mva_smhnrb_m600->AddVariable("jet3_ptOverM_"             , &jet3_ptOverM_             );
+	mva_smhnrb_m600->AddVariable("jet3_eta_"                 , &jet3_eta_                 );
+	mva_smhnrb_m600->AddVariable("jet3_btag_"                , &jet3_btag_                );
+	mva_smhnrb_m600->AddVariable("jet4_ptOverM_"             , &jet4_ptOverM_             );
+	mva_smhnrb_m600->AddVariable("jet4_eta_"                 , &jet4_eta_                 );
+	mva_smhnrb_m600->AddVariable("jet4_btag_"                , &jet4_btag_                );
+	mva_smhnrb_m600->AddVariable("leadPSV_"                  , &leadPSV_                  );
+	mva_smhnrb_m600->AddVariable("subleadPSV_"               , &subleadPSV_               );
+	mva_smhnrb_m600->AddVariable("dipho_cosphi_"             , &dipho_cosphi_             );
+	mva_smhnrb_m600->AddVariable("dipho_rapidity_"           , &dipho_rapidity_           );
+	mva_smhnrb_m600->AddVariable("met_"                      , &met_                      );
+	mva_smhnrb_m600->AddVariable("dipho_pt_over_mass_"       , &dipho_pt_over_mass_       );
+	mva_smhnrb_m600->AddVariable("helicity_angle_"           , &helicity_angle_           );
+	mva_smhnrb_m600->AddVariable("chi2_value_"               , &chi2_value_               );
+	mva_smhnrb_m600->AddVariable("chi2_bjet_ptOverM_"        , &chi2_bjet_ptOverM_        );
+	mva_smhnrb_m600->AddVariable("chi2_bjet_eta_"            , &chi2_bjet_eta_            );
+	mva_smhnrb_m600->AddVariable("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
+	mva_smhnrb_m600->AddVariable("chi2_wjet1_ptOverM_"       , &chi2_wjet1_ptOverM_       );
+	mva_smhnrb_m600->AddVariable("chi2_wjet1_eta_"           , &chi2_wjet1_eta_           );
+	mva_smhnrb_m600->AddVariable("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
+	mva_smhnrb_m600->AddVariable("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
+	mva_smhnrb_m600->AddVariable("chi2_wjet2_eta_"           , &chi2_wjet2_eta_           );
+	mva_smhnrb_m600->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
+	mva_smhnrb_m600->AddVariable("chi2_wjets_deltaR_"        , &chi2_wjets_deltaR_        );
+	mva_smhnrb_m600->AddVariable("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
+	mva_smhnrb_m600->AddVariable("chi2_wboson_eta_"          , &chi2_wboson_eta_          );
+	mva_smhnrb_m600->AddVariable("chi2_wboson_mass_"         , &chi2_wboson_mass_         );
+	mva_smhnrb_m600->AddVariable("chi2_wboson_deltaR_bjet_"  , &chi2_wboson_deltaR_bjet_  );
+	mva_smhnrb_m600->AddVariable("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
+	mva_smhnrb_m600->AddVariable("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
+	mva_smhnrb_m600->AddVariable("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
+	mva_smhnrb_m600->AddVariable("chi2_tbw_deltaR_dipho_"    , &chi2_tbw_deltaR_dipho_    );
+	mva_smhnrb_m600->AddVariable("chi2_tprime_ptOverM_"      , &chi2_tprime_ptOverM_      );
+	mva_smhnrb_m600->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
+	mva_smhnrb_m600->AddVariable("chi2_tprime_deltaR_tbw_"   , &chi2_tprime_deltaR_tbw_   );
+	mva_smhnrb_m600->AddVariable("chi2_tprime_deltaR_dipho_" , &chi2_tprime_deltaR_dipho_ );
+	mva_smhnrb_m600->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
+    mva_smhnrb_m600->BookMVA("BDT", "../MVAs/Hadronic_tprime_SMHNRB_varSet2_sigM600_bdt.xml");
+    //}}}
   }
 
   // File Loop
@@ -290,7 +475,13 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 
       //------------------------------ MVA value & selection cut ------------------------------//
       double mva_value = -999;
-      if (evaluate_mva) mva_value = convert_tmva_to_prob(mva->EvaluateMVA( "BDT" ));
+      double mva_value_nrb_m600    = -999;
+      double mva_value_smh_m600    = -999;
+      double mva_value_smhnrb_m600 = -999;
+      if (evaluate_mva) mva_value             = convert_tmva_to_prob(mva->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_nrb_m600    = convert_tmva_to_prob(mva_nrb_m600->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_m600    = convert_tmva_to_prob(mva_smh_m600->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smhnrb_m600 = convert_tmva_to_prob(mva_smhnrb_m600->EvaluateMVA( "BDT" ));
       int mvaCategoryId = mva_value < -0.8 ? 0 : 1;
       //if (!passes_selection(tag, minIDMVA_, maxIDMVA_, mva_value))	continue;
       if (!passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_, -999.))	continue;
@@ -308,10 +499,16 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 
       //------------------------------ Fill histograms ------------------------------//
       TString syst_ext = "";
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_transf"     , -log(1 - mva_value) , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_n15"  , mva_value           , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_n30"  , mva_value           , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_n100" , mva_value           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_transf"                 , -log(1 - mva_value)   , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_n15"              , mva_value             , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_n30"              , mva_value             , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_n100"             , mva_value             , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_m600_n30"     , mva_value_nrb_m600    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_m600_n100"    , mva_value_nrb_m600    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_m600_n30"     , mva_value_smh_m600    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_m600_n100"    , mva_value_smh_m600    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smhnrb_m600_n30"  , mva_value_smhnrb_m600 , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smhnrb_m600_n100" , mva_value_smhnrb_m600 , evt_weight , vId);
 
       vProcess[processId]->fill_histogram("h" + syst_ext + "Mass"               , diphoton.M()                       , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "PtHiggs"            , diphoton.Pt()                      , evt_weight , vId);
