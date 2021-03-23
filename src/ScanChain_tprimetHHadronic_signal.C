@@ -42,6 +42,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   float max1_btag_                = 0.;
   float dipho_delta_R             = 0.;
   float njets_                    = 0.;
+  float nbjets_                   = 0.;
   float ht_                       = 0.;
   float leadptoM_                 = 0.;
   float subleadptoM_              = 0.;
@@ -382,6 +383,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       ht_            = get_ht(jets);
 
       njets_ = n_jets();
+      nbjets_ = n_M_bjets();
       max1_btag_ = btag_scores_sorted[0].second;
       max2_btag_ = btag_scores_sorted[1].second;
       jet1_pt_   = njets_ >= 1 ? jets[0].Pt()   : -999;
