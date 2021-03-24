@@ -213,7 +213,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 	mva_nrb_m600->AddVariable("chi2_tprime_deltaR_tbw_"   , &chi2_tprime_deltaR_tbw_   );
 	mva_nrb_m600->AddVariable("chi2_tprime_deltaR_dipho_" , &chi2_tprime_deltaR_dipho_ );
 	mva_nrb_m600->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
-    mva_nrb_m600->BookMVA("BDT", "../MVAs/Hadronic_tprime_NRB_varSet2_sigM600_bdt.xml");
+    mva_nrb_m600->BookMVA("BDT", "./mva/Hadronic_tprime_NRB_varSet2_sigM600_bdt.xml");
     //}}}
     // mva_smh_m600{{{
     mva_smh_m600.reset(new TMVA::Reader( "!Color:Silent" ));
@@ -272,7 +272,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 	mva_smh_m600->AddVariable("chi2_tprime_deltaR_tbw_"   , &chi2_tprime_deltaR_tbw_   );
 	mva_smh_m600->AddVariable("chi2_tprime_deltaR_dipho_" , &chi2_tprime_deltaR_dipho_ );
 	mva_smh_m600->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
-    mva_smh_m600->BookMVA("BDT", "../MVAs/Hadronic_tprime_SMH_varSet2_sigM600_bdt.xml");
+    mva_smh_m600->BookMVA("BDT", "./mva/Hadronic_tprime_SMH_varSet2_sigM600_bdt.xml");
     //}}}
     // mva_smhnrb_m600{{{
     mva_smhnrb_m600.reset(new TMVA::Reader( "!Color:Silent" ));
@@ -331,7 +331,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 	mva_smhnrb_m600->AddVariable("chi2_tprime_deltaR_tbw_"   , &chi2_tprime_deltaR_tbw_   );
 	mva_smhnrb_m600->AddVariable("chi2_tprime_deltaR_dipho_" , &chi2_tprime_deltaR_dipho_ );
 	mva_smhnrb_m600->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
-    mva_smhnrb_m600->BookMVA("BDT", "../MVAs/Hadronic_tprime_SMHNRB_varSet2_sigM600_bdt.xml");
+    mva_smhnrb_m600->BookMVA("BDT", "./mva/Hadronic_tprime_SMHNRB_varSet2_sigM600_bdt.xml");
     //}}}
   }
 
