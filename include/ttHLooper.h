@@ -236,6 +236,24 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_m600_n100", 100, -1., 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smhnrb_m600_n30", 30, -1., 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smhnrb_m600_n100", 100, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m600_n30", 30, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m600_n100", 100, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m700_n30", 30, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m700_n100", 100, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m800_n30", 30, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m800_n100", 100, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m900_n30", 30, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m900_n100", 100, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m1000_n30", 30, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m1000_n100", 100, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m1100_n30", 30, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m1100_n100", 100, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m1200_n30", 30, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_m1200_n100", 100, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_mixed01_n30", 30, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_mixed01_n100", 100, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_mixed02_n30", 30, -1., 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset6_mixed02_n100", 100, -1., 1.);
 
         v[i]->add_histogram("h" + syst_labels[j] + "MaxBTagSum", 50, 0, 1);
         v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxBTagSum", 50, 0, 1);  
