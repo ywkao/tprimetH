@@ -225,6 +225,7 @@ class BabyMaker {
     float       chi2_wjet2_ptOverM_;
     float       chi2_wboson_ptOverM_;
     float       chi2_tbw_ptOverM_;
+    float       helicity_tprime_;
 
     float       jet1_ptOverM_;
     float       jet2_ptOverM_; 
@@ -388,6 +389,7 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_->Branch("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
   BabyTree_->Branch("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
   BabyTree_->Branch("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
+  BabyTree_->Branch("helicity_tprime_"          , &helicity_tprime_          );
   BabyTree_->Branch("jet1_ptOverM_"             , &jet1_ptOverM_             );
   BabyTree_->Branch("jet2_ptOverM_"             , &jet2_ptOverM_             );
   BabyTree_->Branch("jet3_ptOverM_"             , &jet3_ptOverM_             );

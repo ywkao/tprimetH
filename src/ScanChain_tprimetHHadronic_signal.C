@@ -96,6 +96,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   float chi2_wjet2_ptOverM_       = 0.;
   float chi2_wboson_ptOverM_      = 0.;
   float chi2_tbw_ptOverM_         = 0.;
+  float helicity_tprime_          = 0.;
   float jet1_ptOverM_             = 0.;
   float jet2_ptOverM_             = 0.;
   float jet3_ptOverM_             = 0.;
@@ -982,6 +983,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       chi2_wjet2_ptOverM_       = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_wjet2.Pt() / cov_wboson.M()       : -999;
       chi2_wboson_ptOverM_      = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_wboson.Pt() / cov_wboson.M()      : -999;
       chi2_tbw_ptOverM_         = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_top.Pt() / cov_top.M()            : -999;
+      helicity_tprime_          = (has_resonable_reco && pass_eta_criteria_on_wjets) ? helicity(cov_tprime, diphoton)        : -999;
  
       jet1_ptOverM_ = (njets_ >= 1 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[0].Pt() / cov_top.M()  : -999;
       jet2_ptOverM_ = (njets_ >= 2 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[1].Pt() / cov_top.M()  : -999; 
@@ -1068,6 +1070,9 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       vProcess[processId]->fill_histogram("h" + syst_ext + "DiphotonPtOverMass" , diphoton.Pt() / diphoton.M()       , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonDeltaR"       , lead_photon.DeltaR(sublead_photon) , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "Rapidity"           , diphoton.Rapidity()                , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "AbsCosHelicity"     , helicity_angle_, evt_weight, vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "DiphotonCosPhi"     , dipho_cosphi(), evt_weight, vId);
+
 
       vProcess[processId]->fill_histogram("h" + syst_ext + "mass_wboson_cov"   , mass_wboson        , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "mass_top_cov"      , mass_top           , evt_weight , vId);
@@ -1102,6 +1107,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_ptOverM"       , chi2_wjet2_ptOverM_       , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_ptOverM"      , chi2_wboson_ptOverM_      , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_ptOverM"         , chi2_tbw_ptOverM_         , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "helicity_tprime"          , helicity_tprime_          , evt_weight , vId);
 
       vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPt"       , dipho_leadPt()       , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadEta"      , dipho_leadEta()      , evt_weight , vId);

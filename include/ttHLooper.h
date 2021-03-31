@@ -96,6 +96,7 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet2_ptOverM"       , 50  , 0  , 100. );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_wboson_ptOverM"      , 50  , 0  , 100. );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_ptOverM"         , 50  , 0  , 100. );
+        v[i]->add_histogram("h" + syst_labels[j] + "helicity_tprime"          , 10  , 0  , 1.   );
         v[i]->add_histogram("h" + syst_labels[j] + "jet1_ptOverM"             , 50  , 0  , 100. );
         v[i]->add_histogram("h" + syst_labels[j] + "jet2_ptOverM"             , 50  , 0  , 100. );
         v[i]->add_histogram("h" + syst_labels[j] + "jet3_ptOverM"             , 50  , 0  , 100. );
