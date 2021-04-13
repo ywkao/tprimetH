@@ -1622,8 +1622,29 @@ double helicity(const TLorentzVector particle_1, const TLorentzVector particle_2
   TVector3 v1 = p1.Vect();
   TVector3 vParent = parent.Vect();
 
-  double cos_theta_1 = (v1.Dot(vParent)) / (v1.Mag() * vParent.Mag());
+  bool debug = false;
+  if( isnan(v1.Mag()) )
+  {
+      if( debug ){
+          printf("WARNING: helicity is a nan value!!\n");
+          printf("[check] (Pt, Eta, Phi, M) \n");
+          printf("[check] particle_1  = (%7.2f, %7.2f, %7.2f, %7.2f) \n", particle_1.Pt(), particle_1.Eta(), particle_1.Phi(), particle_1.M() );
+          printf("[check] particle_2  = (%7.2f, %7.2f, %7.2f, %7.2f) \n", particle_2.Pt(), particle_2.Eta(), particle_2.Phi(), particle_2.M() );
+          printf("[check] parent      = (%7.2f, %7.2f, %7.2f, %7.2f) \n", parent.Pt(), parent.Eta(), parent.Phi(), parent.M() );
+          printf("----------------------------------------------------\n");
+          printf("[check] p1.Pt()          = %.2f\n", p1.Pt()          );
+          printf("[check] p1.Eta()         = %.2f\n", p1.Eta()         );
+          printf("[check] p1.Phi()         = %.2f\n", p1.Phi()         );
+          printf("[check] p1.M()           = %.2f\n", p1.M()           );
+          printf("[check] v1.Mag()         = %.2f\n", v1.Mag()         );
+          printf("[check] vParent.Mag()    = %.2f\n", vParent.Mag()    );
+          printf("[check] v1.Dot(vParent)  = %.2f\n", v1.Dot(vParent)  );
+          printf("----------------------------------------------------\n");
+      }
+      return -999;
+  }
 
+  double cos_theta_1 = (v1.Dot(vParent)) / (v1.Mag() * vParent.Mag());
   return abs(cos_theta_1);  
 }
 

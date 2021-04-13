@@ -4,6 +4,7 @@ import glob
 version = "v3"
 subversion = 4 # for signal
 signals = [
+    "TprimeBToTH_M-600_Era2017_v2p%s.root"   %  str(subversion),
     "TprimeBToTH_M-1000_Era2017_v2p%s.root"  %  str(subversion),
     "TprimeBToTH_M-1000_Era2018_v2p%s.root"  %  str(subversion),
     "TprimeBToTH_M-1100_Era2018_v2p%s.root"  %  str(subversion),
@@ -17,7 +18,6 @@ signals = [
     "TprimeBToTH_M-900_Era2018_v2p%s.root"   %  str(subversion),
     "TprimeBToTH_M-1100_Era2017_v2p%s.root"  %  str(subversion),
     "TprimeBToTH_M-1200_Era2017_v2p%s.root"  %  str(subversion),
-    "TprimeBToTH_M-600_Era2017_v2p%s.root"   %  str(subversion),
     "TprimeBToTH_M-625_Era2017_v2p%s.root"   %  str(subversion),
     "TprimeBToTH_M-650_Era2017_v2p%s.root"   %  str(subversion),
     "TprimeBToTH_M-675_Era2017_v2p%s.root"   %  str(subversion),

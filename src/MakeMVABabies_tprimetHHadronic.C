@@ -44,6 +44,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
     cout << "mYear: " << mYear << endl;
     //set_json(mYear); opening good run list
 
+    int counter = 0; // check nan value
     // Loop over Events in current file
     unsigned int nEventsTree = tree->GetEntriesFast();
     for (unsigned int event = 0; event < nEventsTree; ++event)
@@ -231,6 +232,71 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       chi2_tbw_ptOverM_         = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_top.Pt() / cov_top.M()            : -999;
       helicity_tprime_          = (has_resonable_reco && pass_eta_criteria_on_wjets) ? helicity(cov_top, diphoton)           : -999;
 
+      bool debug = false;
+      if(debug && isnan(helicity_tprime_))
+      {
+          counter += 1;
+          printf("[check] indices_bjj_covMatrix[0] = %d\n", indices_bjj_covMatrix[0]);
+          printf("[check] indices_bjj_covMatrix[1] = %d\n", indices_bjj_covMatrix[1]);
+          printf("[check] indices_bjj_covMatrix[2] = %d\n", indices_bjj_covMatrix[2]);
+          printf("\n");
+
+          printf("[check] (Pt, Eta, Phi, M) \n");
+          printf("[check] cov_bjet   = (%7.2f, %7.2f, %7.2f, %7.2f) \n", cov_bjet.Pt(), cov_bjet.Eta(), cov_bjet.Phi(), cov_bjet.M() );
+          printf("[check] cov_wjet1  = (%7.2f, %7.2f, %7.2f, %7.2f) \n", cov_wjet1.Pt(), cov_wjet1.Eta(), cov_wjet1.Phi(), cov_wjet1.M() );
+          printf("[check] cov_wjet2  = (%7.2f, %7.2f, %7.2f, %7.2f) \n", cov_wjet2.Pt(), cov_wjet2.Eta(), cov_wjet2.Phi(), cov_wjet2.M() );
+          printf("[check] cov_wboson = (%7.2f, %7.2f, %7.2f, %7.2f) \n", cov_wboson.Pt(), cov_wboson.Eta(), cov_wboson.Phi(), cov_wboson.M() );
+          printf("[check] cov_top    = (%7.2f, %7.2f, %7.2f, %7.2f) \n", cov_top.Pt(), cov_top.Eta(), cov_top.Phi(), cov_top.M() );
+          printf("\n");
+
+          printf("[check] (Px, Py, Pz, E, M) \n");
+          printf("[check] cov_bjet   = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", cov_bjet.Px(), cov_bjet.Py(), cov_bjet.Pz(), cov_bjet.E(), cov_bjet.M() );
+          printf("[check] cov_wjet1  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", cov_wjet1.Px(), cov_wjet1.Py(), cov_wjet1.Pz(), cov_wjet1.E(), cov_wjet1.M() );
+          printf("[check] cov_wjet2  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", cov_wjet2.Px(), cov_wjet2.Py(), cov_wjet2.Pz(), cov_wjet2.E(), cov_wjet2.M() );
+          printf("[check] cov_wboson = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", cov_wboson.Px(), cov_wboson.Py(), cov_wboson.Pz(), cov_wboson.E(), cov_wboson.M() );
+          printf("[check] cov_top    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", cov_top.Px(), cov_top.Py(), cov_top.Pz(), cov_top.E(), cov_top.M() );
+
+          //printf("[check] cov_wjet1.Pt()        = %.2f\n", cov_wjet1.Pt()   );
+          //printf("[check] cov_wjet1.Eta()       = %.2f\n", cov_wjet1.Eta()  );
+          //printf("[check] cov_wjet1.Phi()       = %.2f\n", cov_wjet1.Phi()  );
+          //printf("[check] cov_wjet1.M()         = %.2f\n", cov_wjet1.M()    );
+
+          //printf("[check] cov_wjet2.Pt()        = %.2f\n", cov_wjet2.Pt()   );
+          //printf("[check] cov_wjet2.Eta()       = %.2f\n", cov_wjet2.Eta()  );
+          //printf("[check] cov_wjet2.Phi()       = %.2f\n", cov_wjet2.Phi()  );
+          //printf("[check] cov_wjet2.M()         = %.2f\n", cov_wjet2.M()    );
+
+          //printf("[check] cov_wboson.Pt()       = %.2f\n", cov_wboson.Pt()  );
+          //printf("[check] cov_wboson.Eta()      = %.2f\n", cov_wboson.Eta() );
+          //printf("[check] cov_wboson.Phi()      = %.2f\n", cov_wboson.Phi() );
+          //printf("[check] cov_wboson.M()        = %.2f\n", cov_wboson.M()   );
+
+          //printf("[check] cov_top.Pt()          = %.2f\n", cov_top.Pt()   );
+          //printf("[check] cov_top.Eta()         = %.2f\n", cov_top.Eta()  );
+          //printf("[check] cov_top.Phi()         = %.2f\n", cov_top.Phi()  );
+          //printf("[check] cov_top.M()           = %.2f\n", cov_top.M()    );
+
+          TLorentzVector test_p1, test_p2, test_m;
+          test_p1.SetPtEtaPhiM( cov_wjet1.Pt(), cov_wjet1.Eta(), cov_wjet1.Phi(), cov_wjet1.M() );
+          test_p2.SetPtEtaPhiM( cov_wjet2.Pt(), cov_wjet2.Eta(), cov_wjet2.Phi(), cov_wjet2.M() );
+          test_m = test_p1 + test_p2;
+          printf("[check] test_p1    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f  ) \n", test_p1.Px(), test_p1.Py(), test_p1.Pz(), test_p1.E(), test_p1.M() );
+          printf("[check] test_p2    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f  ) \n", test_p2.Px(), test_p2.Py(), test_p2.Pz(), test_p2.E(), test_p2.M() );
+          printf("[check] test_m     = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f  ) \n", test_m.Px(), test_m.Py(), test_m.Pz(), test_m.E(), test_m.M() );
+
+          if(has_resonable_reco) printf("has_resonable_reco = true!"); else printf("has_resonable_reco = false!");
+
+          //printf("[check] diphoton.Pt()         = %.2f\n", diphoton.Pt()  );
+          //printf("[check] diphoton.Eta()        = %.2f\n", diphoton.Eta() );
+          //printf("[check] diphoton.Phi()        = %.2f\n", diphoton.Phi() );
+          //printf("[check] diphoton.M()          = %.2f\n", diphoton.M()   );
+
+          printf("[check] btag_scrores = ");
+          for(int i=0; i<btag_scores.size(); ++i)
+              printf("%.2f ", btag_scores[i]);
+          printf("\n\n\n");
+      }
+
       jet1_ptOverM_ = (njets_ >= 1 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[0].Pt() / cov_top.M()  : -999;
       jet2_ptOverM_ = (njets_ >= 2 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[1].Pt() / cov_top.M()  : -999; 
       jet3_ptOverM_ = (njets_ >= 3 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[2].Pt() / cov_top.M()  : -999;
@@ -280,6 +346,9 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       else
         FillBabyNtuple();
     }// end of event loop
+
+    printf("[report] number of helicity nan values = %d\n", counter);
+
     delete tree;
     file.Close();
   }// end of while loop
