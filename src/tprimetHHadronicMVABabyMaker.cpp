@@ -9,8 +9,9 @@ int main(int argc, char* argv[])
 {
     TString location = argv[1];
     TString rootfile = argv[2];
-    TString year     = argv[3];
-    TString mass     = argv[4];
+    TString xml_file = argv[3];
+    TString year     = argv[4];
+    TString mass     = argv[5];
     TString fullpath = location + "/" + rootfile;
     printf("[check] fullpath = %s\n", fullpath.Data());
 

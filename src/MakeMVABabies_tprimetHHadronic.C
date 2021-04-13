@@ -44,6 +44,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
     cout << "mYear: " << mYear << endl;
     //set_json(mYear); opening good run list
 
+    bool debug = false;
     int counter = 0; // check nan value
     // Loop over Events in current file
     unsigned int nEventsTree = tree->GetEntriesFast();
@@ -232,7 +233,6 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       chi2_tbw_ptOverM_         = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_top.Pt() / cov_top.M()            : -999;
       helicity_tprime_          = (has_resonable_reco && pass_eta_criteria_on_wjets) ? helicity(cov_top, diphoton)           : -999;
 
-      bool debug = false;
       if(debug && isnan(helicity_tprime_))
       {
           counter += 1;
@@ -347,7 +347,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
         FillBabyNtuple();
     }// end of event loop
 
-    printf("[report] number of helicity nan values = %d\n", counter);
+    if(debug) printf("[report] number of helicity nan values = %d\n", counter);
 
     delete tree;
     file.Close();

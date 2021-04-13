@@ -1,8 +1,8 @@
 #!/usr/bin/env python2
 import glob
 
-version = "v3"
-subversion = 4 # for signal
+version = "v2"
+subversion = 7 # for signal
 signals = [
     "TprimeBToTH_M-600_Era2017_v2p%s.root"   %  str(subversion),
     "TprimeBToTH_M-1000_Era2017_v2p%s.root"  %  str(subversion),
