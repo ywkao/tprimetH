@@ -5,10 +5,10 @@
 #include <TRandom3.h>
 
 void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year, TString ext, TString bkg_options, TString mYear = "", TString idx = "", bool fcnc = false, bool blind = false, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
-
-  printf("Hello World! (Warm greeting from MakeMVABabies_ttHHadronic.C)\n");
-  name_output_file = name_output_file.ReplaceAll("hist_", "MVABaby_");
   TRandom3 rndm(1234);
+  name_output_file = name_output_file.ReplaceAll("hist_", "MVABaby_");
+  printf("Hello World! (Warm greeting from MakeMVABabies_ttHHadronic.C)\n");
+  printf("[check] name_output_file = %s\n", name_output_file.Data());
 
   // Benchmark
   TBenchmark *bmark = new TBenchmark();
@@ -25,6 +25,15 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
   TIter fileIter(listOfFiles);
   TFile *currentFile = 0;
 
+  cout << "mYear: " << mYear << endl;
+  //set_json(mYear); opening good run list
+
+  double lumi_2016 = 35.9;
+  double lumi_2017 = 41.5;
+  double lumi_2018 = 59.76;
+  double branching_fraction_hgg = 0.00227;
+  double total_yields = 0.;
+
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
     TString currentFileTitle = currentFile->GetTitle();
@@ -40,9 +49,6 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
     // Decide what type of sample this is
     bool isData = false;
     bool isSignal = true;
-
-    cout << "mYear: " << mYear << endl;
-    //set_json(mYear); opening good run list
 
     bool debug = false;
     int counter = 0; // check nan value
@@ -64,7 +70,10 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       int genPhotonId = 2; //categorize_photons(leadGenMatch(), subleadGenMatch());
       process_id_ = categorize_process(currentFileTitle, genPhotonId);
 
-      evt_weight_ = weight();
+      double lumi = mYear == "2016" ? lumi_2016 : (mYear == "2017") ? lumi_2017 : lumi_2018;
+      evt_weight_ = weight() * branching_fraction_hgg * lumi;
+      //printf("[check] evt_weight_ = %.7f = %.7f x %.5f x %.2f\n", evt_weight_, weight(), branching_fraction_hgg, lumi);
+      total_yields += evt_weight_;
 
       // Impute, if applicable
       maxIDMVA_ = dipho_leadIDMVA() >  dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
@@ -362,6 +371,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
   bmark->Stop("benchmark");
   cout << endl;
   cout << nEventsTotal << " Events Processed" << endl;
+  cout << "Expected Yields: " << total_yields << endl;
   cout << "------------------------------" << endl;
   cout << "CPU  Time: " << Form( "%.01f", bmark->GetCpuTime("benchmark")  ) << endl;
   cout << "Real Time: " << Form( "%.01f", bmark->GetRealTime("benchmark") ) << endl;

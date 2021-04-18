@@ -19,10 +19,9 @@ int main(int argc, char* argv[])
     ch -> Add(fullpath);
 
     TString name_output_file = "plots/hist_" + rootfile;
-    printf("[check] name_output_file = %s\n", name_output_file.Data());
 
     BabyMaker *looper = new BabyMaker();
-    looper->ScanChain(ch, name_output_file, "RunII", "", "impute", year, "", "");
+    looper->ScanChain(ch, name_output_file, "RunII", "", "impute", year, "");
 
     return 0;
 }

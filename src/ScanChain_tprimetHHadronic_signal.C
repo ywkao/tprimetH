@@ -1207,6 +1207,13 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
     //}}}
   }
 
+  cout << "mYear: " << mYear << endl;
+  double lumi_2016 = 35.9;
+  double lumi_2017 = 41.5;
+  double lumi_2018 = 59.76;
+  double branching_fraction_hgg = 0.00227;
+  double total_yields = 0.;
+
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
     // Get File Content
@@ -1393,8 +1400,11 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //if (!passes_selection(tag, minIDMVA_, maxIDMVA_, mva_value))	continue;
       if (!passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_, -999.))	continue;
 
+      double lumi = mYear == "2016" ? lumi_2016 : (mYear == "2017") ? lumi_2017 : lumi_2018;
+      float evt_weight = weight() * branching_fraction_hgg * lumi;
+      //printf("[check] evt_weight = %.7f = %.7f x %.5f x %.2f\n", evt_weight, weight(), branching_fraction_hgg, lumi);
+      total_yields += evt_weight;
 
-      float evt_weight = weight();
       int genLeptonId = 0; // isData ? -1 : categorize_leptons(nGoodEls(), nGoodMus()); // none of reco lepton exists
       int genPhotonId = 2; // isData ? -1 : categorize_photons(leadGenMatch(), subleadGenMatch()); // no effect for signal samples
       int genPhotonDetailId = 5; // isData ? -1 : categorize_photons_detail(lead_photon_type(), sublead_photon_type()); // assume prompt-prompt
@@ -1543,6 +1553,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   bmark->Stop("benchmark");
   cout << endl;
   cout << nEventsTotal << " Events Processed" << endl;
+  cout << "Expected Yields: " << total_yields << endl;
   cout << "------------------------------" << endl;
   cout << "CPU  Time: " << Form( "%.01f", bmark->GetCpuTime("benchmark")  ) << endl;
   cout << "Real Time: " << Form( "%.01f", bmark->GetRealTime("benchmark") ) << endl;
