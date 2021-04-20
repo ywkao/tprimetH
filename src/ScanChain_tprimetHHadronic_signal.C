@@ -1829,20 +1829,20 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smhv3_varset8_mixed05_n30"  , mva_value_smhv3_varset8_mixed05 , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smhv3_varset8_mixed05_n100" , mva_value_smhv3_varset8_mixed05 , evt_weight , vId);
 
+      vProcess[processId]->fill_histogram("h" + syst_ext + "NVtx"               , nvtx()                             , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "Mass"               , diphoton.M()                       , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "PtHiggs"            , diphoton.Pt()                      , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "DiphotonPtOverMass" , diphoton.Pt() / diphoton.M()       , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonDeltaR"       , lead_photon.DeltaR(sublead_photon) , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "Rapidity"           , diphoton.Rapidity()                , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "AbsCosHelicity"     , helicity_angle_, evt_weight, vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "DiphotonCosPhi"     , dipho_cosphi(), evt_weight, vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "AbsCosHelicity"     , helicity_angle_                    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "DiphotonCosPhi"     , dipho_cosphi()                     , evt_weight , vId);
 
-
-      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_wboson_cov"   , mass_wboson        , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_top_cov"      , mass_top           , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_cov"   , mass_tprime        , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_tilde" , mass_tprime_tilde  , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "cov_chi2_value"    , min_chi2_value_2x2 , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_wboson_cov"          , mass_wboson               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_top_cov"             , mass_top                  , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_cov"          , mass_tprime               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_tilde"        , mass_tprime_tilde         , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "cov_chi2_value"           , min_chi2_value_2x2        , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_bjet_pt"             , chi2_bjet_pt_             , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet1_pt"            , chi2_wjet1_pt_            , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_pt"            , chi2_wjet2_pt_            , evt_weight , vId);
