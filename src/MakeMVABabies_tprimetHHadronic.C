@@ -92,6 +92,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       //------------------------------ Variable definitions ------------------------------//
       vector<double> btag_scores;
       vector<TLorentzVector> jets = make_jets(btag_scores);
+      vector<TLorentzVector> jets_copy = jets; // debug purpose
       vector< std::pair<int, double> > btag_scores_sorted = sortVectorGreater(btag_scores);
       if(jets.size() < 3) continue;
 
@@ -265,6 +266,16 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
           printf("[check] cov_wboson = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", cov_wboson.Px(), cov_wboson.Py(), cov_wboson.Pz(), cov_wboson.E(), cov_wboson.M() );
           printf("[check] cov_top    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", cov_top.Px(), cov_top.Py(), cov_top.Pz(), cov_top.E(), cov_top.M() );
 
+          int i = indices_bjj_covMatrix[0];
+          int j = indices_bjj_covMatrix[1];
+          int k = indices_bjj_covMatrix[2];
+          printf("[check] jets[%d]    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", i, jets[i].Px(), jets[i].Py(), jets[i].Pz(), jets[i].E(), jets[i].M() );
+          printf("[check] jets[%d]    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", j, jets[j].Px(), jets[j].Py(), jets[j].Pz(), jets[j].E(), jets[j].M() );
+          printf("[check] jets[%d]    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", k, jets[k].Px(), jets[k].Py(), jets[k].Pz(), jets[k].E(), jets[k].M() );
+          printf("[check] j_copy[%d]  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", i, jets_copy[i].Px(), jets_copy[i].Py(), jets_copy[i].Pz(), jets_copy[i].E(), jets_copy[i].M() );
+          printf("[check] j_copy[%d]  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", j, jets_copy[j].Px(), jets_copy[j].Py(), jets_copy[j].Pz(), jets_copy[j].E(), jets_copy[j].M() );
+          printf("[check] j_copy[%d]  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", k, jets_copy[k].Px(), jets_copy[k].Py(), jets_copy[k].Pz(), jets_copy[k].E(), jets_copy[k].M() );
+
           //printf("[check] cov_wjet1.Pt()        = %.2f\n", cov_wjet1.Pt()   );
           //printf("[check] cov_wjet1.Eta()       = %.2f\n", cov_wjet1.Eta()  );
           //printf("[check] cov_wjet1.Phi()       = %.2f\n", cov_wjet1.Phi()  );
@@ -285,13 +296,13 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
           //printf("[check] cov_top.Phi()         = %.2f\n", cov_top.Phi()  );
           //printf("[check] cov_top.M()           = %.2f\n", cov_top.M()    );
 
-          TLorentzVector test_p1, test_p2, test_m;
-          test_p1.SetPtEtaPhiM( cov_wjet1.Pt(), cov_wjet1.Eta(), cov_wjet1.Phi(), cov_wjet1.M() );
-          test_p2.SetPtEtaPhiM( cov_wjet2.Pt(), cov_wjet2.Eta(), cov_wjet2.Phi(), cov_wjet2.M() );
-          test_m = test_p1 + test_p2;
-          printf("[check] test_p1    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f  ) \n", test_p1.Px(), test_p1.Py(), test_p1.Pz(), test_p1.E(), test_p1.M() );
-          printf("[check] test_p2    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f  ) \n", test_p2.Px(), test_p2.Py(), test_p2.Pz(), test_p2.E(), test_p2.M() );
-          printf("[check] test_m     = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f  ) \n", test_m.Px(), test_m.Py(), test_m.Pz(), test_m.E(), test_m.M() );
+          //TLorentzVector test_p1, test_p2, test_m;
+          //test_p1.SetPtEtaPhiM( cov_wjet1.Pt(), cov_wjet1.Eta(), cov_wjet1.Phi(), cov_wjet1.M() );
+          //test_p2.SetPtEtaPhiM( cov_wjet2.Pt(), cov_wjet2.Eta(), cov_wjet2.Phi(), cov_wjet2.M() );
+          //test_m = test_p1 + test_p2;
+          //printf("[check] test_p1    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f  ) \n", test_p1.Px(), test_p1.Py(), test_p1.Pz(), test_p1.E(), test_p1.M() );
+          //printf("[check] test_p2    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f  ) \n", test_p2.Px(), test_p2.Py(), test_p2.Pz(), test_p2.E(), test_p2.M() );
+          //printf("[check] test_m     = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f  ) \n", test_m.Px(), test_m.Py(), test_m.Pz(), test_m.E(), test_m.M() );
 
           if(has_resonable_reco) printf("has_resonable_reco = true!"); else printf("has_resonable_reco = false!");
 
