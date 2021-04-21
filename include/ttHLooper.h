@@ -279,6 +279,8 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smhv3_varset8_mixed04_n100" , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smhv3_varset8_mixed05_n30"  , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smhv3_varset8_mixed05_n100" , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_m600_tmva_n30"  , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_m600_tmva_n100" , 100 , -1. , 1.);
 
         v[i]->add_histogram("h" + syst_labels[j] + "MaxBTagSum", 50, 0, 1);
         v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxBTagSum", 50, 0, 1);  
