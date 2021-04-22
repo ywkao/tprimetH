@@ -1669,7 +1669,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 	mva_smh_varset8_mixed03_tmva->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
 	mva_smh_varset8_mixed03_tmva->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
 	mva_smh_varset8_mixed03_tmva->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    mva_smh_varset8_mixed03_tmva->BookMVA("BDT", "../MVAs/dataset_Run2_Tprime_ttH_varSet8_M600_M700/weights/TMVAClassification_BDT.weights.xml");
+    mva_smh_varset8_mixed03_tmva->BookMVA("BDT", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/dataset_Run2_Tprime_ttH_varSet8_M600_M700/weights/TMVAClassification_BDT.weights.xml");
     //}}}
     // mva_smh_varset8_mixed04_tmva{{{
     mva_smh_varset8_mixed04_tmva.reset(new TMVA::Reader( "!Color:Silent" ));
@@ -1726,7 +1726,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 	mva_smh_varset8_mixed04_tmva->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
 	mva_smh_varset8_mixed04_tmva->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
 	mva_smh_varset8_mixed04_tmva->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    //mva_smh_varset8_mixed04_tmva->BookMVA("BDT", "../MVAs/dataset_Run2_Tprime_ttH_varSet8_M800_M1000/weights/TMVAClassification_BDT.weights.xml");
+    mva_smh_varset8_mixed04_tmva->BookMVA("BDT", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/dataset_Run2_Tprime_ttH_varSet8_M800_M1000/weights/TMVAClassification_BDT.weights.xml");
     //}}}
     // mva_smh_varset8_mixed05_tmva{{{
     mva_smh_varset8_mixed05_tmva.reset(new TMVA::Reader( "!Color:Silent" ));
@@ -1783,7 +1783,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 	mva_smh_varset8_mixed05_tmva->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
 	mva_smh_varset8_mixed05_tmva->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
 	mva_smh_varset8_mixed05_tmva->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    mva_smh_varset8_mixed05_tmva->BookMVA("BDT", "../MVAs/dataset_Run2_Tprime_ttH_varSet8_M1100_M1200/weights/TMVAClassification_BDT.weights.xml");
+    mva_smh_varset8_mixed05_tmva->BookMVA("BDT", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/dataset_Run2_Tprime_ttH_varSet8_M1100_M1200/weights/TMVAClassification_BDT.weights.xml");
     //}}}
   }
 
@@ -1970,38 +1970,38 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       double mva_value_smh_varset8_mixed04_tmva_original = -999;
       double mva_value_smh_varset8_mixed05_tmva_original = -999;
 
-      if (evaluate_mva) mva_value                                   = convert_tmva_to_prob(mva->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_nrb_m600                          = convert_tmva_to_prob(mva_nrb_m600->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_m600                          = convert_tmva_to_prob(mva_smh_m600->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smhnrb_m600                       = convert_tmva_to_prob(mva_smhnrb_m600->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_m600                  = convert_tmva_to_prob(mva_smh_varset8_m600->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_m625                  = convert_tmva_to_prob(mva_smh_varset8_m625->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_m650                  = convert_tmva_to_prob(mva_smh_varset8_m650->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_m675                  = convert_tmva_to_prob(mva_smh_varset8_m675->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_m700                  = convert_tmva_to_prob(mva_smh_varset8_m700->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_m800                  = convert_tmva_to_prob(mva_smh_varset8_m800->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_m900                  = convert_tmva_to_prob(mva_smh_varset8_m900->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_m1000                 = convert_tmva_to_prob(mva_smh_varset8_m1000->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_m1100                 = convert_tmva_to_prob(mva_smh_varset8_m1100->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_m1200                 = convert_tmva_to_prob(mva_smh_varset8_m1200->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_mixed01               = convert_tmva_to_prob(mva_smh_varset8_mixed01->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_mixed02               = convert_tmva_to_prob(mva_smh_varset8_mixed02->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_mixed03               = convert_tmva_to_prob(mva_smh_varset8_mixed03->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_mixed04               = convert_tmva_to_prob(mva_smh_varset8_mixed04->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smh_varset8_mixed05               = convert_tmva_to_prob(mva_smh_varset8_mixed05->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smhv2_varset8_mixed03             = convert_tmva_to_prob(mva_smhv2_varset8_mixed03->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smhv2_varset8_mixed04             = convert_tmva_to_prob(mva_smhv2_varset8_mixed04->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smhv2_varset8_mixed05             = convert_tmva_to_prob(mva_smhv2_varset8_mixed05->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smhv3_varset8_mixed03             = convert_tmva_to_prob(mva_smhv3_varset8_mixed03->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smhv3_varset8_mixed04             = convert_tmva_to_prob(mva_smhv3_varset8_mixed04->EvaluateMVA( "BDT" ));
-      if (evaluate_mva) mva_value_smhv3_varset8_mixed05             = convert_tmva_to_prob(mva_smhv3_varset8_mixed05->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value                                   = convert_tmva_to_prob(mva->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_nrb_m600                          = convert_tmva_to_prob(mva_nrb_m600->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_m600                          = convert_tmva_to_prob(mva_smh_m600->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smhnrb_m600                       = convert_tmva_to_prob(mva_smhnrb_m600->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_m600                  = convert_tmva_to_prob(mva_smh_varset8_m600->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_m625                  = convert_tmva_to_prob(mva_smh_varset8_m625->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_m650                  = convert_tmva_to_prob(mva_smh_varset8_m650->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_m675                  = convert_tmva_to_prob(mva_smh_varset8_m675->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_m700                  = convert_tmva_to_prob(mva_smh_varset8_m700->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_m800                  = convert_tmva_to_prob(mva_smh_varset8_m800->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_m900                  = convert_tmva_to_prob(mva_smh_varset8_m900->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_m1000                 = convert_tmva_to_prob(mva_smh_varset8_m1000->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_m1100                 = convert_tmva_to_prob(mva_smh_varset8_m1100->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_m1200                 = convert_tmva_to_prob(mva_smh_varset8_m1200->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_mixed01               = convert_tmva_to_prob(mva_smh_varset8_mixed01->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_mixed02               = convert_tmva_to_prob(mva_smh_varset8_mixed02->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_mixed03               = convert_tmva_to_prob(mva_smh_varset8_mixed03->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_mixed04               = convert_tmva_to_prob(mva_smh_varset8_mixed04->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smh_varset8_mixed05               = convert_tmva_to_prob(mva_smh_varset8_mixed05->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smhv2_varset8_mixed03             = convert_tmva_to_prob(mva_smhv2_varset8_mixed03->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smhv2_varset8_mixed04             = convert_tmva_to_prob(mva_smhv2_varset8_mixed04->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smhv2_varset8_mixed05             = convert_tmva_to_prob(mva_smhv2_varset8_mixed05->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smhv3_varset8_mixed03             = convert_tmva_to_prob(mva_smhv3_varset8_mixed03->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smhv3_varset8_mixed04             = convert_tmva_to_prob(mva_smhv3_varset8_mixed04->EvaluateMVA( "BDT" ));
+      //if (evaluate_mva) mva_value_smhv3_varset8_mixed05             = convert_tmva_to_prob(mva_smhv3_varset8_mixed05->EvaluateMVA( "BDT" ));
       if (evaluate_mva) mva_value_smh_varset8_m600_tmva_original    = mva_smh_varset8_m600_tmva->EvaluateMVA( "BDT" );
       if (evaluate_mva) mva_value_smh_varset8_mixed03_tmva_original = mva_smh_varset8_mixed03_tmva->EvaluateMVA( "BDT" );
-      //if (evaluate_mva) mva_value_smh_varset8_mixed04_tmva_original = mva_smh_varset8_mixed04_tmva->EvaluateMVA( "BDT" );
+      if (evaluate_mva) mva_value_smh_varset8_mixed04_tmva_original = mva_smh_varset8_mixed04_tmva->EvaluateMVA( "BDT" );
       if (evaluate_mva) mva_value_smh_varset8_mixed05_tmva_original = mva_smh_varset8_mixed05_tmva->EvaluateMVA( "BDT" );
       if (evaluate_mva) mva_value_smh_varset8_m600_tmva             = convert_tmva_to_prob(mva_value_smh_varset8_m600_tmva_original);
       if (evaluate_mva) mva_value_smh_varset8_mixed03_tmva          = convert_tmva_to_prob(mva_value_smh_varset8_mixed03_tmva_original);
-      //if (evaluate_mva) mva_value_smh_varset8_mixed04_tmva          = convert_tmva_to_prob(mva_value_smh_varset8_mixed04_tmva_original);
+      if (evaluate_mva) mva_value_smh_varset8_mixed04_tmva          = convert_tmva_to_prob(mva_value_smh_varset8_mixed04_tmva_original);
       if (evaluate_mva) mva_value_smh_varset8_mixed05_tmva          = convert_tmva_to_prob(mva_value_smh_varset8_mixed05_tmva_original);
 
       int mvaCategoryId = mva_value < -0.8 ? 0 : 1;
@@ -2021,9 +2021,11 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       int processId = categorize_process(currentFileTitle, genPhotonId);
       vector<int> vId = {genLeptonId, genPhotonId, genPhotonDetailId, photonLocationId, mvaCategoryId, -1, yearId};
 
+      bool pass_bdt_cut = mva_value_smh_varset8_mixed03_tmva > 0.52;
 
       //------------------------------ Fill histograms ------------------------------//
       TString syst_ext = "";
+      if(pass_bdt_cut){ vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_cut", diphoton.M(), evt_weight, vId); }
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_transf"                                       , -log(1 - mva_value)                         , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_n15"                                    , mva_value                                   , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_n30"                                    , mva_value                                   , evt_weight , vId);
