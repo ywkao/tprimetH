@@ -187,7 +187,7 @@ def make_plot_three_hists(h1, title1, h2, title2, h3, title3, year, mass, filena
     c1.SaveAs(filename)
     #c1.SaveAs("text_" + filename)
 
-def make_plot_multi_hists(hists, colors, styles, texts, xytitles, filename, year = 2017, draw_option = "hist", legend_option = "l", setOverflow = False, init_xy = [0.50, 0.20], width_xy = [0.30, 0.20], setNormalize = False):
+def make_plot_multi_hists(hists, colors, styles, texts, xytitles, filename, year = "2017", draw_option = "hist", legend_option = "l", setOverflow = False, init_xy = [0.50, 0.20], width_xy = [0.30, 0.20], setNormalize = False):
     c1 = ROOT.TCanvas("c1", "", 800, 600)
     left_margin = 0.14
     c1.SetRightMargin(0.10)
@@ -225,6 +225,7 @@ def make_plot_multi_hists(hists, colors, styles, texts, xytitles, filename, year
     
     legend.Draw()
     #draw_preliminary_tlatex(year, left_margin)
+    draw_luminosity_tlatex(year, left_margin)
 
     ROOT.gPad.SetGrid()
     ROOT.gPad.SetTicks()
@@ -368,6 +369,23 @@ def draw_preliminary_tlatex(year, left_margin = 0.10):
     latex.SetTextSize(28)
     latex.DrawLatex( left_margin, 0.912, "#bf{CMS} #it{Simulation Preliminary}" )
     latex.DrawLatex( 0.70, 0.912, "%s (13TeV)" % str(year) )
+
+def draw_luminosity_tlatex(year, left_margin = 0.10):
+    lumi = {
+        "2016": 35.9,
+        "2017": 41.5,
+        "2018": 59.76,
+        "RunII": 137,
+    }
+
+    latex = ROOT.TLatex()
+    latex.SetNDC()
+    latex.SetTextFont(43)
+    latex.SetTextAlign(11)
+    latex.SetTextSize(24)
+    latex.DrawLatex( 0.17, 0.80, "SM ttH Samples" )
+    latex.DrawLatex( left_margin, 0.912, "#bf{CMS} #it{Simulation Preliminary}" )
+    latex.DrawLatex( 0.70, 0.912, "%s fb^{-1} (13TeV)" % str(lumi[year]) )
 
 def draw_preliminary_tlatex_v2(year):
     latex = ROOT.TLatex()

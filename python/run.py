@@ -18,17 +18,47 @@ def to_study_signal():
     cwd = os.getcwd()
     location = cwd + "/rootfiles/ntuples_v2." + str(sample_manager.subversion)
     
+    treename = "tagsDumper/trees/tHq_13TeV_THQHadronicTag"
     xml_file = "mva/Hadronic__tprime_impute_hct__bdt.xml"
 
     counter = 0
     command_list = []
+
     for rootfile in sample_manager.signals:
         counter += 1
         year = rootfile.split('_')[2].split('a')[1]
         mass = rootfile.split('_')[1].split('-')[1]
         #command='./bin/covMatrix_Looper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, counter)
-        command='./bin/tprimetHHadronicLooper %s %s %s %s %s 2>&1 | tee dir_log/log_looper_%s_%d' % (location, rootfile, xml_file, year, mass, datetime_tag, counter)
-        #command='./bin/tprimetHHadronicMVABabyMaker %s %s %s %s %s 2>&1 | tee dir_log/log_mvababy_%s_%d' % (location, rootfile, xml_file, year, mass, datetime_tag, counter)
+        #command='./bin/tprimetHHadronicLooper %s %s %s %s %s %s 2>&1 | tee dir_log/log_looper_%s_%d' % (location, rootfile, treename, xml_file, year, mass, datetime_tag, counter)
+        command='./bin/tprimetHHadronicMVABabyMaker %s %s %s %s %s %s 2>&1 | tee dir_log/log_mvababy_%s_%d' % (location, rootfile, treename, xml_file, year, mass, datetime_tag, counter)
+        command_list.append(command)
+    
+    parallel_utils.run(command_list[0])
+    #nPar = 10
+    #parallel_utils.submit_jobs(command_list, nPar)
+
+#----------------------------------------------------------------------------------------------------#
+
+def to_study_ttH():
+    subprocess.call("mkdir -p plots", shell=True)
+    subprocess.call("mkdir -p dir_log", shell=True)
+    cwd = os.getcwd()
+    location = cwd + "/rootfiles/ntuples_v3.1"
+    treename = "tagsDumper/trees/SMH_13TeV_THQHadronicTag"
+    treename = "tagsDumper/trees/tHq_13TeV_THQHadronicTag"
+    xml_file = "mva/Hadronic__tprime_impute_hct__bdt.xml"
+
+    counter = 0
+    command_list = []
+    rootfiles = ["ttHJetToGG_M125_Era2016_v3p1.root", "ttHJetToGG_M125_Era2017_v3p1.root", "ttHJetToGG_M125_Era2018_v3p1.root"]
+    rootfiles = ["ttHJetToGG_M125_Era2018_numEvent1027.root"]
+
+    for rootfile in rootfiles:
+        counter += 1
+        year = rootfile.split('_')[2].split('a')[1]
+        mass = "125"
+        #command='./bin/tprimetHHadronicMVABabyMaker %s %s %s %s %s %s 2>&1 | tee dir_log/log_mvababy_%s_%d' % (location, rootfile, treename, xml_file, year, mass, datetime_tag, counter)
+        command='./bin/tprimetHHadronicLooper %s %s %s %s %s %s 2>&1 | tee dir_log/log_looper_%s_%d' % (location, rootfile, treename, xml_file, year, mass, datetime_tag, counter)
         command_list.append(command)
     
     #parallel_utils.run(command_list[0])
@@ -67,5 +97,6 @@ def to_run_whole_samples():
 #----------------------------------------------------------------------------------------------------#
 
 if __name__ == "__main__":
-    to_study_signal()
+    to_study_ttH()
+    #to_study_signal()
     #to_run_whole_samples()

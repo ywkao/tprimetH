@@ -4,7 +4,7 @@
 #include "sorting.h"
 #include "TMVA/Reader.h" 
 
-int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, TString xml_file, TString mYear, TString mass_str, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
+int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, TString treeName, TString xml_file, TString mYear, TString mass_str, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
   printf("Hello World!\n");
   name_output_file = name_output_file.ReplaceAll("hist_", "myhist_");
   //name_output_file = name_output_file.ReplaceAll("hist_", "testOnly_");
@@ -1798,7 +1798,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
     // Get File Content
     TFile file(currentFile->GetTitle());
-    TTree *tree = (TTree*)file.Get("tagsDumper/trees/tHq_13TeV_THQHadronicTag");
+    TTree *tree = (TTree*)file.Get(treeName); // "tagsDumper/trees/tHq_13TeV_THQHadronicTag"
 
     if (fast) TTreeCache::SetLearnEntries(10);
     if (fast) tree->SetCacheSize(128*1024*1024);

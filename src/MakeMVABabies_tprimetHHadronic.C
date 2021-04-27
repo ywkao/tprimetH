@@ -4,7 +4,7 @@
 #include "chi2_helper.h"
 #include <TRandom3.h>
 
-void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year, TString ext, TString bkg_options, TString mYear = "", TString idx = "", bool fcnc = false, bool blind = false, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
+void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeName, TString year, TString ext, TString bkg_options, TString mYear = "", TString idx = "", bool fcnc = false, bool blind = false, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
   TRandom3 rndm(1234);
   name_output_file = name_output_file.ReplaceAll("hist_", "MVABaby_");
   printf("Hello World! (Warm greeting from MakeMVABabies_ttHHadronic.C)\n");
@@ -39,8 +39,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
     TString currentFileTitle = currentFile->GetTitle();
     cout << currentFileTitle << endl;
     TFile file(currentFileTitle);
-    TTree *tree;
-    tree = (TTree*)file.Get("tagsDumper/trees/tHq_13TeV_THQHadronicTag");
+    TTree *tree = (TTree*)file.Get(treeName); // "tagsDumper/trees/tHq_13TeV_THQHadronicTag"
 
     if (fast) TTreeCache::SetLearnEntries(10);
     if (fast) tree->SetCacheSize(128*1024*1024);
@@ -48,7 +47,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
 
     // Decide what type of sample this is
     bool isData = false;
-    bool isSignal = true;
+    bool isSignal = true; // SMH & T'->tH; seems dummy var now
 
     bool debug = false;
     int counter = 0; // check nan value
@@ -71,7 +70,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       process_id_ = categorize_process(currentFileTitle, genPhotonId);
 
       double lumi = mYear == "2016" ? lumi_2016 : (mYear == "2017") ? lumi_2017 : lumi_2018;
-      evt_weight_ = weight() * branching_fraction_hgg * lumi;
+      evt_weight_ = (process_id_ == 0) ? weight() * lumi : weight() * branching_fraction_hgg * lumi; // only signal need BF
       //printf("[check] evt_weight_ = %.7f = %.7f x %.5f x %.2f\n", evt_weight_, weight(), branching_fraction_hgg, lumi);
       total_yields += evt_weight_;
 
@@ -83,8 +82,11 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       if (minIDMVA_ < -0.7 || maxIDMVA_< -0.7) continue;
       if (isnan(evt_weight_) || isinf(evt_weight_) || evt_weight_ == 0) continue; //some pu weights are nan/inf and this causes problems for histos 
 
-      label_ = 1; // signal
-      multi_label_ = 0; // signal
+      bool is_signal = (process_id_ == 27 || process_id_ == 28 || process_id_ == 29 || process_id_ == 30 || process_id_ == 31 || process_id_ == 32 || process_id_ == 33 || process_id_ == 34 || process_id_ == 35 || process_id_ == 36);
+      bool is_ttH    = (process_id_ == 0);
+
+	  label_ = (isData && process_id_ != 18) ? 2 : is_signal ? 1 : 0; // 0 = bkg, 1 = tprime, 2 = data
+      multi_label_ = is_signal ? 0 : is_ttH ? 1 : 2; // signal vs tth vs bkg
       signal_mass_label_ = categorize_signal_sample(currentFileTitle);
       signal_mass_category_ = categorize_signal_mass_label(currentFileTitle);
       data_sideband_label_ = 0;
@@ -92,7 +94,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
       //------------------------------ Variable definitions ------------------------------//
       vector<double> btag_scores;
       vector<TLorentzVector> jets = make_jets(btag_scores);
-      vector<TLorentzVector> jets_copy = jets; // debug purpose
+      //vector<TLorentzVector> jets_copy = jets; // debug purpose
       vector< std::pair<int, double> > btag_scores_sorted = sortVectorGreater(btag_scores);
       if(jets.size() < 3) continue;
 
@@ -272,9 +274,9 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString year,
           printf("[check] jets[%d]    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", i, jets[i].Px(), jets[i].Py(), jets[i].Pz(), jets[i].E(), jets[i].M() );
           printf("[check] jets[%d]    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", j, jets[j].Px(), jets[j].Py(), jets[j].Pz(), jets[j].E(), jets[j].M() );
           printf("[check] jets[%d]    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", k, jets[k].Px(), jets[k].Py(), jets[k].Pz(), jets[k].E(), jets[k].M() );
-          printf("[check] j_copy[%d]  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", i, jets_copy[i].Px(), jets_copy[i].Py(), jets_copy[i].Pz(), jets_copy[i].E(), jets_copy[i].M() );
-          printf("[check] j_copy[%d]  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", j, jets_copy[j].Px(), jets_copy[j].Py(), jets_copy[j].Pz(), jets_copy[j].E(), jets_copy[j].M() );
-          printf("[check] j_copy[%d]  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", k, jets_copy[k].Px(), jets_copy[k].Py(), jets_copy[k].Pz(), jets_copy[k].E(), jets_copy[k].M() );
+          //printf("[check] j_copy[%d]  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", i, jets_copy[i].Px(), jets_copy[i].Py(), jets_copy[i].Pz(), jets_copy[i].E(), jets_copy[i].M() );
+          //printf("[check] j_copy[%d]  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", j, jets_copy[j].Px(), jets_copy[j].Py(), jets_copy[j].Pz(), jets_copy[j].E(), jets_copy[j].M() );
+          //printf("[check] j_copy[%d]  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", k, jets_copy[k].Px(), jets_copy[k].Py(), jets_copy[k].Pz(), jets_copy[k].E(), jets_copy[k].M() );
 
           //printf("[check] cov_wjet1.Pt()        = %.2f\n", cov_wjet1.Pt()   );
           //printf("[check] cov_wjet1.Eta()       = %.2f\n", cov_wjet1.Eta()  );

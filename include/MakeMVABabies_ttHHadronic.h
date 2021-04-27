@@ -24,7 +24,7 @@ class BabyMaker {
       if (BabyFile_) delete BabyFile_;
       if (BabyTree_) delete BabyTree_;
     }
-    void ScanChain(TChain* chain, TString name_output_file, TString year, TString ext, TString bkg_options, TString mYear, TString idx, bool fcnc, bool blind, bool fast, int nEvents, string skimFilePrefix);
+    void ScanChain(TChain* chain, TString name_output_file, TString treeName, TString year, TString ext, TString bkg_options, TString mYear, TString idx, bool fcnc, bool blind, bool fast, int nEvents, string skimFilePrefix);
     void MakeBabyNtuple(const char *);
     void InitBabyNtuple();
     void FillBabyNtuple();
