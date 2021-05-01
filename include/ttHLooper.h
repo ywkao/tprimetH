@@ -65,6 +65,8 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "Mass"                     , 100 , 0  , 250  );
         v[i]->add_histogram("h" + syst_labels[j] + "Mass_v2"                  , 50  , 0  , 250  );
         v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_cut"        , 100 , 0  , 250  );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_nrb_cut"    , 100 , 0  , 250  );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_nrb_cut"   , 100 , 0  , 250  );
         v[i]->add_histogram("h" + syst_labels[j] + "mass_wboson_cov"          , 40  , 0  , 200  );
         v[i]->add_histogram("h" + syst_labels[j] + "mass_top_cov"             , 36  , 0  , 360  );
         v[i]->add_histogram("h" + syst_labels[j] + "mass_tprime_cov"          , 50  , 0  , 1500 );
@@ -285,6 +287,10 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smhv3_varset8_mixed05_n100"                  , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_m600_tmva_n30"                   , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_m600_tmva_n100"                  , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_m600_tmva_original_n30"          , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_m600_tmva_original_n100"         , 100 , -1. , 1.);
+        }
+
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_n30"                , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_n100"               , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_n30"                , 30  , -1. , 1.);
@@ -297,8 +303,6 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n100"          , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n30"           , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n100"          , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_m600_tmva_original_n30"          , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_m600_tmva_original_n100"         , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_original_n30"       , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_original_n100"      , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_original_n30"       , 30  , -1. , 1.);
@@ -311,7 +315,6 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_bdtg_original_n100" , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_bdtg_original_n30"  , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_bdtg_original_n100" , 100 , -1. , 1.);
-        }
 
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_n30"                , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_n100"               , 100 , -1. , 1.);

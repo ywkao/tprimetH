@@ -2543,22 +2543,23 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
           mva_value_smhv3_varset8_mixed03             = convert_tmva_to_prob(mva_smhv3_varset8_mixed03->EvaluateMVA( "BDT" ));
           mva_value_smhv3_varset8_mixed04             = convert_tmva_to_prob(mva_smhv3_varset8_mixed04->EvaluateMVA( "BDT" ));
           mva_value_smhv3_varset8_mixed05             = convert_tmva_to_prob(mva_smhv3_varset8_mixed05->EvaluateMVA( "BDT" ));
-          
+
           mva_value_smh_varset8_m600_tmva_original         = mva_smh_varset8_m600_tmva->EvaluateMVA( "BDT" );
+          mva_value_smh_varset8_m600_tmva                  = convert_tmva_to_prob(mva_value_smh_varset8_m600_tmva_original);
+          }
+          
           mva_value_smh_varset8_mixed03_tmva_original      = mva_smh_varset8_mixed03_tmva->EvaluateMVA( "BDT" );
           mva_value_smh_varset8_mixed04_tmva_original      = mva_smh_varset8_mixed04_tmva->EvaluateMVA( "BDT" );
           mva_value_smh_varset8_mixed05_tmva_original      = mva_smh_varset8_mixed05_tmva->EvaluateMVA( "BDT" );
           mva_value_smh_varset8_mixed03_tmva_bdtg_original = mva_smh_varset8_mixed03_tmva_bdtg->EvaluateMVA( "BDTG" );
           mva_value_smh_varset8_mixed04_tmva_bdtg_original = mva_smh_varset8_mixed04_tmva_bdtg->EvaluateMVA( "BDTG" );
           mva_value_smh_varset8_mixed05_tmva_bdtg_original = mva_smh_varset8_mixed05_tmva_bdtg->EvaluateMVA( "BDTG" );
-          mva_value_smh_varset8_m600_tmva                  = convert_tmva_to_prob(mva_value_smh_varset8_m600_tmva_original);
           mva_value_smh_varset8_mixed03_tmva               = convert_tmva_to_prob(mva_value_smh_varset8_mixed03_tmva_original);
           mva_value_smh_varset8_mixed04_tmva               = convert_tmva_to_prob(mva_value_smh_varset8_mixed04_tmva_original);
           mva_value_smh_varset8_mixed05_tmva               = convert_tmva_to_prob(mva_value_smh_varset8_mixed05_tmva_original);
           mva_value_smh_varset8_mixed03_tmva_bdtg          = convert_tmva_to_prob(mva_value_smh_varset8_mixed03_tmva_bdtg_original);
           mva_value_smh_varset8_mixed04_tmva_bdtg          = convert_tmva_to_prob(mva_value_smh_varset8_mixed04_tmva_bdtg_original);
           mva_value_smh_varset8_mixed05_tmva_bdtg          = convert_tmva_to_prob(mva_value_smh_varset8_mixed05_tmva_bdtg_original);
-          }
 
           mva_value_nrb_varset8_mixed03_tmva_original      = mva_nrb_varset8_mixed03_tmva->EvaluateMVA( "BDT" );
           mva_value_nrb_varset8_mixed04_tmva_original      = mva_nrb_varset8_mixed04_tmva->EvaluateMVA( "BDT" );
@@ -2599,10 +2600,14 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       if (is_data) impute_photon_id(min_photon_ID_presel_cut, maxIDMVA_, photon_fakeID_shape_runII, minIDMVA_, evt_weight, processId);
 
       bool pass_bdt_cut = mva_value_smh_varset8_mixed03_tmva > 0.52;
+      bool pass_bdt_cut_bdt_nrb  = mva_value_nrb_varset8_mixed03_tmva > 0.56;
+      bool pass_bdt_cut_bdtg_nrb = mva_value_nrb_varset8_mixed03_tmva_bdtg > 0.94;
 
       //------------------------------ Fill histograms ------------------------------//
       TString syst_ext = "";
       if(pass_bdt_cut){ vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_cut", diphoton.M(), evt_weight, vId); }
+      if(pass_bdt_cut_bdt_nrb){ vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_nrb_cut", diphoton.M(), evt_weight, vId); }
+      if(pass_bdt_cut_bdtg_nrb){ vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_nrb_cut", diphoton.M(), evt_weight, vId); }
 
       if(evaluate_all_mva) {
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_transf"                                            , -log(1 - mva_value)                              , evt_weight , vId);
@@ -2657,28 +2662,34 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smhv3_varset8_mixed04_n100"                  , mva_value_smhv3_varset8_mixed04                  , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smhv3_varset8_mixed05_n30"                   , mva_value_smhv3_varset8_mixed05                  , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smhv3_varset8_mixed05_n100"                  , mva_value_smhv3_varset8_mixed05                  , evt_weight , vId);
+
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_m600_tmva_n30"                   , mva_value_smh_varset8_m600_tmva                  , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_m600_tmva_n100"                  , mva_value_smh_varset8_m600_tmva                  , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_m600_tmva_original_n30"          , mva_value_smh_varset8_m600_tmva_original         , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_m600_tmva_original_n100"         , mva_value_smh_varset8_m600_tmva_original         , evt_weight , vId);
+      }
+
+      if(pass_bdt_cut_bdt_nrb) {
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_n30"                , mva_value_smh_varset8_mixed03_tmva               , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_n100"               , mva_value_smh_varset8_mixed03_tmva               , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_n30"                , mva_value_smh_varset8_mixed04_tmva               , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_n100"               , mva_value_smh_varset8_mixed04_tmva               , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_n30"                , mva_value_smh_varset8_mixed05_tmva               , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_n100"               , mva_value_smh_varset8_mixed05_tmva               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n30"           , mva_value_smh_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n100"          , mva_value_smh_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n30"           , mva_value_smh_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n100"          , mva_value_smh_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n30"           , mva_value_smh_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n100"          , mva_value_smh_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_m600_tmva_original_n30"          , mva_value_smh_varset8_m600_tmva_original         , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_m600_tmva_original_n100"         , mva_value_smh_varset8_m600_tmva_original         , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_original_n30"       , mva_value_smh_varset8_mixed03_tmva_original      , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_original_n100"      , mva_value_smh_varset8_mixed03_tmva_original      , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_original_n30"       , mva_value_smh_varset8_mixed04_tmva_original      , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_original_n100"      , mva_value_smh_varset8_mixed04_tmva_original      , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_original_n30"       , mva_value_smh_varset8_mixed05_tmva_original      , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_original_n100"      , mva_value_smh_varset8_mixed05_tmva_original      , evt_weight , vId);
+      }
+      if(pass_bdt_cut_bdtg_nrb) {
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n30"           , mva_value_smh_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n100"          , mva_value_smh_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n30"           , mva_value_smh_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n100"          , mva_value_smh_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n30"           , mva_value_smh_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n100"          , mva_value_smh_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_original_n30"  , mva_value_smh_varset8_mixed03_tmva_bdtg_original , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_original_n100" , mva_value_smh_varset8_mixed03_tmva_bdtg_original , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_original_n30"  , mva_value_smh_varset8_mixed04_tmva_bdtg_original , evt_weight , vId);

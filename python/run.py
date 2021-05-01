@@ -11,7 +11,7 @@ idx_log = 0
 command_list = []
 
 to_execution = True
-to_make_histograms = False
+to_make_histograms = True
 to_make_mvababies = not to_make_histograms
 
 #====================================================================================================#
