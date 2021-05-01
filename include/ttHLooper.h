@@ -55,6 +55,7 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
   if (!hadronic && !leptonic)
     cout << "Tag name not matched to either hadronic/leptonic" << endl;
 
+  bool evaluate_all_mva = false;
   for (unsigned int j = 0; j < syst_labels.size(); j++) {
       for (int i = 0; i < v.size(); i++) {
         //v[i]->add_histogram("h" + syst_labels[j] + "mc_mva_score_tt_v2", 50, -1.0, 1.0);
@@ -228,6 +229,8 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_bounded", 25, 0, 1);
         v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_bounded_v2", 12, 0, 1);
 
+        if(evaluate_all_mva)
+        {
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_transf"                                            , 15  , 0   , 10);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_n15"                                         , 15  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_n30"                                         , 30  , -1. , 1.);
@@ -308,6 +311,32 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_bdtg_original_n100" , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_bdtg_original_n30"  , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_bdtg_original_n100" , 100 , -1. , 1.);
+        }
+
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_n30"                , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_n100"               , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_n30"                , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_n100"               , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_n30"                , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_n100"               , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n30"           , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n100"          , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_n30"           , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_n100"          , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_n30"           , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_n100"          , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_original_n30"       , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_original_n100"      , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_original_n30"       , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_original_n100"      , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_original_n30"       , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_original_n100"      , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_original_n30"  , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_original_n100" , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_original_n30"  , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_original_n100" , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_original_n30"  , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_original_n100" , 100 , -1. , 1.);
 
         v[i]->add_histogram("h" + syst_labels[j] + "MaxBTagSum", 50, 0, 1);
         v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxBTagSum", 50, 0, 1);  
