@@ -4,7 +4,7 @@
 #include "sorting.h"
 #include "TMVA/Reader.h" 
 
-int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, TString treeName, TString xml_file, TString mYear, TString mass_str, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
+int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, TString treeName, TString xml_file, TString mYear, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
   printf("Hello World!\n");
   name_output_file = name_output_file.ReplaceAll("hist_", "myhist_");
   //name_output_file = name_output_file.ReplaceAll("hist_", "testOnly_");
@@ -1968,6 +1968,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   double branching_fraction_hgg = 0.00227;
   double total_yields = 0.;
 
+  TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_runII");
+
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
     // Get File Content
@@ -2150,31 +2152,32 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       double mva_value_smh_varset8_mixed04_tmva_bdtg_original = -999;
       double mva_value_smh_varset8_mixed05_tmva_bdtg_original = -999;
 
-      //if (evaluate_mva) mva_value                                   = convert_tmva_to_prob(mva->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_nrb_m600                          = convert_tmva_to_prob(mva_nrb_m600->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_m600                          = convert_tmva_to_prob(mva_smh_m600->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smhnrb_m600                       = convert_tmva_to_prob(mva_smhnrb_m600->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_m600                  = convert_tmva_to_prob(mva_smh_varset8_m600->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_m625                  = convert_tmva_to_prob(mva_smh_varset8_m625->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_m650                  = convert_tmva_to_prob(mva_smh_varset8_m650->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_m675                  = convert_tmva_to_prob(mva_smh_varset8_m675->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_m700                  = convert_tmva_to_prob(mva_smh_varset8_m700->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_m800                  = convert_tmva_to_prob(mva_smh_varset8_m800->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_m900                  = convert_tmva_to_prob(mva_smh_varset8_m900->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_m1000                 = convert_tmva_to_prob(mva_smh_varset8_m1000->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_m1100                 = convert_tmva_to_prob(mva_smh_varset8_m1100->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_m1200                 = convert_tmva_to_prob(mva_smh_varset8_m1200->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_mixed01               = convert_tmva_to_prob(mva_smh_varset8_mixed01->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_mixed02               = convert_tmva_to_prob(mva_smh_varset8_mixed02->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_mixed03               = convert_tmva_to_prob(mva_smh_varset8_mixed03->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_mixed04               = convert_tmva_to_prob(mva_smh_varset8_mixed04->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smh_varset8_mixed05               = convert_tmva_to_prob(mva_smh_varset8_mixed05->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smhv2_varset8_mixed03             = convert_tmva_to_prob(mva_smhv2_varset8_mixed03->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smhv2_varset8_mixed04             = convert_tmva_to_prob(mva_smhv2_varset8_mixed04->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smhv2_varset8_mixed05             = convert_tmva_to_prob(mva_smhv2_varset8_mixed05->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smhv3_varset8_mixed03             = convert_tmva_to_prob(mva_smhv3_varset8_mixed03->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smhv3_varset8_mixed04             = convert_tmva_to_prob(mva_smhv3_varset8_mixed04->EvaluateMVA( "BDT" ));
-      //if (evaluate_mva) mva_value_smhv3_varset8_mixed05             = convert_tmva_to_prob(mva_smhv3_varset8_mixed05->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value                                   = convert_tmva_to_prob(mva->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_nrb_m600                          = convert_tmva_to_prob(mva_nrb_m600->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_m600                          = convert_tmva_to_prob(mva_smh_m600->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smhnrb_m600                       = convert_tmva_to_prob(mva_smhnrb_m600->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_m600                  = convert_tmva_to_prob(mva_smh_varset8_m600->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_m625                  = convert_tmva_to_prob(mva_smh_varset8_m625->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_m650                  = convert_tmva_to_prob(mva_smh_varset8_m650->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_m675                  = convert_tmva_to_prob(mva_smh_varset8_m675->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_m700                  = convert_tmva_to_prob(mva_smh_varset8_m700->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_m800                  = convert_tmva_to_prob(mva_smh_varset8_m800->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_m900                  = convert_tmva_to_prob(mva_smh_varset8_m900->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_m1000                 = convert_tmva_to_prob(mva_smh_varset8_m1000->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_m1100                 = convert_tmva_to_prob(mva_smh_varset8_m1100->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_m1200                 = convert_tmva_to_prob(mva_smh_varset8_m1200->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_mixed01               = convert_tmva_to_prob(mva_smh_varset8_mixed01->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_mixed02               = convert_tmva_to_prob(mva_smh_varset8_mixed02->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_mixed03               = convert_tmva_to_prob(mva_smh_varset8_mixed03->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_mixed04               = convert_tmva_to_prob(mva_smh_varset8_mixed04->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smh_varset8_mixed05               = convert_tmva_to_prob(mva_smh_varset8_mixed05->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smhv2_varset8_mixed03             = convert_tmva_to_prob(mva_smhv2_varset8_mixed03->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smhv2_varset8_mixed04             = convert_tmva_to_prob(mva_smhv2_varset8_mixed04->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smhv2_varset8_mixed05             = convert_tmva_to_prob(mva_smhv2_varset8_mixed05->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smhv3_varset8_mixed03             = convert_tmva_to_prob(mva_smhv3_varset8_mixed03->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smhv3_varset8_mixed04             = convert_tmva_to_prob(mva_smhv3_varset8_mixed04->EvaluateMVA( "BDT" ));
+      if (evaluate_mva) mva_value_smhv3_varset8_mixed05             = convert_tmva_to_prob(mva_smhv3_varset8_mixed05->EvaluateMVA( "BDT" ));
+      
       if (evaluate_mva) mva_value_smh_varset8_m600_tmva_original         = mva_smh_varset8_m600_tmva->EvaluateMVA( "BDT" );
       if (evaluate_mva) mva_value_smh_varset8_mixed03_tmva_original      = mva_smh_varset8_mixed03_tmva->EvaluateMVA( "BDT" );
       if (evaluate_mva) mva_value_smh_varset8_mixed04_tmva_original      = mva_smh_varset8_mixed04_tmva->EvaluateMVA( "BDT" );
@@ -2194,18 +2197,25 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //if (!passes_selection(tag, minIDMVA_, maxIDMVA_, mva_value))	continue;
       if (!passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_, -999.))	continue;
 
-      double lumi = mYear == "2016" ? lumi_2016 : (mYear == "2017") ? lumi_2017 : lumi_2018;
-      float evt_weight = weight() * branching_fraction_hgg * lumi;
-      //printf("[check] evt_weight = %.7f = %.7f x %.5f x %.2f\n", evt_weight, weight(), branching_fraction_hgg, lumi);
-      total_yields += evt_weight;
-
       int genLeptonId = 0; // isData ? -1 : categorize_leptons(nGoodEls(), nGoodMus()); // none of reco lepton exists
-      int genPhotonId = 2; // isData ? -1 : categorize_photons(leadGenMatch(), subleadGenMatch()); // no effect for signal samples
+      //----------------------------------------------------------------------------------------------------
+      // For the moment the genPhotonId is assumed -1 (TTGG, TTG, TTJets might have overlap)
+      //----------------------------------------------------------------------------------------------------
+      int genPhotonId = -1; // isData ? -1 : categorize_photons(leadGenMatch(), subleadGenMatch()); // no effect for signal samples
       int genPhotonDetailId = 5; // isData ? -1 : categorize_photons_detail(lead_photon_type(), sublead_photon_type()); // assume prompt-prompt
       int photonLocationId = categorize_photon_locations(dipho_leadEta(), dipho_subleadEta());
       int yearId = mYear == "2016" ? 0 : (mYear == "2017" ? 1 : (mYear == "2018" ? 2 : -1));
       int processId = categorize_process(currentFileTitle, genPhotonId);
       vector<int> vId = {genLeptonId, genPhotonId, genPhotonDetailId, photonLocationId, mvaCategoryId, -1, yearId};
+
+      bool is_signal = (processId == 27 || processId == 28 || processId == 29 || processId == 30 || processId == 31 || processId == 32 || processId == 33 || processId == 34 || processId == 35 || processId == 36);
+      bool is_data = (processId == 10);
+      double lumi = mYear == "2016" ? lumi_2016 : (mYear == "2017") ? lumi_2017 : lumi_2018;
+      float evt_weight = is_data ? 1. : is_signal ? weight() * branching_fraction_hgg * lumi : weight() * lumi;
+      //printf("[check] evt_weight = %.7f = %.7f x %.5f x %.2f\n", evt_weight, weight(), branching_fraction_hgg, lumi);
+      total_yields += evt_weight;
+
+      if (is_data) impute_photon_id(min_photon_ID_presel_cut, maxIDMVA_, photon_fakeID_shape_runII, minIDMVA_, evt_weight, processId);
 
       bool pass_bdt_cut = mva_value_smh_varset8_mixed03_tmva > 0.52;
 

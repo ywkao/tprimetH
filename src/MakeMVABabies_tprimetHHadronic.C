@@ -46,7 +46,6 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
     analyzer.Init(tree);
 
     // Decide what type of sample this is
-    bool isData = false;
     bool isSignal = true; // SMH & T'->tH; seems dummy var now
 
     bool debug = false;
@@ -66,12 +65,15 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       InitBabyNtuple();
 
       // Decide what type of sample this is
-      int genPhotonId = 2; //categorize_photons(leadGenMatch(), subleadGenMatch());
+      int genPhotonId = -1; //categorize_photons(leadGenMatch(), subleadGenMatch());
       process_id_ = categorize_process(currentFileTitle, genPhotonId);
+      bool is_signal = (process_id_ == 27 || process_id_ == 28 || process_id_ == 29 || process_id_ == 30 || process_id_ == 31 || process_id_ == 32 || process_id_ == 33 || process_id_ == 34 || process_id_ == 35 || process_id_ == 36);
+      bool is_ttH    = (process_id_ == 0);
+      bool is_data = (process_id_ == 10);
 
       double lumi = mYear == "2016" ? lumi_2016 : (mYear == "2017") ? lumi_2017 : lumi_2018;
-      evt_weight_ = (process_id_ == 0) ? weight() * lumi : weight() * branching_fraction_hgg * lumi; // only signal need BF
-      //printf("[check] evt_weight_ = %.7f = %.7f x %.5f x %.2f\n", evt_weight_, weight(), branching_fraction_hgg, lumi);
+
+      evt_weight_ = is_data ? 1. : is_signal ? weight() * branching_fraction_hgg * lumi : weight() * lumi;
       total_yields += evt_weight_;
 
       // Impute, if applicable
@@ -82,10 +84,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       if (minIDMVA_ < -0.7 || maxIDMVA_< -0.7) continue;
       if (isnan(evt_weight_) || isinf(evt_weight_) || evt_weight_ == 0) continue; //some pu weights are nan/inf and this causes problems for histos 
 
-      bool is_signal = (process_id_ == 27 || process_id_ == 28 || process_id_ == 29 || process_id_ == 30 || process_id_ == 31 || process_id_ == 32 || process_id_ == 33 || process_id_ == 34 || process_id_ == 35 || process_id_ == 36);
-      bool is_ttH    = (process_id_ == 0);
-
-	  label_ = (isData && process_id_ != 18) ? 2 : is_signal ? 1 : 0; // 0 = bkg, 1 = tprime, 2 = data
+	  label_ = (is_data && process_id_ != 18) ? 2 : is_signal ? 1 : 0; // 0 = bkg, 1 = tprime, 2 = data
       multi_label_ = is_signal ? 0 : is_ttH ? 1 : 2; // signal vs tth vs bkg
       signal_mass_label_ = categorize_signal_sample(currentFileTitle);
       signal_mass_category_ = categorize_signal_mass_label(currentFileTitle);

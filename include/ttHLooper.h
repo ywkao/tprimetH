@@ -527,11 +527,11 @@ int categorize_process(TString currentFileTitle, int genPhotonId = -1) {
     }
   }
 
-  else if (currentFileTitle.Contains("WG") || currentFileTitle.Contains("ZG"))
+  else if (currentFileTitle.Contains("WG") || currentFileTitle.Contains("ZG") || currentFileTitle.Contains("VG") )
     return 7;
   else if (currentFileTitle.Contains("WJets") && !currentFileTitle.Contains("TTW"))
     return 8;
-  else if (currentFileTitle.Contains("DoubleEG") || currentFileTitle.Contains("EGamma"))
+  else if (currentFileTitle.Contains("DoubleEG") || currentFileTitle.Contains("EGamma") || currentFileTitle.Contains("Data"))
     return 10;
   else if (currentFileTitle.Contains("THQ"))
     return 11;
