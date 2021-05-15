@@ -38,7 +38,28 @@ class BabyMaker {
     // Variable names
     vector<string> mva_branches = {"maxIDMVA_", "minIDMVA_", "max2_btag_", "max1_btag_", "dipho_delta_R", "njets_", "ht_", "leadptoM_", "subleadptoM_", "leadIDMVA_", "subleadIDMVA_", "lead_eta_", "sublead_eta_", "jet1_pt_", "jet1_eta_", "jet1_btag_", "jet2_pt_", "jet2_eta_", "jet2_btag_", "jet3_pt_", "jet3_eta_", "jet3_btag_", "jet4_pt_", "jet4_eta_", "jet4_btag_", "jet5_pt_", "jet5_eta_", "jet5_btag_", "jet6_pt_", "jet6_eta_", "jet6_btag_", "leadPSV_", "subleadPSV_", "dipho_cosphi_", "dipho_rapidity_", "met_"};
     
+    //----------------------------------------------------------------------------------------------------
+    // For Maxime
+    //----------------------------------------------------------------------------------------------------
+    float dipho_mass_    ;
+    float tprime_mass_   ;
+    float tprime_mtilde_ ;
+    float bdt_score_nrb_m600_m700_    ;
+    float bdt_score_nrb_m800_m1000_   ;
+    float bdt_score_nrb_m1100_m1200_  ;
+    float bdt_score_smh_m600_m700_    ;
+    float bdt_score_smh_m800_m1000_   ;
+    float bdt_score_smh_m1100_m1200_  ;
+    float bdtg_score_nrb_m600_m700_   ;
+    float bdtg_score_nrb_m800_m1000_  ;
+    float bdtg_score_nrb_m1100_m1200_ ;
+    float bdtg_score_smh_m600_m700_   ;
+    float bdtg_score_smh_m800_m1000_  ;
+    float bdtg_score_smh_m1100_m1200_ ;
 
+    //----------------------------------------------------------------------------------------------------
+    // my full set var
+    //----------------------------------------------------------------------------------------------------
     int		                year_;
     unsigned long long		evt_;
     unsigned long long		run_;
@@ -70,7 +91,8 @@ class BabyMaker {
     float       max1_btag_;
     float       dipho_delta_R;
     float   	njets_;
-    int		    nbjets_;
+    //int		    nbjets_;
+    float		    nbjets_;
     float	    ht_;
 
     float       top_tag_score_;
@@ -240,6 +262,33 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyFile_->cd();
   BabyTree_ = new TTree("t", "A Baby Ntuple");
 
+  bool produce_ntuples_for_Maxime = true;
+  //----------------------------------------------------------------------------------------------------
+  // For Maxime
+  //----------------------------------------------------------------------------------------------------
+  if(produce_ntuples_for_Maxime){
+  BabyTree_->Branch("weight"                            , &evt_weight_    );
+  BabyTree_->Branch("dipho_mass"                        , &dipho_mass_    );
+  BabyTree_->Branch("Tprime_mass"                       , &tprime_mass_   );
+  BabyTree_->Branch("T_Mtilde"                          , &tprime_mtilde_ );
+  BabyTree_->Branch("BDT_TprimeVsNonHiggs_M600_M700"    , &bdt_score_nrb_m600_m700_    );
+  BabyTree_->Branch("BDT_TprimeVsNonHiggs_M800_M1000"   , &bdt_score_nrb_m800_m1000_   );
+  BabyTree_->Branch("BDT_TprimeVsNonHiggs_M1100_M1200"  , &bdt_score_nrb_m1100_m1200_  );
+  BabyTree_->Branch("BDT_TprimeVsHiggs_M600_M700"       , &bdt_score_smh_m600_m700_    );
+  BabyTree_->Branch("BDT_TprimeVsHiggs_M800_M1000"      , &bdt_score_smh_m800_m1000_   );
+  BabyTree_->Branch("BDT_TprimeVsHiggs_M1100_M1200"     , &bdt_score_smh_m1100_m1200_  );
+  BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M600_M700"   , &bdtg_score_nrb_m600_m700_   );
+  BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M800_M1000"  , &bdtg_score_nrb_m800_m1000_  );
+  BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M1100_M1200" , &bdtg_score_nrb_m1100_m1200_ );
+  BabyTree_->Branch("BDTG_TprimeVsHiggs_M600_M700"      , &bdtg_score_smh_m600_m700_   );
+  BabyTree_->Branch("BDTG_TprimeVsHiggs_M800_M1000"     , &bdtg_score_smh_m800_m1000_  );
+  BabyTree_->Branch("BDTG_TprimeVsHiggs_M1100_M1200"    , &bdtg_score_smh_m1100_m1200_ );
+  }
+
+  //----------------------------------------------------------------------------------------------------
+  // my full set var
+  //----------------------------------------------------------------------------------------------------
+  if(!produce_ntuples_for_Maxime){
   BabyTree_->Branch("mva_branches"            , &mva_branches            );
   BabyTree_->Branch("year_"                   , &year_                   );
   BabyTree_->Branch("evt_"                    , &evt_                    );
@@ -394,6 +443,7 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_->Branch("jet2_ptOverM_"             , &jet2_ptOverM_             );
   BabyTree_->Branch("jet3_ptOverM_"             , &jet3_ptOverM_             );
   BabyTree_->Branch("jet4_ptOverM_"             , &jet4_ptOverM_             );
+  }
 
   return;
 }

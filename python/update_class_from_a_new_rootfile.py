@@ -11,21 +11,31 @@ args = parser.parse_args()
 
 def update_data_format(filename):
     print "filename = %s" % filename
+
+    namespace  = "tprime"
+    classname  = "tprimetHHadronic"
+
     #--------------------------------------------------
     # signal
     #--------------------------------------------------
     my_own_tag = ""
-    classname  = "tprimetHHadronic"
     treename   = "tagsDumper/trees/tHq_13TeV_THQHadronicTag"
-    namespace  = "tprime"
-
     #--------------------------------------------------
     # ttH
     #--------------------------------------------------
     my_own_tag = "v3p1"
-    classname  = "tprimetHHadronic"
     treename   = "tagsDumper/trees/SMH_13TeV_THQHadronicTag"
-    namespace  = "tprime"
+    #--------------------------------------------------
+    # ttX
+    #--------------------------------------------------
+    my_own_tag = "v3p2"
+    treename   = "tagsDumper/trees/NRB_13TeV_THQHadronicTag"
+    #--------------------------------------------------
+    # root file frome test command
+    #--------------------------------------------------
+    my_own_tag = "v3p3p2"
+    treename = "tagsDumper/trees/tHq_13TeV_THQHadronicTag"
+
 
     #--------------------------------------------------
     # make class
@@ -44,7 +54,8 @@ def update_data_format(filename):
     subprocess.call("cp %s.h ../../include/%s_%s.h" % (classname, classname, my_own_tag), shell=True)
     subprocess.call("cp %s.cc ../../include/%s_%s.cc" % (classname, classname, my_own_tag), shell=True)
     subprocess.call("ls -lhrt ../../include", shell=True)
-    print "Remember to modify input files in python/run.py :)"
+    print ">>> Remember to modify header file in include/tprimetHHadronic_*.cc :)"
+    print ">>> Remember to modify input files in python/run.py :)"
 
 #----------------------------------------------------------------------------------------------------#
 
@@ -52,9 +63,7 @@ if __name__ == "__main__":
     mydir = os.getcwd()
     rootfile = args.inputfile
     rootfile = mydir + "/rootfiles/ntuples_v3.1/ttH_Era2016_v3p1.root"
-    update_data_format(rootfile)
+    rootfile = mydir + "/rootfiles/ntuples_v3.2/TTGJet_Era2018_v3p2.root"
+    rootfile = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ntuple_production/TprimeBToTH_M-1000_Era2018_numEvent10034.root"
 
-    #if rootfile == '':
-    #    print "Please input a root file, e.g. ./rootfiles/ntuples_v3.1/ttH_Era2016_v3p1.root"
-    #else:
-    #    update_data_format(rootfile)
+    update_data_format(rootfile)

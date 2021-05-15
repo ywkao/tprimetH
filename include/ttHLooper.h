@@ -58,19 +58,29 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
   bool evaluate_all_mva = false;
   for (unsigned int j = 0; j < syst_labels.size(); j++) {
       for (int i = 0; i < v.size(); i++) {
-        //v[i]->add_histogram("h" + syst_labels[j] + "mc_mva_score_tt_v2", 50, -1.0, 1.0);
-        //v[i]->add_histogram("h" + syst_labels[j] + "mc_mva_score_st_v2", 50, -1.0, 1.0);
-        //v[i]->add_histogram("h" + syst_labels[j] + "mc_mva_score_tt_v4", 50, -1.0, 1.0);
-        //v[i]->add_histogram("h" + syst_labels[j] + "mc_mva_score_st_v4", 50, -1.0, 1.0);
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass"                     , 100 , 0  , 250  );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_v2"                  , 50  , 0  , 250  );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_cut"        , 100 , 0  , 250  );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_nrb_cut"    , 100 , 0  , 250  );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_nrb_cut"   , 100 , 0  , 250  );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass"                           , 100 , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_v2"                        , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_nrb_cut_mixed03"  , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_nrb_cut_mixed04"  , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_nrb_cut_mixed05"  , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_smh_cut_mixed03"  , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_smh_cut_mixed04"  , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_smh_cut_mixed05"  , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_nrb_cut_mixed03" , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_nrb_cut_mixed04" , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_nrb_cut_mixed05" , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed03" , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed04" , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed05" , 50  , 0 , 250 );
+
+        //----------------------------------------------------------------------------------------------------
+        // Kinematics
+        //----------------------------------------------------------------------------------------------------
         v[i]->add_histogram("h" + syst_labels[j] + "mass_wboson_cov"          , 40  , 0  , 200  );
         v[i]->add_histogram("h" + syst_labels[j] + "mass_top_cov"             , 36  , 0  , 360  );
         v[i]->add_histogram("h" + syst_labels[j] + "mass_tprime_cov"          , 50  , 0  , 1500 );
         v[i]->add_histogram("h" + syst_labels[j] + "mass_tprime_tilde"        , 50  , 0  , 1500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "fake_photon_IDMVA"        , 20  , -1 , 1    );
         v[i]->add_histogram("h" + syst_labels[j] + "cov_chi2_value"           , 50  , 0  , 100  );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_bjet_pt"             , 25  , 0  , 500  );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet1_pt"            , 25  , 0  , 500  );
@@ -87,29 +97,24 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_pt"              , 25  , 0  , 500  );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_eta"             , 25  , -5 , 5    );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_deltaR_dipho"    , 25  , 0  , 6    );
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tprime_ptOverM"      , 50  , 0  , 100  );
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tprime_ptOverM"      , 20  , 0  , 10  );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tprime_eta"          , 25  , -5 , 5    );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tprime_deltaR_tbw"   , 25  , 0  , 6    );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tprime_deltaR_dipho" , 25  , 0  , 6    );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_bjet_btagScores"     , 50  , 0  , 1.   );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet1_btagScores"    , 50  , 0  , 1.   );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet2_btagScores"    , 50  , 0  , 1.   );
-        v[i]->add_histogram("h" + syst_labels[j] + "tprime_pt_ratio"          , 50  , 0  , 100. );
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_bjet_ptOverM"        , 50  , 0  , 100. );
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet1_ptOverM"       , 50  , 0  , 100. );
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet2_ptOverM"       , 50  , 0  , 100. );
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_wboson_ptOverM"      , 50  , 0  , 100. );
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_ptOverM"         , 50  , 0  , 100. );
+        v[i]->add_histogram("h" + syst_labels[j] + "tprime_pt_ratio"          , 20  , 0  , 10. );
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_bjet_ptOverM"        , 20  , 0  , 10. );
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet1_ptOverM"       , 20  , 0  , 10. );
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet2_ptOverM"       , 20  , 0  , 10. );
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_wboson_ptOverM"      , 20  , 0  , 10. );
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_tbw_ptOverM"         , 20  , 0  , 10. );
         v[i]->add_histogram("h" + syst_labels[j] + "helicity_tprime"          , 10  , 0  , 1.   );
-        v[i]->add_histogram("h" + syst_labels[j] + "jet1_ptOverM"             , 50  , 0  , 100. );
-        v[i]->add_histogram("h" + syst_labels[j] + "jet2_ptOverM"             , 50  , 0  , 100. );
-        v[i]->add_histogram("h" + syst_labels[j] + "jet3_ptOverM"             , 50  , 0  , 100. );
-        v[i]->add_histogram("h" + syst_labels[j] + "jet4_ptOverM"             , 50  , 0  , 100. );
-        //v[i]->add_histogram("h" + syst_labels[j] + "Mass_PassPtToM", 40, 100, 180);
-        //v[i]->add_histogram("h" + syst_labels[j] + "Mass_FailPtToM", 40, 100, 180);
-        //v[i]->add_histogram("h" + syst_labels[j] + "Mass_PassPtToM_AfterBDTCut", 40, 100, 180);
-        //v[i]->add_histogram("h" + syst_labels[j] + "Mass_FailPtToM_AfterBDTCut", 40, 100, 180);
-        //v[i]->add_histogram("h" + syst_labels[j] + "MassAN", 80, 100, 180);
+        v[i]->add_histogram("h" + syst_labels[j] + "jet1_ptOverM"             , 20  , 0  , 10. );
+        v[i]->add_histogram("h" + syst_labels[j] + "jet2_ptOverM"             , 20  , 0  , 10. );
+        v[i]->add_histogram("h" + syst_labels[j] + "jet3_ptOverM"             , 20  , 0  , 10. );
+        v[i]->add_histogram("h" + syst_labels[j] + "jet4_ptOverM"             , 20  , 0  , 10. );
         v[i]->add_histogram("h" + syst_labels[j] + "Rapidity", 25, -3, 3);
         v[i]->add_histogram("h" + syst_labels[j] + "DiphotonSumPt", 25, 0, 1000);
         v[i]->add_histogram("h" + syst_labels[j] + "DiphotonCosPhi", 25, -1, 1);
@@ -117,20 +122,6 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "MetPt", 25, 0, 200);
         v[i]->add_histogram("h" + syst_labels[j] + "HT", 50, 0, 5000);
         v[i]->add_histogram("h" + syst_labels[j] + "MT", 50, 0, 500);
-        //v[i]->add_histogram("h" + syst_labels[j] + "DiphotonMassResolution", 250, 0, 0.1);
-        //v[i]->add_histogram("h" + syst_labels[j] + "DiphotonMassResolutionLowMVA", 25, 0, 0.1);
-        //v[i]->add_histogram("h" + syst_labels[j] + "DiphotonMassResolutionMedMVA", 25, 0, 0.1);
-        //v[i]->add_histogram("h" + syst_labels[j] + "DiphotonMassResolutionHighMVA", 25, 0, 0.1);
-        //v[i]->add_histogram("h" + syst_labels[j] + "MassTop1", 100, 0, 500);
-        //v[i]->add_histogram("h" + syst_labels[j] + "MassTop2", 100, 0, 500);
-
-        //v[i]->add_histogram("h" + syst_labels[j] + "MassTop_Hq_1", 100, 0, 500);
-        //v[i]->add_histogram("h" + syst_labels[j] + "MassTop_Hq_2", 100, 0, 500);
-        //v[i]->add_histogram("h" + syst_labels[j] + "MassTop_qqq_1", 100, 0, 500);
-        //v[i]->add_histogram("h" + syst_labels[j] + "MassTop_qqq_2", 100, 0, 500);
-
-        //v[i]->add_histogram("h" + syst_labels[j] + "GJet_BDT", 100, 0, 1);
-
         v[i]->add_histogram("h" + syst_labels[j] + "NJets", 16, -0.5, 15.5);
         v[i]->add_histogram("h" + syst_labels[j] + "NbLoose", 16, -0.5, 15.5);
         v[i]->add_histogram("h" + syst_labels[j] + "NbMedium", 16, -0.5, 15.5);
@@ -210,7 +201,6 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "PhotonSubleadPtGen", 25, 0, 350);
         v[i]->add_histogram("h" + syst_labels[j] + "PhotonSubleadPixelSeed", 2, -0.5, 1.5);
 
-
         // Min/Max ID photon
         //v[i]->add_histogram("h" + syst_labels[j] + "MinIDPhotonPt", 25, 0, 350);
         //v[i]->add_histogram("h" + syst_labels[j] + "MinIDPhotonEta", 25, -3, 3);
@@ -219,18 +209,88 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
 
         //v[i]->add_histogram("h" + syst_labels[j] + "PhotonPtRatio", 50, 0.0, 2.0);
         //v[i]->add_histogram("h" + syst_labels[j] + "PhotonDeltaRGen", 50, 0, 0.15);
+        
+        v[i]->add_histogram("h" + syst_labels[j] + "MaxBTagSum", 50, 0, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxBTagSum", 50, 0, 1);  
+        v[i]->add_histogram("h" + syst_labels[j] + "MaxBTag", 50, 0, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxBTag", 50, 0, 1);  
+        v[i]->add_histogram("h" + syst_labels[j] + "MaxCTag", 50, 0, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxCTag", 50, 0, 1);  
+        v[i]->add_histogram("h" + syst_labels[j] + "MaxCvsL", 50, 0, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxCvsL", 50, 0, 1);  
+        v[i]->add_histogram("h" + syst_labels[j] + "MaxCvsB", 50, 0, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxCvsB", 50, 0, 1);  
 
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA", 50, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII", 50, 0, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf", 25, 0, 8);
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ", 25, 0, 12);
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ_v2", 18, 0, 10);
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ_v3", 12, 0, 10);
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ_v4", 10, 0, 10);
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ_v5", 15, 0, 10);
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_bounded", 25, 0, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_bounded_v2", 12, 0, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA", 10, -1, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA", 10, -1, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_fine", 30, -1, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_fine", 30, -1, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_entries", 10, -1, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_entries", 10, -1, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_fine_entries", 30, -1, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_fine_entries", 30, -1, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_coarse", 5, -1, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_coarse", 5, -1, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_coarse_entries", 5, -1, 1);
+        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_coarse_entries", 5, -1, 1);
 
+        //----------------------------------------------------------------------------------------------------
+        // MVA Scores
+        //----------------------------------------------------------------------------------------------------
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_n100"               , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_n2000"              , 2000 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_n100"               , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_n2000"              , 2000 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_n100"               , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_n2000"              , 2000 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_original_n100"      , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_original_n100"      , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_original_n100"      , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_n100"               , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_n2000"              , 2000 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_n100"               , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_n2000"              , 2000 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_n100"               , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_n2000"              , 2000 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_original_n100"      , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_original_n100"      , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_original_n100"      , 100 , -1. , 1.);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "MVAScore_nrb_smh_varset8_mixed03_tmva" , 50, 0, 1, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "MVAScore_nrb_smh_varset8_mixed04_tmva" , 50, 0, 1, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "MVAScore_nrb_smh_varset8_mixed05_tmva" , 50, 0, 1, 50, 0, 1);
+
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n30"           , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n100"          , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n2000"         , 2000 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_n30"           , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_n100"          , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_n2000"         , 2000 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_n30"           , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_n100"          , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_n2000"         , 2000 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n30"           , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n100"          , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n2000"         , 2000 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n30"           , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n100"          , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n2000"         , 2000 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n30"           , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n100"          , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n2000"         , 2000 , -1. , 1.);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "MVAScore_nrb_smh_varset8_mixed03_tmva_bdtg" , 50, 0, 1, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "MVAScore_nrb_smh_varset8_mixed04_tmva_bdtg" , 50, 0, 1, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "MVAScore_nrb_smh_varset8_mixed05_tmva_bdtg" , 50, 0, 1, 50, 0, 1);
+
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_n100_testOnly"       , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_n100_testOnly"       , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_n100_withoutCut"     , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_n100_raw_testOnly"   , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_n100_raw_testOnly"   , 100 , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_n100_raw_withoutCut" , 100 , -1. , 1.);
+
+        //----------------------------------------------------------------------------------------------------
+        // skipped session
+        //----------------------------------------------------------------------------------------------------
         if(evaluate_all_mva)
         {
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_transf"                                            , 15  , 0   , 10);
@@ -289,81 +349,58 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_m600_tmva_n100"                  , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_m600_tmva_original_n30"          , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_m600_tmva_original_n100"         , 100 , -1. , 1.);
-        }
 
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_n30"                , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_n100"               , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_n30"                , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_n100"               , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_n30"                , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_n100"               , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n30"           , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n100"          , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n30"           , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n100"          , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n30"           , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n100"          , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_original_n30"       , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_original_n100"      , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_original_n30"       , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_original_n100"      , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_original_n30"       , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_original_n100"      , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_bdtg_original_n30"  , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_bdtg_original_n100" , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_bdtg_original_n30"  , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_bdtg_original_n100" , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_bdtg_original_n30"  , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_bdtg_original_n100" , 100 , -1. , 1.);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_n30"                , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_n100"               , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_n30"                , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_n100"               , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_n30"                , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_n100"               , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n30"           , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n100"          , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_n30"           , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_n100"          , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_n30"           , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_n100"          , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_original_n30"       , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_original_n100"      , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_original_n30"       , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_original_n100"      , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_original_n30"       , 30  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_original_n100"      , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_original_n30"  , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_original_n100" , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_original_n30"  , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_original_n100" , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_original_n30"  , 30  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_original_n100" , 100 , -1. , 1.);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_MVAScore_nrb_varset8_mixed03_tmva_bdtg", 50, 100, 180, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_MVAScore_smh_varset8_mixed03_tmva_bdtg", 50, 100, 180, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_MVAScore_nrb_varset8_mixed04_tmva_bdtg", 50, 100, 180, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_MVAScore_smh_varset8_mixed04_tmva_bdtg", 50, 100, 180, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_MVAScore_nrb_varset8_mixed05_tmva_bdtg", 50, 100, 180, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_MVAScore_smh_varset8_mixed05_tmva_bdtg", 50, 100, 180, 50, 0, 1);
 
-        v[i]->add_histogram("h" + syst_labels[j] + "MaxBTagSum", 50, 0, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxBTagSum", 50, 0, 1);  
-        v[i]->add_histogram("h" + syst_labels[j] + "MaxBTag", 50, 0, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxBTag", 50, 0, 1);  
-        v[i]->add_histogram("h" + syst_labels[j] + "MaxCTag", 50, 0, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxCTag", 50, 0, 1);  
-        v[i]->add_histogram("h" + syst_labels[j] + "MaxCvsL", 50, 0, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxCvsL", 50, 0, 1);  
-        v[i]->add_histogram("h" + syst_labels[j] + "MaxCvsB", 50, 0, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxCvsB", 50, 0, 1);  
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_n30"                , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_n30"                , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_n30"                , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_original_n30"       , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_original_n30"       , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_original_n30"       , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_n30"                , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_n30"                , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_n30"                , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_original_n30"       , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_original_n30"       , 30  , -1. , 1.);
+        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_original_n30"       , 30  , -1. , 1.);
 
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA", 10, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA", 10, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_fine", 30, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_fine", 30, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_entries", 10, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_entries", 10, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_fine_entries", 30, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_fine_entries", 30, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_coarse", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_coarse", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_coarse_entries", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_coarse_entries", 5, -1, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_MVAScore_nrb_varset8_mixed03_tmva", 50, 100, 180, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_MVAScore_smh_varset8_mixed03_tmva", 50, 100, 180, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_MVAScore_nrb_varset8_mixed04_tmva", 50, 100, 180, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_MVAScore_smh_varset8_mixed04_tmva", 50, 100, 180, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_MVAScore_nrb_varset8_mixed05_tmva", 50, 100, 180, 50, 0, 1);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_MVAScore_smh_varset8_mixed05_tmva", 50, 100, 180, 50, 0, 1);
+        }
+        //----------------------------------------------------------------------------------------------------
+        
+        //v[i]->add_histogram("h" + syst_labels[j] + "tthMVA", 50, -1, 1);
+        //v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII", 50, 0, 1);
+        //v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf", 25, 0, 8);
+        //v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ", 25, 0, 12);
+        //v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ_v2", 18, 0, 10);
+        //v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ_v3", 12, 0, 10);
+        //v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ_v4", 10, 0, 10);
+        //v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_ttZ_v5", 15, 0, 10);
+        //v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_bounded", 25, 0, 1);
+        //v[i]->add_histogram("h" + syst_labels[j] + "tthMVA_RunII_transf_bounded_v2", 12, 0, 1);
 
         //v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_NJets5+", 10, -1, 1);
         //v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_NJets5+", 10, -1, 1);
@@ -383,136 +420,11 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
 
         //v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_MinIDMVA", 20, -1, 1, 20, -1, 1);
 
-        /*
-        // Correlation with IDMVA
-        v[i]->add_histogram("h" + syst_labels[j] + "FakePhotonIDMVA", 40, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PromptPhotonIDMVA", 40, -1, 1);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "FakePhotonIDMVA_Barrel_LowPt", 40, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "FakePhotonIDMVA_Barrel_HighPt", 40, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "FakePhotonIDMVA_Endcap_LowPt", 40, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "FakePhotonIDMVA_Endcap_HighPt", 40, -1, 1);
-
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "FakePhotonIDMVA_NJets", 20, -1, 1, 10, -0.5, 9.5);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "FakePhotonIDMVA_MaxBTag", 20, -1, 1, 20, 0, 1);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "FakePhotonIDMVA_2ndMaxBTag", 20, -1, 1, 20, 0, 1);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "PromptPhotonIDMVA_NJets", 20, -1, 1, 10, -0.5, 9.5);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "PromptPhotonIDMVA_MaxBTag", 20, -1, 1, 20, 0, 1);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "PromptPhotonIDMVA_2ndMaxBTag", 20, -1, 1, 20, 0, 1);
-
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "FakePhotonIDMVA_Pt", 20, -1, 1, 20, 0, 300);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "PromptPhotonIDMVA_Pt", 20, -1, 1, 20, 0, 300);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "FakePhotonIDMVA_Eta", 20, -1, 1, 20, 0, 2.4);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "PromptPhotonIDMVA_Eta", 20, -1, 1, 20, 0, 2.4);
-
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonLeadIDMVA_LeadPt", 20, -1, 1, 20, 0, 300);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonSubleadIDMVA_SubleadPt", 20, -1, 1, 20, 0, 300);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonLeadIDMVA_LeadEta", 20, -1, 1, 20, 0, 2.4);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "PhotonSubleadIDMVA_SubleadEta", 20, -1, 1, 20, 0, 2.4);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "FakePhotonIDMVA_DiPhotonPt", 20, -1, 1, 20, 0, 300);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "PromptPhotonIDMVA_DiPhotonPt", 20, -1, 1, 20, 0, 300);
-
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "BDT_LeadPtoM", 20, 0, 1, 20, 0, 2);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "BDT_SubleadPtoM", 20, 0, 1, 20, 0, 2);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_LeadPtoM", 20, 100, 180, 20, 0, 2);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_SubleadPtoM", 20, 100, 180, 20, 0, 2);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_LeadPtoM_afterBDTCut", 20, 100, 180, 20, 0, 2);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_SubleadPtoM_afterBDTCut", 20, 100, 180, 20, 0, 2);
-
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "Mass_MVAScore", 20, 100, 180, 20, 0, 1);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_NJets2", 30, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_NJets2", 30, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_NJets3", 30, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_NJets3", 30, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMaxIDMVA_NJets4+", 30, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_NJets4+", 30, -1, 1);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "DiphoMVA", 25, -1, 1);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonIDMVA_prompt", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonIDMVA_elec", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonIDMVA_fake", 5, -1, 1);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonPt_prompt", 8, 0, 200);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonPt_elec", 8, 0, 200);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonPt_fake", 8, 0, 200);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonEta_prompt", 10, -3, 3);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonEta_elec", 10, -3, 3);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonEta_fake", 10, -3, 3);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "HadronicMVA", 20, 0, 1.0);
-        v[i]->add_histogram("h" + syst_labels[j] + "LeptonicMVA", 20, 0, 1.0);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "HadronicMVA_coarse", 10, 0.0, 1.0);
-        v[i]->add_histogram("h" + syst_labels[j] + "LeptonicMVA_coarse", 10, 0.0, 1.0);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "HadronicMVA_fine", 50, 0.0, 1.0);
-        v[i]->add_histogram("h" + syst_labels[j] + "LeptonicMVA_fine", 50, 0.0, 1.0);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "LeptonPt", 25, 0, 200);
-        v[i]->add_histogram("h" + syst_labels[j] + "LeptonEta", 25, -3, 3);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "MuonMiniIsolation", 10, 0, 0.25);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "PixelSeed", 2, -0.5, 1.5);
-        v[i]->add_histogram("h" + syst_labels[j] + "PixelSeedEB", 2, -0.5, 1.5);
-        v[i]->add_histogram("h" + syst_labels[j] + "PixelSeedEE", 2, -0.5, 1.5);
-
-
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_passPSV", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_failPSV", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_passEVeto", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_failEVeto", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_passBothVeto", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonMinIDMVA_failBothVeto", 5, -1, 1);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonIDMVA_passPSV", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonIDMVA_failPSV", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonIDMVA_passEVeto", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonIDMVA_failEVeto", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonIDMVA_passBothVeto", 5, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonIDMVA_failBothVeto", 5, -1, 1);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonPt_passPSV", 8, 0, 200);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonPt_failPSV", 8, 0, 200);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonPt_passEVeto", 8, 0, 200);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonPt_failEVeto", 8, 0, 200);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonPt_passBothVeto", 8, 0, 200);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonPt_failBothVeto", 8, 0, 200);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonEta_passPSV", 10, -3, 3);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonEta_failPSV", 10, -3, 3);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonEta_passEVeto", 10, -3, 3);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonEta_failEVeto", 10, -3, 3);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonEta_passBothVeto", 10, -3, 3);
-        v[i]->add_histogram("h" + syst_labels[j] + "PhotonEta_failBothVeto", 10, -3, 3); 
-        */
-
-        v[i]->add_histogram("h" + syst_labels[j] + "LeptonPt", 25, 0, 200);
-        v[i]->add_histogram("h" + syst_labels[j] + "LeptonEta", 25, -3, 3);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "MuonMiniIsolation", 10, 0, 0.25);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "TopTagger_score", 20, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "DNNScore_fcnc_tt", 20, -1, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "DNNScore_fcnc_st", 20, -1, 1);
-        //v[i]->add_histogram("h" + syst_labels[j] + "TopTagger_topMass", 40, 0, 400);
-        //v[i]->add_histogram("h" + syst_labels[j] + "TopTagger_WMass", 20, 0, 200);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "NLepLoose", 3, -0.5, 2.5);
-        v[i]->add_histogram("h" + syst_labels[j] + "NLepMedium", 3, -0.5, 2.5);
-        v[i]->add_histogram("h" + syst_labels[j] + "NLepTight", 3, -0.5, 2.5);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "DNNScore_ttH_vs_dipho", 50, 0, 1);
-        v[i]->add_histogram("h" + syst_labels[j] + "DNNScore_ttH_vs_ttGG", 50, 0, 1);
-
-        v[i]->add_histogram("h" + syst_labels[j] + "Rho", 50, 0, 100);
-
-        //---------------//
-        v[i]->add_histogram("h" + syst_labels[j] + "Rho", 50, 0, 100);
-
+        //v[i]->add_histogram("h" + syst_labels[j] + "mc_mva_score_tt_v2", 50, -1.0, 1.0);
+        //v[i]->add_histogram("h" + syst_labels[j] + "mc_mva_score_st_v2", 50, -1.0, 1.0);
+        //v[i]->add_histogram("h" + syst_labels[j] + "mc_mva_score_tt_v4", 50, -1.0, 1.0);
+        //v[i]->add_histogram("h" + syst_labels[j] + "mc_mva_score_st_v4", 50, -1.0, 1.0);
+        
       }
   }
 }
@@ -1104,14 +1016,28 @@ TF1* get_photon_ID_shape(TString type) {
   }
 
   else if (type == "fake_runII") {
-    f_IDMVA->SetParameter(0, 8818.17);
-    f_IDMVA->SetParameter(1, -12755.5);
-    f_IDMVA->SetParameter(2, 26130);
-    f_IDMVA->SetParameter(3, -26664.9);
-    f_IDMVA->SetParameter(4, -54741.1);
-    f_IDMVA->SetParameter(5, 76558);
-    f_IDMVA->SetParameter(6, 112245);
-    f_IDMVA->SetParameter(7, -123913);
+    //--------------------------------------------------
+    // tprime (09 May 2021)
+    //--------------------------------------------------
+    f_IDMVA->SetParameter(0, 382.201);
+    f_IDMVA->SetParameter(1, -453.285);
+    f_IDMVA->SetParameter(2, 1661.66);
+    f_IDMVA->SetParameter(3, -996.144);
+    f_IDMVA->SetParameter(4, -7009.08);
+    f_IDMVA->SetParameter(5, 5432.76);
+    f_IDMVA->SetParameter(6, 12592.4);
+    f_IDMVA->SetParameter(7, -11305.6);
+    //--------------------------------------------------
+    // fcnc
+    //--------------------------------------------------
+    //f_IDMVA->SetParameter(0, 8818.17);
+    //f_IDMVA->SetParameter(1, -12755.5);
+    //f_IDMVA->SetParameter(2, 26130);
+    //f_IDMVA->SetParameter(3, -26664.9);
+    //f_IDMVA->SetParameter(4, -54741.1);
+    //f_IDMVA->SetParameter(5, 76558);
+    //f_IDMVA->SetParameter(6, 112245);
+    //f_IDMVA->SetParameter(7, -123913);
   }
 
   else if (type == "fake_barrel_lowPt") {

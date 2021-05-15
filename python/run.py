@@ -12,6 +12,7 @@ command_list = []
 
 to_execution = True
 to_make_histograms = True
+#to_make_histograms = False
 to_make_mvababies = not to_make_histograms
 
 #====================================================================================================#
@@ -27,8 +28,10 @@ def command_manager(d):
     global to_make_mvababies
 
     if to_make_histograms:
+        exe = './bin/tprimetHHadronicLooper_v3p2' if 'v3p2' in d["rootfile"] else './bin/tprimetHHadronicLooper_v2p7'
+        exe = './bin/tprimetHHadronicLooper'
         log = 'dir_log/log_looper_%s_%d' % (d["datetime_tag"], idx_log)
-        command='./bin/tprimetHHadronicLooper %s %s %s %s %s 2>&1 | tee %s' % (d["location"], d["rootfile"], d["treename"], d["xml_file"], d["year"], log)
+        command='%s %s %s %s %s %s 2>&1 | tee %s' % (exe, d["location"], d["rootfile"], d["treename"], d["xml_file"], d["year"], log)
     if to_make_mvababies:
         log = 'dir_log/log_mvababy_%s_%d' % (d["datetime_tag"], idx_log)
         command='./bin/tprimetHHadronicMVABabyMaker %s %s %s %s %s 2>&1 | tee %s' % (d["location"], d["rootfile"], d["treename"], d["xml_file"], d["year"], log)
@@ -49,6 +52,9 @@ def register_parameters(location, rootfile, treename, xml_file, year, datetime_t
 
 #====================================================================================================#
 
+#----------------------------------------------------------------------------------------------------
+# Signal samples
+#----------------------------------------------------------------------------------------------------
 def to_study_signal():
     cwd = os.getcwd()
     location = cwd + "/rootfiles/ntuples_v2." + str(sample_manager.subversion)
@@ -61,19 +67,99 @@ def to_study_signal():
         my_parameters = register_parameters(location, rootfile, treename, xml_file, year, datetime_tag)
         command_manager(my_parameters)
 
-def to_study_data_and_bkg():
+#----------------------------------------------------------------------------------------------------
+# Data samples
+#----------------------------------------------------------------------------------------------------
+def to_study_data():
+    cwd = os.getcwd()
+    xml_file = "mva/Hadronic__tprime_impute_hct__bdt.xml"
+    treename = "tagsDumper/trees/Data_13TeV_THQHadronicTag"
+    location = cwd + "/rootfiles/ntuples_v3.1"
+    rootfiles = ["Data_Era2016_v3p1.root", "Data_Era2017_v3p1.root", "Data_Era2018_v3p1.root"]
+
+    location = cwd + "/rootfiles/ntuples_v3.3"
+    rootfiles = ["Data_Era2016_v3p3.root", "Data_Era2017_v3p3.root", "Data_Era2018_v3p3.root"]
+
+    for rootfile in rootfiles:
+        year = rootfile.split('_')[1].split('a')[1]
+        my_parameters = register_parameters(location, rootfile, treename, xml_file, year, datetime_tag)
+        command_manager(my_parameters)
+
+#----------------------------------------------------------------------------------------------------
+# ttX samples
+#----------------------------------------------------------------------------------------------------
+def to_study_ttX():
+    cwd = os.getcwd()
+    xml_file = "mva/Hadronic__tprime_impute_hct__bdt.xml"
+    location = cwd + "/rootfiles/ntuples_v3.2"
+    treename = "tagsDumper/trees/NRB_13TeV_THQHadronicTag"
+    rootfiles = [
+        "TTGG_Era2016_v3p2.root",
+        "TTGJets_Era2016_v3p2.root",
+        "TTJets_Era2016_v3p2.root",
+        "TGJets_Era2017_v3p2.root",
+        "TTGG_Era2017_v3p2.root",
+        "TTGJets_Era2017_v3p2.root",
+        "TTJets_Era2017_v3p2.root",
+        "TGJets_Era2018_v3p2.root",
+        "TTGG_Era2018_v3p2.root",
+        "TTJets_Era2018_v3p2.root",
+        "TTGJets_Era2018_v3p2.root"
+    ]
+
+    for rootfile in rootfiles:
+        year = rootfile.split('_')[1].split('a')[1]
+        my_parameters = register_parameters(location, rootfile, treename, xml_file, year, datetime_tag)
+        command_manager(my_parameters)
+
+#----------------------------------------------------------------------------------------------------
+# GJets samples
+#----------------------------------------------------------------------------------------------------
+def to_study_gammaJets():
+    cwd = os.getcwd()
+    xml_file = "mva/Hadronic__tprime_impute_hct__bdt.xml"
+    location = cwd + "/rootfiles/ntuples_v3.2"
+    treename = "tagsDumper/trees/NRB_13TeV_THQHadronicTag"
+    rootfiles = [ "GJet_Pt_Era2016_v3p2.root",  "GJet_Pt_Era2017_v3p2.root",  "GJet_Pt_Era2018_v3p2.root" ]
+
+    for rootfile in rootfiles:
+        year = rootfile.split('_')[2].split('a')[1]
+        my_parameters = register_parameters(location, rootfile, treename, xml_file, year, datetime_tag)
+        command_manager(my_parameters)
+
+#----------------------------------------------------------------------------------------------------
+# Diphoton samples
+#----------------------------------------------------------------------------------------------------
+def to_study_diphoton():
+    cwd = os.getcwd()
+    xml_file = "mva/Hadronic__tprime_impute_hct__bdt.xml"
+    location = cwd + "/rootfiles/ntuples_v3.2"
+    treename = "tagsDumper/trees/NRB_13TeV_THQHadronicTag"
+    rootfiles = [ "DiPhotonJets_Era2016_v3p2.root",  "DiPhotonJets_Era2017_v3p2.root",  "DiPhotonJets_Era2018_v3p2.root" ]
+
+    for rootfile in rootfiles:
+        year = rootfile.split('_')[1].split('a')[1]
+        my_parameters = register_parameters(location, rootfile, treename, xml_file, year, datetime_tag)
+        command_manager(my_parameters)
+
+#----------------------------------------------------------------------------------------------------
+# Other samples
+#----------------------------------------------------------------------------------------------------
+def to_study_bkg():
     cwd = os.getcwd()
     xml_file = "mva/Hadronic__tprime_impute_hct__bdt.xml"
 
     #----------------------------------------------------------------------------------------------------
-    # data and bkg
+    # Non-resonant bkg
     #----------------------------------------------------------------------------------------------------
     version = "v2p7"
     location = cwd + "/rootfiles/ntuples_v2.7_tmp_v2"
     years = [2016, 2017, 2018]
     for year in years:
-        samples = ["DiPhotonJets", "GJet_Pt", "TTGG", "TTGJets", "TTJets", "VG", "Data"]
-        categories = ["NRB", "NRB", "NRB", "NRB", "NRB", "NRB", "Data"]
+        samples = ["DiPhotonJets", "GJet_Pt", "TTGG", "TTGJets", "TTJets", "VG"]
+        categories = ["NRB", "NRB", "NRB", "NRB", "NRB", "NRB"]
+        samples = ["DiPhotonJets", "GJet_Pt", "VG"]
+        categories = ["NRB", "NRB", "NRB"]
 
         rootfiles = []
         for sample in samples:
@@ -112,6 +198,13 @@ def to_study_ttH():
     treename = "tagsDumper/trees/SMH_13TeV_THQHadronicTag"
     rootfiles = ["ttHJetToGG_M125_Era2016_v3p1.root", "ttHJetToGG_M125_Era2017_v3p1.root", "ttHJetToGG_M125_Era2018_v3p1.root"]
 
+
+    location = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ntuple_production"
+    treename = "tagsDumper/trees/tHq_13TeV_THQHadronicTag"
+    rootfiles = ["TprimeBToTH_M-1000_Era2018_numEvent10033.root"]
+    rootfiles = ["TprimeBToTH_M-1000_Era2018_numEvent10034.root"]
+    rootfiles = ["TprimeBToTH_M-1000_Era2018_numEvent10035.root"]
+
     counter = 0
     for rootfile in rootfiles:
         counter += 1
@@ -125,9 +218,14 @@ if __name__ == "__main__":
     subprocess.call("mkdir -p plots", shell=True)
     subprocess.call("mkdir -p dir_log", shell=True)
 
-    to_study_data_and_bkg()
-    to_study_signal()
-    #to_study_ttH()
+    #to_study_gammaJets()
+    #to_study_diphoton()
+    #to_study_ttX()
+    #to_study_data()
+    #to_study_signal()
+    #to_study_bkg()
+
+    to_study_ttH()
 
     #----------------------------------------------------------------------------------------------------
     # Execution

@@ -23,181 +23,183 @@
 
 // tprimetHHadronic
 #include "ttHLooper.h"
-#include "tprimetHHadronic.cc"
+//#include "tprimetHHadronic.cc"
+//#include "tprimetHHadronic_v3p2.cc"
+#include "tprimetHHadronic_v3p3p2.cc" // for testing command
 
 using namespace std;
 using namespace tprime;
 
-vector<TLorentzVector> make_mom_particles(vector<float> &pdgIds, vector<float> &status) {
-  vector<TLorentzVector> vPartons;
-  // note: mom_parton1_pt() and mom_parton2_pt() can be zero
-  if (gen_parton1_pt() > 0) {
-    TLorentzVector mom_parton;
-    mom_parton.SetPtEtaPhiM(mom_parton1_pt(), mom_parton1_eta(), mom_parton1_phi(), mom_parton1_mass());
-    vPartons.push_back(mom_parton);
-    pdgIds.push_back(mom_parton1_pdgId());
-    status.push_back(mom_parton1_status());
-  }
-
-  if (gen_parton2_pt() > 0) {
-    TLorentzVector mom_parton;
-    mom_parton.SetPtEtaPhiM(mom_parton2_pt(), mom_parton2_eta(), mom_parton2_phi(), mom_parton2_mass());
-    vPartons.push_back(mom_parton);
-    pdgIds.push_back(mom_parton2_pdgId());
-    status.push_back(mom_parton2_status());
-  }
-
-  if (gen_parton3_pt() > 0) {
-    TLorentzVector mom_parton;
-    mom_parton.SetPtEtaPhiM(mom_parton3_pt(), mom_parton3_eta(), mom_parton3_phi(), mom_parton3_mass());
-    vPartons.push_back(mom_parton);
-    pdgIds.push_back(mom_parton3_pdgId());
-    status.push_back(mom_parton3_status());
-  }
-
-  if (gen_parton4_pt() > 0) {
-    TLorentzVector mom_parton;
-    mom_parton.SetPtEtaPhiM(mom_parton4_pt(), mom_parton4_eta(), mom_parton4_phi(), mom_parton4_mass());
-    vPartons.push_back(mom_parton);
-    pdgIds.push_back(mom_parton4_pdgId());
-    status.push_back(mom_parton4_status());
-  }
-
-  if (gen_parton5_pt() > 0) {
-    TLorentzVector mom_parton;
-    mom_parton.SetPtEtaPhiM(mom_parton5_pt(), mom_parton5_eta(), mom_parton5_phi(), mom_parton5_mass());
-    vPartons.push_back(mom_parton);
-    pdgIds.push_back(mom_parton5_pdgId());
-    status.push_back(mom_parton5_status());
-  }
-
-  if (gen_parton6_pt() > 0) {
-    TLorentzVector mom_parton;
-    mom_parton.SetPtEtaPhiM(mom_parton6_pt(), mom_parton6_eta(), mom_parton6_phi(), mom_parton6_mass());
-    vPartons.push_back(mom_parton);
-    pdgIds.push_back(mom_parton6_pdgId());
-    status.push_back(mom_parton6_status());
-  }
-
-  if (gen_parton7_pt() > 0) {
-    TLorentzVector mom_parton;
-    mom_parton.SetPtEtaPhiM(mom_parton7_pt(), mom_parton7_eta(), mom_parton7_phi(), mom_parton7_mass());
-    vPartons.push_back(mom_parton);
-    pdgIds.push_back(mom_parton7_pdgId());
-    status.push_back(mom_parton7_status());
-  }
-
-  if (gen_parton8_pt() > 0) {
-    TLorentzVector mom_parton;
-    mom_parton.SetPtEtaPhiM(mom_parton8_pt(), mom_parton8_eta(), mom_parton8_phi(), mom_parton8_mass());
-    vPartons.push_back(mom_parton);
-    pdgIds.push_back(mom_parton8_pdgId());
-    status.push_back(mom_parton8_status());
-  }
-
-  if (gen_parton9_pt() > 0) {
-    TLorentzVector mom_parton;
-    mom_parton.SetPtEtaPhiM(mom_parton9_pt(), mom_parton9_eta(), mom_parton9_phi(), mom_parton9_mass());
-    vPartons.push_back(mom_parton);
-    pdgIds.push_back(mom_parton9_pdgId());
-    status.push_back(mom_parton9_status());
-  }
-
-  if (gen_parton10_pt() > 0) {
-    TLorentzVector mom_parton;
-    mom_parton.SetPtEtaPhiM(mom_parton10_pt(), mom_parton10_eta(), mom_parton10_phi(), mom_parton10_mass());
-    vPartons.push_back(mom_parton);
-    pdgIds.push_back(mom_parton10_pdgId());
-    status.push_back(mom_parton10_status());
-  }
-
-  return vPartons;
-}
-
-vector<TLorentzVector> make_gen_particles(vector<float> &pdgIds, vector<float> &status) {
-  vector<TLorentzVector> vPartons;
-  if (gen_parton1_pt() > 0) {
-    TLorentzVector gen_parton;
-    gen_parton.SetPtEtaPhiM(gen_parton1_pt(), gen_parton1_eta(), gen_parton1_phi(), gen_parton1_mass());
-    vPartons.push_back(gen_parton);
-    pdgIds.push_back(gen_parton1_pdgId());
-    status.push_back(gen_parton1_status());
-  }
-
-  if (gen_parton2_pt() > 0) {
-    TLorentzVector gen_parton;
-    gen_parton.SetPtEtaPhiM(gen_parton2_pt(), gen_parton2_eta(), gen_parton2_phi(), gen_parton2_mass());
-    vPartons.push_back(gen_parton);
-    pdgIds.push_back(gen_parton2_pdgId());
-    status.push_back(gen_parton2_status());
-  }
-
-  if (gen_parton3_pt() > 0) {
-    TLorentzVector gen_parton;
-    gen_parton.SetPtEtaPhiM(gen_parton3_pt(), gen_parton3_eta(), gen_parton3_phi(), gen_parton3_mass());
-    vPartons.push_back(gen_parton);
-    pdgIds.push_back(gen_parton3_pdgId());
-    status.push_back(gen_parton3_status());
-  }
-
-  if (gen_parton4_pt() > 0) {
-    TLorentzVector gen_parton;
-    gen_parton.SetPtEtaPhiM(gen_parton4_pt(), gen_parton4_eta(), gen_parton4_phi(), gen_parton4_mass());
-    vPartons.push_back(gen_parton);
-    pdgIds.push_back(gen_parton4_pdgId());
-    status.push_back(gen_parton4_status());
-  }
-
-  if (gen_parton5_pt() > 0) {
-    TLorentzVector gen_parton;
-    gen_parton.SetPtEtaPhiM(gen_parton5_pt(), gen_parton5_eta(), gen_parton5_phi(), gen_parton5_mass());
-    vPartons.push_back(gen_parton);
-    pdgIds.push_back(gen_parton5_pdgId());
-    status.push_back(gen_parton5_status());
-  }
-
-  if (gen_parton6_pt() > 0) {
-    TLorentzVector gen_parton;
-    gen_parton.SetPtEtaPhiM(gen_parton6_pt(), gen_parton6_eta(), gen_parton6_phi(), gen_parton6_mass());
-    vPartons.push_back(gen_parton);
-    pdgIds.push_back(gen_parton6_pdgId());
-    status.push_back(gen_parton6_status());
-  }
-
-  if (gen_parton7_pt() > 0) {
-    TLorentzVector gen_parton;
-    gen_parton.SetPtEtaPhiM(gen_parton7_pt(), gen_parton7_eta(), gen_parton7_phi(), gen_parton7_mass());
-    vPartons.push_back(gen_parton);
-    pdgIds.push_back(gen_parton7_pdgId());
-    status.push_back(gen_parton7_status());
-  }
-
-  if (gen_parton8_pt() > 0) {
-    TLorentzVector gen_parton;
-    gen_parton.SetPtEtaPhiM(gen_parton8_pt(), gen_parton8_eta(), gen_parton8_phi(), gen_parton8_mass());
-    vPartons.push_back(gen_parton);
-    pdgIds.push_back(gen_parton8_pdgId());
-    status.push_back(gen_parton8_status());
-  }
-
-  if (gen_parton9_pt() > 0) {
-    TLorentzVector gen_parton;
-    gen_parton.SetPtEtaPhiM(gen_parton9_pt(), gen_parton9_eta(), gen_parton9_phi(), gen_parton9_mass());
-    vPartons.push_back(gen_parton);
-    pdgIds.push_back(gen_parton9_pdgId());
-    status.push_back(gen_parton9_status());
-  }
-
-  if (gen_parton10_pt() > 0) {
-    TLorentzVector gen_parton;
-    gen_parton.SetPtEtaPhiM(gen_parton10_pt(), gen_parton10_eta(), gen_parton10_phi(), gen_parton10_mass());
-    vPartons.push_back(gen_parton);
-    pdgIds.push_back(gen_parton10_pdgId());
-    status.push_back(gen_parton10_status());
-  }
-
-  return vPartons;
-}
+//vector<TLorentzVector> make_mom_particles(vector<float> &pdgIds, vector<float> &status) {
+//  vector<TLorentzVector> vPartons;
+//  // note: mom_parton1_pt() and mom_parton2_pt() can be zero
+//  if (gen_parton1_pt() > 0) {
+//    TLorentzVector mom_parton;
+//    mom_parton.SetPtEtaPhiM(mom_parton1_pt(), mom_parton1_eta(), mom_parton1_phi(), mom_parton1_mass());
+//    vPartons.push_back(mom_parton);
+//    pdgIds.push_back(mom_parton1_pdgId());
+//    status.push_back(mom_parton1_status());
+//  }
+//
+//  if (gen_parton2_pt() > 0) {
+//    TLorentzVector mom_parton;
+//    mom_parton.SetPtEtaPhiM(mom_parton2_pt(), mom_parton2_eta(), mom_parton2_phi(), mom_parton2_mass());
+//    vPartons.push_back(mom_parton);
+//    pdgIds.push_back(mom_parton2_pdgId());
+//    status.push_back(mom_parton2_status());
+//  }
+//
+//  if (gen_parton3_pt() > 0) {
+//    TLorentzVector mom_parton;
+//    mom_parton.SetPtEtaPhiM(mom_parton3_pt(), mom_parton3_eta(), mom_parton3_phi(), mom_parton3_mass());
+//    vPartons.push_back(mom_parton);
+//    pdgIds.push_back(mom_parton3_pdgId());
+//    status.push_back(mom_parton3_status());
+//  }
+//
+//  if (gen_parton4_pt() > 0) {
+//    TLorentzVector mom_parton;
+//    mom_parton.SetPtEtaPhiM(mom_parton4_pt(), mom_parton4_eta(), mom_parton4_phi(), mom_parton4_mass());
+//    vPartons.push_back(mom_parton);
+//    pdgIds.push_back(mom_parton4_pdgId());
+//    status.push_back(mom_parton4_status());
+//  }
+//
+//  if (gen_parton5_pt() > 0) {
+//    TLorentzVector mom_parton;
+//    mom_parton.SetPtEtaPhiM(mom_parton5_pt(), mom_parton5_eta(), mom_parton5_phi(), mom_parton5_mass());
+//    vPartons.push_back(mom_parton);
+//    pdgIds.push_back(mom_parton5_pdgId());
+//    status.push_back(mom_parton5_status());
+//  }
+//
+//  if (gen_parton6_pt() > 0) {
+//    TLorentzVector mom_parton;
+//    mom_parton.SetPtEtaPhiM(mom_parton6_pt(), mom_parton6_eta(), mom_parton6_phi(), mom_parton6_mass());
+//    vPartons.push_back(mom_parton);
+//    pdgIds.push_back(mom_parton6_pdgId());
+//    status.push_back(mom_parton6_status());
+//  }
+//
+//  if (gen_parton7_pt() > 0) {
+//    TLorentzVector mom_parton;
+//    mom_parton.SetPtEtaPhiM(mom_parton7_pt(), mom_parton7_eta(), mom_parton7_phi(), mom_parton7_mass());
+//    vPartons.push_back(mom_parton);
+//    pdgIds.push_back(mom_parton7_pdgId());
+//    status.push_back(mom_parton7_status());
+//  }
+//
+//  if (gen_parton8_pt() > 0) {
+//    TLorentzVector mom_parton;
+//    mom_parton.SetPtEtaPhiM(mom_parton8_pt(), mom_parton8_eta(), mom_parton8_phi(), mom_parton8_mass());
+//    vPartons.push_back(mom_parton);
+//    pdgIds.push_back(mom_parton8_pdgId());
+//    status.push_back(mom_parton8_status());
+//  }
+//
+//  if (gen_parton9_pt() > 0) {
+//    TLorentzVector mom_parton;
+//    mom_parton.SetPtEtaPhiM(mom_parton9_pt(), mom_parton9_eta(), mom_parton9_phi(), mom_parton9_mass());
+//    vPartons.push_back(mom_parton);
+//    pdgIds.push_back(mom_parton9_pdgId());
+//    status.push_back(mom_parton9_status());
+//  }
+//
+//  if (gen_parton10_pt() > 0) {
+//    TLorentzVector mom_parton;
+//    mom_parton.SetPtEtaPhiM(mom_parton10_pt(), mom_parton10_eta(), mom_parton10_phi(), mom_parton10_mass());
+//    vPartons.push_back(mom_parton);
+//    pdgIds.push_back(mom_parton10_pdgId());
+//    status.push_back(mom_parton10_status());
+//  }
+//
+//  return vPartons;
+//}
+//
+//vector<TLorentzVector> make_gen_particles(vector<float> &pdgIds, vector<float> &status) {
+//  vector<TLorentzVector> vPartons;
+//  if (gen_parton1_pt() > 0) {
+//    TLorentzVector gen_parton;
+//    gen_parton.SetPtEtaPhiM(gen_parton1_pt(), gen_parton1_eta(), gen_parton1_phi(), gen_parton1_mass());
+//    vPartons.push_back(gen_parton);
+//    pdgIds.push_back(gen_parton1_pdgId());
+//    status.push_back(gen_parton1_status());
+//  }
+//
+//  if (gen_parton2_pt() > 0) {
+//    TLorentzVector gen_parton;
+//    gen_parton.SetPtEtaPhiM(gen_parton2_pt(), gen_parton2_eta(), gen_parton2_phi(), gen_parton2_mass());
+//    vPartons.push_back(gen_parton);
+//    pdgIds.push_back(gen_parton2_pdgId());
+//    status.push_back(gen_parton2_status());
+//  }
+//
+//  if (gen_parton3_pt() > 0) {
+//    TLorentzVector gen_parton;
+//    gen_parton.SetPtEtaPhiM(gen_parton3_pt(), gen_parton3_eta(), gen_parton3_phi(), gen_parton3_mass());
+//    vPartons.push_back(gen_parton);
+//    pdgIds.push_back(gen_parton3_pdgId());
+//    status.push_back(gen_parton3_status());
+//  }
+//
+//  if (gen_parton4_pt() > 0) {
+//    TLorentzVector gen_parton;
+//    gen_parton.SetPtEtaPhiM(gen_parton4_pt(), gen_parton4_eta(), gen_parton4_phi(), gen_parton4_mass());
+//    vPartons.push_back(gen_parton);
+//    pdgIds.push_back(gen_parton4_pdgId());
+//    status.push_back(gen_parton4_status());
+//  }
+//
+//  if (gen_parton5_pt() > 0) {
+//    TLorentzVector gen_parton;
+//    gen_parton.SetPtEtaPhiM(gen_parton5_pt(), gen_parton5_eta(), gen_parton5_phi(), gen_parton5_mass());
+//    vPartons.push_back(gen_parton);
+//    pdgIds.push_back(gen_parton5_pdgId());
+//    status.push_back(gen_parton5_status());
+//  }
+//
+//  if (gen_parton6_pt() > 0) {
+//    TLorentzVector gen_parton;
+//    gen_parton.SetPtEtaPhiM(gen_parton6_pt(), gen_parton6_eta(), gen_parton6_phi(), gen_parton6_mass());
+//    vPartons.push_back(gen_parton);
+//    pdgIds.push_back(gen_parton6_pdgId());
+//    status.push_back(gen_parton6_status());
+//  }
+//
+//  if (gen_parton7_pt() > 0) {
+//    TLorentzVector gen_parton;
+//    gen_parton.SetPtEtaPhiM(gen_parton7_pt(), gen_parton7_eta(), gen_parton7_phi(), gen_parton7_mass());
+//    vPartons.push_back(gen_parton);
+//    pdgIds.push_back(gen_parton7_pdgId());
+//    status.push_back(gen_parton7_status());
+//  }
+//
+//  if (gen_parton8_pt() > 0) {
+//    TLorentzVector gen_parton;
+//    gen_parton.SetPtEtaPhiM(gen_parton8_pt(), gen_parton8_eta(), gen_parton8_phi(), gen_parton8_mass());
+//    vPartons.push_back(gen_parton);
+//    pdgIds.push_back(gen_parton8_pdgId());
+//    status.push_back(gen_parton8_status());
+//  }
+//
+//  if (gen_parton9_pt() > 0) {
+//    TLorentzVector gen_parton;
+//    gen_parton.SetPtEtaPhiM(gen_parton9_pt(), gen_parton9_eta(), gen_parton9_phi(), gen_parton9_mass());
+//    vPartons.push_back(gen_parton);
+//    pdgIds.push_back(gen_parton9_pdgId());
+//    status.push_back(gen_parton9_status());
+//  }
+//
+//  if (gen_parton10_pt() > 0) {
+//    TLorentzVector gen_parton;
+//    gen_parton.SetPtEtaPhiM(gen_parton10_pt(), gen_parton10_eta(), gen_parton10_phi(), gen_parton10_mass());
+//    vPartons.push_back(gen_parton);
+//    pdgIds.push_back(gen_parton10_pdgId());
+//    status.push_back(gen_parton10_status());
+//  }
+//
+//  return vPartons;
+//}
 
 vector<TLorentzVector> make_jets(vector<double> &btag_scores) {
   vector<TLorentzVector> vJets;
@@ -539,6 +541,23 @@ bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, float mva_v
     cout << "Did not recognize tag name" << endl;
 
   return false;
+}
+
+double get_ratio(double a, double b)
+{
+    double ratio = (a - b) / a;
+    return ratio;
+}
+
+void mycheck(TString label, int &counter, double a, double b)
+{
+    double ratio = get_ratio(a, b);
+    if(ratio > 1e-4)
+    {
+      printf("[check] %s online: %.7f, offline: %.7f, ratio = %.3f\n", label.Data(), a, b, ratio);
+    } else {
+      counter += 1;
+    }
 }
 
 #endif

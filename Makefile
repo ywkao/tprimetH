@@ -4,7 +4,8 @@ INC 	 := -I include
 CFLAGS   := $(shell root-config --cflags) -g -O3 #-Wno-write-strings -D_FILE_OFFSET_BITS=64 -DDROP_CGAL #-Wall -Wextra
 ROOTLIBS := $(shell root-config --libs) -lMinuit -lMLP -lXMLIO -lTMVA -lGenVector
 
-TARGET   := bin/tprimetHHadronicLooper bin/covMatrix_Looper bin/tprimetHHadronicMVABabyMaker
+#TARGET   := bin/tprimetHHadronicLooper bin/covMatrix_Looper bin/tprimetHHadronicMVABabyMaker
+TARGET   := bin/tprimetHHadronicLooper bin/tprimetHHadronicMVABabyMaker
 
 all: ${TARGET}
 

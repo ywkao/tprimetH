@@ -383,9 +383,9 @@ def draw_luminosity_tlatex(year, left_margin = 0.10):
     latex.SetTextFont(43)
     latex.SetTextAlign(11)
     latex.SetTextSize(24)
-    latex.DrawLatex( 0.17, 0.80, "SM ttH Samples" )
-    latex.DrawLatex( left_margin, 0.912, "#bf{CMS} #it{Simulation Preliminary}" )
-    latex.DrawLatex( 0.70, 0.912, "%s fb^{-1} (13TeV)" % str(lumi[year]) )
+    latex.DrawLatex( 0.17, 0.80, "Signal Samples" )
+    #latex.DrawLatex( left_margin, 0.912, "#bf{CMS} #it{Simulation Preliminary}" )
+    #latex.DrawLatex( 0.70, 0.912, "%s fb^{-1} (13TeV)" % str(lumi[year]) )
 
 def draw_preliminary_tlatex_v2(year):
     latex = ROOT.TLatex()

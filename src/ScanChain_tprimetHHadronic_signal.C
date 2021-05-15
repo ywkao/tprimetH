@@ -1678,7 +1678,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 	mva_smh_varset8_mixed03_tmva->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
 	mva_smh_varset8_mixed03_tmva->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
 	mva_smh_varset8_mixed03_tmva->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    mva_smh_varset8_mixed03_tmva->BookMVA("BDT", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210426/dataset_Run2_Tprime_ttH_varSet8_M600_M700/weights/TMVAClassification_BDT.weights.xml");
+    //mva_smh_varset8_mixed03_tmva->BookMVA("BDT", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210426/dataset_Run2_Tprime_ttH_varSet8_M600_M700/weights/TMVAClassification_BDT.weights.xml");
+    mva_smh_varset8_mixed03_tmva->BookMVA("BDT", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/mva/TMVAClassification_BDT_tprime_SMH_varSet8_M600_M700_20210426.weights.xml");
     //}}}
     // mva_smh_varset8_mixed04_tmva{{{
     mva_smh_varset8_mixed04_tmva.reset(new TMVA::Reader( "!Color:Silent" ));
@@ -2020,7 +2021,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 	mva_nrb_varset8_mixed03_tmva->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
 	mva_nrb_varset8_mixed03_tmva->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
 	mva_nrb_varset8_mixed03_tmva->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    mva_nrb_varset8_mixed03_tmva->BookMVA("BDT", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210430/dataset_Run2_Tprime_NRB_varSet8_M600_M700/weights/TMVAClassification_BDT.weights.xml");
+    //mva_nrb_varset8_mixed03_tmva->BookMVA("BDT", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210430/dataset_Run2_Tprime_NRB_varSet8_M600_M700/weights/TMVAClassification_BDT.weights.xml");
+    mva_nrb_varset8_mixed03_tmva->BookMVA("BDT", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/mva/TMVAClassification_BDT_tprime_NRB_varSet8_M600_M700_20210430.weights.xml");
     //}}}
     // mva_nrb_varset8_mixed04_tmva{{{
     mva_nrb_varset8_mixed04_tmva.reset(new TMVA::Reader( "!Color:Silent" ));
@@ -2318,6 +2320,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 
   TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_runII");
 
+  int counter_nrb_same = 0;
+  int counter_smh_same = 0;
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
     // Get File Content
@@ -2333,26 +2337,64 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
     unsigned int nEventsTree = tree->GetEntriesFast();
     for (unsigned int event = 0; event < nEventsTree; ++event)
     {
-      //if( (event+1) % 100 == 0) printf("ievent = %d / %d\n", event, nEventsTree);
       bool debug = false;
       bool debug_deeper = false;
       
+      //----------------------------------------------------------------------------------------------------
       // Get Event Content
+      //----------------------------------------------------------------------------------------------------
       if (nEventsTotal >= nEventsChain) continue;
       if (fast) tree->LoadTree(event);
       analyzer.GetEntry(event);
       ++nEventsTotal;
 
+      //----------------------------------------------------------------------------------------------------
       // Progress
+      //----------------------------------------------------------------------------------------------------
       tprimetHHadronic::progress( nEventsTotal, nEventsChain );
 
+      //----------------------------------------------------------------------------------------------------
       // Jets
+      //----------------------------------------------------------------------------------------------------
       vector<double> btag_scores;
       vector<TLorentzVector> jets = make_jets(btag_scores);
       vector< std::pair<int, double> > btag_scores_sorted = sortVectorGreater(btag_scores);
       if(jets.size() < 3) continue;
 
+      //----------------------------------------------------------------------------------------------------
+      // Blinded region
+      //----------------------------------------------------------------------------------------------------
+      bool isData = currentFileTitle.Contains("DoubleEG") || currentFileTitle.Contains("EGamma"); 
+      bool blind = true;
+      //int genPhotonId = -1; // isData ? -1 : categorize_photons(leadGenMatch(), subleadGenMatch()); // no effect for signal samples
+      int genPhotonId = isData ? -1 : categorize_photons(leadGenMatch(), subleadGenMatch()); // no effect for signal samples
+      int processId = categorize_process(currentFileTitle, genPhotonId);
+      bool is_signal = (processId >= 27 && processId <= 36); // signal id in [27, 36]
+      bool is_data = (processId == 10);
+
+      double lumi = mYear == "2016" ? lumi_2016 : (mYear == "2017") ? lumi_2017 : lumi_2018;
+      float evt_weight = is_data ? 1. : is_signal ? weight() * branching_fraction_hgg * lumi : weight() * lumi;
+
+      // Impute, if applicable
+      maxIDMVA_ = dipho_leadIDMVA() >  dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
+      minIDMVA_ = dipho_leadIDMVA() <= dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
+      if (is_data) impute_photon_id(min_photon_ID_presel_cut, maxIDMVA_, photon_fakeID_shape_runII, minIDMVA_, evt_weight, processId);
+
+      // Micmic HLT; ensure MC and Data have the same selection
+      bool pass_photon_pt_criteria = dipho_leadPt()>30. && dipho_subleadPt()>18.;
+      if(!pass_photon_pt_criteria) continue;
+
+      if (is_data && processId != 18 && blind && CMS_hgg_mass() > 120. && CMS_hgg_mass() < 130.)  continue;
+      if (is_data && processId != 18 && blind && CMS_hgg_mass() > 120. && CMS_hgg_mass() < 130.)
+          printf("[WARNING] Data events in signal region is used! mass = %.2f, processId = %d\n", CMS_hgg_mass(), processId);
+
+      if (isnan(evt_weight) || isinf(evt_weight) || evt_weight == 0) continue; //some pu weights are nan/inf and this causes problems for histos 
+      //if (has_std_overlaps(currentFileTitle, lead_Prompt(), sublead_Prompt(), genPhotonId)) continue;
+      // check what is lead_Prompt !!!
+
+      //----------------------------------------------------------------------------------------------------
       // Di-Photon
+      //----------------------------------------------------------------------------------------------------
       TLorentzVector diphoton, lead_photon, sublead_photon;
       diphoton.SetPtEtaPhiE(dipho_pt(), dipho_eta(), dipho_phi(), dipho_e());
       lead_photon.SetPtEtaPhiM(dipho_leadPt(), dipho_leadEta(), dipho_leadPhi(), 0.);
@@ -2360,19 +2402,15 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       TLorentzVector diphoton_v2 = lead_photon + sublead_photon;
       
       //------------------------------ Variable definitions ------------------------------//
-      maxIDMVA_ = dipho_leadIDMVA() >  dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
-      minIDMVA_ = dipho_leadIDMVA() <= dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
-
-      ht_            = get_ht(jets);
-
-      njets_ = n_jets();
-      nbjets_ = n_M_bjets();
+      ht_        = get_ht(jets);
+      njets_     = n_jets();
+      nbjets_    = n_M_bjets();
       max1_btag_ = btag_scores_sorted[0].second;
       max2_btag_ = btag_scores_sorted[1].second;
       jet1_pt_   = njets_ >= 1 ? jets[0].Pt()   : -999;
       jet1_eta_  = njets_ >= 1 ? jets[0].Eta()  : -999;
       jet1_btag_ = njets_ >= 1 ? btag_scores[0] : -999;
-      jet2_pt_   = njets_ >= 2 ? jets[1].Pt()   : -999; 
+      jet2_pt_   = njets_ >= 2 ? jets[1].Pt()   : -999;
       jet2_eta_  = njets_ >= 2 ? jets[1].Eta()  : -999;
       jet2_btag_ = njets_ >= 2 ? btag_scores[1] : -999;
       jet3_pt_   = njets_ >= 3 ? jets[2].Pt()   : -999;
@@ -2383,21 +2421,21 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       jet4_btag_ = njets_ >= 4 ? btag_scores[3] : -999;
 
       // photons, diphoton, helicity angle, top masses
-      dipho_delta_R  = lead_photon.DeltaR(sublead_photon);
-      leadptoM_     = dipho_lead_ptoM();
-      subleadptoM_  = dipho_sublead_ptoM();
-      lead_eta_     = dipho_leadEta();
-      sublead_eta_  = dipho_subleadEta();
+      dipho_delta_R       = lead_photon.DeltaR(sublead_photon);
+      leadptoM_           = dipho_lead_ptoM();
+      subleadptoM_        = dipho_sublead_ptoM();
+      lead_eta_           = dipho_leadEta();
+      sublead_eta_        = dipho_subleadEta();
 
-      leadPSV_ = dipho_lead_haspixelseed();
-      subleadPSV_ = dipho_sublead_haspixelseed();
+      leadPSV_            = dipho_lead_haspixelseed();
+      subleadPSV_         = dipho_sublead_haspixelseed();
 
-      dipho_cosphi_ = dipho_cosphi();
+      dipho_cosphi_       = dipho_cosphi();
       dipho_pt_over_mass_ = diphoton.Pt() / diphoton.M();
-      met_ = recoMET_pt();
+      met_                = recoMET_pt();
 
-      dipho_rapidity_ = diphoton.Rapidity(); //dipho_rapidity();
-      helicity_angle_ = helicity(lead_photon, sublead_photon);
+      dipho_rapidity_     = diphoton.Rapidity(); //dipho_rapidity();
+      helicity_angle_     = helicity(lead_photon, sublead_photon);
 
 
       //------------------------------ Minimum chi-2 method (cov.) ------------------------------//
@@ -2576,39 +2614,286 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       }
 
       int mvaCategoryId = mva_value < -0.8 ? 0 : 1;
-      //if (!passes_selection(tag, minIDMVA_, maxIDMVA_, mva_value))	continue;
-      if (!passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_, -999.))	continue;
+      if (!passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_, -999.))	continue; // -999 represents no cut on mva values
 
-      int genLeptonId = 0; // isData ? -1 : categorize_leptons(nGoodEls(), nGoodMus()); // none of reco lepton exists
       //----------------------------------------------------------------------------------------------------
       // For the moment the genPhotonId is assumed -1 (TTGG, TTG, TTJets might have overlap)
       //----------------------------------------------------------------------------------------------------
-      int genPhotonId = -1; // isData ? -1 : categorize_photons(leadGenMatch(), subleadGenMatch()); // no effect for signal samples
+      int genLeptonId = 0; // isData ? -1 : categorize_leptons(nGoodEls(), nGoodMus()); // none of reco lepton exists
       int genPhotonDetailId = 5; // isData ? -1 : categorize_photons_detail(lead_photon_type(), sublead_photon_type()); // assume prompt-prompt
       int photonLocationId = categorize_photon_locations(dipho_leadEta(), dipho_subleadEta());
       int yearId = mYear == "2016" ? 0 : (mYear == "2017" ? 1 : (mYear == "2018" ? 2 : -1));
-      int processId = categorize_process(currentFileTitle, genPhotonId);
       vector<int> vId = {genLeptonId, genPhotonId, genPhotonDetailId, photonLocationId, mvaCategoryId, -1, yearId};
 
-      bool is_signal = (processId == 27 || processId == 28 || processId == 29 || processId == 30 || processId == 31 || processId == 32 || processId == 33 || processId == 34 || processId == 35 || processId == 36);
-      bool is_data = (processId == 10);
-      double lumi = mYear == "2016" ? lumi_2016 : (mYear == "2017") ? lumi_2017 : lumi_2018;
-      float evt_weight = is_data ? 1. : is_signal ? weight() * branching_fraction_hgg * lumi : weight() * lumi;
-      //printf("[check] evt_weight = %.7f = %.7f x %.5f x %.2f\n", evt_weight, weight(), branching_fraction_hgg, lumi);
       total_yields += evt_weight;
 
-      if (is_data) impute_photon_id(min_photon_ID_presel_cut, maxIDMVA_, photon_fakeID_shape_runII, minIDMVA_, evt_weight, processId);
+      //----------------------------------------------------------------------------------------------------
+      // Double check
+      //----------------------------------------------------------------------------------------------------
+      mycheck("BDT (NRB)", counter_nrb_same, MVAscore_BDT_nrb(), mva_value_nrb_varset8_mixed03_tmva);
+      mycheck("BDT (SMH)", counter_smh_same, MVAscore_BDT_smh(), mva_value_smh_varset8_mixed03_tmva);
+      //mycheck("BDT raw (NRB)", counter_nrb_same, MVAscore_BDT_nrb_raw(), mva_value_nrb_varset8_mixed03_tmva_original);
+      //mycheck("BDT raw (SMH)", counter_smh_same, MVAscore_BDT_smh_raw(), mva_value_smh_varset8_mixed03_tmva_original);
+      
+      bool check_var = true;
+      if(check_var)
+      {
+        printf("%s: %.7f, " , "diphoton_pt_"              , diphoton.Pt()    );
+        printf("%s: %.7f, " , "maxIDMVA_"                 , maxIDMVA_                 );
+        printf("%s: %.7f, " , "minIDMVA_"                 , minIDMVA_                 );
+        printf("%s: %.7f, " , "max1_btag_"                , max1_btag_                );
+        printf("%s: %.7f, " , "max2_btag_"                , max2_btag_                );
+        printf("%s: %.7f, " , "dipho_delta_R"             , dipho_delta_R             );
+        printf("%s: %.7f, " , "njets_"                    , njets_                    );
+        printf("%s: %.7f, " , "nbjets_"                   , nbjets_                   );
+        printf("%s: %.7f, " , "ht_"                       , ht_                       );
+        printf("%s: %.7f, " , "leadptoM_"                 , leadptoM_                 );
+        printf("%s: %.7f, " , "subleadptoM_"              , subleadptoM_              );
+        printf("%s: %.7f, " , "lead_eta_"                 , lead_eta_                 );
+        printf("%s: %.7f, " , "sublead_eta_"              , sublead_eta_              );
+        printf("%s: %.7f, " , "jet1_ptOverM_"             , jet1_ptOverM_             );
+        printf("%s: %.7f, " , "jet1_eta_"                 , jet1_eta_                 );
+        printf("%s: %.7f, " , "jet1_btag_"                , jet1_btag_                );
+        printf("%s: %.7f, " , "jet2_ptOverM_"             , jet2_ptOverM_             );
+        printf("%s: %.7f, " , "jet2_eta_"                 , jet2_eta_                 );
+        printf("%s: %.7f, " , "jet2_btag_"                , jet2_btag_                );
+        printf("%s: %.7f, " , "jet3_ptOverM_"             , jet3_ptOverM_             );
+        printf("%s: %.7f, " , "jet3_eta_"                 , jet3_eta_                 );
+        printf("%s: %.7f, " , "jet3_btag_"                , jet3_btag_                );
+        printf("%s: %.7f, " , "jet4_ptOverM_"             , jet4_ptOverM_             );
+        printf("%s: %.7f, " , "jet4_eta_"                 , jet4_eta_                 );
+        printf("%s: %.7f, " , "jet4_btag_"                , jet4_btag_                );
+        printf("%s: %.7f, " , "leadPSV_"                  , leadPSV_                  );
+        printf("%s: %.7f, " , "subleadPSV_"               , subleadPSV_               );
+        printf("%s: %.7f, " , "dipho_cosphi_"             , dipho_cosphi_             );
+        printf("%s: %.7f, " , "dipho_rapidity_"           , dipho_rapidity_           );
+        printf("%s: %.7f, " , "met_"                      , met_                      );
+        printf("%s: %.7f, " , "dipho_pt_over_mass_"       , dipho_pt_over_mass_       );
+        printf("%s: %.7f, " , "helicity_angle_"           , helicity_angle_           );
+        printf("%s: %.7f, " , "chi2_value_"               , chi2_value_               );
+        printf("%s: %.7f, " , "chi2_bjet_ptOverM_"        , chi2_bjet_ptOverM_        );
+        printf("%s: %.7f, " , "chi2_bjet_eta_"            , chi2_bjet_eta_            );
+        printf("%s: %.7f, " , "chi2_bjet_btagScores_"     , chi2_bjet_btagScores_     );
+        printf("%s: %.7f, " , "chi2_wjet1_ptOverM_"       , chi2_wjet1_ptOverM_       );
+        printf("%s: %.7f, " , "chi2_wjet1_eta_"           , chi2_wjet1_eta_           );
+        printf("%s: %.7f, " , "chi2_wjet1_btagScores_"    , chi2_wjet1_btagScores_    );
+        printf("%s: %.7f, " , "chi2_wjet2_ptOverM_"       , chi2_wjet2_ptOverM_       );
+        printf("%s: %.7f, " , "chi2_wjet2_eta_"           , chi2_wjet2_eta_           );
+        printf("%s: %.7f, " , "chi2_wjet2_btagScores_"    , chi2_wjet2_btagScores_    );
+        printf("%s: %.7f, " , "chi2_wjets_deltaR_"        , chi2_wjets_deltaR_        );
+        printf("%s: %.7f, " , "chi2_wboson_ptOverM_"      , chi2_wboson_ptOverM_      );
+        printf("%s: %.7f, " , "chi2_wboson_eta_"          , chi2_wboson_eta_          );
+        printf("%s: %.7f, " , "chi2_wboson_mass_"         , chi2_wboson_mass_         );
+        printf("%s: %.7f, " , "chi2_wboson_deltaR_bjet_"  , chi2_wboson_deltaR_bjet_  );
+        printf("%s: %.7f, " , "chi2_tbw_mass_"            , chi2_tbw_mass_            );
+        printf("%s: %.7f, " , "chi2_tbw_ptOverM_"         , chi2_tbw_ptOverM_         );
+        printf("%s: %.7f, " , "chi2_tbw_eta_"             , chi2_tbw_eta_             );
+        printf("%s: %.7f, " , "chi2_tbw_deltaR_dipho_"    , chi2_tbw_deltaR_dipho_    );
+        printf("%s: %.7f, " , "chi2_tprime_ptOverM_"      , chi2_tprime_ptOverM_      );
+        printf("%s: %.7f, " , "chi2_tprime_eta_"          , chi2_tprime_eta_          );
+        printf("%s: %.7f, " , "chi2_tprime_deltaR_tbw_"   , chi2_tprime_deltaR_tbw_   );
+        printf("%s: %.7f, " , "chi2_tprime_deltaR_dipho_" , chi2_tprime_deltaR_dipho_ );
+        printf("%s: %.7f, " , "tprime_pt_ratio_"          , tprime_pt_ratio_          );
+        printf("%s: %.7f, " , "helicity_tprime_"          , helicity_tprime_          );
+        printf("%s: %.7f, " , "score_raw_"                , mva_value_nrb_varset8_mixed03_tmva_original                );
+        printf("%s: %.7f\n" , "score_"                    , mva_value_nrb_varset8_mixed03_tmva                    );
+      }
 
-      bool pass_bdt_cut = mva_value_smh_varset8_mixed03_tmva > 0.52;
-      bool pass_bdt_cut_bdt_nrb  = mva_value_nrb_varset8_mixed03_tmva > 0.56;
-      bool pass_bdt_cut_bdtg_nrb = mva_value_nrb_varset8_mixed03_tmva_bdtg > 0.94;
+      bool pass_bdt_cut_bdt_nrb_mixed03 = mva_value_nrb_varset8_mixed03_tmva > 0.560;
+      bool pass_bdt_cut_bdt_nrb_mixed04 = mva_value_nrb_varset8_mixed04_tmva > 0.551;
+      bool pass_bdt_cut_bdt_nrb_mixed05 = mva_value_nrb_varset8_mixed05_tmva > 0.542;
+      bool pass_bdt_cut_bdt_smh_mixed03 = mva_value_smh_varset8_mixed03_tmva > 0.520;
+      bool pass_bdt_cut_bdt_smh_mixed04 = mva_value_smh_varset8_mixed04_tmva > 0.522;
+      bool pass_bdt_cut_bdt_smh_mixed05 = mva_value_smh_varset8_mixed05_tmva > 0.534;
+      bool pass_bdt_cut_bdtg_nrb_mixed03 = mva_value_nrb_varset8_mixed03_tmva_bdtg > 0.74;
+      bool pass_bdt_cut_bdtg_nrb_mixed04 = mva_value_nrb_varset8_mixed04_tmva_bdtg > 0.74;
+      bool pass_bdt_cut_bdtg_nrb_mixed05 = mva_value_nrb_varset8_mixed05_tmva_bdtg > 0.74;
+      bool pass_bdt_cut_bdtg_smh_mixed03 = mva_value_smh_varset8_mixed03_tmva_bdtg > 0.52;
+      bool pass_bdt_cut_bdtg_smh_mixed04 = mva_value_smh_varset8_mixed04_tmva_bdtg > 0.52;
+      bool pass_bdt_cut_bdtg_smh_mixed05 = mva_value_smh_varset8_mixed05_tmva_bdtg > 0.52;
 
       //------------------------------ Fill histograms ------------------------------//
       TString syst_ext = "";
-      if(pass_bdt_cut){ vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_cut", diphoton.M(), evt_weight, vId); }
-      if(pass_bdt_cut_bdt_nrb){ vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_nrb_cut", diphoton.M(), evt_weight, vId); }
-      if(pass_bdt_cut_bdtg_nrb){ vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_nrb_cut", diphoton.M(), evt_weight, vId); }
+      
+      //if(leadGenMatch() != 1)    { vProcess[processId]->fill_histogram("h" + syst_ext + "fake_photon_IDMVA" , dipho_leadIDMVA()   , evt_weight, vId); }
+      //if(subleadGenMatch() != 1) { vProcess[processId]->fill_histogram("h" + syst_ext + "fake_photon_IDMVA" , dipho_subleadIDMVA(), evt_weight, vId); }
 
+      //----------------------------------------------------------------------------------------------------
+      // diphoton mass after cutting MVA scores
+      //----------------------------------------------------------------------------------------------------
+      if(pass_bdt_cut_bdt_nrb_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_nrb_cut_mixed03" , diphoton.M(), evt_weight, vId); }
+      if(pass_bdt_cut_bdt_nrb_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_nrb_cut_mixed04" , diphoton.M(), evt_weight, vId); }
+      if(pass_bdt_cut_bdt_nrb_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_nrb_cut_mixed05" , diphoton.M(), evt_weight, vId); }
+      if(pass_bdt_cut_bdt_smh_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_smh_cut_mixed03" , diphoton.M(), evt_weight, vId); }
+      if(pass_bdt_cut_bdt_smh_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_smh_cut_mixed04" , diphoton.M(), evt_weight, vId); }
+      if(pass_bdt_cut_bdt_smh_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_smh_cut_mixed05" , diphoton.M(), evt_weight, vId); }
+      if(pass_bdt_cut_bdtg_nrb_mixed03){ vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_nrb_cut_mixed03", diphoton.M(), evt_weight, vId); }
+      if(pass_bdt_cut_bdtg_nrb_mixed04){ vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_nrb_cut_mixed04", diphoton.M(), evt_weight, vId); }
+      if(pass_bdt_cut_bdtg_nrb_mixed05){ vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_nrb_cut_mixed05", diphoton.M(), evt_weight, vId); }
+      if(pass_bdt_cut_bdtg_smh_mixed03){ vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_smh_cut_mixed03", diphoton.M(), evt_weight, vId); }
+      if(pass_bdt_cut_bdtg_smh_mixed04){ vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_smh_cut_mixed04", diphoton.M(), evt_weight, vId); }
+      if(pass_bdt_cut_bdtg_smh_mixed05){ vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_smh_cut_mixed05", diphoton.M(), evt_weight, vId); }
+
+      //----------------------------------------------------------------------------------------------------
+      // BDT
+      //----------------------------------------------------------------------------------------------------
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_n100"               , mva_value_nrb_varset8_mixed03_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_n2000"              , mva_value_nrb_varset8_mixed03_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_n100"               , mva_value_nrb_varset8_mixed04_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_n2000"              , mva_value_nrb_varset8_mixed04_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_n100"               , mva_value_nrb_varset8_mixed05_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_n2000"              , mva_value_nrb_varset8_mixed05_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_original_n100"      , mva_value_nrb_varset8_mixed03_tmva_original      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_original_n100"      , mva_value_nrb_varset8_mixed04_tmva_original      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_original_n100"      , mva_value_nrb_varset8_mixed05_tmva_original      , evt_weight , vId);
+
+      if(pass_bdt_cut_bdt_nrb_mixed03){
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_n100"               , mva_value_smh_varset8_mixed03_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_n2000"              , mva_value_smh_varset8_mixed03_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_original_n100"      , mva_value_smh_varset8_mixed03_tmva_original      , evt_weight , vId);
+      }
+      if(pass_bdt_cut_bdt_nrb_mixed04){
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_n100"               , mva_value_smh_varset8_mixed04_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_n2000"              , mva_value_smh_varset8_mixed04_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_original_n100"      , mva_value_smh_varset8_mixed04_tmva_original      , evt_weight , vId);
+      }
+      if(pass_bdt_cut_bdt_nrb_mixed05){
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_n100"               , mva_value_smh_varset8_mixed05_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_n2000"              , mva_value_smh_varset8_mixed05_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_original_n100"      , mva_value_smh_varset8_mixed05_tmva_original      , evt_weight , vId);
+      }
+
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "MVAScore_nrb_smh_varset8_mixed03_tmva"      , mva_value_nrb_varset8_mixed03_tmva      , mva_value_smh_varset8_mixed03_tmva      , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "MVAScore_nrb_smh_varset8_mixed04_tmva"      , mva_value_nrb_varset8_mixed04_tmva      , mva_value_smh_varset8_mixed04_tmva      , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "MVAScore_nrb_smh_varset8_mixed05_tmva"      , mva_value_nrb_varset8_mixed05_tmva      , mva_value_smh_varset8_mixed05_tmva      , evt_weight , vId);
+
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_n100_testOnly"      , MVAscore_BDT_nrb()                               , evt_weight , vId);
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_n100_testOnly"      , MVAscore_BDT_smh()                               , evt_weight , vId);
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_n100_withoutCut"    , mva_value_smh_varset8_mixed03_tmva               , evt_weight , vId);
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_n100_raw_testOnly"  , MVAscore_BDT_nrb_raw()                           , evt_weight , vId);
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_n100_raw_testOnly"  , MVAscore_BDT_smh_raw()                           , evt_weight , vId);
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_n100_raw_withoutCut", mva_value_smh_varset8_mixed03_tmva_original      , evt_weight , vId);
+
+      //----------------------------------------------------------------------------------------------------
+      // BDTG
+      //----------------------------------------------------------------------------------------------------
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n30"           , mva_value_nrb_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n100"          , mva_value_nrb_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n2000"         , mva_value_nrb_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_n30"           , mva_value_nrb_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_n100"          , mva_value_nrb_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_n2000"         , mva_value_nrb_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_n30"           , mva_value_nrb_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_n100"          , mva_value_nrb_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_n2000"         , mva_value_nrb_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
+
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "MVAScore_nrb_smh_varset8_mixed03_tmva_bdtg" , mva_value_nrb_varset8_mixed03_tmva_bdtg , mva_value_smh_varset8_mixed03_tmva_bdtg , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "MVAScore_nrb_smh_varset8_mixed04_tmva_bdtg" , mva_value_nrb_varset8_mixed04_tmva_bdtg , mva_value_smh_varset8_mixed04_tmva_bdtg , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "MVAScore_nrb_smh_varset8_mixed05_tmva_bdtg" , mva_value_nrb_varset8_mixed05_tmva_bdtg , mva_value_smh_varset8_mixed05_tmva_bdtg , evt_weight , vId);
+
+      if(pass_bdt_cut_bdtg_nrb_mixed03){
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n30"           , mva_value_smh_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n100"          , mva_value_smh_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n2000"         , mva_value_smh_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
+      }
+      if(pass_bdt_cut_bdtg_nrb_mixed04){
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n30"           , mva_value_smh_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n100"          , mva_value_smh_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n2000"         , mva_value_smh_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
+      }
+      if(pass_bdt_cut_bdtg_nrb_mixed05){
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n30"           , mva_value_smh_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n100"          , mva_value_smh_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n2000"         , mva_value_smh_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
+      }
+
+      //----------------------------------------------------------------------------------------------------
+      // Kinematics
+      //----------------------------------------------------------------------------------------------------
+      vProcess[processId]->fill_histogram("h" + syst_ext + "NVtx"               , nvtx()                             , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "Mass"               , diphoton.M()                       , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PtHiggs"            , diphoton.Pt()                      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "DiphotonPtOverMass" , diphoton.Pt() / diphoton.M()       , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonDeltaR"       , lead_photon.DeltaR(sublead_photon) , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "Rapidity"           , diphoton.Rapidity()                , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "AbsCosHelicity"     , helicity_angle_                    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "DiphotonCosPhi"     , dipho_cosphi()                     , evt_weight , vId);
+
+      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_wboson_cov"          , mass_wboson               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_top_cov"             , mass_top                  , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_cov"          , mass_tprime               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_tilde"        , mass_tprime_tilde         , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "cov_chi2_value"           , min_chi2_value_2x2        , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_bjet_pt"             , chi2_bjet_pt_             , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet1_pt"            , chi2_wjet1_pt_            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_pt"            , chi2_wjet2_pt_            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_bjet_eta"            , chi2_bjet_eta_            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet1_eta"           , chi2_wjet1_eta_           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_eta"           , chi2_wjet2_eta_           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjets_deltaR"        , chi2_wjets_deltaR_        , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_pt"           , chi2_wboson_pt_           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_eta"          , chi2_wboson_eta_          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_mass"         , chi2_wboson_mass_         , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_deltaR_bjet"  , chi2_wboson_deltaR_bjet_  , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_mass"            , chi2_tbw_mass_            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_pt"              , chi2_tbw_pt_              , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_eta"             , chi2_tbw_eta_             , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_deltaR_dipho"    , chi2_tbw_deltaR_dipho_    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tprime_ptOverM"      , chi2_tprime_ptOverM_      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tprime_eta"          , chi2_tprime_eta_          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tprime_deltaR_tbw"   , chi2_tprime_deltaR_tbw_   , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tprime_deltaR_dipho" , chi2_tprime_deltaR_dipho_ , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_bjet_btagScores"     , chi2_bjet_btagScores_     , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet1_btagScores"    , chi2_wjet1_btagScores_    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_btagScores"    , chi2_wjet2_btagScores_    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "tprime_pt_ratio"          , tprime_pt_ratio_          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_bjet_ptOverM"        , chi2_bjet_ptOverM_        , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet1_ptOverM"       , chi2_wjet1_ptOverM_       , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_ptOverM"       , chi2_wjet2_ptOverM_       , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_ptOverM"      , chi2_wboson_ptOverM_      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_ptOverM"         , chi2_tbw_ptOverM_         , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "helicity_tprime"          , helicity_tprime_          , evt_weight , vId);
+
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPt"        , dipho_leadPt()       , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadEta"       , dipho_leadEta()      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPhi"       , dipho_leadPhi()      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadIDMVA"     , dipho_leadIDMVA()    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPToM"      , dipho_lead_ptoM()    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPt"     , dipho_subleadPt()    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadEta"    , dipho_subleadEta()   , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPhi"    , dipho_subleadPhi()   , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadIDMVA"  , dipho_subleadIDMVA() , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPToM"   , dipho_sublead_ptoM() , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonMaxIDMVA"      , maxIDMVA_            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonMinIDMVA"      , minIDMVA_            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonMaxIDMVA_fine" , maxIDMVA_            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonMinIDMVA_fine" , minIDMVA_            , evt_weight , vId);
+
+      vProcess[processId]->fill_histogram("h" + syst_ext + "NJets"    , n_jets()    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "NbLoose"  , n_L_bjets() , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "NbMedium" , n_M_bjets() , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "NbTight"  , n_T_bjets() , evt_weight , vId);
+
+      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet1pT"       , jet1_pt()     , evt_weight , vId);
+      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet2pT"       , jet2_pt()     , evt_weight , vId);
+      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet3pT"       , jet3_pt()     , evt_weight , vId);
+      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet4pT"       , jet4_pt()     , evt_weight , vId);
+      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet1Eta"      , jet1_eta()    , evt_weight , vId);
+      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet2Eta"      , jet2_eta()    , evt_weight , vId);
+      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet3Eta"      , jet3_eta()    , evt_weight , vId);
+      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet4Eta"      , jet4_eta()    , evt_weight , vId);
+      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet1BTag"     , jet1_discr()  , evt_weight , vId);
+      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet2BTag"     , jet2_discr()  , evt_weight , vId);
+      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet3BTag"     , jet3_discr()  , evt_weight , vId);
+      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet4BTag"     , jet4_discr()  , evt_weight , vId);
+      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet1_ptOverM" , jet1_ptOverM_ , evt_weight , vId);
+      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet2_ptOverM" , jet2_ptOverM_ , evt_weight , vId);
+      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet3_ptOverM" , jet3_ptOverM_ , evt_weight , vId);
+      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet4_ptOverM" , jet4_ptOverM_ , evt_weight , vId);
+
+      //----------------------------------------------------------------------------------------------------
+      // skipped session
+      //----------------------------------------------------------------------------------------------------
       if(evaluate_all_mva) {
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_transf"                                            , -log(1 - mva_value)                              , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_n15"                                         , mva_value                                        , evt_weight , vId);
@@ -2663,144 +2948,55 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smhv3_varset8_mixed05_n30"                   , mva_value_smhv3_varset8_mixed05                  , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smhv3_varset8_mixed05_n100"                  , mva_value_smhv3_varset8_mixed05                  , evt_weight , vId);
 
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_n30"                , mva_value_nrb_varset8_mixed03_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_n30"                , mva_value_nrb_varset8_mixed04_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_n30"                , mva_value_nrb_varset8_mixed05_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_original_n30"       , mva_value_nrb_varset8_mixed03_tmva_original      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_original_n30"       , mva_value_nrb_varset8_mixed04_tmva_original      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_original_n30"       , mva_value_nrb_varset8_mixed05_tmva_original      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_n30"                , mva_value_smh_varset8_mixed03_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_n30"                , mva_value_smh_varset8_mixed04_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_n30"                , mva_value_smh_varset8_mixed05_tmva               , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_original_n30"       , mva_value_smh_varset8_mixed03_tmva_original      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_original_n30"       , mva_value_smh_varset8_mixed04_tmva_original      , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_original_n30"       , mva_value_smh_varset8_mixed05_tmva_original      , evt_weight , vId);
+
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_m600_tmva_n30"                   , mva_value_smh_varset8_m600_tmva                  , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_m600_tmva_n100"                  , mva_value_smh_varset8_m600_tmva                  , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_m600_tmva_original_n30"          , mva_value_smh_varset8_m600_tmva_original         , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_m600_tmva_original_n100"         , mva_value_smh_varset8_m600_tmva_original         , evt_weight , vId);
-      }
 
-      if(pass_bdt_cut_bdt_nrb) {
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_n30"                , mva_value_smh_varset8_mixed03_tmva               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_n100"               , mva_value_smh_varset8_mixed03_tmva               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_n30"                , mva_value_smh_varset8_mixed04_tmva               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_n100"               , mva_value_smh_varset8_mixed04_tmva               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_n30"                , mva_value_smh_varset8_mixed05_tmva               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_n100"               , mva_value_smh_varset8_mixed05_tmva               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_original_n30"       , mva_value_smh_varset8_mixed03_tmva_original      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_original_n100"      , mva_value_smh_varset8_mixed03_tmva_original      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_original_n30"       , mva_value_smh_varset8_mixed04_tmva_original      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_original_n100"      , mva_value_smh_varset8_mixed04_tmva_original      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_original_n30"       , mva_value_smh_varset8_mixed05_tmva_original      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_original_n100"      , mva_value_smh_varset8_mixed05_tmva_original      , evt_weight , vId);
-      }
-      if(pass_bdt_cut_bdtg_nrb) {
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n30"           , mva_value_smh_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_n100"          , mva_value_smh_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n30"           , mva_value_smh_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n100"          , mva_value_smh_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n30"           , mva_value_smh_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n100"          , mva_value_smh_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_original_n30"  , mva_value_smh_varset8_mixed03_tmva_bdtg_original , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_original_n100" , mva_value_smh_varset8_mixed03_tmva_bdtg_original , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_original_n30"  , mva_value_smh_varset8_mixed04_tmva_bdtg_original , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_original_n100" , mva_value_smh_varset8_mixed04_tmva_bdtg_original , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_original_n30"  , mva_value_smh_varset8_mixed05_tmva_bdtg_original , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_original_n100" , mva_value_smh_varset8_mixed05_tmva_bdtg_original , evt_weight , vId);
-      }
-
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_n30"                , mva_value_nrb_varset8_mixed03_tmva               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_n100"               , mva_value_nrb_varset8_mixed03_tmva               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_n30"                , mva_value_nrb_varset8_mixed04_tmva               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_n100"               , mva_value_nrb_varset8_mixed04_tmva               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_n30"                , mva_value_nrb_varset8_mixed05_tmva               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_n100"               , mva_value_nrb_varset8_mixed05_tmva               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n30"           , mva_value_nrb_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n100"          , mva_value_nrb_varset8_mixed03_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_n30"           , mva_value_nrb_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_n100"          , mva_value_nrb_varset8_mixed04_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_n30"           , mva_value_nrb_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_n100"          , mva_value_nrb_varset8_mixed05_tmva_bdtg          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_original_n30"       , mva_value_nrb_varset8_mixed03_tmva_original      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_original_n100"      , mva_value_nrb_varset8_mixed03_tmva_original      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_original_n30"       , mva_value_nrb_varset8_mixed04_tmva_original      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_original_n100"      , mva_value_nrb_varset8_mixed04_tmva_original      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_original_n30"       , mva_value_nrb_varset8_mixed05_tmva_original      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_original_n100"      , mva_value_nrb_varset8_mixed05_tmva_original      , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_original_n30"  , mva_value_nrb_varset8_mixed03_tmva_bdtg_original , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_original_n100" , mva_value_nrb_varset8_mixed03_tmva_bdtg_original , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_original_n30"  , mva_value_nrb_varset8_mixed04_tmva_bdtg_original , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_original_n100" , mva_value_nrb_varset8_mixed04_tmva_bdtg_original , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_original_n30"  , mva_value_nrb_varset8_mixed05_tmva_bdtg_original , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_original_n100" , mva_value_nrb_varset8_mixed05_tmva_bdtg_original , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_original_n30"  , mva_value_smh_varset8_mixed03_tmva_bdtg_original , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_original_n100" , mva_value_smh_varset8_mixed03_tmva_bdtg_original , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_original_n30"  , mva_value_smh_varset8_mixed04_tmva_bdtg_original , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_original_n100" , mva_value_smh_varset8_mixed04_tmva_bdtg_original , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_original_n30"  , mva_value_smh_varset8_mixed05_tmva_bdtg_original , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_original_n100" , mva_value_smh_varset8_mixed05_tmva_bdtg_original , evt_weight , vId);
 
-      vProcess[processId]->fill_histogram("h" + syst_ext + "NVtx"               , nvtx()                             , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "Mass"               , diphoton.M()                       , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PtHiggs"            , diphoton.Pt()                      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "DiphotonPtOverMass" , diphoton.Pt() / diphoton.M()       , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonDeltaR"       , lead_photon.DeltaR(sublead_photon) , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "Rapidity"           , diphoton.Rapidity()                , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "AbsCosHelicity"     , helicity_angle_                    , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "DiphotonCosPhi"     , dipho_cosphi()                     , evt_weight , vId);
-
-      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_wboson_cov"          , mass_wboson               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_top_cov"             , mass_top                  , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_cov"          , mass_tprime               , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "mass_tprime_tilde"        , mass_tprime_tilde         , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "cov_chi2_value"           , min_chi2_value_2x2        , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_bjet_pt"             , chi2_bjet_pt_             , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet1_pt"            , chi2_wjet1_pt_            , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_pt"            , chi2_wjet2_pt_            , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_bjet_eta"            , chi2_bjet_eta_            , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet1_eta"           , chi2_wjet1_eta_           , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_eta"           , chi2_wjet2_eta_           , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjets_deltaR"        , chi2_wjets_deltaR_        , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_pt"           , chi2_wboson_pt_           , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_eta"          , chi2_wboson_eta_          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_mass"         , chi2_wboson_mass_         , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_deltaR_bjet"  , chi2_wboson_deltaR_bjet_  , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_mass"            , chi2_tbw_mass_            , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_pt"              , chi2_tbw_pt_              , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_eta"             , chi2_tbw_eta_             , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_deltaR_dipho"    , chi2_tbw_deltaR_dipho_    , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tprime_ptOverM"      , chi2_tprime_ptOverM_      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tprime_eta"          , chi2_tprime_eta_          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tprime_deltaR_tbw"   , chi2_tprime_deltaR_tbw_   , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tprime_deltaR_dipho" , chi2_tprime_deltaR_dipho_ , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_bjet_btagScores"     , chi2_bjet_btagScores_     , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet1_btagScores"    , chi2_wjet1_btagScores_    , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_btagScores"    , chi2_wjet2_btagScores_    , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "tprime_pt_ratio"          , tprime_pt_ratio_          , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_bjet_ptOverM"        , chi2_bjet_ptOverM_        , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet1_ptOverM"       , chi2_wjet1_ptOverM_       , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wjet2_ptOverM"       , chi2_wjet2_ptOverM_       , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_wboson_ptOverM"      , chi2_wboson_ptOverM_      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "chi2_tbw_ptOverM"         , chi2_tbw_ptOverM_         , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "helicity_tprime"          , helicity_tprime_          , evt_weight , vId);
-
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPt"       , dipho_leadPt()       , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadEta"      , dipho_leadEta()      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPhi"      , dipho_leadPhi()      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadIDMVA"    , dipho_leadIDMVA()    , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPToM"     , dipho_lead_ptoM()    , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPt"    , dipho_subleadPt()    , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadEta"   , dipho_subleadEta()   , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPhi"   , dipho_subleadPhi()   , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadIDMVA" , dipho_subleadIDMVA() , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPToM"  , dipho_sublead_ptoM() , evt_weight , vId);
-
-      vProcess[processId]->fill_histogram("h" + syst_ext + "NJets"    , n_jets()    , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "NbLoose"  , n_L_bjets() , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "NbMedium" , n_M_bjets() , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "NbTight"  , n_T_bjets() , evt_weight , vId);
-
-      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet1pT"       , jet1_pt()     , evt_weight , vId);
-      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet2pT"       , jet2_pt()     , evt_weight , vId);
-      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet3pT"       , jet3_pt()     , evt_weight , vId);
-      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet4pT"       , jet4_pt()     , evt_weight , vId);
-      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet1Eta"      , jet1_eta()    , evt_weight , vId);
-      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet2Eta"      , jet2_eta()    , evt_weight , vId);
-      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet3Eta"      , jet3_eta()    , evt_weight , vId);
-      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet4Eta"      , jet4_eta()    , evt_weight , vId);
-      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet1BTag"     , jet1_discr()  , evt_weight , vId);
-      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet2BTag"     , jet2_discr()  , evt_weight , vId);
-      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet3BTag"     , jet3_discr()  , evt_weight , vId);
-      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "Jet4BTag"     , jet4_discr()  , evt_weight , vId);
-      if (jet1_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet1_ptOverM" , jet1_ptOverM_ , evt_weight , vId);
-      if (jet2_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet2_ptOverM" , jet2_ptOverM_ , evt_weight , vId);
-      if (jet3_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet3_ptOverM" , jet3_ptOverM_ , evt_weight , vId);
-      if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet4_ptOverM" , jet4_ptOverM_ , evt_weight , vId);
-
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "Mass_MVAScore_nrb_varset8_mixed03_tmva"      , diphoton.M() , mva_value_nrb_varset8_mixed03_tmva      , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "Mass_MVAScore_smh_varset8_mixed03_tmva"      , diphoton.M() , mva_value_nrb_varset8_mixed03_tmva      , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "Mass_MVAScore_nrb_varset8_mixed04_tmva"      , diphoton.M() , mva_value_nrb_varset8_mixed04_tmva      , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "Mass_MVAScore_smh_varset8_mixed04_tmva"      , diphoton.M() , mva_value_nrb_varset8_mixed04_tmva      , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "Mass_MVAScore_nrb_varset8_mixed05_tmva"      , diphoton.M() , mva_value_nrb_varset8_mixed05_tmva      , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "Mass_MVAScore_smh_varset8_mixed05_tmva"      , diphoton.M() , mva_value_nrb_varset8_mixed05_tmva      , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "Mass_MVAScore_smh_varset8_mixed05_tmva_bdtg" , diphoton.M() , mva_value_nrb_varset8_mixed05_tmva_bdtg , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "Mass_MVAScore_nrb_varset8_mixed05_tmva_bdtg" , diphoton.M() , mva_value_nrb_varset8_mixed05_tmva_bdtg , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "Mass_MVAScore_smh_varset8_mixed04_tmva_bdtg" , diphoton.M() , mva_value_nrb_varset8_mixed04_tmva_bdtg , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "Mass_MVAScore_nrb_varset8_mixed04_tmva_bdtg" , diphoton.M() , mva_value_nrb_varset8_mixed04_tmva_bdtg , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "Mass_MVAScore_smh_varset8_mixed03_tmva_bdtg" , diphoton.M() , mva_value_nrb_varset8_mixed03_tmva_bdtg , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "Mass_MVAScore_nrb_varset8_mixed03_tmva_bdtg" , diphoton.M() , mva_value_nrb_varset8_mixed03_tmva_bdtg , evt_weight , vId);
+      }
+      //----------------------------------------------------------------------------------------------------
     } // end of event loop
+
+    printf("[check] BDT(NRB) same: %d/%d (%.2f)\n", counter_nrb_same, nEventsTotal, (double) counter_nrb_same / (double) nEventsTotal);
+    printf("[check] BDT(SMH) same: %d/%d (%.2f)\n", counter_smh_same, nEventsTotal, (double) counter_smh_same / (double) nEventsTotal);
 
     // Clean Up
     delete tree;
