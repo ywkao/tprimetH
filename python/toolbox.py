@@ -192,6 +192,7 @@ def make_plot_multi_hists(hists, colors, styles, texts, xytitles, filename, year
     left_margin = 0.14
     c1.SetRightMargin(0.10)
     c1.SetLeftMargin(left_margin)
+    c1.SetLogy()
 
     legend = ROOT.TLegend(init_xy[0], init_xy[1], init_xy[0] + width_xy[0], init_xy[1] + width_xy[1])
     legend.SetLineColor(0)
@@ -207,6 +208,8 @@ def make_plot_multi_hists(hists, colors, styles, texts, xytitles, filename, year
         h.SetLineColor(colors[counter])
         legend.AddEntry(h, texts[counter], legend_option)
 
+        h.GetXaxis().SetRangeUser(0.2, 0.8)
+
         if setNormalize:
             set_normalize_to_unity(h)
 
@@ -216,8 +219,17 @@ def make_plot_multi_hists(hists, colors, styles, texts, xytitles, filename, year
         values.append(h.GetMaximum())
         h.Draw(draw_option) if counter == 0 else h.Draw("%s;same" % draw_option)
         counter += 1
+
+        check_bin_content = True
+        if check_bin_content:
+            numBins = h.GetNbinsX()
+            for i in range(numBins):
+                content = h.GetBinContent(i+1)
+                if content > 0:
+                    print content
+        print ""
     
-    scale = 1.2
+    scale = 100 
     max_scope = max(values)
     hists[0].SetMaximum(max_scope*scale)
     hists[0].GetXaxis().SetTitle(xytitles[0])
@@ -383,7 +395,7 @@ def draw_luminosity_tlatex(year, left_margin = 0.10):
     latex.SetTextFont(43)
     latex.SetTextAlign(11)
     latex.SetTextSize(24)
-    latex.DrawLatex( 0.17, 0.80, "Signal Samples" )
+    latex.DrawLatex( 0.17, 0.80, "Run-II Data" )
     #latex.DrawLatex( left_margin, 0.912, "#bf{CMS} #it{Simulation Preliminary}" )
     #latex.DrawLatex( 0.70, 0.912, "%s fb^{-1} (13TeV)" % str(lumi[year]) )
 

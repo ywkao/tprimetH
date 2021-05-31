@@ -36,6 +36,45 @@ signals = [
     "TprimeBToTH_M-900_Era2016_v2p%s.root"   %  str(subversion)
 ]
  
+signals_2016 = [
+    "TprimeBToTH_M-600_Era2016_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-625_Era2016_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-650_Era2016_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-675_Era2016_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-700_Era2016_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-800_Era2016_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-900_Era2016_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-1000_Era2016_v2p%s.root"  %  str(subversion),
+    "TprimeBToTH_M-1100_Era2016_v2p%s.root"  %  str(subversion),
+    "TprimeBToTH_M-1200_Era2016_v2p%s.root"  %  str(subversion)
+]
+
+signals_2017 = [
+    "TprimeBToTH_M-600_Era2017_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-625_Era2017_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-650_Era2017_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-675_Era2017_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-700_Era2017_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-800_Era2017_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-900_Era2017_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-1000_Era2017_v2p%s.root"  %  str(subversion),
+    "TprimeBToTH_M-1100_Era2017_v2p%s.root"  %  str(subversion),
+    "TprimeBToTH_M-1200_Era2017_v2p%s.root"  %  str(subversion)
+]
+
+signals_2018 = [
+    "TprimeBToTH_M-600_Era2018_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-625_Era2018_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-650_Era2018_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-675_Era2018_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-700_Era2018_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-800_Era2018_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-900_Era2018_v2p%s.root"   %  str(subversion),
+    "TprimeBToTH_M-1000_Era2018_v2p%s.root"  %  str(subversion),
+    "TprimeBToTH_M-1100_Era2018_v2p%s.root"  %  str(subversion),
+    "TprimeBToTH_M-1200_Era2018_v2p%s.root"  %  str(subversion)
+]
+
 samples_2016 = [
     "DiPhotonJetsBox_M40_80-Sherpa_spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3",
     "DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa_spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3",

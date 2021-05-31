@@ -44,18 +44,15 @@ class BabyMaker {
     float dipho_mass_    ;
     float tprime_mass_   ;
     float tprime_mtilde_ ;
-    float bdt_score_nrb_m600_m700_    ;
-    float bdt_score_nrb_m800_m1000_   ;
-    float bdt_score_nrb_m1100_m1200_  ;
-    float bdt_score_smh_m600_m700_    ;
-    float bdt_score_smh_m800_m1000_   ;
-    float bdt_score_smh_m1100_m1200_  ;
     float bdtg_score_nrb_m600_m700_   ;
     float bdtg_score_nrb_m800_m1000_  ;
     float bdtg_score_nrb_m1100_m1200_ ;
     float bdtg_score_smh_m600_m700_   ;
     float bdtg_score_smh_m800_m1000_  ;
     float bdtg_score_smh_m1100_m1200_ ;
+    float bdtg_score_smh_m600_m700_withNRBcut_   ;
+    float bdtg_score_smh_m800_m1000_withNRBcut_  ;
+    float bdtg_score_smh_m1100_m1200_withNRBcut_ ;
 
     //----------------------------------------------------------------------------------------------------
     // my full set var
@@ -271,24 +268,24 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_->Branch("dipho_mass"                        , &dipho_mass_    );
   BabyTree_->Branch("Tprime_mass"                       , &tprime_mass_   );
   BabyTree_->Branch("T_Mtilde"                          , &tprime_mtilde_ );
-  BabyTree_->Branch("BDT_TprimeVsNonHiggs_M600_M700"    , &bdt_score_nrb_m600_m700_    );
-  BabyTree_->Branch("BDT_TprimeVsNonHiggs_M800_M1000"   , &bdt_score_nrb_m800_m1000_   );
-  BabyTree_->Branch("BDT_TprimeVsNonHiggs_M1100_M1200"  , &bdt_score_nrb_m1100_m1200_  );
-  BabyTree_->Branch("BDT_TprimeVsHiggs_M600_M700"       , &bdt_score_smh_m600_m700_    );
-  BabyTree_->Branch("BDT_TprimeVsHiggs_M800_M1000"      , &bdt_score_smh_m800_m1000_   );
-  BabyTree_->Branch("BDT_TprimeVsHiggs_M1100_M1200"     , &bdt_score_smh_m1100_m1200_  );
+
   BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M600_M700"   , &bdtg_score_nrb_m600_m700_   );
-  BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M800_M1000"  , &bdtg_score_nrb_m800_m1000_  );
-  BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M1100_M1200" , &bdtg_score_nrb_m1100_m1200_ );
+  //BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M800_M1000"  , &bdtg_score_nrb_m800_m1000_  );
+  //BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M1100_M1200" , &bdtg_score_nrb_m1100_m1200_ );
   BabyTree_->Branch("BDTG_TprimeVsHiggs_M600_M700"      , &bdtg_score_smh_m600_m700_   );
-  BabyTree_->Branch("BDTG_TprimeVsHiggs_M800_M1000"     , &bdtg_score_smh_m800_m1000_  );
-  BabyTree_->Branch("BDTG_TprimeVsHiggs_M1100_M1200"    , &bdtg_score_smh_m1100_m1200_ );
+  //BabyTree_->Branch("BDTG_TprimeVsHiggs_M800_M1000"     , &bdtg_score_smh_m800_m1000_  );
+  //BabyTree_->Branch("BDTG_TprimeVsHiggs_M1100_M1200"    , &bdtg_score_smh_m1100_m1200_ );
+
   }
 
   //----------------------------------------------------------------------------------------------------
   // my full set var
   //----------------------------------------------------------------------------------------------------
   if(!produce_ntuples_for_Maxime){
+  BabyTree_->Branch("BDTG_TprimeVsHiggs_M600_M700_withNRBcut"      , &bdtg_score_smh_m600_m700_withNRBcut_   );
+  BabyTree_->Branch("BDTG_TprimeVsHiggs_M800_M1000_withNRBcut"     , &bdtg_score_smh_m800_m1000_withNRBcut_  );
+  BabyTree_->Branch("BDTG_TprimeVsHiggs_M1100_M1200_withNRBcut"    , &bdtg_score_smh_m1100_m1200_withNRBcut_ );
+
   BabyTree_->Branch("mva_branches"            , &mva_branches            );
   BabyTree_->Branch("year_"                   , &year_                   );
   BabyTree_->Branch("evt_"                    , &evt_                    );
