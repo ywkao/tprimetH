@@ -25,7 +25,8 @@
 #include "ttHLooper.h"
 //#include "tprimetHHadronic.cc"
 //#include "tprimetHHadronic_v3p2.cc"
-#include "tprimetHHadronic_v3p3.cc" // for the latest samples
+//#include "tprimetHHadronic_v3p3.cc" // for the latest samples
+#include "tprimetHHadronic_v3p5.cc" // ntuple with chi2 masses from producer
 //#include "tprimetHHadronic_v3p3p2.cc" // for testing command
 
 using namespace std;
@@ -297,114 +298,149 @@ vector<TLorentzVector> make_jets(vector<double> &btag_scores) {
   return vJets;
 }
 
-vector<TLorentzVector> make_jets(vector<double> &btag_scores, bool &flag_negative_energy) {
+vector<TLorentzVector> make_jets(vector<double> &btag_scores, bool &flag_negative_energy, bool debug = false) {
   vector<TLorentzVector> vJets;
   if (jet1_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet1_pt(), jet1_eta(), jet1_phi(), jet1_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet1_discr());
-    if( jet1_e() < -100. ) flag_negative_energy = true;
+    if( jet1_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet1_e() < 0. ) printf("[WARNING] jet1 pt = %.3f, e = %.3f\n", jet1_pt(), jet1_e());
   }
   if (jet2_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet2_pt(), jet2_eta(), jet2_phi(), jet2_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet2_discr());
-    if( jet2_e() < -100. ) flag_negative_energy = true;
+    if( jet2_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet2_e() < 0. ) printf("[WARNING] jet2 pt = %.3f, e = %.3f\n", jet2_pt(), jet2_e());
   }
   if (jet3_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet3_pt(), jet3_eta(), jet3_phi(), jet3_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet3_discr());
-    if( jet3_e() < -100. ) flag_negative_energy = true;
+    if( jet3_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet3_e() < 0. ) printf("[WARNING] jet3 pt = %.3f, e = %.3f\n", jet3_pt(), jet3_e());
   }
   if (jet4_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet4_pt(), jet4_eta(), jet4_phi(), jet4_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet4_discr());
-    if( jet4_e() < -100. ) flag_negative_energy = true;
+    if( jet4_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet4_e() < 0. ) printf("[WARNING] jet4 pt = %.3f, e = %.3f\n", jet4_pt(), jet4_e());
   }
   if (jet5_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet5_pt(), jet5_eta(), jet5_phi(), jet5_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet5_discr());
-    if( jet5_e() < -100. ) flag_negative_energy = true;
+    if( jet5_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet5_e() < 0. ) printf("[WARNING] jet5 pt = %.3f, e = %.3f\n", jet5_pt(), jet5_e());
   }
   if (jet6_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet6_pt(), jet6_eta(), jet6_phi(), jet6_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet6_discr());
-    if( jet6_e() < -100. ) flag_negative_energy = true;
+    if( jet6_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet6_e() < 0. ) printf("[WARNING] jet6 pt = %.3f, e = %.3f\n", jet6_pt(), jet6_e());
   }
   if (jet7_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet7_pt(), jet7_eta(), jet7_phi(), jet7_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet7_discr());
-    if( jet7_e() < -100. ) flag_negative_energy = true;
+    if( jet7_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet7_e() < 0. ) printf("[WARNING] jet7 pt = %.3f, e = %.3f\n", jet7_pt(), jet7_e());
   }
   if (jet8_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet8_pt(), jet8_eta(), jet8_phi(), jet8_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet8_discr());
-    if( jet8_e() < -100. ) flag_negative_energy = true;
+    if( jet8_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet8_e() < 0. ) printf("[WARNING] jet8 pt = %.3f, e = %.3f\n", jet8_pt(), jet8_e());
   }
   if (jet9_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet9_pt(), jet9_eta(), jet9_phi(), jet9_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet9_discr());
-    if( jet9_e() < -100. ) flag_negative_energy = true;
+    if( jet9_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet9_e() < 0. ) printf("[WARNING] jet9 pt = %.3f, e = %.3f\n", jet9_pt(), jet9_e());
   }
   if (jet10_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet10_pt(), jet10_eta(), jet10_phi(), jet10_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet10_discr());
-    if( jet10_e() < -10.0 ) flag_negative_energy = true;
+    if( jet10_e() < 0.0 ) flag_negative_energy = true;
+    if( debug && jet10_e() < 0.0 ) printf("[WARNING] jet10 pt = %.3f, e = %.3f\n", jet10_pt(), jet10_e());
   }
   if (jet11_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet11_pt(), jet11_eta(), jet11_phi(), jet11_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet11_discr());
-    if( jet11_e() < -100. ) flag_negative_energy = true;
+    if( jet11_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet11_e() < 0. ) printf("[WARNING] jet11 pt = %.3f, e = %.3f\n", jet11_pt(), jet11_e());
   }
   if (jet12_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet12_pt(), jet12_eta(), jet12_phi(), jet12_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet12_discr());
-    if( jet12_e() < -100. ) flag_negative_energy = true;
+    if( jet12_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet12_e() < 0. ) printf("[WARNING] jet12 pt = %.3f, e = %.3f\n", jet12_pt(), jet12_e());
   }
   if (jet13_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet13_pt(), jet13_eta(), jet13_phi(), jet13_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet13_discr());
-    if( jet13_e() < -100. ) flag_negative_energy = true;
+    if( jet13_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet13_e() < 0. ) printf("[WARNING] jet13 pt = %.3f, e = %.3f\n", jet13_pt(), jet13_e());
   }
   if (jet14_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet14_pt(), jet14_eta(), jet14_phi(), jet14_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet14_discr());
-    if( jet14_e() < -100. ) flag_negative_energy = true;
+    if( jet14_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet14_e() < 0. ) printf("[WARNING] jet14 pt = %.3f, e = %.3f\n", jet14_pt(), jet14_e());
   }
   if (jet15_pt() > 0) {
     TLorentzVector jet;
     jet.SetPtEtaPhiE(jet15_pt(), jet15_eta(), jet15_phi(), jet15_e());
     vJets.push_back(jet);
     btag_scores.push_back(jet15_discr());
-    if( jet15_e() < -100. ) flag_negative_energy = true;
+    if( jet15_e() < 0. ) flag_negative_energy = true;
+    if( debug && jet15_e() < 0. ) printf("[WARNING] jet15 pt = %.3f, e = %.3f\n", jet15_pt(), jet15_e());
   }
   return vJets;
+}
+
+double get_ht() {
+  double ht = 0;
+  if (jet1_pt()  > 0) ht+=jet1_pt();
+  if (jet2_pt()  > 0) ht+=jet2_pt();
+  if (jet3_pt()  > 0) ht+=jet3_pt();
+  if (jet4_pt()  > 0) ht+=jet4_pt();
+  if (jet5_pt()  > 0) ht+=jet5_pt();
+  if (jet6_pt()  > 0) ht+=jet6_pt();
+  if (jet7_pt()  > 0) ht+=jet7_pt();
+  if (jet8_pt()  > 0) ht+=jet8_pt();
+  if (jet9_pt()  > 0) ht+=jet9_pt();
+  if (jet10_pt() > 0) ht+=jet10_pt();
+  if (jet11_pt() > 0) ht+=jet11_pt();
+  if (jet12_pt() > 0) ht+=jet12_pt();
+  if (jet13_pt() > 0) ht+=jet13_pt();
+  if (jet14_pt() > 0) ht+=jet14_pt();
+  if (jet15_pt() > 0) ht+=jet15_pt();
+  return ht;
 }
 
 //bool identify_bjet(int &index_bjet, vector<int> &indices, vector<int> &jets_pdgId_genMatched, vector<double> &jets_deltaR_genMatched)
@@ -676,4 +712,71 @@ bool mycheck(TString label, int &counter, double a, double b, double  dipho_pt)
     return is_inconsistent;
 }
 
+// structure my_jets_info{{{
+typedef struct{
+    float chi2_value_;
+    float chi2_bjet_pt_;
+    float chi2_bjet_eta_;
+    float chi2_bjet_phi_;
+    float chi2_bjet_energy_;
+    float chi2_wjet1_pt_;
+    float chi2_wjet1_eta_;
+    float chi2_wjet1_phi_;
+    float chi2_wjet1_energy_;
+    float chi2_wjet2_pt_;
+    float chi2_wjet2_eta_;
+    float chi2_wjet2_phi_;
+    float chi2_wjet2_energy_;
+    float chi2_wboson_pt_;
+    float chi2_wboson_eta_;
+    float chi2_wboson_phi_;
+    float chi2_wboson_energy_;
+    float chi2_wboson_mass_;
+    float chi2_top_pt_;
+    float chi2_top_eta_;
+    float chi2_top_phi_;
+    float chi2_top_energy_;
+    float chi2_top_mass_;
+    float chi2_tprime_pt_;
+    float chi2_tprime_eta_;
+    float chi2_tprime_phi_;
+    float chi2_tprime_energy_;
+    float chi2_tprime_mass_;
+} my_jets_info;
+//}}}
+void check_ultra_large_tprime_mass(bool condition, my_jets_info instance)
+{
+    if(condition)
+    {
+        std::cout << "chi2_value_: "         << instance.chi2_value_         << ", ";
+        std::cout << "chi2_bjet_pt_: "       << instance.chi2_bjet_pt_       << ", ";
+        std::cout << "chi2_bjet_eta_: "      << instance.chi2_bjet_eta_      << ", ";
+        std::cout << "chi2_bjet_phi_: "      << instance.chi2_bjet_phi_      << ", ";
+        std::cout << "chi2_bjet_energy_: "   << instance.chi2_bjet_energy_   << ", ";
+        std::cout << "chi2_wjet1_pt_: "      << instance.chi2_wjet1_pt_      << ", ";
+        std::cout << "chi2_wjet1_eta_: "     << instance.chi2_wjet1_eta_     << ", ";
+        std::cout << "chi2_wjet1_phi_: "     << instance.chi2_wjet1_phi_     << ", ";
+        std::cout << "chi2_wjet1_energy_: "  << instance.chi2_wjet1_energy_  << ", ";
+        std::cout << "chi2_wjet2_pt_: "      << instance.chi2_wjet2_pt_      << ", ";
+        std::cout << "chi2_wjet2_eta_: "     << instance.chi2_wjet2_eta_     << ", ";
+        std::cout << "chi2_wjet2_phi_: "     << instance.chi2_wjet2_phi_     << ", ";
+        std::cout << "chi2_wjet2_energy_: "  << instance.chi2_wjet2_energy_  << ", ";
+        std::cout << "chi2_wboson_pt_: "     << instance.chi2_wboson_pt_     << ", ";
+        std::cout << "chi2_wboson_eta_: "    << instance.chi2_wboson_eta_    << ", ";
+        std::cout << "chi2_wboson_phi_: "    << instance.chi2_wboson_phi_    << ", ";
+        std::cout << "chi2_wboson_energy_: " << instance.chi2_wboson_energy_ << ", ";
+        std::cout << "chi2_wboson_mass_: "   << instance.chi2_wboson_mass_   << ", ";
+        std::cout << "chi2_top_pt_: "        << instance.chi2_top_pt_        << ", ";
+        std::cout << "chi2_top_eta_: "       << instance.chi2_top_eta_       << ", ";
+        std::cout << "chi2_top_phi_: "       << instance.chi2_top_phi_       << ", ";
+        std::cout << "chi2_top_energy_: "    << instance.chi2_top_energy_    << ", ";
+        std::cout << "chi2_top_mass_: "      << instance.chi2_top_mass_      << ", ";
+        std::cout << "chi2_tprime_pt_: "     << instance.chi2_tprime_pt_     << ", ";
+        std::cout << "chi2_tprime_eta_: "    << instance.chi2_tprime_eta_    << ", ";
+        std::cout << "chi2_tprime_phi_: "    << instance.chi2_tprime_phi_    << ", ";
+        std::cout << "chi2_tprime_energy_: " << instance.chi2_tprime_energy_ << ", ";
+        std::cout << "chi2_tprime_mass_: "   << instance.chi2_tprime_mass_   << ", ";
+        std::cout << std::endl;
+    }
+}
 #endif

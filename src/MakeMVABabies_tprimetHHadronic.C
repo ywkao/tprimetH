@@ -570,6 +570,9 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
     //}}}
   */
 
+  int counter = 0;
+  int counter_jet_negative_energy = 0;
+
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
     TString currentFileTitle = currentFile->GetTitle();
@@ -586,6 +589,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
     // Loop over Events in current file
     unsigned int nEventsTree = tree->GetEntriesFast();
     for (unsigned int event = 0; event < nEventsTree; ++event)
+   // for (unsigned int event = 0; event < 100; ++event)
     {
       // Get Event Content, label type of samples, decide evt weight
       if (nEventsTotal >= nEventsChain) continue;
@@ -643,7 +647,9 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
 
       //------------------------------ Variable definitions ------------------------------//
       vector<double> btag_scores;
-      vector<TLorentzVector> jets = make_jets(btag_scores);
+      bool flag_negative_energy = false;
+      vector<TLorentzVector> jets = make_jets(btag_scores, flag_negative_energy, true);
+      //vector<TLorentzVector> jets = make_jets(btag_scores);
       //vector<TLorentzVector> jets_copy = jets; // debug purpose
       vector< std::pair<int, double> > btag_scores_sorted = sortVectorGreater(btag_scores);
       if(jets.size() < 3) continue;
@@ -657,6 +663,9 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       evt_  = analyzer.event();
       run_  = analyzer.run();
       lumi_ = analyzer.lumi();
+
+      if(flag_negative_energy)
+          printf("[Info] Run:Lumi:Event = %d:%d:%d\n", run_, lumi_, evt_);
 
       ht_            = get_ht(jets);
       dipho_delta_R  = lead_photon.DeltaR(sublead_photon);
@@ -910,6 +919,12 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       lead_sigmaEtoE_ = dipho_lead_sigmaEoE();
       sublead_sigmaEtoE_ = dipho_sublead_sigmaEoE();
 
+      //----------------------------------------------------------------------------------------------------//
+      // study in jet negative energy
+      //----------------------------------------------------------------------------------------------------//
+      counter += 1;
+      if(flag_negative_energy) counter_jet_negative_energy += 1;
+
       // ***DNN Business{{{
       top_candidates_ = {0}; //calculate_top_candidates(diphoton, jets, btag_scores, max1_btag_);
 
@@ -952,6 +967,8 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
     delete tree;
     file.Close();
   }// end of while loop
+
+  printf("[check] jet energy < -100 GeV: %d/%d (%.2f)\n", counter_jet_negative_energy, counter, (double) counter_jet_negative_energy / (double) counter);
 
   if (nEventsChain != nEventsTotal) {
     cout << Form( "ERROR: number of events from files (%d) is not equal to total number of events (%d)", nEventsChain, nEventsTotal ) << endl;

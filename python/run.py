@@ -361,6 +361,22 @@ def to_study_ttH():
     rootfiles = ["TprimeBToTH_M-1000_Era2018_numEvent50038.root"]
     rootfiles = ["TprimeBToTH_M-1000_Era2018_numEvent.root"]
     rootfiles = ["TprimeBToTH_M-1000_Era2018_numEvent250.root"]
+    rootfiles = ["TprimeBToTH_M-1000_Era2017_numEvent250.root"]
+    rootfiles = ["TprimeBToTH_M-1000_Era2017_v3p4.root"]
+    rootfiles = ["TprimeBToTH_M-1000_Era2017_v3p5.root"] # check v33
+    rootfiles = ["TprimeBToTH_M-1000_Era2017_v3p4p1.root"] # check v32
+    rootfiles = [
+        "TprimeBToTH_M-1000_Era2016_v3p5.root",
+        "TprimeBToTH_M-1000_Era2017_v3p5.root",
+        "TprimeBToTH_M-1000_Era2018_v3p5.root"
+    ]
+
+    rootfiles = ["TprimeBToTH_M-1000_Era2017_v3p4.root"]
+    rootfiles = ["TprimeBToTH_M-1000_Era2017_numEvent250.root"]
+
+    #location = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ntuple_production"
+    #treename = "tagsDumper/trees/tHq_13TeV_THQHadronicTag"
+    #rootfiles = ["TprimeBToTH_M-1000_Era2017_nnumEvent250_v3p5.root"]
 
     #location = cwd + "/rootfiles/ntuples_v3.4"
     #treename = "tagsDumper/trees/Data_13TeV_THQHadronicTag"
@@ -369,10 +385,15 @@ def to_study_ttH():
     #treename = "tagsDumper/trees/tHq_13TeV_THQHadronicTag"
     #rootfiles = ["TprimeBToTH_M-1000_Era2018_v3p4.root"]
 
+    #location = cwd + "/rootfiles/ntuples_v3.3"
+    #treename = "tagsDumper/trees/Data_13TeV_THQHadronicTag"
+    #rootfiles = ["Data_Era2018_v3p3.root"]
+
     counter = 0
     for rootfile in rootfiles:
         counter += 1
         year = rootfile.split('_')[2].split('a')[1]
+        #year = rootfile.split('_')[1].split('a')[1]
         my_parameters = register_parameters(location, rootfile, treename, xml_file, year, datetime_tag)
         command_manager(my_parameters)
 
