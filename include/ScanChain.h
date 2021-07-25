@@ -26,8 +26,9 @@
 //#include "tprimetHHadronic.cc"
 //#include "tprimetHHadronic_v3p2.cc"
 //#include "tprimetHHadronic_v3p3.cc" // for the latest samples
-#include "tprimetHHadronic_v3p5.cc" // ntuple with chi2 masses from producer
 //#include "tprimetHHadronic_v3p3p2.cc" // for testing command
+#include "tprimetHHadronic_v3p5.cc" // ntuple with chi2 masses from producer
+//#include "tprimetHHadronic_v3p7.cc" // ntuple with dipho_rapidity
 
 using namespace std;
 using namespace tprime;
@@ -298,127 +299,142 @@ vector<TLorentzVector> make_jets(vector<double> &btag_scores) {
   return vJets;
 }
 
-vector<TLorentzVector> make_jets(vector<double> &btag_scores, bool &flag_negative_energy, bool debug = false) {
+vector<TLorentzVector> make_jets(vector<double> &btag_scores, bool &flag_negative_energy, bool vetoNegativeEnergy = true) {
   vector<TLorentzVector> vJets;
   if (jet1_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet1_pt(), jet1_eta(), jet1_phi(), jet1_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet1_discr());
-    if( jet1_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet1_e() < 0. ) printf("[WARNING] jet1 pt = %.3f, e = %.3f\n", jet1_pt(), jet1_e());
+    if( vetoNegativeEnergy && jet1_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet1_pt(), jet1_eta(), jet1_phi(), jet1_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet1_discr());
+    }
   }
   if (jet2_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet2_pt(), jet2_eta(), jet2_phi(), jet2_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet2_discr());
-    if( jet2_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet2_e() < 0. ) printf("[WARNING] jet2 pt = %.3f, e = %.3f\n", jet2_pt(), jet2_e());
+    if( vetoNegativeEnergy && jet2_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet2_pt(), jet2_eta(), jet2_phi(), jet2_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet2_discr());
+    }
   }
   if (jet3_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet3_pt(), jet3_eta(), jet3_phi(), jet3_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet3_discr());
-    if( jet3_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet3_e() < 0. ) printf("[WARNING] jet3 pt = %.3f, e = %.3f\n", jet3_pt(), jet3_e());
+    if( vetoNegativeEnergy && jet3_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet3_pt(), jet3_eta(), jet3_phi(), jet3_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet3_discr());
+    }
   }
   if (jet4_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet4_pt(), jet4_eta(), jet4_phi(), jet4_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet4_discr());
-    if( jet4_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet4_e() < 0. ) printf("[WARNING] jet4 pt = %.3f, e = %.3f\n", jet4_pt(), jet4_e());
+    if( vetoNegativeEnergy && jet4_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet4_pt(), jet4_eta(), jet4_phi(), jet4_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet4_discr());
+    }
   }
   if (jet5_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet5_pt(), jet5_eta(), jet5_phi(), jet5_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet5_discr());
-    if( jet5_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet5_e() < 0. ) printf("[WARNING] jet5 pt = %.3f, e = %.3f\n", jet5_pt(), jet5_e());
+    if( vetoNegativeEnergy && jet5_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet5_pt(), jet5_eta(), jet5_phi(), jet5_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet5_discr());
+    }
   }
   if (jet6_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet6_pt(), jet6_eta(), jet6_phi(), jet6_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet6_discr());
-    if( jet6_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet6_e() < 0. ) printf("[WARNING] jet6 pt = %.3f, e = %.3f\n", jet6_pt(), jet6_e());
+    if( vetoNegativeEnergy && jet6_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet6_pt(), jet6_eta(), jet6_phi(), jet6_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet6_discr());
+    }
   }
   if (jet7_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet7_pt(), jet7_eta(), jet7_phi(), jet7_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet7_discr());
-    if( jet7_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet7_e() < 0. ) printf("[WARNING] jet7 pt = %.3f, e = %.3f\n", jet7_pt(), jet7_e());
+    if( vetoNegativeEnergy && jet7_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet7_pt(), jet7_eta(), jet7_phi(), jet7_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet7_discr());
+    }
   }
   if (jet8_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet8_pt(), jet8_eta(), jet8_phi(), jet8_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet8_discr());
-    if( jet8_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet8_e() < 0. ) printf("[WARNING] jet8 pt = %.3f, e = %.3f\n", jet8_pt(), jet8_e());
+    if( vetoNegativeEnergy && jet8_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet8_pt(), jet8_eta(), jet8_phi(), jet8_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet8_discr());
+    }
   }
   if (jet9_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet9_pt(), jet9_eta(), jet9_phi(), jet9_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet9_discr());
-    if( jet9_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet9_e() < 0. ) printf("[WARNING] jet9 pt = %.3f, e = %.3f\n", jet9_pt(), jet9_e());
+    if( vetoNegativeEnergy && jet9_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet9_pt(), jet9_eta(), jet9_phi(), jet9_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet9_discr());
+    }
   }
   if (jet10_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet10_pt(), jet10_eta(), jet10_phi(), jet10_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet10_discr());
-    if( jet10_e() < 0.0 ) flag_negative_energy = true;
-    if( debug && jet10_e() < 0.0 ) printf("[WARNING] jet10 pt = %.3f, e = %.3f\n", jet10_pt(), jet10_e());
+    if( vetoNegativeEnergy && jet10_e() < 0.0 ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet10_pt(), jet10_eta(), jet10_phi(), jet10_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet10_discr());
+    }
   }
   if (jet11_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet11_pt(), jet11_eta(), jet11_phi(), jet11_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet11_discr());
-    if( jet11_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet11_e() < 0. ) printf("[WARNING] jet11 pt = %.3f, e = %.3f\n", jet11_pt(), jet11_e());
+    if( vetoNegativeEnergy && jet11_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet11_pt(), jet11_eta(), jet11_phi(), jet11_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet11_discr());
+    }
   }
   if (jet12_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet12_pt(), jet12_eta(), jet12_phi(), jet12_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet12_discr());
-    if( jet12_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet12_e() < 0. ) printf("[WARNING] jet12 pt = %.3f, e = %.3f\n", jet12_pt(), jet12_e());
+    if( vetoNegativeEnergy && jet12_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet12_pt(), jet12_eta(), jet12_phi(), jet12_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet12_discr());
+    }
   }
   if (jet13_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet13_pt(), jet13_eta(), jet13_phi(), jet13_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet13_discr());
-    if( jet13_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet13_e() < 0. ) printf("[WARNING] jet13 pt = %.3f, e = %.3f\n", jet13_pt(), jet13_e());
+    if( vetoNegativeEnergy && jet13_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet13_pt(), jet13_eta(), jet13_phi(), jet13_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet13_discr());
+    }
   }
   if (jet14_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet14_pt(), jet14_eta(), jet14_phi(), jet14_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet14_discr());
-    if( jet14_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet14_e() < 0. ) printf("[WARNING] jet14 pt = %.3f, e = %.3f\n", jet14_pt(), jet14_e());
+    if( vetoNegativeEnergy && jet14_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet14_pt(), jet14_eta(), jet14_phi(), jet14_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet14_discr());
+    }
   }
   if (jet15_pt() > 0) {
     TLorentzVector jet;
-    jet.SetPtEtaPhiE(jet15_pt(), jet15_eta(), jet15_phi(), jet15_e());
-    vJets.push_back(jet);
-    btag_scores.push_back(jet15_discr());
-    if( jet15_e() < 0. ) flag_negative_energy = true;
-    if( debug && jet15_e() < 0. ) printf("[WARNING] jet15 pt = %.3f, e = %.3f\n", jet15_pt(), jet15_e());
+    if( vetoNegativeEnergy && jet15_e() < 0. ){ flag_negative_energy = true; }
+    else {
+        jet.SetPtEtaPhiE(jet15_pt(), jet15_eta(), jet15_phi(), jet15_e());
+        vJets.push_back(jet);
+        btag_scores.push_back(jet15_discr());
+    }
   }
   return vJets;
 }
@@ -703,7 +719,7 @@ bool mycheck(TString label, int &counter, double a, double b, double  dipho_pt)
     if(ratio > 1e-7)
     {
       is_inconsistent = true;
-      //printf("[check] %s dipho_pt = %7.3f, online: %.7f, offline: %.7f, ratio = %.3f\n", dipho_pt, label.Data(), a, b, ratio);
+      printf("[consistency check] %s dipho_pt = %7.3f, online: %.7f, offline: %.7f, ratio = %.3f\n", dipho_pt, label.Data(), a, b, ratio);
     } else {
       //printf("Nice job! online = %.7f, offline = %.7f\n", a, b);
       counter += 1;
@@ -744,6 +760,7 @@ typedef struct{
     float chi2_tprime_mass_;
 } my_jets_info;
 //}}}
+//void check_ultra_large_tprime_mass(bool condition, my_jets_info instance){{{
 void check_ultra_large_tprime_mass(bool condition, my_jets_info instance)
 {
     if(condition)
@@ -778,5 +795,20 @@ void check_ultra_large_tprime_mass(bool condition, my_jets_info instance)
         std::cout << "chi2_tprime_mass_: "   << instance.chi2_tprime_mass_   << ", ";
         std::cout << std::endl;
     }
+} //}}}
+
+bool looking_for_missing_events(long run, long lumi, long evt)
+{
+    if( run == 317661 && lumi == 672  && evt == 996396131  ) return true;
+    if( run == 317640 && lumi == 349  && evt == 478921037  ) return true;
+    if( run == 317392 && lumi == 932  && evt == 1306452806 ) return true;
+    if( run == 317641 && lumi == 1237 && evt == 1861009133 ) return true;
+    if( run == 317392 && lumi == 1201 && evt == 1702819299 ) return true;
+    if( run == 317320 && lumi == 699  && evt == 1001269663 ) return true;
+    if( run == 302240 && lumi == 496  && evt == 501669522  ) return true;
+    if( run == 321051 && lumi == 371  && evt == 514338658  ) return true;
+
+    return false;
 }
+
 #endif

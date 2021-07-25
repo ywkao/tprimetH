@@ -5,6 +5,8 @@
 #include <TRandom3.h>
 #include "TMVA/Reader.h"  // to produce ntuples for Maxime
 
+#include "THQ_BDT_Helper.h"
+
 void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeName, TString year, TString ext, TString bkg_options, TString mYear = "", TString idx = "", bool fcnc = false, bool blind = true, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
   TRandom3 rndm(1234);
   name_output_file = name_output_file.ReplaceAll("hist_", "MVABaby_");
@@ -38,540 +40,50 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_runII");
 
   bool produce_ntuples_for_Maxime = true;
-  unique_ptr<TMVA::Reader> mva_smh_varset8_mixed03_tmva_bdtg;
-  unique_ptr<TMVA::Reader> mva_smh_varset8_mixed04_tmva_bdtg;
-  unique_ptr<TMVA::Reader> mva_smh_varset8_mixed05_tmva_bdtg;
-  unique_ptr<TMVA::Reader> mva_nrb_varset8_mixed03_tmva_bdtg;
-  unique_ptr<TMVA::Reader> mva_nrb_varset8_mixed04_tmva_bdtg;
-  unique_ptr<TMVA::Reader> mva_nrb_varset8_mixed05_tmva_bdtg;
-  unique_ptr<TMVA::Reader> mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut;
-  unique_ptr<TMVA::Reader> mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut;
-  unique_ptr<TMVA::Reader> mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut;
-  if (produce_ntuples_for_Maxime) {
-    // mva_nrb_varset8_mixed03_tmva_bdtg{{{
-    mva_nrb_varset8_mixed03_tmva_bdtg.reset(new TMVA::Reader( "!Color:Silent" ));
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("minIDMVA_"                 , &minIDMVA_                 );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("max1_btag_"                , &max1_btag_                );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("max2_btag_"                , &max2_btag_                );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("dipho_delta_R"             , &dipho_delta_R             );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("njets_"                    , &njets_                    );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("nbjets_"                   , &nbjets_                   );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("ht_"                       , &ht_                       );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("leadptoM_"                 , &leadptoM_                 );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("subleadptoM_"              , &subleadptoM_              );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("lead_eta_"                 , &lead_eta_                 );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("sublead_eta_"              , &sublead_eta_              );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("jet1_ptOverM_"             , &jet1_ptOverM_             );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("jet1_eta_"                 , &jet1_eta_                 );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("jet1_btag_"                , &jet1_btag_                );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("jet2_ptOverM_"             , &jet2_ptOverM_             );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("jet2_eta_"                 , &jet2_eta_                 );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("jet2_btag_"                , &jet2_btag_                );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("jet3_ptOverM_"             , &jet3_ptOverM_             );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("jet3_eta_"                 , &jet3_eta_                 );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("jet3_btag_"                , &jet3_btag_                );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("jet4_ptOverM_"             , &jet4_ptOverM_             );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("jet4_eta_"                 , &jet4_eta_                 );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("jet4_btag_"                , &jet4_btag_                );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("leadPSV_"                  , &leadPSV_                  );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("subleadPSV_"               , &subleadPSV_               );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("dipho_cosphi_"             , &dipho_cosphi_             );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("dipho_rapidity_"           , &dipho_rapidity_           );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("met_"                      , &met_                      );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("dipho_pt_over_mass_"       , &dipho_pt_over_mass_       );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("helicity_angle_"           , &helicity_angle_           );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_value_"               , &chi2_value_               );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_bjet_ptOverM_"        , &chi2_bjet_ptOverM_        );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_bjet_eta_"            , &chi2_bjet_eta_            );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjet1_ptOverM_"       , &chi2_wjet1_ptOverM_       );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjet1_eta_"           , &chi2_wjet1_eta_           );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjet2_eta_"           , &chi2_wjet2_eta_           );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjets_deltaR_"        , &chi2_wjets_deltaR_        );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wboson_eta_"          , &chi2_wboson_eta_          );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wboson_mass_"         , &chi2_wboson_mass_         );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wboson_deltaR_bjet_"  , &chi2_wboson_deltaR_bjet_  );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_tprime_ptOverM_"      , &chi2_tprime_ptOverM_      );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
-	mva_nrb_varset8_mixed03_tmva_bdtg->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    mva_nrb_varset8_mixed03_tmva_bdtg->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210525/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210525/weights/TMVAClassification_BDTG.weights.xml");
-    //mva_nrb_varset8_mixed03_tmva_bdtg->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210519/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210519/weights/TMVAClassification_BDTG.weights.xml");
-    //}}}
-    // mva_nrb_varset8_mixed04_tmva_bdtg{{{
-    mva_nrb_varset8_mixed04_tmva_bdtg.reset(new TMVA::Reader( "!Color:Silent" ));
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("minIDMVA_"                 , &minIDMVA_                 );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("max1_btag_"                , &max1_btag_                );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("max2_btag_"                , &max2_btag_                );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("dipho_delta_R"             , &dipho_delta_R             );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("njets_"                    , &njets_                    );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("nbjets_"                   , &nbjets_                   );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("ht_"                       , &ht_                       );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("leadptoM_"                 , &leadptoM_                 );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("subleadptoM_"              , &subleadptoM_              );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("lead_eta_"                 , &lead_eta_                 );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("sublead_eta_"              , &sublead_eta_              );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("jet1_ptOverM_"             , &jet1_ptOverM_             );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("jet1_eta_"                 , &jet1_eta_                 );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("jet1_btag_"                , &jet1_btag_                );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("jet2_ptOverM_"             , &jet2_ptOverM_             );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("jet2_eta_"                 , &jet2_eta_                 );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("jet2_btag_"                , &jet2_btag_                );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("jet3_ptOverM_"             , &jet3_ptOverM_             );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("jet3_eta_"                 , &jet3_eta_                 );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("jet3_btag_"                , &jet3_btag_                );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("jet4_ptOverM_"             , &jet4_ptOverM_             );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("jet4_eta_"                 , &jet4_eta_                 );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("jet4_btag_"                , &jet4_btag_                );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("leadPSV_"                  , &leadPSV_                  );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("subleadPSV_"               , &subleadPSV_               );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("dipho_cosphi_"             , &dipho_cosphi_             );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("dipho_rapidity_"           , &dipho_rapidity_           );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("met_"                      , &met_                      );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("dipho_pt_over_mass_"       , &dipho_pt_over_mass_       );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("helicity_angle_"           , &helicity_angle_           );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_value_"               , &chi2_value_               );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_bjet_ptOverM_"        , &chi2_bjet_ptOverM_        );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_bjet_eta_"            , &chi2_bjet_eta_            );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjet1_ptOverM_"       , &chi2_wjet1_ptOverM_       );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjet1_eta_"           , &chi2_wjet1_eta_           );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjet2_eta_"           , &chi2_wjet2_eta_           );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjets_deltaR_"        , &chi2_wjets_deltaR_        );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wboson_eta_"          , &chi2_wboson_eta_          );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wboson_mass_"         , &chi2_wboson_mass_         );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wboson_deltaR_bjet_"  , &chi2_wboson_deltaR_bjet_  );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_tprime_ptOverM_"      , &chi2_tprime_ptOverM_      );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
-	mva_nrb_varset8_mixed04_tmva_bdtg->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    mva_nrb_varset8_mixed04_tmva_bdtg->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210525/dataset_Run2_Tprime_NRB_varSet8_M800_M1000_20210525/weights/TMVAClassification_BDTG.weights.xml");
-    //mva_nrb_varset8_mixed04_tmva_bdtg->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210519/dataset_Run2_Tprime_NRB_varSet8_M800_M1000_20210519/weights/TMVAClassification_BDTG.weights.xml");
-    //}}}
-    // mva_nrb_varset8_mixed05_tmva_bdtg{{{
-    mva_nrb_varset8_mixed05_tmva_bdtg.reset(new TMVA::Reader( "!Color:Silent" ));
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("minIDMVA_"                 , &minIDMVA_                 );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("max1_btag_"                , &max1_btag_                );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("max2_btag_"                , &max2_btag_                );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("dipho_delta_R"             , &dipho_delta_R             );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("njets_"                    , &njets_                    );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("nbjets_"                   , &nbjets_                   );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("ht_"                       , &ht_                       );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("leadptoM_"                 , &leadptoM_                 );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("subleadptoM_"              , &subleadptoM_              );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("lead_eta_"                 , &lead_eta_                 );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("sublead_eta_"              , &sublead_eta_              );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("jet1_ptOverM_"             , &jet1_ptOverM_             );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("jet1_eta_"                 , &jet1_eta_                 );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("jet1_btag_"                , &jet1_btag_                );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("jet2_ptOverM_"             , &jet2_ptOverM_             );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("jet2_eta_"                 , &jet2_eta_                 );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("jet2_btag_"                , &jet2_btag_                );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("jet3_ptOverM_"             , &jet3_ptOverM_             );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("jet3_eta_"                 , &jet3_eta_                 );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("jet3_btag_"                , &jet3_btag_                );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("jet4_ptOverM_"             , &jet4_ptOverM_             );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("jet4_eta_"                 , &jet4_eta_                 );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("jet4_btag_"                , &jet4_btag_                );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("leadPSV_"                  , &leadPSV_                  );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("subleadPSV_"               , &subleadPSV_               );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("dipho_cosphi_"             , &dipho_cosphi_             );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("dipho_rapidity_"           , &dipho_rapidity_           );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("met_"                      , &met_                      );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("dipho_pt_over_mass_"       , &dipho_pt_over_mass_       );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("helicity_angle_"           , &helicity_angle_           );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_value_"               , &chi2_value_               );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_bjet_ptOverM_"        , &chi2_bjet_ptOverM_        );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_bjet_eta_"            , &chi2_bjet_eta_            );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjet1_ptOverM_"       , &chi2_wjet1_ptOverM_       );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjet1_eta_"           , &chi2_wjet1_eta_           );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjet2_eta_"           , &chi2_wjet2_eta_           );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjets_deltaR_"        , &chi2_wjets_deltaR_        );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wboson_eta_"          , &chi2_wboson_eta_          );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wboson_mass_"         , &chi2_wboson_mass_         );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wboson_deltaR_bjet_"  , &chi2_wboson_deltaR_bjet_  );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_tprime_ptOverM_"      , &chi2_tprime_ptOverM_      );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
-	mva_nrb_varset8_mixed05_tmva_bdtg->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    mva_nrb_varset8_mixed05_tmva_bdtg->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210525/dataset_Run2_Tprime_NRB_varSet8_M1100_M1200_20210525/weights/TMVAClassification_BDTG.weights.xml");
-    //mva_nrb_varset8_mixed05_tmva_bdtg->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210519/dataset_Run2_Tprime_NRB_varSet8_M1100_M1200_20210519/weights/TMVAClassification_BDTG.weights.xml");
-    //}}}
-    // mva_smh_varset8_mixed03_tmva_bdtg{{{
-    mva_smh_varset8_mixed03_tmva_bdtg.reset(new TMVA::Reader( "!Color:Silent" ));
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("minIDMVA_"                 , &minIDMVA_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("max1_btag_"                , &max1_btag_                );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("max2_btag_"                , &max2_btag_                );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("dipho_delta_R"             , &dipho_delta_R             );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("njets_"                    , &njets_                    );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("nbjets_"                   , &nbjets_                   );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("ht_"                       , &ht_                       );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("leadptoM_"                 , &leadptoM_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("subleadptoM_"              , &subleadptoM_              );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("lead_eta_"                 , &lead_eta_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("sublead_eta_"              , &sublead_eta_              );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("jet1_ptOverM_"             , &jet1_ptOverM_             );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("jet1_eta_"                 , &jet1_eta_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("jet1_btag_"                , &jet1_btag_                );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("jet2_ptOverM_"             , &jet2_ptOverM_             );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("jet2_eta_"                 , &jet2_eta_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("jet2_btag_"                , &jet2_btag_                );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("jet3_ptOverM_"             , &jet3_ptOverM_             );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("jet3_eta_"                 , &jet3_eta_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("jet3_btag_"                , &jet3_btag_                );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("jet4_ptOverM_"             , &jet4_ptOverM_             );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("jet4_eta_"                 , &jet4_eta_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("jet4_btag_"                , &jet4_btag_                );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("leadPSV_"                  , &leadPSV_                  );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("subleadPSV_"               , &subleadPSV_               );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("dipho_cosphi_"             , &dipho_cosphi_             );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("dipho_rapidity_"           , &dipho_rapidity_           );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("met_"                      , &met_                      );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("dipho_pt_over_mass_"       , &dipho_pt_over_mass_       );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("helicity_angle_"           , &helicity_angle_           );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_value_"               , &chi2_value_               );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_bjet_ptOverM_"        , &chi2_bjet_ptOverM_        );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_bjet_eta_"            , &chi2_bjet_eta_            );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjet1_ptOverM_"       , &chi2_wjet1_ptOverM_       );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjet1_eta_"           , &chi2_wjet1_eta_           );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjet2_eta_"           , &chi2_wjet2_eta_           );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wjets_deltaR_"        , &chi2_wjets_deltaR_        );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wboson_eta_"          , &chi2_wboson_eta_          );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wboson_mass_"         , &chi2_wboson_mass_         );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_wboson_deltaR_bjet_"  , &chi2_wboson_deltaR_bjet_  );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_tprime_ptOverM_"      , &chi2_tprime_ptOverM_      );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
-	mva_smh_varset8_mixed03_tmva_bdtg->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    mva_smh_varset8_mixed03_tmva_bdtg->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210520/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210520/weights/TMVAClassification_BDTG.weights.xml");
-    //mva_smh_varset8_mixed03_tmva_bdtg->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210519/dataset_Run2_Tprime_ttH_varSet8_M600_M700_20210519/weights/TMVAClassification_BDTG.weights.xml");
-    //}}}
-    // mva_smh_varset8_mixed04_tmva_bdtg{{{
-    mva_smh_varset8_mixed04_tmva_bdtg.reset(new TMVA::Reader( "!Color:Silent" ));
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("minIDMVA_"                 , &minIDMVA_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("max1_btag_"                , &max1_btag_                );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("max2_btag_"                , &max2_btag_                );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("dipho_delta_R"             , &dipho_delta_R             );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("njets_"                    , &njets_                    );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("nbjets_"                   , &nbjets_                   );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("ht_"                       , &ht_                       );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("leadptoM_"                 , &leadptoM_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("subleadptoM_"              , &subleadptoM_              );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("lead_eta_"                 , &lead_eta_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("sublead_eta_"              , &sublead_eta_              );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("jet1_ptOverM_"             , &jet1_ptOverM_             );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("jet1_eta_"                 , &jet1_eta_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("jet1_btag_"                , &jet1_btag_                );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("jet2_ptOverM_"             , &jet2_ptOverM_             );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("jet2_eta_"                 , &jet2_eta_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("jet2_btag_"                , &jet2_btag_                );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("jet3_ptOverM_"             , &jet3_ptOverM_             );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("jet3_eta_"                 , &jet3_eta_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("jet3_btag_"                , &jet3_btag_                );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("jet4_ptOverM_"             , &jet4_ptOverM_             );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("jet4_eta_"                 , &jet4_eta_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("jet4_btag_"                , &jet4_btag_                );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("leadPSV_"                  , &leadPSV_                  );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("subleadPSV_"               , &subleadPSV_               );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("dipho_cosphi_"             , &dipho_cosphi_             );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("dipho_rapidity_"           , &dipho_rapidity_           );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("met_"                      , &met_                      );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("dipho_pt_over_mass_"       , &dipho_pt_over_mass_       );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("helicity_angle_"           , &helicity_angle_           );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_value_"               , &chi2_value_               );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_bjet_ptOverM_"        , &chi2_bjet_ptOverM_        );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_bjet_eta_"            , &chi2_bjet_eta_            );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjet1_ptOverM_"       , &chi2_wjet1_ptOverM_       );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjet1_eta_"           , &chi2_wjet1_eta_           );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjet2_eta_"           , &chi2_wjet2_eta_           );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wjets_deltaR_"        , &chi2_wjets_deltaR_        );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wboson_eta_"          , &chi2_wboson_eta_          );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wboson_mass_"         , &chi2_wboson_mass_         );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_wboson_deltaR_bjet_"  , &chi2_wboson_deltaR_bjet_  );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_tprime_ptOverM_"      , &chi2_tprime_ptOverM_      );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
-	mva_smh_varset8_mixed04_tmva_bdtg->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    mva_smh_varset8_mixed04_tmva_bdtg->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210520/dataset_Run2_Tprime_SMH_varSet8_M800_M1000_20210520/weights/TMVAClassification_BDTG.weights.xml");
-    //mva_smh_varset8_mixed04_tmva_bdtg->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210519/dataset_Run2_Tprime_ttH_varSet8_M800_M1000_20210519/weights/TMVAClassification_BDTG.weights.xml");
-    //}}}
-    // mva_smh_varset8_mixed05_tmva_bdtg{{{
-    mva_smh_varset8_mixed05_tmva_bdtg.reset(new TMVA::Reader( "!Color:Silent" ));
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("minIDMVA_"                 , &minIDMVA_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("max1_btag_"                , &max1_btag_                );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("max2_btag_"                , &max2_btag_                );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("dipho_delta_R"             , &dipho_delta_R             );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("njets_"                    , &njets_                    );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("nbjets_"                   , &nbjets_                   );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("ht_"                       , &ht_                       );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("leadptoM_"                 , &leadptoM_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("subleadptoM_"              , &subleadptoM_              );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("lead_eta_"                 , &lead_eta_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("sublead_eta_"              , &sublead_eta_              );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("jet1_ptOverM_"             , &jet1_ptOverM_             );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("jet1_eta_"                 , &jet1_eta_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("jet1_btag_"                , &jet1_btag_                );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("jet2_ptOverM_"             , &jet2_ptOverM_             );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("jet2_eta_"                 , &jet2_eta_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("jet2_btag_"                , &jet2_btag_                );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("jet3_ptOverM_"             , &jet3_ptOverM_             );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("jet3_eta_"                 , &jet3_eta_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("jet3_btag_"                , &jet3_btag_                );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("jet4_ptOverM_"             , &jet4_ptOverM_             );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("jet4_eta_"                 , &jet4_eta_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("jet4_btag_"                , &jet4_btag_                );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("leadPSV_"                  , &leadPSV_                  );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("subleadPSV_"               , &subleadPSV_               );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("dipho_cosphi_"             , &dipho_cosphi_             );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("dipho_rapidity_"           , &dipho_rapidity_           );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("met_"                      , &met_                      );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("dipho_pt_over_mass_"       , &dipho_pt_over_mass_       );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("helicity_angle_"           , &helicity_angle_           );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_value_"               , &chi2_value_               );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_bjet_ptOverM_"        , &chi2_bjet_ptOverM_        );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_bjet_eta_"            , &chi2_bjet_eta_            );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjet1_ptOverM_"       , &chi2_wjet1_ptOverM_       );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjet1_eta_"           , &chi2_wjet1_eta_           );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjet2_eta_"           , &chi2_wjet2_eta_           );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wjets_deltaR_"        , &chi2_wjets_deltaR_        );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wboson_eta_"          , &chi2_wboson_eta_          );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wboson_mass_"         , &chi2_wboson_mass_         );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_wboson_deltaR_bjet_"  , &chi2_wboson_deltaR_bjet_  );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_tprime_ptOverM_"      , &chi2_tprime_ptOverM_      );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
-	mva_smh_varset8_mixed05_tmva_bdtg->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    mva_smh_varset8_mixed05_tmva_bdtg->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210520/dataset_Run2_Tprime_SMH_varSet8_M1100_M1200_20210520/weights/TMVAClassification_BDTG.weights.xml");
-    //}}}
+  //bool produce_ntuples_for_Maxime = false;
+  // BDT business{{{
+  //----------------------------------------------------------------------------------------------------
+  // MVA reference (consistency check)
+  //----------------------------------------------------------------------------------------------------
+  TString BDT_nrb_xml_file_;
+  TString BDT_smh_xml_file_;
+  bool use_v3p8;
+  use_v3p8 = false;
+  use_v3p8 = true;
+  if ( use_v3p8 && (name_output_file.Contains("Data") || name_output_file.Contains("EGamma"))) { //v3p8
+      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210620/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210620/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
+  } else { //v3p6
+      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210525/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210525/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210520/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210520/weights/TMVAClassification_BDTG.weights.xml";
   }
-  /*
-    // mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut{{{
-    mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut.reset(new TMVA::Reader( "!Color:Silent" ));
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("minIDMVA_"                 , &minIDMVA_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("max1_btag_"                , &max1_btag_                );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("max2_btag_"                , &max2_btag_                );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("dipho_delta_R"             , &dipho_delta_R             );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("njets_"                    , &njets_                    );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("nbjets_"                   , &nbjets_                   );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("ht_"                       , &ht_                       );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("leadptoM_"                 , &leadptoM_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("subleadptoM_"              , &subleadptoM_              );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("lead_eta_"                 , &lead_eta_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("sublead_eta_"              , &sublead_eta_              );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("jet1_ptOverM_"             , &jet1_ptOverM_             );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("jet1_eta_"                 , &jet1_eta_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("jet1_btag_"                , &jet1_btag_                );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("jet2_ptOverM_"             , &jet2_ptOverM_             );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("jet2_eta_"                 , &jet2_eta_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("jet2_btag_"                , &jet2_btag_                );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("jet3_ptOverM_"             , &jet3_ptOverM_             );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("jet3_eta_"                 , &jet3_eta_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("jet3_btag_"                , &jet3_btag_                );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("jet4_ptOverM_"             , &jet4_ptOverM_             );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("jet4_eta_"                 , &jet4_eta_                 );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("jet4_btag_"                , &jet4_btag_                );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("leadPSV_"                  , &leadPSV_                  );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("subleadPSV_"               , &subleadPSV_               );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("dipho_cosphi_"             , &dipho_cosphi_             );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("dipho_rapidity_"           , &dipho_rapidity_           );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("met_"                      , &met_                      );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("dipho_pt_over_mass_"       , &dipho_pt_over_mass_       );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("helicity_angle_"           , &helicity_angle_           );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_value_"               , &chi2_value_               );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_bjet_ptOverM_"        , &chi2_bjet_ptOverM_        );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_bjet_eta_"            , &chi2_bjet_eta_            );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet1_ptOverM_"       , &chi2_wjet1_ptOverM_       );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet1_eta_"           , &chi2_wjet1_eta_           );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet2_eta_"           , &chi2_wjet2_eta_           );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_wjets_deltaR_"        , &chi2_wjets_deltaR_        );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_wboson_eta_"          , &chi2_wboson_eta_          );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_wboson_mass_"         , &chi2_wboson_mass_         );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_wboson_deltaR_bjet_"  , &chi2_wboson_deltaR_bjet_  );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_tprime_ptOverM_"      , &chi2_tprime_ptOverM_      );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
-	mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210521/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210521/weights/TMVAClassification_BDTG.weights.xml");
-    //}}}
-    // mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut{{{
-    mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut.reset(new TMVA::Reader( "!Color:Silent" ));
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("minIDMVA_"                 , &minIDMVA_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("max1_btag_"                , &max1_btag_                );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("max2_btag_"                , &max2_btag_                );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("dipho_delta_R"             , &dipho_delta_R             );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("njets_"                    , &njets_                    );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("nbjets_"                   , &nbjets_                   );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("ht_"                       , &ht_                       );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("leadptoM_"                 , &leadptoM_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("subleadptoM_"              , &subleadptoM_              );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("lead_eta_"                 , &lead_eta_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("sublead_eta_"              , &sublead_eta_              );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("jet1_ptOverM_"             , &jet1_ptOverM_             );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("jet1_eta_"                 , &jet1_eta_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("jet1_btag_"                , &jet1_btag_                );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("jet2_ptOverM_"             , &jet2_ptOverM_             );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("jet2_eta_"                 , &jet2_eta_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("jet2_btag_"                , &jet2_btag_                );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("jet3_ptOverM_"             , &jet3_ptOverM_             );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("jet3_eta_"                 , &jet3_eta_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("jet3_btag_"                , &jet3_btag_                );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("jet4_ptOverM_"             , &jet4_ptOverM_             );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("jet4_eta_"                 , &jet4_eta_                 );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("jet4_btag_"                , &jet4_btag_                );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("leadPSV_"                  , &leadPSV_                  );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("subleadPSV_"               , &subleadPSV_               );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("dipho_cosphi_"             , &dipho_cosphi_             );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("dipho_rapidity_"           , &dipho_rapidity_           );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("met_"                      , &met_                      );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("dipho_pt_over_mass_"       , &dipho_pt_over_mass_       );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("helicity_angle_"           , &helicity_angle_           );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_value_"               , &chi2_value_               );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_bjet_ptOverM_"        , &chi2_bjet_ptOverM_        );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_bjet_eta_"            , &chi2_bjet_eta_            );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet1_ptOverM_"       , &chi2_wjet1_ptOverM_       );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet1_eta_"           , &chi2_wjet1_eta_           );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet2_eta_"           , &chi2_wjet2_eta_           );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_wjets_deltaR_"        , &chi2_wjets_deltaR_        );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_wboson_eta_"          , &chi2_wboson_eta_          );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_wboson_mass_"         , &chi2_wboson_mass_         );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_wboson_deltaR_bjet_"  , &chi2_wboson_deltaR_bjet_  );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_tprime_ptOverM_"      , &chi2_tprime_ptOverM_      );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
-	mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210521/dataset_Run2_Tprime_SMH_varSet8_M800_M1000_20210521/weights/TMVAClassification_BDTG.weights.xml");
-    //}}}
-    // mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut{{{
-    mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut.reset(new TMVA::Reader( "!Color:Silent" ));
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("maxIDMVA_"                 , &maxIDMVA_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("minIDMVA_"                 , &minIDMVA_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("max1_btag_"                , &max1_btag_                );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("max2_btag_"                , &max2_btag_                );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("dipho_delta_R"             , &dipho_delta_R             );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("njets_"                    , &njets_                    );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("nbjets_"                   , &nbjets_                   );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("ht_"                       , &ht_                       );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("leadptoM_"                 , &leadptoM_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("subleadptoM_"              , &subleadptoM_              );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("lead_eta_"                 , &lead_eta_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("sublead_eta_"              , &sublead_eta_              );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("jet1_ptOverM_"             , &jet1_ptOverM_             );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("jet1_eta_"                 , &jet1_eta_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("jet1_btag_"                , &jet1_btag_                );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("jet2_ptOverM_"             , &jet2_ptOverM_             );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("jet2_eta_"                 , &jet2_eta_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("jet2_btag_"                , &jet2_btag_                );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("jet3_ptOverM_"             , &jet3_ptOverM_             );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("jet3_eta_"                 , &jet3_eta_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("jet3_btag_"                , &jet3_btag_                );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("jet4_ptOverM_"             , &jet4_ptOverM_             );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("jet4_eta_"                 , &jet4_eta_                 );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("jet4_btag_"                , &jet4_btag_                );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("leadPSV_"                  , &leadPSV_                  );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("subleadPSV_"               , &subleadPSV_               );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("dipho_cosphi_"             , &dipho_cosphi_             );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("dipho_rapidity_"           , &dipho_rapidity_           );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("met_"                      , &met_                      );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("dipho_pt_over_mass_"       , &dipho_pt_over_mass_       );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("helicity_angle_"           , &helicity_angle_           );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_value_"               , &chi2_value_               );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_bjet_ptOverM_"        , &chi2_bjet_ptOverM_        );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_bjet_eta_"            , &chi2_bjet_eta_            );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_bjet_btagScores_"     , &chi2_bjet_btagScores_     );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet1_ptOverM_"       , &chi2_wjet1_ptOverM_       );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet1_eta_"           , &chi2_wjet1_eta_           );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet1_btagScores_"    , &chi2_wjet1_btagScores_    );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet2_ptOverM_"       , &chi2_wjet2_ptOverM_       );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet2_eta_"           , &chi2_wjet2_eta_           );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_wjet2_btagScores_"    , &chi2_wjet2_btagScores_    );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_wjets_deltaR_"        , &chi2_wjets_deltaR_        );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_wboson_ptOverM_"      , &chi2_wboson_ptOverM_      );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_wboson_eta_"          , &chi2_wboson_eta_          );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_wboson_mass_"         , &chi2_wboson_mass_         );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_wboson_deltaR_bjet_"  , &chi2_wboson_deltaR_bjet_  );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_tbw_mass_"            , &chi2_tbw_mass_            );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_tbw_ptOverM_"         , &chi2_tbw_ptOverM_         );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_tbw_eta_"             , &chi2_tbw_eta_             );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_tprime_ptOverM_"      , &chi2_tprime_ptOverM_      );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("chi2_tprime_eta_"          , &chi2_tprime_eta_          );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("tprime_pt_ratio_"          , &tprime_pt_ratio_          );
-	mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->AddVariable("helicity_tprime_"          , &helicity_tprime_          );
-    mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut->BookMVA("BDTG", "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210521/dataset_Run2_Tprime_SMH_varSet8_M1100_M1200_20210521/weights/TMVAClassification_BDTG.weights.xml");
-    //}}}
-  */
+  flashgg::THQ_BDT_Helper *tprimeTagger_nrb = new flashgg::THQ_BDT_Helper("BDTG", BDT_nrb_xml_file_);
+  flashgg::THQ_BDT_Helper *tprimeTagger_smh = new flashgg::THQ_BDT_Helper("BDTG", BDT_smh_xml_file_);
+
+  //----------------------------------------------------------------------------------------------------
+  // Init MVA Helpers
+  //----------------------------------------------------------------------------------------------------
+  TString path = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs";
+
+  TString mass_tag03 = "M600_M700";
+  TString mass_tag04 = "M800_M1000";
+  TString mass_tag05 = "M1100_M1200";
+
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag03 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag04 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag05 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag03 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag04 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag05 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
+
+  flashgg::InputVariables MVAvarList;
+  //}}}
 
   int counter = 0;
+  int counter_negative_reco_mass = 0;
   int counter_jet_negative_energy = 0;
+  int counter_nrb_same = 0;
+  int counter_smh_same = 0;
 
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
@@ -585,11 +97,9 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
     analyzer.Init(tree);
 
     bool debug = false;
-    int counter = 0; // check nan value
     // Loop over Events in current file
     unsigned int nEventsTree = tree->GetEntriesFast();
     for (unsigned int event = 0; event < nEventsTree; ++event)
-   // for (unsigned int event = 0; event < 100; ++event)
     {
       // Get Event Content, label type of samples, decide evt weight
       if (nEventsTotal >= nEventsChain) continue;
@@ -615,21 +125,27 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       double lumi = mYear == "2016" ? lumi_2016 : (mYear == "2017") ? lumi_2017 : lumi_2018;
 
       // Decide evt wight
-      evt_weight_ = is_data ? 1. : is_signal ? weight() * branching_fraction_hgg * lumi : weight() * lumi;
+      evt_weight_ = is_data ? 1. : weight() * lumi;
       total_yields += evt_weight_;
 
       // Impute, if applicable
       maxIDMVA_ = dipho_leadIDMVA() >  dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
       minIDMVA_ = dipho_leadIDMVA() <= dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
 
-      //if (bkg_options.Contains("impute")) {
-      //  if (isData)
-      //    impute_photon_id(min_photon_ID_presel_cut, maxIDMVA_, photon_fakeID_shape_runII, minIDMVA_, evt_weight_, process_id_);
-      //}
+      //----------------------------------------------------------------------------------------------------
+      // impute and block signal region (remove it when producing ntuples for Maxime)
+      //----------------------------------------------------------------------------------------------------
+      if (bkg_options.Contains("impute")) {
+        if (isData)
+          impute_photon_id(min_photon_ID_presel_cut, maxIDMVA_, photon_fakeID_shape_runII, minIDMVA_, evt_weight_, process_id_);
+      }
 
-      //if (is_data && process_id_ != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)  continue;
-      //if (is_data && process_id_ != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)
-      //    printf("[WARNING] Data events in signal region is used! mass = %.2f, process_id_ = %d\n", CMS_hgg_mass(), process_id_);
+      if(!produce_ntuples_for_Maxime) {
+      if (is_data && process_id_ != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)  continue;
+      if (is_data && process_id_ != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)  continue;
+      if (is_data && process_id_ != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)
+          printf("[WARNING] Data events in signal region is used! mass = %.2f, process_id_ = %d\n", CMS_hgg_mass(), process_id_);
+      }
 
       bool pass_photon_pt_criteria = dipho_leadPt()>30. && dipho_subleadPt()>18.;
       if(!pass_photon_pt_criteria) continue;
@@ -639,6 +155,15 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       if (isnan(evt_weight_) || isinf(evt_weight_) || evt_weight_ == 0) continue; //some pu weights are nan/inf and this causes problems for histos 
       if (has_std_overlaps(currentFileTitle, lead_Prompt(), sublead_Prompt(), genPhotonId)) continue;
 
+      //for consistency test 
+      //bool perform_consistency_check = false;
+      bool perform_consistency_check = true;
+      if(perform_consistency_check && process_id_ == 18) continue;
+
+      //----------------------------------------------------------------------------------------------------
+      // Assign variables values
+      //----------------------------------------------------------------------------------------------------
+      // assign values {{{
 	  label_ = (is_data && process_id_ != 18) ? 2 : is_signal ? 1 : 0; // 0 = bkg, 1 = tprime, 2 = data
       multi_label_ = is_signal ? 0 : is_ttH ? 1 : 2; // signal vs tth vs bkg
       signal_mass_label_ = categorize_signal_sample(currentFileTitle);
@@ -648,9 +173,8 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       //------------------------------ Variable definitions ------------------------------//
       vector<double> btag_scores;
       bool flag_negative_energy = false;
-      vector<TLorentzVector> jets = make_jets(btag_scores, flag_negative_energy, true);
+      vector<TLorentzVector> jets = make_jets(btag_scores, flag_negative_energy, false); //consistency check
       //vector<TLorentzVector> jets = make_jets(btag_scores);
-      //vector<TLorentzVector> jets_copy = jets; // debug purpose
       vector< std::pair<int, double> > btag_scores_sorted = sortVectorGreater(btag_scores);
       if(jets.size() < 3) continue;
 
@@ -664,10 +188,10 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       run_  = analyzer.run();
       lumi_ = analyzer.lumi();
 
-      if(flag_negative_energy)
+      if(debug && flag_negative_energy)
           printf("[Info] Run:Lumi:Event = %d:%d:%d\n", run_, lumi_, evt_);
 
-      ht_            = get_ht(jets);
+      ht_            = HT();
       dipho_delta_R  = lead_photon.DeltaR(sublead_photon);
       top_tag_score_ = -1;
 	  top_tag_mass_  = -1;
@@ -675,7 +199,8 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       top_tag_eta_   = -1;
       top_tag_phi_   = -1;
 
-      njets_ = n_jets();
+      //njets_ = n_jets();
+      njets_ = jets.size();
       nbjets_ = n_L_bjets();
       max1_btag_ = btag_scores_sorted[0].second;
       max2_btag_ = btag_scores_sorted[1].second;
@@ -737,8 +262,8 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       subleadPSV_ = dipho_sublead_haspixelseed();
 
       dipho_cosphi_ = dipho_cosphi();
-      dipho_pt_ = diphoton.Pt();
-      dipho_pt_over_mass_ = diphoton.Pt() / diphoton.M();
+      dipho_pt_ = dipho_pt();
+      dipho_pt_over_mass_ = dipho_pt() / CMS_hgg_mass();
       met_ = recoMET_pt();
       log_met_ = log(recoMET_pt());
       met_phi_ = recoMET_phi();
@@ -764,12 +289,12 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       TLorentzVector cov_top    = cov_bjet + cov_wboson;
       TLorentzVector cov_tprime = cov_top + diphoton;
 
-      bool pass_eta_criteria_on_wjets = ( cov_wjet1.Eta() < 3. && cov_wjet2.Eta() < 3. );
+      //bool pass_eta_criteria_on_wjets = ( cov_wjet1.Eta() < 3. && cov_wjet2.Eta() < 3. );
+      bool pass_eta_criteria_on_wjets = ( abs(cov_wjet1.Eta()) < 3. && abs(cov_wjet2.Eta()) < 3. );
+      if( !pass_eta_criteria_on_wjets ) continue;
+      if( !has_resonable_reco ) continue;
       //if( !passes_btag_rescale_selection ) continue;
 
-      double mass_wboson = has_resonable_reco ? cov_wboson.M()     : -1.;
-      double mass_top    = has_resonable_reco ? cov_top.M()        : -1.;
-      double mass_tprime = has_resonable_reco ? cov_tprime.M()     : -1.;
       min_chi2_value_2x2 = has_resonable_reco ? min_chi2_value_2x2 : -1.;
 
       chi2_value_               = min_chi2_value_2x2;
@@ -788,7 +313,6 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       chi2_tbw_pt_              = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_top.Pt()                          : -999;
       chi2_tbw_eta_             = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_top.Eta()                         : -999;
       chi2_tbw_deltaR_dipho_    = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_top.DeltaR(diphoton)              : -999;
-      chi2_tprime_ptOverM_      = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_tprime.Pt()/cov_tprime.M()        : -999;
       chi2_tprime_eta_          = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_tprime.Eta()                      : -999;
       chi2_tprime_deltaR_tbw_   = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_tprime.DeltaR(cov_top)            : -999;
       chi2_tprime_deltaR_dipho_ = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_tprime.DeltaR(diphoton)           : -999;
@@ -797,12 +321,95 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       chi2_wjet2_btagScores_    = (has_resonable_reco && pass_eta_criteria_on_wjets) ? btag_scores[indices_bjj_covMatrix[2]] : -999;
       tprime_pt_ratio_          = (has_resonable_reco && pass_eta_criteria_on_wjets) ? (cov_top.Pt() + dipho_pt())/ ht_      : -999;
 
-      chi2_bjet_ptOverM_        = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_bjet.Pt() / cov_top.M()           : -999;
-      chi2_wjet1_ptOverM_       = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_wjet1.Pt() / cov_wboson.M()       : -999;
-      chi2_wjet2_ptOverM_       = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_wjet2.Pt() / cov_wboson.M()       : -999;
-      chi2_wboson_ptOverM_      = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_wboson.Pt() / cov_wboson.M()      : -999;
-      chi2_tbw_ptOverM_         = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_top.Pt() / cov_top.M()            : -999;
       helicity_tprime_          = (has_resonable_reco && pass_eta_criteria_on_wjets) ? helicity(cov_top, diphoton)           : -999;
+
+      // use mass reconstructed at producer level for better consistency in significant digit; v3p5 onward
+      chi2_wboson_mass_         = chi2_recoMass_wboson();
+      chi2_tbw_mass_            = chi2_recoMass_top();
+      chi2_value_               = chi2_calculator_2x2(chi2_wboson_mass_, chi2_tbw_mass_);
+
+      chi2_bjet_ptOverM_        = (has_resonable_reco && pass_eta_criteria_on_wjets ) ? cov_bjet.Pt()   / chi2_tbw_mass_         : -999;
+      chi2_wjet1_ptOverM_       = (has_resonable_reco && pass_eta_criteria_on_wjets ) ? cov_wjet1.Pt()  / chi2_wboson_mass_      : -999;
+      chi2_wjet2_ptOverM_       = (has_resonable_reco && pass_eta_criteria_on_wjets ) ? cov_wjet2.Pt()  / chi2_wboson_mass_      : -999;
+      chi2_wboson_ptOverM_      = (has_resonable_reco && pass_eta_criteria_on_wjets ) ? cov_wboson.Pt() / chi2_wboson_mass_      : -999;
+      chi2_tbw_ptOverM_         = (has_resonable_reco && pass_eta_criteria_on_wjets ) ? cov_top.Pt()    / chi2_tbw_mass_         : -999;
+      chi2_tprime_ptOverM_      = (has_resonable_reco && pass_eta_criteria_on_wjets ) ? cov_tprime.Pt() / chi2_recoMass_tprime() : -999;
+
+      jet1_ptOverM_ = (njets_ >= 1 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[0].Pt() / chi2_tbw_mass_  : -999;
+      jet2_ptOverM_ = (njets_ >= 2 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[1].Pt() / chi2_tbw_mass_  : -999; 
+      jet3_ptOverM_ = (njets_ >= 3 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[2].Pt() / chi2_tbw_mass_  : -999;
+      jet4_ptOverM_ = (njets_ >= 4 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[3].Pt() / chi2_tbw_mass_  : -999;
+
+      //}}}
+        // MVA input variables {{{
+        MVAvarList.maxIDMVA_                = maxIDMVA_;
+        MVAvarList.minIDMVA_                = minIDMVA_;
+        MVAvarList.max1_btag_               = max1_btag_;
+        MVAvarList.max2_btag_               = max2_btag_;
+        MVAvarList.dipho_delta_R            = dipho_delta_R;
+        MVAvarList.njets_                   = njets_;
+        MVAvarList.nbjets_                  = nbjets_;
+        MVAvarList.ht_                      = ht_;
+        MVAvarList.leadptoM_                = leadptoM_;
+        MVAvarList.subleadptoM_             = subleadptoM_;
+        MVAvarList.lead_eta_                = lead_eta_;
+        MVAvarList.sublead_eta_             = sublead_eta_;
+        MVAvarList.leadPSV_                 = leadPSV_;
+        MVAvarList.subleadPSV_              = subleadPSV_;
+        MVAvarList.dipho_cosphi_            = dipho_cosphi_;
+        MVAvarList.dipho_rapidity_          = dipho_rapidity_;
+        MVAvarList.met_                     = met_;
+        MVAvarList.dipho_pt_over_mass_      = dipho_pt_over_mass_;
+        MVAvarList.helicity_angle_          = helicity_angle_;
+        MVAvarList.chi2_value_              = chi2_value_;
+        MVAvarList.chi2_bjet_ptOverM_       = chi2_bjet_ptOverM_;
+        MVAvarList.chi2_bjet_eta_           = chi2_bjet_eta_;
+        MVAvarList.chi2_bjet_btagScores_    = chi2_bjet_btagScores_;
+        MVAvarList.chi2_wjet1_ptOverM_      = chi2_wjet1_ptOverM_;
+        MVAvarList.chi2_wjet1_eta_          = chi2_wjet1_eta_;
+        MVAvarList.chi2_wjet1_btagScores_   = chi2_wjet1_btagScores_;
+        MVAvarList.chi2_wjet2_ptOverM_      = chi2_wjet2_ptOverM_;
+        MVAvarList.chi2_wjet2_eta_          = chi2_wjet2_eta_;
+        MVAvarList.chi2_wjet2_btagScores_   = chi2_wjet2_btagScores_;
+        MVAvarList.chi2_wjets_deltaR_       = chi2_wjets_deltaR_;
+        MVAvarList.chi2_wboson_ptOverM_     = chi2_wboson_ptOverM_;
+        MVAvarList.chi2_wboson_eta_         = chi2_wboson_eta_;
+        MVAvarList.chi2_wboson_mass_        = chi2_wboson_mass_;
+        MVAvarList.chi2_wboson_deltaR_bjet_ = chi2_wboson_deltaR_bjet_;
+        MVAvarList.chi2_tbw_mass_           = chi2_tbw_mass_;
+        MVAvarList.chi2_tbw_ptOverM_        = chi2_tbw_ptOverM_;
+        MVAvarList.chi2_tbw_eta_            = chi2_tbw_eta_;
+        MVAvarList.chi2_tprime_ptOverM_     = chi2_tprime_ptOverM_;
+        MVAvarList.chi2_tprime_eta_         = chi2_tprime_eta_;
+        MVAvarList.tprime_pt_ratio_         = tprime_pt_ratio_;
+        MVAvarList.helicity_tprime_         = helicity_tprime_;
+        MVAvarList.jet1_ptOverM_            = jet1_ptOverM_;
+        MVAvarList.jet2_ptOverM_            = jet2_ptOverM_;
+        MVAvarList.jet3_ptOverM_            = jet3_ptOverM_;
+        MVAvarList.jet4_ptOverM_            = jet4_ptOverM_;
+        MVAvarList.jet1_eta_                = jet1_eta_;
+        MVAvarList.jet1_btag_               = jet1_btag_;
+        MVAvarList.jet2_eta_                = jet2_eta_;
+        MVAvarList.jet2_btag_               = jet2_btag_;
+        MVAvarList.jet3_eta_                = jet3_eta_;
+        MVAvarList.jet3_btag_               = jet3_btag_;
+        MVAvarList.jet4_eta_                = jet4_eta_;
+        MVAvarList.jet4_btag_               = jet4_btag_;
+        //}}}
+
+      // check inf values
+      bool flag = false;
+      if(chi2_recoMass_wboson()<=0.) { flag = true; printf("chi2_recoMass_wboson() = %f, %f\n", chi2_recoMass_wboson(), cov_wboson.M()); }
+      if(chi2_recoMass_top()<=0.)    { flag = true; printf("chi2_recoMass_top() = %f, %f\n", chi2_recoMass_top(), cov_top.M());          }
+      if(chi2_recoMass_tprime()<=0.) { flag = true; printf("chi2_recoMass_tprime() = %f, %f\n", chi2_recoMass_tprime(), cov_tprime.M()); }
+      if(flag)
+      {
+          counter_negative_reco_mass += 1;
+          tprimeTagger_nrb->print_details(MVAvarList);
+          printf("\n----------------------------------------------------------------------------------------------------\n\n");
+      }
+      tprimeTagger_nrb->examine_values(MVAvarList);
+
 
       //----------------------------------------------------------------------------------------------------
       // For Maxime
@@ -819,129 +426,32 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
         tprime_mass_   = cov_tprime.M();
         tprime_mtilde_ = cov_tprime.M() - cov_top.M() - diphoton.M() + 173. + 125.;
 
-        bdtg_score_nrb_m600_m700_   = convert_tmva_to_prob( mva_nrb_varset8_mixed03_tmva_bdtg -> EvaluateMVA( "BDTG" ) );
-        bdtg_score_nrb_m800_m1000_  = convert_tmva_to_prob( mva_nrb_varset8_mixed04_tmva_bdtg -> EvaluateMVA( "BDTG" ) );
-        bdtg_score_nrb_m1100_m1200_ = convert_tmva_to_prob( mva_nrb_varset8_mixed05_tmva_bdtg -> EvaluateMVA( "BDTG" ) );
-        bdtg_score_smh_m600_m700_   = convert_tmva_to_prob( mva_smh_varset8_mixed03_tmva_bdtg -> EvaluateMVA( "BDTG" ) );
-        bdtg_score_smh_m800_m1000_  = convert_tmva_to_prob( mva_smh_varset8_mixed04_tmva_bdtg -> EvaluateMVA( "BDTG" ) );
-        bdtg_score_smh_m1100_m1200_ = convert_tmva_to_prob( mva_smh_varset8_mixed05_tmva_bdtg -> EvaluateMVA( "BDTG" ) );
-
+        bdtg_score_nrb_m600_m700_   = mva_nrb_varset8_mixed03_tmva_bdtg->evaluate("BDTG" , MVAvarList);
+        bdtg_score_nrb_m800_m1000_  = mva_nrb_varset8_mixed04_tmva_bdtg->evaluate("BDTG" , MVAvarList);
+        bdtg_score_nrb_m1100_m1200_ = mva_nrb_varset8_mixed05_tmva_bdtg->evaluate("BDTG" , MVAvarList);
+        bdtg_score_smh_m600_m700_   = mva_smh_varset8_mixed03_tmva_bdtg->evaluate("BDTG" , MVAvarList);
+        bdtg_score_smh_m800_m1000_  = mva_smh_varset8_mixed04_tmva_bdtg->evaluate("BDTG" , MVAvarList);
+        bdtg_score_smh_m1100_m1200_ = mva_smh_varset8_mixed05_tmva_bdtg->evaluate("BDTG" , MVAvarList);
       }
 
-      //bdtg_score_smh_m600_m700_withNRBcut_   = convert_tmva_to_prob( mva_smh_varset8_mixed03_tmva_bdtg_withNRBcut -> EvaluateMVA( "BDTG" ) );
-      //bdtg_score_smh_m800_m1000_withNRBcut_  = convert_tmva_to_prob( mva_smh_varset8_mixed04_tmva_bdtg_withNRBcut -> EvaluateMVA( "BDTG" ) );
-      //bdtg_score_smh_m1100_m1200_withNRBcut_ = convert_tmva_to_prob( mva_smh_varset8_mixed05_tmva_bdtg_withNRBcut -> EvaluateMVA( "BDTG" ) );
+      double mva_value_nrb = tprimeTagger_nrb->evaluate("BDTG" , MVAvarList);
+      double mva_value_smh = tprimeTagger_smh->evaluate("BDTG" , MVAvarList);
 
-      if(debug && isnan(helicity_tprime_))
-      {
-          counter += 1;
-          printf("[check] indices_bjj_covMatrix[0] = %d\n", indices_bjj_covMatrix[0]);
-          printf("[check] indices_bjj_covMatrix[1] = %d\n", indices_bjj_covMatrix[1]);
-          printf("[check] indices_bjj_covMatrix[2] = %d\n", indices_bjj_covMatrix[2]);
-          printf("\n");
-
-          printf("[check] (Pt, Eta, Phi, M) \n");
-          printf("[check] cov_bjet   = (%7.2f, %7.2f, %7.2f, %7.2f) \n", cov_bjet.Pt(), cov_bjet.Eta(), cov_bjet.Phi(), cov_bjet.M() );
-          printf("[check] cov_wjet1  = (%7.2f, %7.2f, %7.2f, %7.2f) \n", cov_wjet1.Pt(), cov_wjet1.Eta(), cov_wjet1.Phi(), cov_wjet1.M() );
-          printf("[check] cov_wjet2  = (%7.2f, %7.2f, %7.2f, %7.2f) \n", cov_wjet2.Pt(), cov_wjet2.Eta(), cov_wjet2.Phi(), cov_wjet2.M() );
-          printf("[check] cov_wboson = (%7.2f, %7.2f, %7.2f, %7.2f) \n", cov_wboson.Pt(), cov_wboson.Eta(), cov_wboson.Phi(), cov_wboson.M() );
-          printf("[check] cov_top    = (%7.2f, %7.2f, %7.2f, %7.2f) \n", cov_top.Pt(), cov_top.Eta(), cov_top.Phi(), cov_top.M() );
-          printf("\n");
-
-          printf("[check] (Px, Py, Pz, E, M) \n");
-          printf("[check] cov_bjet   = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", cov_bjet.Px(), cov_bjet.Py(), cov_bjet.Pz(), cov_bjet.E(), cov_bjet.M() );
-          printf("[check] cov_wjet1  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", cov_wjet1.Px(), cov_wjet1.Py(), cov_wjet1.Pz(), cov_wjet1.E(), cov_wjet1.M() );
-          printf("[check] cov_wjet2  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", cov_wjet2.Px(), cov_wjet2.Py(), cov_wjet2.Pz(), cov_wjet2.E(), cov_wjet2.M() );
-          printf("[check] cov_wboson = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", cov_wboson.Px(), cov_wboson.Py(), cov_wboson.Pz(), cov_wboson.E(), cov_wboson.M() );
-          printf("[check] cov_top    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", cov_top.Px(), cov_top.Py(), cov_top.Pz(), cov_top.E(), cov_top.M() );
-
-          int i = indices_bjj_covMatrix[0];
-          int j = indices_bjj_covMatrix[1];
-          int k = indices_bjj_covMatrix[2];
-          printf("[check] jets[%d]    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", i, jets[i].Px(), jets[i].Py(), jets[i].Pz(), jets[i].E(), jets[i].M() );
-          printf("[check] jets[%d]    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", j, jets[j].Px(), jets[j].Py(), jets[j].Pz(), jets[j].E(), jets[j].M() );
-          printf("[check] jets[%d]    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", k, jets[k].Px(), jets[k].Py(), jets[k].Pz(), jets[k].E(), jets[k].M() );
-          //printf("[check] j_copy[%d]  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", i, jets_copy[i].Px(), jets_copy[i].Py(), jets_copy[i].Pz(), jets_copy[i].E(), jets_copy[i].M() );
-          //printf("[check] j_copy[%d]  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", j, jets_copy[j].Px(), jets_copy[j].Py(), jets_copy[j].Pz(), jets_copy[j].E(), jets_copy[j].M() );
-          //printf("[check] j_copy[%d]  = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f) \n", k, jets_copy[k].Px(), jets_copy[k].Py(), jets_copy[k].Pz(), jets_copy[k].E(), jets_copy[k].M() );
-
-          //printf("[check] cov_wjet1.Pt()        = %.2f\n", cov_wjet1.Pt()   );
-          //printf("[check] cov_wjet1.Eta()       = %.2f\n", cov_wjet1.Eta()  );
-          //printf("[check] cov_wjet1.Phi()       = %.2f\n", cov_wjet1.Phi()  );
-          //printf("[check] cov_wjet1.M()         = %.2f\n", cov_wjet1.M()    );
-
-          //printf("[check] cov_wjet2.Pt()        = %.2f\n", cov_wjet2.Pt()   );
-          //printf("[check] cov_wjet2.Eta()       = %.2f\n", cov_wjet2.Eta()  );
-          //printf("[check] cov_wjet2.Phi()       = %.2f\n", cov_wjet2.Phi()  );
-          //printf("[check] cov_wjet2.M()         = %.2f\n", cov_wjet2.M()    );
-
-          //printf("[check] cov_wboson.Pt()       = %.2f\n", cov_wboson.Pt()  );
-          //printf("[check] cov_wboson.Eta()      = %.2f\n", cov_wboson.Eta() );
-          //printf("[check] cov_wboson.Phi()      = %.2f\n", cov_wboson.Phi() );
-          //printf("[check] cov_wboson.M()        = %.2f\n", cov_wboson.M()   );
-
-          //printf("[check] cov_top.Pt()          = %.2f\n", cov_top.Pt()   );
-          //printf("[check] cov_top.Eta()         = %.2f\n", cov_top.Eta()  );
-          //printf("[check] cov_top.Phi()         = %.2f\n", cov_top.Phi()  );
-          //printf("[check] cov_top.M()           = %.2f\n", cov_top.M()    );
-
-          //TLorentzVector test_p1, test_p2, test_m;
-          //test_p1.SetPtEtaPhiM( cov_wjet1.Pt(), cov_wjet1.Eta(), cov_wjet1.Phi(), cov_wjet1.M() );
-          //test_p2.SetPtEtaPhiM( cov_wjet2.Pt(), cov_wjet2.Eta(), cov_wjet2.Phi(), cov_wjet2.M() );
-          //test_m = test_p1 + test_p2;
-          //printf("[check] test_p1    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f  ) \n", test_p1.Px(), test_p1.Py(), test_p1.Pz(), test_p1.E(), test_p1.M() );
-          //printf("[check] test_p2    = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f  ) \n", test_p2.Px(), test_p2.Py(), test_p2.Pz(), test_p2.E(), test_p2.M() );
-          //printf("[check] test_m     = (%7.2f, %7.2f, %7.2f, %7.2f, %7.2f  ) \n", test_m.Px(), test_m.Py(), test_m.Pz(), test_m.E(), test_m.M() );
-
-          if(has_resonable_reco) printf("has_resonable_reco = true!"); else printf("has_resonable_reco = false!");
-
-          //printf("[check] diphoton.Pt()         = %.2f\n", diphoton.Pt()  );
-          //printf("[check] diphoton.Eta()        = %.2f\n", diphoton.Eta() );
-          //printf("[check] diphoton.Phi()        = %.2f\n", diphoton.Phi() );
-          //printf("[check] diphoton.M()          = %.2f\n", diphoton.M()   );
-
-          printf("[check] btag_scrores = ");
-          for(int i=0; i<btag_scores.size(); ++i)
-              printf("%.2f ", btag_scores[i]);
-          printf("\n\n\n");
-      }
-
-      jet1_ptOverM_ = (njets_ >= 1 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[0].Pt() / cov_top.M()  : -999;
-      jet2_ptOverM_ = (njets_ >= 2 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[1].Pt() / cov_top.M()  : -999; 
-      jet3_ptOverM_ = (njets_ >= 3 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[2].Pt() / cov_top.M()  : -999;
-      jet4_ptOverM_ = (njets_ >= 4 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[3].Pt() / cov_top.M()  : -999;
       //----------------------------------------------------------------------------------------------------//
-
       
       rand_ = rndm.Rndm(); // index for training and validation
       super_rand_ = -1; //rand_map->retrieve_rand(analyzer.event(), analyzer.run(), analyzer.lumi());
-      mass_ = diphoton.M();
+      mass_ = CMS_hgg_mass();
       lead_sigmaEtoE_ = dipho_lead_sigmaEoE();
       sublead_sigmaEtoE_ = dipho_sublead_sigmaEoE();
 
       //----------------------------------------------------------------------------------------------------//
-      // study in jet negative energy
+      // consistency check
       //----------------------------------------------------------------------------------------------------//
       counter += 1;
       if(flag_negative_energy) counter_jet_negative_energy += 1;
-
-      // ***DNN Business{{{
-      top_candidates_ = {0}; //calculate_top_candidates(diphoton, jets, btag_scores, max1_btag_);
-
-      // Do this a dumb hacky way because it is easier to deal with down the line in DNN/BDT prep+training
-      top_candidates_1_ = top_candidates_[0] > 0 ? log(top_candidates_[0]) : -9;
-      top_candidates_2_ = top_candidates_[1] > 0 ? log(top_candidates_[1]) : -9;
-      top_candidates_3_ = top_candidates_[2] > 0 ? log(top_candidates_[2]) : -9;
-      top_candidates_4_ = top_candidates_[3] > 0 ? log(top_candidates_[3]) : -9;
-      top_candidates_5_ = top_candidates_[4] > 0 ? log(top_candidates_[4]) : -9;
-      top_candidates_6_ = top_candidates_[5] > 0 ? log(top_candidates_[5]) : -9;
-      top_candidates_7_ = top_candidates_[6] > 0 ? log(top_candidates_[6]) : -9;
-      top_candidates_8_ = top_candidates_[7] > 0 ? log(top_candidates_[7]) : -9;
-      top_candidates_9_ = top_candidates_[8] > 0 ? log(top_candidates_[8]) : -9;
-      top_candidates_10_ = top_candidates_[9] > 0 ? log(top_candidates_[9]) : -9;
-      top_candidates_11_ = top_candidates_[10] > 0 ? log(top_candidates_[10]) : -9;
-      top_candidates_12_ = top_candidates_[11] > 0 ? log(top_candidates_[11]) : -9;
-      //}}}
+      bool found_discrepancy_nrb = mycheck("BDT (NRB)", counter_nrb_same, MVAscore_BDT_nrb(), mva_value_nrb, dipho_pt());
+      bool found_discrepancy_smh = mycheck("BDT (SMH)", counter_smh_same, MVAscore_BDT_smh(), mva_value_smh, dipho_pt());
 
       const float oversample_ggh = 81.;
       const float oversample_tth = 1.;
@@ -962,17 +472,27 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
         FillBabyNtuple();
     }// end of event loop
 
-    if(debug) printf("[report] number of helicity nan values = %d\n", counter);
-
     delete tree;
     file.Close();
   }// end of while loop
 
+  printf("[check] reco mass < 0 GeV: %d/%d (%.2f)\n", counter_negative_reco_mass, counter, (double) counter_negative_reco_mass / (double) counter);
   printf("[check] jet energy < -100 GeV: %d/%d (%.2f)\n", counter_jet_negative_energy, counter, (double) counter_jet_negative_energy / (double) counter);
+  printf("[check] BDT(NRB) same: %d/%d (%.2f)\n", counter_nrb_same, counter, (double) counter_nrb_same / (double) counter);
+  printf("[check] BDT(SMH) same: %d/%d (%.2f)\n", counter_smh_same, counter, (double) counter_smh_same / (double) counter);
 
   if (nEventsChain != nEventsTotal) {
     cout << Form( "ERROR: number of events from files (%d) is not equal to total number of events (%d)", nEventsChain, nEventsTotal ) << endl;
   }
+
+  delete tprimeTagger_nrb;
+  delete tprimeTagger_smh;
+  delete mva_nrb_varset8_mixed03_tmva_bdtg;
+  delete mva_nrb_varset8_mixed04_tmva_bdtg;
+  delete mva_nrb_varset8_mixed05_tmva_bdtg;
+  delete mva_smh_varset8_mixed03_tmva_bdtg;
+  delete mva_smh_varset8_mixed04_tmva_bdtg;
+  delete mva_smh_varset8_mixed05_tmva_bdtg;
 
   CloseBabyNtuple();
  

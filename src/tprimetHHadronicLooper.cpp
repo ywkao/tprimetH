@@ -20,8 +20,8 @@ int main(int argc, char* argv[])
     TChain *ch = new TChain(treeName);
     ch -> Add(fullpath);
 
-    //TString name_output_file = "plots/hist_" + rootfile;
     TString name_output_file = "plots/hist_" + rootfile;
+    //TString name_output_file = "plots_new/hist_" + rootfile;
     printf("[check] name_output_file = %s\n", name_output_file.Data());
     ScanChain_tprimetHHadronic_signal(ch, name_output_file, treeName, xml_file, year);
     //ScanChain_tprimetHHadronic_ttH(ch, name_output_file, treeName, xml_file, year);

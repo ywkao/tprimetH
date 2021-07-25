@@ -132,8 +132,18 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   //----------------------------------------------------------------------------------------------------
   // MVA reference (consistency check)
   //----------------------------------------------------------------------------------------------------
-  TString BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210525/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210525/weights/TMVAClassification_BDTG.weights.xml";
-  TString BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210520/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210520/weights/TMVAClassification_BDTG.weights.xml";
+  TString BDT_nrb_xml_file_;
+  TString BDT_smh_xml_file_;
+  bool use_v3p8;
+  use_v3p8 = false;
+  use_v3p8 = true;
+  if ( use_v3p8 && (name_output_file.Contains("Data") || name_output_file.Contains("EGamma"))) { //v3p8
+      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210620/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210620/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
+  } else { //v3p6
+      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210525/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210525/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210520/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210520/weights/TMVAClassification_BDTG.weights.xml";
+  }
   flashgg::THQ_BDT_Helper *tprimeTagger_nrb = new flashgg::THQ_BDT_Helper("BDTG", BDT_nrb_xml_file_);
   flashgg::THQ_BDT_Helper *tprimeTagger_smh = new flashgg::THQ_BDT_Helper("BDTG", BDT_smh_xml_file_);
 
@@ -148,38 +158,26 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   TString mass_tag04 = "M800_M1000";
   TString mass_tag05 = "M1100_M1200";
 
-//dataset_Run2_Tprime_NRB_varSet8_M1100_M1200_20210618/weights/TMVAClassification_BDT.weights.xml
-//dataset_Run2_Tprime_NRB_varSet8_M1100_M1200_20210618/weights/TMVAClassification_BDTG.weights.xml
-//dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210618/weights/TMVAClassification_BDT.weights.xml
-//dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210618/weights/TMVAClassification_BDTG.weights.xml
-//dataset_Run2_Tprime_NRB_varSet8_M800_M1000_20210618/weights/TMVAClassification_BDT.weights.xml
-//dataset_Run2_Tprime_NRB_varSet8_M800_M1000_20210618/weights/TMVAClassification_BDTG.weights.xml
-//dataset_Run2_Tprime_SMH_varSet8_M1100_M1200_20210618/weights/TMVAClassification_BDT.weights.xml
-//dataset_Run2_Tprime_SMH_varSet8_M1100_M1200_20210618/weights/TMVAClassification_BDTG.weights.xml
-//dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210618/weights/TMVAClassification_BDT.weights.xml
-//dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210618/weights/TMVAClassification_BDTG.weights.xml
-//dataset_Run2_Tprime_SMH_varSet8_M800_M1000_20210618/weights/TMVAClassification_BDT.weights.xml
-//dataset_Run2_Tprime_SMH_varSet8_M800_M1000_20210618/weights/TMVAClassification_BDTG.weights.xml
-
-  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed03_tmva      = new flashgg::THQ_BDT_Helper("BDT"  , path + "/20210426/dataset_Run2_Tprime_ttH_varSet8_" + mass_tag03 + "/weights/TMVAClassification_BDT.weights.xml"           );
-  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed04_tmva      = new flashgg::THQ_BDT_Helper("BDT"  , path + "/20210528/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag04 + "_20210528/weights/TMVAClassification_BDT.weights.xml"  );
-  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed05_tmva      = new flashgg::THQ_BDT_Helper("BDT"  , path + "/20210528/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag05 + "_20210528/weights/TMVAClassification_BDT.weights.xml"  );
-  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed03_tmva      = new flashgg::THQ_BDT_Helper("BDT"  , path + "/20210430/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag03 + "/weights/TMVAClassification_BDT.weights.xml"           );
-  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed04_tmva      = new flashgg::THQ_BDT_Helper("BDT"  , path + "/20210527/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag04 + "_20210527/weights/TMVAClassification_BDT.weights.xml"  );
-  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed05_tmva      = new flashgg::THQ_BDT_Helper("BDT"  , path + "/20210527/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag05 + "_20210527/weights/TMVAClassification_BDT.weights.xml"  );
-  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210520/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag03 + "_20210520/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210520/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag04 + "_20210520/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210520/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag05 + "_20210520/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210525/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag03 + "_20210525/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210525/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag04 + "_20210525/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210525/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag05 + "_20210525/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed03_tmva      = new flashgg::THQ_BDT_Helper("BDT"  , path + "/20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag03 + "_20210620/weights/TMVAClassification_BDT.weights.xml"  );
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed04_tmva      = new flashgg::THQ_BDT_Helper("BDT"  , path + "/20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag04 + "_20210620/weights/TMVAClassification_BDT.weights.xml"  );
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed05_tmva      = new flashgg::THQ_BDT_Helper("BDT"  , path + "/20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag05 + "_20210620/weights/TMVAClassification_BDT.weights.xml"  );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed03_tmva      = new flashgg::THQ_BDT_Helper("BDT"  , path + "/20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag03 + "_20210620/weights/TMVAClassification_BDT.weights.xml"  );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed04_tmva      = new flashgg::THQ_BDT_Helper("BDT"  , path + "/20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag04 + "_20210620/weights/TMVAClassification_BDT.weights.xml"  );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed05_tmva      = new flashgg::THQ_BDT_Helper("BDT"  , path + "/20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag05 + "_20210620/weights/TMVAClassification_BDT.weights.xml"  );
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag03 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag04 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag05 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag03 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag04 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag05 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
   //}}}
+  
+  bool debug = false;
   bool perform_consistency_check = false;
   // bool, lumi, pdf, counters{{{
   //----------------------------------------------------------------------------------------------------
   // Other inits
   //----------------------------------------------------------------------------------------------------
-  bool debug = false;
   bool debug_deeper = false;
 
   cout << "mYear: " << mYear << endl;
@@ -192,9 +190,11 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_runII");
 
   int counter = 0;
+  int counter_special_check = 0;
   int counter_nrb_same = 0;
   int counter_smh_same = 0;
   int counter_jet_negative_energy = 0;
+  int counter_negative_reco_mass = 0;
   int counter_tprime_ultraHeavy_mass = 0;
   int counter_tprime_ultraHeavy_mass_3TeV = 0;
   int counter_tprime_ultraHeavy_mass_5TeV = 0;
@@ -202,6 +202,9 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   int counter_tprime_ultraHeavy_mass_10TeV = 0;
   int counter_tprime_ultraHeavy_mass_13TeV = 0;
   //}}}
+  
+  
+  bool does_exist = false;
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
     // Get File Content{{{
@@ -227,6 +230,36 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       tprimetHHadronic::progress( nEventsTotal, nEventsChain );
 
       //----------------------------------------------------------------------------------------------------
+      // looking for missing evevnts
+      //----------------------------------------------------------------------------------------------------
+      // more{{{
+      //[Info] run:lumi:event = 317661:672:996396131, CMS_hgg_mass = 102.7698851824, score_nrb_ = 0.875308, score_smh_ = 0.868711, Era2018
+      //[Info] run:lumi:event = 317640:349:478921037, CMS_hgg_mass = 103.9572322282, score_nrb_ = 0.81153, score_smh_ = 0.84076, Era2018
+      //[Info] run:lumi:event = 317392:932:1306452806, CMS_hgg_mass = 109.4592291820, score_nrb_ = 0.91195, score_smh_ = 0.845275, Era2018
+      //[Info] run:lumi:event = 317641:1237:1861009133, CMS_hgg_mass = 110.0835225942, score_nrb_ = 0.972928, score_smh_ = 0.843859, Era2018
+      //[Info] run:lumi:event = 317392:1201:1702819299, CMS_hgg_mass = 113.6481955502, score_nrb_ = 0.856636, score_smh_ = 0.828896, Era2018
+      //[Info] run:lumi:event = 317320:699:1001269663, CMS_hgg_mass = 141.4934924656, score_nrb_ = 0.893802, score_smh_ = 0.895883, Era2018
+      //[Info] run:lumi:event = 302240:496:501669522, CMS_hgg_mass = 101.6673298758, score_nrb_ = 0.926539, score_smh_ = 0.863775, Era2017
+
+      bool check_missing_events = true;
+      if(check_missing_events)
+      {
+        long evt_  = analyzer.event();
+        long run_  = analyzer.run();
+        long lumi_ = analyzer.lumi();
+        //printf("[Details] Run:Lumi:Event = %ld:%ld:%ld\n", run_, lumi_, evt_);
+        
+        does_exist = looking_for_missing_events(run_, lumi_, evt_);
+        if(does_exist)
+        {
+            printf("[Good News] Yes! it is there! run:lumi:event = %ld:%ld:%ld, ", run_, lumi_, evt_);
+            printf("CMS_hgg_mass = %f\n", CMS_hgg_mass());
+        }
+      }
+
+      if(does_exist) printf("[high-priority] this is a start...\n");
+      //}}}
+      //----------------------------------------------------------------------------------------------------
       // Jets
       //----------------------------------------------------------------------------------------------------
       bool flag_negative_energy = false;
@@ -235,11 +268,20 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       vector< std::pair<int, double> > btag_scores_sorted = sortVectorGreater(btag_scores);
       if(jets.size() < 3) continue;
 
+      if(does_exist) printf("[high-priority] passing jet selection\n");
       //----------------------------------------------------------------------------------------------------
       // Blinded region
       //----------------------------------------------------------------------------------------------------
       // processId, evt_weight, photon IDMVA, data-driven description, ttX overlap removal, blind Mgg signal region{{{
-      bool isData = currentFileTitle.Contains("DoubleEG") || currentFileTitle.Contains("EGamma"); 
+      if( currentFileTitle.Contains("merged_ntuple") ) currentFileTitle = currentFileTitle.ReplaceAll("merged_ntuple", "merged_ntuple_Data"); // test and debug purpose
+
+      bool isData = currentFileTitle.Contains("DoubleEG") || currentFileTitle.Contains("EGamma") || currentFileTitle.Contains("Data"); 
+
+      // Check golden json
+      if (isData) {
+          if (!pass_json(mYear, analyzer.run(), analyzer.lumi())) continue;
+      }
+
       bool blind = true;
       int genPhotonId = isData ? -1 : categorize_photons(leadGenMatch(), subleadGenMatch()); // overlap removal for ttX
       int processId = categorize_process(currentFileTitle, genPhotonId);
@@ -258,6 +300,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       bool pass_photon_pt_criteria = dipho_leadPt()>30. && dipho_subleadPt()>18.;
       if(!pass_photon_pt_criteria) continue;
 
+      bool isSignal = currentFileTitle.Contains("ttHJetToGG") || currentFileTitle.Contains("ttHToGG") || currentFileTitle.Contains("THQ") || currentFileTitle.Contains("THW") || currentFileTitle.Contains("VBF") || currentFileTitle.Contains("GluGluHToGG") || currentFileTitle.Contains("VHToGG") || currentFileTitle.Contains("TprimeBToTH");
+
       if (is_data && processId != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)  continue;
       if (is_data && processId != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)
           printf("[WARNING] Data events in signal region is used! mass = %.2f, processId = %d\n", CMS_hgg_mass(), processId);
@@ -269,6 +313,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       double subleadID_ = dipho_leadIDMVA() == maxIDMVA_ ? minIDMVA_ : maxIDMVA_; 
       //}}}
 
+      if(does_exist) printf("[high-priority] passing blinded region\n");
       //----------------------------------------------------------------------------------------------------
       // Assign variables values
       //----------------------------------------------------------------------------------------------------
@@ -287,7 +332,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 //    ht_         = get_ht(jets); // function defined in include/ttHLooper.h
 //    ht_         = get_ht(); // function defined in include/ScanChain.h
       ht_         = HT();
-      njets_      = n_jets();
+      //njets_      = n_jets();
+      njets_      = jets.size();
       nbjets_     = n_L_bjets();
       max1_btag_  = btag_scores_sorted[0].second;
       max2_btag_  = btag_scores_sorted[1].second;
@@ -332,6 +378,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       met_                = recoMET_pt();
 
       dipho_rapidity_     = diphoton.Rapidity(); //dipho_rapidity();
+      //dipho_rapidity_     = dipho_rapidity();
       helicity_angle_     = helicity(lead_photon, sublead_photon);
 
       //------------------------------ Minimum chi-2 method (cov.) ------------------------------//
@@ -348,7 +395,9 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       TLorentzVector cov_tprime = cov_top + diphoton;
 
       bool pass_eta_criteria_on_wjets = ( cov_wjet1.Eta() < 3. && cov_wjet2.Eta() < 3. );
+      //bool pass_eta_criteria_on_wjets = ( abs(cov_wjet1.Eta()) < 3. && abs(cov_wjet2.Eta()) < 3. );
       if( !pass_eta_criteria_on_wjets ) continue;
+      if( !has_resonable_reco ) continue;
 
       double mass_wboson = has_resonable_reco ? cov_wboson.M()     : -1.;
       double mass_top    = has_resonable_reco ? cov_top.M()        : -1.;
@@ -406,6 +455,19 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       jet2_ptOverM_ = (njets_ >= 2 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[1].Pt() / chi2_tbw_mass_  : -999; 
       jet3_ptOverM_ = (njets_ >= 3 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[2].Pt() / chi2_tbw_mass_  : -999;
       jet4_ptOverM_ = (njets_ >= 4 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[3].Pt() / chi2_tbw_mass_  : -999;
+
+      // assign unphysical value if the reconstruction is unphysical
+      chi2_bjet_ptOverM_        = (has_resonable_reco && pass_eta_criteria_on_wjets && chi2_tbw_mass_ > 0.        ) ? cov_bjet.Pt()   / chi2_tbw_mass_         : -999;
+      chi2_wjet1_ptOverM_       = (has_resonable_reco && pass_eta_criteria_on_wjets && chi2_wboson_mass_ > 0.     ) ? cov_wjet1.Pt()  / chi2_wboson_mass_      : -999;
+      chi2_wjet2_ptOverM_       = (has_resonable_reco && pass_eta_criteria_on_wjets && chi2_wboson_mass_ > 0.     ) ? cov_wjet2.Pt()  / chi2_wboson_mass_      : -999;
+      chi2_wboson_ptOverM_      = (has_resonable_reco && pass_eta_criteria_on_wjets && chi2_wboson_mass_ > 0.     ) ? cov_wboson.Pt() / chi2_wboson_mass_      : -999;
+      chi2_tbw_ptOverM_         = (has_resonable_reco && pass_eta_criteria_on_wjets && chi2_tbw_mass_ > 0.        ) ? cov_top.Pt()    / chi2_tbw_mass_         : -999;
+      chi2_tprime_ptOverM_      = (has_resonable_reco && pass_eta_criteria_on_wjets && chi2_recoMass_tprime() >0. ) ? cov_tprime.Pt() / chi2_recoMass_tprime() : -999;
+
+      jet1_ptOverM_ = (njets_ >= 1 && (has_resonable_reco && pass_eta_criteria_on_wjets && chi2_tbw_mass_ > 0.)) ? jets[0].Pt() / chi2_tbw_mass_  : -999;
+      jet2_ptOverM_ = (njets_ >= 2 && (has_resonable_reco && pass_eta_criteria_on_wjets && chi2_tbw_mass_ > 0.)) ? jets[1].Pt() / chi2_tbw_mass_  : -999; 
+      jet3_ptOverM_ = (njets_ >= 3 && (has_resonable_reco && pass_eta_criteria_on_wjets && chi2_tbw_mass_ > 0.)) ? jets[2].Pt() / chi2_tbw_mass_  : -999;
+      jet4_ptOverM_ = (njets_ >= 4 && (has_resonable_reco && pass_eta_criteria_on_wjets && chi2_tbw_mass_ > 0.)) ? jets[3].Pt() / chi2_tbw_mass_  : -999;
       //}}}
       // my_jets_info{{{
       my_jets_info_instance.chi2_value_         = chi2_value_;
@@ -496,6 +558,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
         float chi2_tprime_mass_             = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_tprime.M()                   : -999;
         //}}}
 
+      if(does_exist) printf("[high-priority] assign values\n");
       //----------------------------------------------------------------------------------------------------
       // Evaluate MVA values
       //----------------------------------------------------------------------------------------------------
@@ -517,24 +580,33 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       double mva_value_nrb_varset8_mixed05_tmva_bdtg = mva_nrb_varset8_mixed05_tmva_bdtg->evaluate("BDTG" , MVAvarList);
       //}}}
 
+      if(does_exist) printf("[high-priority] passing mva evaluation\n");
       //----------------------------------------------------------------------------------------------------
       // For the moment the genPhotonId is assumed -1 (TTGG, TTG, TTJets might have overlap)
       //----------------------------------------------------------------------------------------------------
-      int mvaCategoryId = mva_value_nrb < -0.8 ? 0 : 1;
-      if (!passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_, -999.))	continue; // -999 represents no cut on mva values
-
+      // id information
       int genLeptonId = 0; // isData ? -1 : categorize_leptons(nGoodEls(), nGoodMus()); // none of reco lepton exists
       int genPhotonDetailId = 5; // isData ? -1 : categorize_photons_detail(lead_photon_type(), sublead_photon_type()); // assume prompt-prompt
       int photonLocationId = categorize_photon_locations(dipho_leadEta(), dipho_subleadEta());
       int yearId = mYear == "2016" ? 0 : (mYear == "2017" ? 1 : (mYear == "2018" ? 2 : -1));
+      int mvaCategoryId = mva_value_nrb < -0.8 ? 0 : 1;
       vector<int> vId = {genLeptonId, genPhotonId, genPhotonDetailId, photonLocationId, mvaCategoryId, -1, yearId};
+
+      // study of data-driven method: histograms need to be filled before selection
+      TString syst_ext = "";
+      if(leadGenMatch() != 1)    { vProcess[processId]->fill_histogram("h" + syst_ext + "fake_photon_IDMVA" , dipho_leadIDMVA()   , evt_weight, vId); }
+      if(subleadGenMatch() != 1) { vProcess[processId]->fill_histogram("h" + syst_ext + "fake_photon_IDMVA" , dipho_subleadIDMVA(), evt_weight, vId); }
+
+      // selection criteria on photon IDMVA
+      if (!passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_, -999.))	continue; // -999 represents no cut on mva values
 
       total_yields += evt_weight;
 
+      if(does_exist) printf("[high-priority] passing preselection\n");
       //----------------------------------------------------------------------------------------------------
       // Consistency check
       //----------------------------------------------------------------------------------------------------
-      if(perform_consistency_check && processId == 18) continue; //exclude data-driven from consistency check
+      if(processId != 18) { //exclude data-driven from consistency check
       // more{{{
       counter += 1;
       if(flag_negative_energy) counter_jet_negative_energy += 1;
@@ -543,94 +615,185 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       if(mass_tprime > 7000.) counter_tprime_ultraHeavy_mass_7TeV += 1;
       if(mass_tprime > 10000.) counter_tprime_ultraHeavy_mass_10TeV += 1;
       if(mass_tprime > 13000.) counter_tprime_ultraHeavy_mass_13TeV += 1;
-      check_ultra_large_tprime_mass(mass_tprime > 5000., my_jets_info_instance);
+      if(debug) check_ultra_large_tprime_mass(mass_tprime > 5000., my_jets_info_instance);
 
-      bool found_discrepancy_nrb = mycheck("BDT (NRB)", counter_nrb_same, MVAscore_BDT_nrb(), mva_value_nrb_varset8_mixed03_tmva_bdtg, dipho_pt());
-      bool found_discrepancy_smh = mycheck("BDT (SMH)", counter_smh_same, MVAscore_BDT_smh(), mva_value_smh_varset8_mixed03_tmva_bdtg, dipho_pt());
+      bool create_data_table = true;
+      create_data_table = false;
+      if(create_data_table)
+      {
+        long evt_  = analyzer.event();
+        long run_  = analyzer.run();
+        long lumi_ = analyzer.lumi();
+        printf("[Info] Run:Lumi:Event = %ld:%ld:%ld, ", run_, lumi_, evt_);
+        printf("CMS_hgg_mass = %f, ", CMS_hgg_mass());
+        printf("sigmaMoM_decorr = %f\n", sigmaMoM_decorr());
+        //printf("sigmaRV = %f\n", sigmaRV());
+      }
+
+      bool found_discrepancy_nrb = mycheck("BDT (NRB)", counter_nrb_same, MVAscore_BDT_nrb(), mva_value_nrb, dipho_pt());
+      bool found_discrepancy_smh = mycheck("BDT (SMH)", counter_smh_same, MVAscore_BDT_smh(), mva_value_smh, dipho_pt());
       
       bool check_var = found_discrepancy_nrb || found_discrepancy_smh;
-      if(debug && check_var)
+      check_var = true;
+      check_var = false;
+      if(check_var)
       {
-          int evt_  = analyzer.event();
-          int run_  = analyzer.run();
-          int lumi_ = analyzer.lumi();
-          printf("[Info] Run:Lumi:Event = %d:%d:%d\n", run_, lumi_, evt_);
+          long evt_  = analyzer.event();
+          long run_  = analyzer.run();
+          long lumi_ = analyzer.lumi();
+          printf("[Info] Run:Lumi:Event = %ld:%ld:%ld\n", run_, lumi_, evt_);
           printf("[check] processId = %d, minIDMVA = %.2f, maxIDMVA = %.2f\n", processId, minIDMVA_, maxIDMVA_);
 
           // printf format
-          printf("%s: %.10f , " , "diphoton_mass_"           , CMS_hgg_mass                );
-          printf("%s: %.10f , " , "diphoton_pt_"             , dipho_pt()                 );
+          printf("%s: %.10f , " , "diphoton_mass_"           , CMS_hgg_mass()               );
+          printf("%s: %.10f , " , "diphoton_pt_"             , dipho_pt()                   );
           tprimeTagger_nrb->print_details( MVAvarList );
           printf("%s: %.10f , " , "score_nrb_"               , mva_value_nrb                );
           printf("%s: %.10f , " , "score_smh_"               , mva_value_smh                );
           printf("\n\n");
       }
       //}}}
+      } // end of consistency check
+      // check inf values {{{
+      bool flag = false;
+      if(chi2_recoMass_wboson()<=0.) { flag = true; printf("chi2_recoMass_wboson() = %f, %f\n", chi2_recoMass_wboson(), cov_wboson.M()); }
+      if(chi2_recoMass_top()<=0.)    { flag = true; printf("chi2_recoMass_top() = %f, %f\n", chi2_recoMass_top(), cov_top.M());          }
+      if(chi2_recoMass_tprime()<=0.) { flag = true; printf("chi2_recoMass_tprime() = %f, %f\n", chi2_recoMass_tprime(), cov_tprime.M()); }
+      if(flag)
+      {
+          counter_negative_reco_mass += 1;
+          printf("[negative reco-mass check] ");
+          tprimeTagger_nrb->print_details(MVAvarList);
+          printf("\n----------------------------------------------------------------------------------------------------\n\n");
+      } //}}}
 
+      if(does_exist) printf("[high-priority] passing consistency check\n");
       //----------------------------------------------------------------------------------------------------
       // MVA cut values
       //----------------------------------------------------------------------------------------------------
-      bool pass_mva_cut_bdt_nrb_mixed03 = mva_value_nrb_varset8_mixed03_tmva > 0.560;//0.560; //0.510;
-      bool pass_mva_cut_bdt_nrb_mixed04 = mva_value_nrb_varset8_mixed04_tmva > 0.500;//0.551; //0.500;
-      bool pass_mva_cut_bdt_nrb_mixed05 = mva_value_nrb_varset8_mixed05_tmva > 0.490;//0.542; //0.490;
-      bool pass_mva_cut_bdt_smh_mixed03 = mva_value_smh_varset8_mixed03_tmva > 0.520;
-      bool pass_mva_cut_bdt_smh_mixed04 = mva_value_smh_varset8_mixed04_tmva > 0.522;
-      bool pass_mva_cut_bdt_smh_mixed05 = mva_value_smh_varset8_mixed05_tmva > 0.534;
-      bool pass_mva_cut_bdtg_nrb_mixed03 = mva_value_nrb_varset8_mixed03_tmva_bdtg > 0.560; //0.580; //0.500; //0.785;
-      bool pass_mva_cut_bdtg_nrb_mixed04 = mva_value_nrb_varset8_mixed04_tmva_bdtg > 0.337; //0.706;
-      bool pass_mva_cut_bdtg_nrb_mixed05 = mva_value_nrb_varset8_mixed05_tmva_bdtg > 0.206; //0.580;
-      bool pass_mva_cut_bdtg_smh_mixed03 = mva_value_smh_varset8_mixed03_tmva_bdtg > 0.814;
-      bool pass_mva_cut_bdtg_smh_mixed04 = mva_value_smh_varset8_mixed04_tmva_bdtg > 0.820;
-      bool pass_mva_cut_bdtg_smh_mixed05 = mva_value_smh_varset8_mixed05_tmva_bdtg > 0.800;
+      // more{{{
+      bool pass_mva_cut_bdt_nrb_mixed03  = mva_value_nrb_varset8_mixed03_tmva > 0.506;
+      bool pass_mva_cut_bdt_nrb_mixed04  = mva_value_nrb_varset8_mixed04_tmva > 0.494;
+      bool pass_mva_cut_bdt_nrb_mixed05  = mva_value_nrb_varset8_mixed05_tmva > 0.484;
+      bool pass_mva_cut_bdt_smh_mixed03  = mva_value_smh_varset8_mixed03_tmva > 0.543;
+      bool pass_mva_cut_bdt_smh_mixed04  = mva_value_smh_varset8_mixed04_tmva > 0.535;
+      bool pass_mva_cut_bdt_smh_mixed05  = mva_value_smh_varset8_mixed05_tmva > 0.529;
+      bool pass_mva_cut_bdtg_nrb_mixed03 = mva_value_nrb_varset8_mixed03_tmva_bdtg > 0.530;
+      bool pass_mva_cut_bdtg_nrb_mixed04 = mva_value_nrb_varset8_mixed04_tmva_bdtg > 0.363;
+      bool pass_mva_cut_bdtg_nrb_mixed05 = mva_value_nrb_varset8_mixed05_tmva_bdtg > 0.228;
+      bool pass_mva_cut_bdtg_smh_mixed03 = mva_value_smh_varset8_mixed03_tmva_bdtg > 0.828;
+      bool pass_mva_cut_bdtg_smh_mixed04 = mva_value_smh_varset8_mixed04_tmva_bdtg > 0.826;
+      bool pass_mva_cut_bdtg_smh_mixed05 = mva_value_smh_varset8_mixed05_tmva_bdtg > 0.816;
 
       bool pass_mva_cut_bdtg_nrb_mixed03_Maxime = mva_value_nrb_varset8_mixed03_tmva_bdtg > 0.940;
       bool pass_mva_cut_bdtg_smh_mixed03_Maxime = mva_value_smh_varset8_mixed03_tmva_bdtg > 0.300;
 
-      //bool pass_tprime_low_mass_criterion = mass_tprime > 300.;
       bool pass_tprime_low_mass_criterion = mass_tprime > 0.;
+      //pass_tprime_low_mass_criterion = mass_tprime > 300.;
+      //pass_tprime_low_mass_criterion = mass_tprime > 400.;
+      //pass_tprime_low_mass_criterion = mass_tprime > 500.;
 
       bool criteria_mva_Maxime = mva_value_nrb_varset8_mixed03_tmva_bdtg > 0.94 && mva_value_smh_varset8_mixed03_tmva_bdtg > 0.30;
       bool criteria_TprimeMass_Maxime = mass_tprime > 450. && mass_tprime < 900.;
       bool pass_selection_from_Maxime_optimization = criteria_mva_Maxime && criteria_TprimeMass_Maxime;
+      //}}}
+
+      //----------------------------------------------------------------------------------------------------
+      // consistency check for data in sideband region
+      //----------------------------------------------------------------------------------------------------
+      // more {{{
+      if(processId == 10)
+      {
+          long evt_  = analyzer.event();
+          long run_  = analyzer.run();
+          long lumi_ = analyzer.lumi();
+
+          if(pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03)
+          {
+              counter_special_check += 1;
+              printf("[Info-03] Run:Lumi:Event = %ld:%ld:%ld, ", run_, lumi_, evt_);
+              printf("CMS_hgg_mass = %f, ", CMS_hgg_mass());
+              printf("sigmaMoM_decorr = %f\n", sigmaMoM_decorr());
+          }
+          if(pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04)
+          {
+              printf("[Info-04] Run:Lumi:Event = %ld:%ld:%ld, ", run_, lumi_, evt_);
+              printf("CMS_hgg_mass = %f, ", CMS_hgg_mass());
+              printf("sigmaMoM_decorr = %f\n", sigmaMoM_decorr());
+          }
+          if(pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05)
+          {
+              printf("[Info-05] Run:Lumi:Event = %ld:%ld:%ld, ", run_, lumi_, evt_);
+              printf("CMS_hgg_mass = %f, ", CMS_hgg_mass());
+              printf("sigmaMoM_decorr = %f\n", sigmaMoM_decorr());
+          }
+      }
+      //}}}
 
       //****************************************************************************************************
       // Fill histograms
       //****************************************************************************************************
-      TString syst_ext = "";
-      
-      if(leadGenMatch() != 1)    { vProcess[processId]->fill_histogram("h" + syst_ext + "fake_photon_IDMVA" , dipho_leadIDMVA()   , evt_weight, vId); }
-      if(subleadGenMatch() != 1) { vProcess[processId]->fill_histogram("h" + syst_ext + "fake_photon_IDMVA" , dipho_subleadIDMVA(), evt_weight, vId); }
-
       if(pass_tprime_low_mass_criterion){
+      if(does_exist) printf("[high-priority] within seesion of filling histograms\n");
 
       //----------------------------------------------------------------------------------------------------
       // diphoton mass after cutting MVA scores
       //----------------------------------------------------------------------------------------------------
+      vProcess[processId]->fill_histogram("h" + syst_ext + "Mass"               , CMS_hgg_mass()                       , evt_weight , vId);
       // more{{{
-      if(pass_mva_cut_bdt_nrb_mixed03)                                   { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_nrb_cut_mixed03"            , diphoton.M() , evt_weight , vId); }
-      if(pass_mva_cut_bdt_nrb_mixed04)                                   { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_nrb_cut_mixed04"            , diphoton.M() , evt_weight , vId); }
-      if(pass_mva_cut_bdt_nrb_mixed05)                                   { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_nrb_cut_mixed05"            , diphoton.M() , evt_weight , vId); }
-      if(pass_mva_cut_bdtg_nrb_mixed03)                                  { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_nrb_cut_mixed03"           , diphoton.M() , evt_weight , vId); }
-      if(pass_mva_cut_bdtg_nrb_mixed04)                                  { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_nrb_cut_mixed04"           , diphoton.M() , evt_weight , vId); }
-      if(pass_mva_cut_bdtg_nrb_mixed05)                                  { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_nrb_cut_mixed05"           , diphoton.M() , evt_weight , vId); }
+      if(pass_mva_cut_bdt_nrb_mixed03)                                   { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_nrb_cut_mixed03"            , CMS_hgg_mass() , evt_weight , vId); }
+      if(pass_mva_cut_bdt_nrb_mixed04)                                   { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_nrb_cut_mixed04"            , CMS_hgg_mass() , evt_weight , vId); }
+      if(pass_mva_cut_bdt_nrb_mixed05)                                   { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_nrb_cut_mixed05"            , CMS_hgg_mass() , evt_weight , vId); }
+      if(pass_mva_cut_bdtg_nrb_mixed03)                                  { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_nrb_cut_mixed03"           , CMS_hgg_mass() , evt_weight , vId); }
+      if(pass_mva_cut_bdtg_nrb_mixed04)                                  { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_nrb_cut_mixed04"           , CMS_hgg_mass() , evt_weight , vId); }
+      if(pass_mva_cut_bdtg_nrb_mixed05)                                  { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_nrb_cut_mixed05"           , CMS_hgg_mass() , evt_weight , vId); }
 
       // diphoton mass in signal regions defined by BDTs
-      if(pass_mva_cut_bdt_nrb_mixed03 && pass_mva_cut_bdt_smh_mixed03)   { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_smh_cut_mixed03"            , diphoton.M() , evt_weight , vId); }
-      if(pass_mva_cut_bdt_nrb_mixed04 && pass_mva_cut_bdt_smh_mixed04)   { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_smh_cut_mixed04"            , diphoton.M() , evt_weight , vId); }
-      if(pass_mva_cut_bdt_nrb_mixed05 && pass_mva_cut_bdt_smh_mixed05)   { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_smh_cut_mixed05"            , diphoton.M() , evt_weight , vId); }
-      if(pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_smh_cut_mixed03"           , diphoton.M() , evt_weight , vId); }
-      if(pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_smh_cut_mixed04"           , diphoton.M() , evt_weight , vId); }
-      if(pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_smh_cut_mixed05"           , diphoton.M() , evt_weight , vId); }
-      if(pass_selection_from_Maxime_optimization)                        { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_Maxime_criteria_mixed03"        , diphoton.M() , evt_weight , vId); }
+      if(pass_mva_cut_bdt_nrb_mixed03  && pass_mva_cut_bdt_smh_mixed03)  { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_smh_cut_mixed03"            , CMS_hgg_mass() , evt_weight , vId); }
+      if(pass_mva_cut_bdt_nrb_mixed04  && pass_mva_cut_bdt_smh_mixed04)  { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_smh_cut_mixed04"            , CMS_hgg_mass() , evt_weight , vId); }
+      if(pass_mva_cut_bdt_nrb_mixed05  && pass_mva_cut_bdt_smh_mixed05)  { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDT_smh_cut_mixed05"            , CMS_hgg_mass() , evt_weight , vId); }
+      if(pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_smh_cut_mixed03"           , CMS_hgg_mass() , evt_weight , vId); }
+      if(pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_smh_cut_mixed04"           , CMS_hgg_mass() , evt_weight , vId); }
+      if(pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_smh_cut_mixed05"           , CMS_hgg_mass() , evt_weight , vId); }
+      if(pass_selection_from_Maxime_optimization)                        { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_Maxime_criteria_mixed03"        , CMS_hgg_mass() , evt_weight , vId); }
 
+      if(pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_smh_cut_mixed03_coarser"   , CMS_hgg_mass() , evt_weight , vId); }
+      if(pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_smh_cut_mixed04_coarser"   , CMS_hgg_mass() , evt_weight , vId); }
+      if(pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_pass_BDTG_smh_cut_mixed05_coarser"   , CMS_hgg_mass() , evt_weight , vId); }
+      //}}}
+
+      // Tprime mass in signal region (MC only)
+      if (CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.) {
+          if(pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_MggWindow_fine"    , mass_tprime , evt_weight , vId); }
+          if(pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_MggWindow_fine"    , mass_tprime , evt_weight , vId); }
+          if(pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_MggWindow_fine"    , mass_tprime , evt_weight , vId); }
+          if(pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_MggWindow_coarser" , mass_tprime , evt_weight , vId); }
+          if(pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_MggWindow_coarser" , mass_tprime , evt_weight , vId); }
+          if(pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_MggWindow_coarser" , mass_tprime , evt_weight , vId); }
+      }
+
+      //consider NRB events only in sideband region
+      if (!isSignal && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.) continue;
+
+      //----------------------------------------------------------------------------------------------------
+      // Tprime mass after cutting MVA scores
+      //----------------------------------------------------------------------------------------------------
+      // more{{{
       // Tprime mass in signal regions defined by BDTs
-      if(pass_mva_cut_bdt_nrb_mixed03 && pass_mva_cut_bdt_smh_mixed03)   { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDT_smh_cut_mixed03"     , mass_tprime  , evt_weight , vId); }
-      if(pass_mva_cut_bdt_nrb_mixed04 && pass_mva_cut_bdt_smh_mixed04)   { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDT_smh_cut_mixed04"     , mass_tprime  , evt_weight , vId); }
-      if(pass_mva_cut_bdt_nrb_mixed05 && pass_mva_cut_bdt_smh_mixed05)   { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDT_smh_cut_mixed05"     , mass_tprime  , evt_weight , vId); }
+      if(pass_mva_cut_bdt_nrb_mixed03  && pass_mva_cut_bdt_smh_mixed03)  { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDT_smh_cut_mixed03"     , mass_tprime  , evt_weight , vId); }
+      if(pass_mva_cut_bdt_nrb_mixed04  && pass_mva_cut_bdt_smh_mixed04)  { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDT_smh_cut_mixed04"     , mass_tprime  , evt_weight , vId); }
+      if(pass_mva_cut_bdt_nrb_mixed05  && pass_mva_cut_bdt_smh_mixed05)  { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDT_smh_cut_mixed05"     , mass_tprime  , evt_weight , vId); }
       if(pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03"    , mass_tprime  , evt_weight , vId); }
       if(pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04"    , mass_tprime  , evt_weight , vId); }
       if(pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05"    , mass_tprime  , evt_weight , vId); }
       if(pass_selection_from_Maxime_optimization)                        { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_Maxime_criteria_mixed03" , mass_tprime  , evt_weight , vId); }
+
+      if(pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_fine"    , mass_tprime , evt_weight , vId); }
+      if(pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_fine"    , mass_tprime , evt_weight , vId); }
+      if(pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_fine"    , mass_tprime , evt_weight , vId); }
+      if(pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_coarser" , mass_tprime , evt_weight , vId); }
+      if(pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_coarser" , mass_tprime , evt_weight , vId); }
+      if(pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_coarser" , mass_tprime , evt_weight , vId); }
       //}}}
 
       //----------------------------------------------------------------------------------------------------
@@ -721,9 +884,9 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //----------------------------------------------------------------------------------------------------
       // more{{{
       vProcess[processId]->fill_histogram("h" + syst_ext + "NVtx"               , nvtx()                             , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "Mass"               , diphoton.M()                       , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_sideband"      , CMS_hgg_mass()                       , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "PtHiggs"            , diphoton.Pt()                      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "DiphotonPtOverMass" , diphoton.Pt() / diphoton.M()       , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "DiphotonPtOverMass" , diphoton.Pt() / CMS_hgg_mass()       , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonDeltaR"       , lead_photon.DeltaR(sublead_photon) , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "Rapidity"           , diphoton.Rapidity()                , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "AbsCosHelicity"     , helicity_angle_                    , evt_weight , vId);
@@ -821,20 +984,24 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 
       } // end of tprime mass criterion
 
+      if(does_exist) printf("[high-priority] after filling hists\n");
+
       //----------------------------------------------------------------------------------------------------
       // skipped session
       //----------------------------------------------------------------------------------------------------
     } // end of event loop
 
+    if(does_exist) printf("[high-priority] outside event loop\n");
     printf("[check] BDT(NRB) same: %d/%d (%.2f)\n", counter_nrb_same, counter, (double) counter_nrb_same / (double) counter);
     printf("[check] BDT(SMH) same: %d/%d (%.2f)\n", counter_smh_same, counter, (double) counter_smh_same / (double) counter);
-    //printf("[check] jet energy < -100 GeV: %d/%d (%.2f)\n", counter_jet_negative_energy, counter, (double) counter_jet_negative_energy / (double) counter);
+    printf("[check] reco mass < 0 GeV: %d/%d (%.2f)\n", counter_negative_reco_mass, counter, (double) counter_negative_reco_mass / (double) counter);
     printf("[check] jet energy < 0 GeV: %d/%d (%.2f)\n", counter_jet_negative_energy, counter, (double) counter_jet_negative_energy / (double) counter);
     printf("[check] T' mass > 3TeV : %d/%d (%.2f)\n" , counter_tprime_ultraHeavy_mass_3TeV  , counter , (double) counter_tprime_ultraHeavy_mass_3TeV / (double) counter);
     printf("[check] T' mass > 5TeV : %d/%d (%.2f)\n" , counter_tprime_ultraHeavy_mass_5TeV  , counter , (double) counter_tprime_ultraHeavy_mass_5TeV / (double) counter);
     printf("[check] T' mass > 7TeV : %d/%d (%.2f)\n" , counter_tprime_ultraHeavy_mass_7TeV  , counter , (double) counter_tprime_ultraHeavy_mass_7TeV / (double) counter);
     printf("[check] T' mass > 10TeV: %d/%d (%.2f)\n" , counter_tprime_ultraHeavy_mass_10TeV , counter , (double) counter_tprime_ultraHeavy_mass_10TeV / (double) counter);
     printf("[check] T' mass > 13TeV: %d/%d (%.2f)\n" , counter_tprime_ultraHeavy_mass_13TeV , counter , (double) counter_tprime_ultraHeavy_mass_13TeV / (double) counter);
+    printf("[check] counter_special_check = %d\n" , counter_special_check );
 
     // Clean Up
     delete tree;
@@ -876,4 +1043,3 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   delete bmark;
   return 0;
 }
-

@@ -166,18 +166,6 @@ class BabyMaker {
     float	    m_ggj_;
     float	    m_jjj_;
 
-    float       top_candidates_1_;
-    float       top_candidates_2_;
-    float       top_candidates_3_;
-    float       top_candidates_4_;
-    float       top_candidates_5_;
-    float       top_candidates_6_;
-    float       top_candidates_7_;
-    float       top_candidates_8_;
-    float       top_candidates_9_;
-    float       top_candidates_10_;
-    float       top_candidates_11_;
-    float       top_candidates_12_;
     //# Meng-Cheng's method
     float       mc_mva_score_tt_v4_;
     float       mc_mva_score_st_v4_;
@@ -260,6 +248,7 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_ = new TTree("t", "A Baby Ntuple");
 
   bool produce_ntuples_for_Maxime = true;
+  //bool produce_ntuples_for_Maxime = false;
   //----------------------------------------------------------------------------------------------------
   // For Maxime
   //----------------------------------------------------------------------------------------------------
@@ -270,11 +259,11 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_->Branch("T_Mtilde"                          , &tprime_mtilde_ );
 
   BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M600_M700"   , &bdtg_score_nrb_m600_m700_   );
-  //BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M800_M1000"  , &bdtg_score_nrb_m800_m1000_  );
-  //BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M1100_M1200" , &bdtg_score_nrb_m1100_m1200_ );
+  BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M800_M1000"  , &bdtg_score_nrb_m800_m1000_  );
+  BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M1100_M1200" , &bdtg_score_nrb_m1100_m1200_ );
   BabyTree_->Branch("BDTG_TprimeVsHiggs_M600_M700"      , &bdtg_score_smh_m600_m700_   );
-  //BabyTree_->Branch("BDTG_TprimeVsHiggs_M800_M1000"     , &bdtg_score_smh_m800_m1000_  );
-  //BabyTree_->Branch("BDTG_TprimeVsHiggs_M1100_M1200"    , &bdtg_score_smh_m1100_m1200_ );
+  BabyTree_->Branch("BDTG_TprimeVsHiggs_M800_M1000"     , &bdtg_score_smh_m800_m1000_  );
+  BabyTree_->Branch("BDTG_TprimeVsHiggs_M1100_M1200"    , &bdtg_score_smh_m1100_m1200_ );
 
   }
 
@@ -282,9 +271,9 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   // my full set var
   //----------------------------------------------------------------------------------------------------
   if(!produce_ntuples_for_Maxime){
-  BabyTree_->Branch("BDTG_TprimeVsHiggs_M600_M700_withNRBcut"      , &bdtg_score_smh_m600_m700_withNRBcut_   );
-  BabyTree_->Branch("BDTG_TprimeVsHiggs_M800_M1000_withNRBcut"     , &bdtg_score_smh_m800_m1000_withNRBcut_  );
-  BabyTree_->Branch("BDTG_TprimeVsHiggs_M1100_M1200_withNRBcut"    , &bdtg_score_smh_m1100_m1200_withNRBcut_ );
+  //BabyTree_->Branch("BDTG_TprimeVsHiggs_M600_M700_withNRBcut"      , &bdtg_score_smh_m600_m700_withNRBcut_   );
+  //BabyTree_->Branch("BDTG_TprimeVsHiggs_M800_M1000_withNRBcut"     , &bdtg_score_smh_m800_m1000_withNRBcut_  );
+  //BabyTree_->Branch("BDTG_TprimeVsHiggs_M1100_M1200_withNRBcut"    , &bdtg_score_smh_m1100_m1200_withNRBcut_ );
 
   BabyTree_->Branch("mva_branches"            , &mva_branches            );
   BabyTree_->Branch("year_"                   , &year_                   );
@@ -308,7 +297,6 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
 
   BabyTree_->Branch("objects_"                , &objects_                );
   BabyTree_->Branch("objects_boosted_"        , &objects_boosted_        );
-  BabyTree_->Branch("top_candidates_"         , &top_candidates_         );
 
   // Variable branches
   BabyTree_->Branch("maxIDMVA_"           , &maxIDMVA_           );
@@ -393,18 +381,6 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_->Branch("m_ggj_"              , &m_ggj_              );
   BabyTree_->Branch("m_jjj_"              , &m_jjj_              );
 
-  BabyTree_->Branch("top_candidates_1_"   , &top_candidates_1_   );
-  BabyTree_->Branch("top_candidates_2_"   , &top_candidates_2_   );
-  BabyTree_->Branch("top_candidates_3_"   , &top_candidates_3_   );
-  BabyTree_->Branch("top_candidates_4_"   , &top_candidates_4_   );
-  BabyTree_->Branch("top_candidates_5_"   , &top_candidates_5_   );
-  BabyTree_->Branch("top_candidates_6_"   , &top_candidates_6_   );
-  BabyTree_->Branch("top_candidates_7_"   , &top_candidates_7_   );
-  BabyTree_->Branch("top_candidates_8_"   , &top_candidates_8_   );
-  BabyTree_->Branch("top_candidates_9_"   , &top_candidates_9_   );
-  BabyTree_->Branch("top_candidates_10_"  , &top_candidates_10_  );
-  BabyTree_->Branch("top_candidates_11_"  , &top_candidates_11_  );
-  BabyTree_->Branch("top_candidates_12_"  , &top_candidates_12_  );
   //#chi-2 related
   BabyTree_->Branch("chi2_value_"               , &chi2_value_               );
   BabyTree_->Branch("chi2_bjet_pt_"             , &chi2_bjet_pt_             );

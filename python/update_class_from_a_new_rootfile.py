@@ -46,6 +46,10 @@ def update_data_format(filename):
     my_own_tag = "v3p5"
     treename = "tagsDumper/trees/tHq_13TeV_THQHadronicTag"
     #--------------------------------------------------
+    # data # add dipho_rapidity()
+    #--------------------------------------------------
+    my_own_tag = "v3p7"
+    treename = "tagsDumper/trees/test_13TeV_THQHadronicTag"
 
 
     #--------------------------------------------------
@@ -77,5 +81,6 @@ if __name__ == "__main__":
     rootfile = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ntuple_production/TprimeBToTH_M-1000_Era2018_numEvent10034.root"
     rootfile = mydir + "/rootfiles/ntuples_v3.3/Data_Era2018_v3p3.root"
     rootfile = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ntuple_production/consistency_check_txt/TprimeBToTH_M-1000_Era2017_v3p5.root"
+    rootfile = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ntuple_production/my_output_2018.root"
 
     update_data_format(rootfile)

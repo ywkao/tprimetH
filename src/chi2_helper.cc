@@ -48,6 +48,50 @@ TMatrixD get_cov_matrix_3x3(TString json_file)
     return matrix;
 }
 
+double chi2_calculator_simple(double w_mass, double t_mass)
+{
+    // means & covariance matrix elements are taken from covMatrx_Era2017_M1000.json
+    TVectorD vec_mean_values(2);
+
+    vec_mean_values(0) = 85.70;
+    vec_mean_values(1) = 174.81;
+
+    TVectorD vec_mass(2);
+    vec_mass(0) = w_mass - vec_mean_values(0);
+    vec_mass(1) = t_mass - vec_mean_values(1);
+
+    TMatrixD matrix(2,2);
+    matrix(0,0) = 305.14;
+    matrix(0,1) = 0.0;
+    matrix(1,0) = 0.0;
+    matrix(1,1) = 572.63;
+
+    double chi2_value = matrix.Invert()*vec_mass*vec_mass;
+    return chi2_value;
+}
+
+double chi2_calculator_2x2(double w_mass, double t_mass)
+{
+    // means & covariance matrix elements are taken from covMatrx_Era2017_M1000.json
+    TVectorD vec_mean_values(2);
+
+    vec_mean_values(0) = 85.70;
+    vec_mean_values(1) = 174.81;
+
+    TVectorD vec_mass(2);
+    vec_mass(0) = w_mass - vec_mean_values(0);
+    vec_mass(1) = t_mass - vec_mean_values(1);
+
+    TMatrixD matrix(2,2);
+    matrix(0,0) = 305.14;
+    matrix(0,1) = 282.18;
+    matrix(1,0) = 282.18;
+    matrix(1,1) = 572.63;
+
+    double chi2_value = matrix.Invert()*vec_mass*vec_mass;
+    return chi2_value;
+}
+
 double chi2_calculator_2x2(double w_mass, double t_mass, TString json_file)
 {
     // load value
@@ -170,7 +214,8 @@ bool get_the_best_bjj_candidate(std::vector<int> &indices_bjj, std::vector<TLore
                 double t_mass = top_candidate.M();
                 double tprime_mass = tprime_candidate.M();
                 //double chi2 = chi2_calculator_3x3(w_mass, t_mass, tprime_mass, json_file);
-                double chi2 = chi2_calculator_2x2(w_mass, t_mass, json_file);
+                //double chi2 = chi2_calculator_2x2(w_mass, t_mass, json_file);
+                double chi2 = chi2_calculator_2x2(w_mass, t_mass);
                 if(chi2 < min_chi2_value){
                     indices_bjj[0] = i;
                     indices_bjj[1] = j;
@@ -181,6 +226,16 @@ bool get_the_best_bjj_candidate(std::vector<int> &indices_bjj, std::vector<TLore
         }
     }//end of looping jets
 
+    //// my double check
+    //TLorentzVector bjet = jets[indices_bjj[0]];
+    //TLorentzVector w_candidate = jets[indices_bjj[1]] + jets[indices_bjj[2]];
+    //TLorentzVector top_candidate = w_candidate + bjet;
+    //double w_mass = w_candidate.M();
+    //double t_mass = top_candidate.M();
+    //double chi2_sim = chi2_calculator_simple(w_mass, t_mass);
+    //double chi2_cov = chi2_calculator_2x2(w_mass, t_mass);
+    //printf("[mycheck] chi2_sim = %.2f, chi2_cov = %.2f\n", chi2_sim, chi2_cov);
+    
     bool has_resonable_reco = indices_bjj[0] >= 0 && indices_bjj[1] >= 0 && indices_bjj[2] >= 0;
     return has_resonable_reco;
 }
