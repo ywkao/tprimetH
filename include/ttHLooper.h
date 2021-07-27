@@ -83,24 +83,42 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDT_smh_cut_mixed03"     , 50 , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDT_smh_cut_mixed04"     , 50 , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDT_smh_cut_mixed05"     , 50 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03"    , 50 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04"    , 50 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05"    , 50 , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_Maxime_criteria_mixed03" , 50 , 0 , 2500 );
 
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_coarser" , 25  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_coarser" , 25  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_coarser" , 25  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR"         , 50  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR"         , 50  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR"         , 50  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_coarser" , 25  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_coarser" , 25  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_coarser" , 25  , 0 , 2500 );
 
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_MggWindow_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_MggWindow_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_MggWindow_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_MggWindow_coarser" , 25  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_MggWindow_coarser" , 25  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_MggWindow_coarser" , 25  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR"         , 50  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR"         , 50  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR"         , 50  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_coarser" , 25  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_coarser" , 25  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_coarser" , 25  , 0 , 2500 );
+
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_coarser" , 25  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_coarser" , 25  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_coarser" , 25  , 0 , 2500 );
+
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_MggWindow_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_MggWindow_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_MggWindow_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_MggWindow_coarser" , 25  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_MggWindow_coarser" , 25  , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_MggWindow_coarser" , 25  , 0 , 2500 );
+
         //----------------------------------------------------------------------------------------------------
         // special study
         //----------------------------------------------------------------------------------------------------

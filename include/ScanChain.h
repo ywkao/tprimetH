@@ -799,6 +799,14 @@ void check_ultra_large_tprime_mass(bool condition, my_jets_info instance)
 
 bool looking_for_missing_events(long run, long lumi, long evt)
 {
+    //[Info] run:lumi:event = 317661:672:996396131, CMS_hgg_mass = 102.7698851824, score_nrb_ = 0.875308, score_smh_ = 0.868711, Era2018
+    //[Info] run:lumi:event = 317640:349:478921037, CMS_hgg_mass = 103.9572322282, score_nrb_ = 0.81153, score_smh_ = 0.84076, Era2018
+    //[Info] run:lumi:event = 317392:932:1306452806, CMS_hgg_mass = 109.4592291820, score_nrb_ = 0.91195, score_smh_ = 0.845275, Era2018
+    //[Info] run:lumi:event = 317641:1237:1861009133, CMS_hgg_mass = 110.0835225942, score_nrb_ = 0.972928, score_smh_ = 0.843859, Era2018
+    //[Info] run:lumi:event = 317392:1201:1702819299, CMS_hgg_mass = 113.6481955502, score_nrb_ = 0.856636, score_smh_ = 0.828896, Era2018
+    //[Info] run:lumi:event = 317320:699:1001269663, CMS_hgg_mass = 141.4934924656, score_nrb_ = 0.893802, score_smh_ = 0.895883, Era2018
+    //[Info] run:lumi:event = 302240:496:501669522, CMS_hgg_mass = 101.6673298758, score_nrb_ = 0.926539, score_smh_ = 0.863775, Era2017
+
     if( run == 317661 && lumi == 672  && evt == 996396131  ) return true;
     if( run == 317640 && lumi == 349  && evt == 478921037  ) return true;
     if( run == 317392 && lumi == 932  && evt == 1306452806 ) return true;
