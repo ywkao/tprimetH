@@ -17,7 +17,7 @@ using namespace std;
 
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > LorentzVector;
 
-class BabyMaker {
+class BabyMaker { //{{{
   public:
     BabyMaker() {};
     ~BabyMaker() {
@@ -82,6 +82,7 @@ class BabyMaker {
     vector<float> top_candidates_;
 
     // Variable declarations
+    float       fake_photon_IDMVA_;
     float       maxIDMVA_;
     float       minIDMVA_;
     float       max2_btag_;
@@ -238,7 +239,7 @@ class BabyMaker {
     float       jet2_ptOverM_; 
     float       jet3_ptOverM_;
     float       jet4_ptOverM_;
-};
+}; //}}}
 
 inline
 void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
@@ -247,30 +248,41 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyFile_->cd();
   BabyTree_ = new TTree("t", "A Baby Ntuple");
 
-  bool produce_ntuples_for_Maxime = true;
-  //bool produce_ntuples_for_Maxime = false;
+  bool produce_ntuples_for_Maxime;
+  bool produce_ntuples_for_fakePhotonStudy;
+  bool produce_ntuples_for_MVA;
+
+  produce_ntuples_for_Maxime = false;
+  produce_ntuples_for_fakePhotonStudy = false;
+  produce_ntuples_for_fakePhotonStudy = true;
+  produce_ntuples_for_MVA = !(produce_ntuples_for_Maxime || produce_ntuples_for_fakePhotonStudy);
   //----------------------------------------------------------------------------------------------------
   // For Maxime
   //----------------------------------------------------------------------------------------------------
   if(produce_ntuples_for_Maxime){
-  BabyTree_->Branch("weight"                            , &evt_weight_    );
-  BabyTree_->Branch("dipho_mass"                        , &dipho_mass_    );
-  BabyTree_->Branch("Tprime_mass"                       , &tprime_mass_   );
-  BabyTree_->Branch("T_Mtilde"                          , &tprime_mtilde_ );
+      BabyTree_->Branch("weight"                            , &evt_weight_    );
+      BabyTree_->Branch("dipho_mass"                        , &dipho_mass_    );
+      BabyTree_->Branch("Tprime_mass"                       , &tprime_mass_   );
+      BabyTree_->Branch("T_Mtilde"                          , &tprime_mtilde_ );
 
-  BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M600_M700"   , &bdtg_score_nrb_m600_m700_   );
-  BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M800_M1000"  , &bdtg_score_nrb_m800_m1000_  );
-  BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M1100_M1200" , &bdtg_score_nrb_m1100_m1200_ );
-  BabyTree_->Branch("BDTG_TprimeVsHiggs_M600_M700"      , &bdtg_score_smh_m600_m700_   );
-  BabyTree_->Branch("BDTG_TprimeVsHiggs_M800_M1000"     , &bdtg_score_smh_m800_m1000_  );
-  BabyTree_->Branch("BDTG_TprimeVsHiggs_M1100_M1200"    , &bdtg_score_smh_m1100_m1200_ );
+      BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M600_M700"   , &bdtg_score_nrb_m600_m700_   );
+      BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M800_M1000"  , &bdtg_score_nrb_m800_m1000_  );
+      BabyTree_->Branch("BDTG_TprimeVsNonHiggs_M1100_M1200" , &bdtg_score_nrb_m1100_m1200_ );
+      BabyTree_->Branch("BDTG_TprimeVsHiggs_M600_M700"      , &bdtg_score_smh_m600_m700_   );
+      BabyTree_->Branch("BDTG_TprimeVsHiggs_M800_M1000"     , &bdtg_score_smh_m800_m1000_  );
+      BabyTree_->Branch("BDTG_TprimeVsHiggs_M1100_M1200"    , &bdtg_score_smh_m1100_m1200_ );
+  }
 
+  if(produce_ntuples_for_fakePhotonStudy){
+      BabyTree_->Branch("weight"    , &evt_weight_ );
+      BabyTree_->Branch("fake_photon_IDMVA" , &fake_photon_IDMVA_   );
   }
 
   //----------------------------------------------------------------------------------------------------
   // my full set var
   //----------------------------------------------------------------------------------------------------
-  if(!produce_ntuples_for_Maxime){
+  if(produce_ntuples_for_MVA){
+  // more{{{
   //BabyTree_->Branch("BDTG_TprimeVsHiggs_M600_M700_withNRBcut"      , &bdtg_score_smh_m600_m700_withNRBcut_   );
   //BabyTree_->Branch("BDTG_TprimeVsHiggs_M800_M1000_withNRBcut"     , &bdtg_score_smh_m800_m1000_withNRBcut_  );
   //BabyTree_->Branch("BDTG_TprimeVsHiggs_M1100_M1200_withNRBcut"    , &bdtg_score_smh_m1100_m1200_withNRBcut_ );
@@ -416,6 +428,7 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_->Branch("jet2_ptOverM_"             , &jet2_ptOverM_             );
   BabyTree_->Branch("jet3_ptOverM_"             , &jet3_ptOverM_             );
   BabyTree_->Branch("jet4_ptOverM_"             , &jet4_ptOverM_             );
+  //}}}
   }
 
   return;

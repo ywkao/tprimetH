@@ -8,6 +8,7 @@
 #include "THQ_BDT_Helper.h"
 
 void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeName, TString year, TString ext, TString bkg_options, TString mYear = "", TString idx = "", bool fcnc = false, bool blind = true, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
+  // init {{{
   TRandom3 rndm(1234);
   name_output_file = name_output_file.ReplaceAll("hist_", "MVABaby_");
   printf("Hello World! (Warm greeting from MakeMVABabies_ttHHadronic.C)\n");
@@ -38,9 +39,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   double total_yields = 0.;
 
   TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_runII");
-
-  bool produce_ntuples_for_Maxime = true;
-  //bool produce_ntuples_for_Maxime = false;
+  //}}}
   // BDT business{{{
   //----------------------------------------------------------------------------------------------------
   // MVA reference (consistency check)
@@ -78,15 +77,25 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
 
   flashgg::InputVariables MVAvarList;
   //}}}
-
+  // counters{{{
   int counter = 0;
   int counter_negative_reco_mass = 0;
   int counter_jet_negative_energy = 0;
   int counter_nrb_same = 0;
   int counter_smh_same = 0;
+  //}}}
+
+  bool debug = false;
+  bool produce_ntuples_for_Maxime;
+  bool produce_ntuples_for_fakePhotonStudy;
+
+  produce_ntuples_for_Maxime = false;
+  produce_ntuples_for_fakePhotonStudy = false;
+  produce_ntuples_for_fakePhotonStudy = true;
 
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
+    // Get file content {{{
     TString currentFileTitle = currentFile->GetTitle();
     cout << currentFileTitle << endl;
     TFile file(currentFileTitle);
@@ -95,13 +104,14 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
     if (fast) TTreeCache::SetLearnEntries(10);
     if (fast) tree->SetCacheSize(128*1024*1024);
     analyzer.Init(tree);
-
-    bool debug = false;
+    //}}}
     // Loop over Events in current file
     unsigned int nEventsTree = tree->GetEntriesFast();
     for (unsigned int event = 0; event < nEventsTree; ++event)
     {
-      // Get Event Content, label type of samples, decide evt weight
+      //----------------------------------------------------------------------------------------------------
+      // Get Event Content {{{
+      //----------------------------------------------------------------------------------------------------
       if (nEventsTotal >= nEventsChain) continue;
       if (fast) tree->LoadTree(event);
       analyzer.GetEntry(event);
@@ -111,7 +121,9 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       tprimetHHadronic::progress( nEventsTotal, nEventsChain );
       InitBabyNtuple();
 
-      // Decide what type of sample this is
+      //----------------------------------------------------------------------------------------------------}}}
+      // Block signal region {{{
+      //----------------------------------------------------------------------------------------------------
       bool isData = currentFileTitle.Contains("Data") || currentFileTitle.Contains("DoubleEG") || currentFileTitle.Contains("EGamma"); 
       //if (isData) if (!pass_json(mYear, analyzer.run(), analyzer.lumi())) continue; // to be checked further!!
 
@@ -132,16 +144,12 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       maxIDMVA_ = dipho_leadIDMVA() >  dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
       minIDMVA_ = dipho_leadIDMVA() <= dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
 
-      //----------------------------------------------------------------------------------------------------
-      // impute and block signal region (remove it when producing ntuples for Maxime)
-      //----------------------------------------------------------------------------------------------------
       if (bkg_options.Contains("impute")) {
         if (isData)
           impute_photon_id(min_photon_ID_presel_cut, maxIDMVA_, photon_fakeID_shape_runII, minIDMVA_, evt_weight_, process_id_);
       }
 
       if(!produce_ntuples_for_Maxime) {
-      if (is_data && process_id_ != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)  continue;
       if (is_data && process_id_ != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)  continue;
       if (is_data && process_id_ != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)
           printf("[WARNING] Data events in signal region is used! mass = %.2f, process_id_ = %d\n", CMS_hgg_mass(), process_id_);
@@ -160,8 +168,8 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       bool perform_consistency_check = true;
       if(perform_consistency_check && process_id_ == 18) continue;
 
-      //----------------------------------------------------------------------------------------------------
-      // Assign variables values
+      //----------------------------------------------------------------------------------------------------}}}
+      // Assign variables values {{{
       //----------------------------------------------------------------------------------------------------
       // assign values {{{
 	  label_ = (is_data && process_id_ != 18) ? 2 : is_signal ? 1 : 0; // 0 = bkg, 1 = tprime, 2 = data
@@ -340,6 +348,14 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       jet3_ptOverM_ = (njets_ >= 3 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[2].Pt() / chi2_tbw_mass_  : -999;
       jet4_ptOverM_ = (njets_ >= 4 && (has_resonable_reco && pass_eta_criteria_on_wjets)) ? jets[3].Pt() / chi2_tbw_mass_  : -999;
 
+      //----------------------------------------------------------------------------------------------------//
+      
+      rand_ = rndm.Rndm(); // index for training and validation
+      super_rand_ = -1; //rand_map->retrieve_rand(analyzer.event(), analyzer.run(), analyzer.lumi());
+      mass_ = CMS_hgg_mass();
+      lead_sigmaEtoE_ = dipho_lead_sigmaEoE();
+      sublead_sigmaEtoE_ = dipho_sublead_sigmaEoE();
+
       //}}}
         // MVA input variables {{{
         MVAvarList.maxIDMVA_                = maxIDMVA_;
@@ -397,29 +413,14 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
         MVAvarList.jet4_btag_               = jet4_btag_;
         //}}}
 
-      // check inf values
-      bool flag = false;
-      if(chi2_recoMass_wboson()<=0.) { flag = true; printf("chi2_recoMass_wboson() = %f, %f\n", chi2_recoMass_wboson(), cov_wboson.M()); }
-      if(chi2_recoMass_top()<=0.)    { flag = true; printf("chi2_recoMass_top() = %f, %f\n", chi2_recoMass_top(), cov_top.M());          }
-      if(chi2_recoMass_tprime()<=0.) { flag = true; printf("chi2_recoMass_tprime() = %f, %f\n", chi2_recoMass_tprime(), cov_tprime.M()); }
-      if(flag)
-      {
-          counter_negative_reco_mass += 1;
-          tprimeTagger_nrb->print_details(MVAvarList);
-          printf("\n----------------------------------------------------------------------------------------------------\n\n");
-      }
-      tprimeTagger_nrb->examine_values(MVAvarList);
-
-
+      //----------------------------------------------------------------------------------------------------}}}
+      // For Maxime {{{
       //----------------------------------------------------------------------------------------------------
-      // For Maxime
-      //
       // Note: 
       // 1. evt_weight_ for ggh and tth have oversample correction
-      // 2. mva scores are raw scores from BDT
+      // 2. mva scores are transformed scores from BDT
       // 3. 3 kinds of mva scores according to T' mass
-      // 4. all bkg and data are evaluated with MVA [600, 700]
-      //----------------------------------------------------------------------------------------------------
+      
       if(produce_ntuples_for_Maxime){
           
         dipho_mass_    = diphoton.M();
@@ -437,45 +438,60 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       double mva_value_nrb = tprimeTagger_nrb->evaluate("BDTG" , MVAvarList);
       double mva_value_smh = tprimeTagger_smh->evaluate("BDTG" , MVAvarList);
 
-      //----------------------------------------------------------------------------------------------------//
-      
-      rand_ = rndm.Rndm(); // index for training and validation
-      super_rand_ = -1; //rand_map->retrieve_rand(analyzer.event(), analyzer.run(), analyzer.lumi());
-      mass_ = CMS_hgg_mass();
-      lead_sigmaEtoE_ = dipho_lead_sigmaEoE();
-      sublead_sigmaEtoE_ = dipho_sublead_sigmaEoE();
-
-      //----------------------------------------------------------------------------------------------------//
-      // consistency check
+      //----------------------------------------------------------------------------------------------------//}}}
+      // consistency check {{{
       //----------------------------------------------------------------------------------------------------//
       counter += 1;
       if(flag_negative_energy) counter_jet_negative_energy += 1;
       bool found_discrepancy_nrb = mycheck("BDT (NRB)", counter_nrb_same, MVAscore_BDT_nrb(), mva_value_nrb, dipho_pt());
       bool found_discrepancy_smh = mycheck("BDT (SMH)", counter_smh_same, MVAscore_BDT_smh(), mva_value_smh, dipho_pt());
 
-      const float oversample_ggh = 81.;
-      const float oversample_tth = 1.;
-      float oversample;
-      if (fcnc) {
-        if (process_id_ == 14)
-          oversample = oversample_ggh;
-        else if (process_id_ == 0)
-          oversample = oversample_tth;
-        else
-          oversample = 1.;
-        evt_weight_ *= 1./oversample;
-        for (int i = 0; i < int(oversample); i++)
-          FillBabyNtuple();
+      // check inf values
+      bool flag = false;
+      if(chi2_recoMass_wboson()<=0.) { flag = true; printf("chi2_recoMass_wboson() = %f, %f\n", chi2_recoMass_wboson(), cov_wboson.M()); }
+      if(chi2_recoMass_top()<=0.)    { flag = true; printf("chi2_recoMass_top() = %f, %f\n", chi2_recoMass_top(), cov_top.M());          }
+      if(chi2_recoMass_tprime()<=0.) { flag = true; printf("chi2_recoMass_tprime() = %f, %f\n", chi2_recoMass_tprime(), cov_tprime.M()); }
+      if(flag)
+      {
+          counter_negative_reco_mass += 1;
+          tprimeTagger_nrb->print_details(MVAvarList);
+          printf("\n----------------------------------------------------------------------------------------------------\n\n");
       }
+      tprimeTagger_nrb->examine_values(MVAvarList); // print out when found Nan or Inf values
 
-      else
-        FillBabyNtuple();
+      //----------------------------------------------------------------------------------------------------//}}}
+      // Fake photon study / oversampling {{{
+      //----------------------------------------------------------------------------------------------------//
+      if(produce_ntuples_for_fakePhotonStudy) {
+
+          if(leadGenMatch() != 1)    { fake_photon_IDMVA_ = dipho_leadIDMVA()   ; FillBabyNtuple(); }
+          if(subleadGenMatch() != 1) { fake_photon_IDMVA_ = dipho_subleadIDMVA(); FillBabyNtuple(); }
+
+      } else {
+          const float oversample_ggh = 81.;
+          const float oversample_tth = 1.;
+          float oversample;
+          if (fcnc) {
+            if (process_id_ == 14)
+              oversample = oversample_ggh;
+            else if (process_id_ == 0)
+              oversample = oversample_tth;
+            else
+              oversample = 1.;
+            evt_weight_ *= 1./oversample;
+            for (int i = 0; i < int(oversample); i++)
+              FillBabyNtuple();
+          }
+          else
+            FillBabyNtuple();
+      }
+      //}}}
     }// end of event loop
 
     delete tree;
     file.Close();
   }// end of while loop
-
+  // print info & clean up{{{
   printf("[check] reco mass < 0 GeV: %d/%d (%.2f)\n", counter_negative_reco_mass, counter, (double) counter_negative_reco_mass / (double) counter);
   printf("[check] jet energy < -100 GeV: %d/%d (%.2f)\n", counter_jet_negative_energy, counter, (double) counter_jet_negative_energy / (double) counter);
   printf("[check] BDT(NRB) same: %d/%d (%.2f)\n", counter_nrb_same, counter, (double) counter_nrb_same / (double) counter);
@@ -484,7 +500,8 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   if (nEventsChain != nEventsTotal) {
     cout << Form( "ERROR: number of events from files (%d) is not equal to total number of events (%d)", nEventsChain, nEventsTotal ) << endl;
   }
-
+  //}}}
+  // release memory & write & end {{{
   delete tprimeTagger_nrb;
   delete tprimeTagger_smh;
   delete mva_nrb_varset8_mixed03_tmva_bdtg;
@@ -506,4 +523,5 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   cout << endl;
   delete bmark;
   return;
+  //}}}
 }
