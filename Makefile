@@ -5,7 +5,8 @@ CFLAGS   := $(shell root-config --cflags) -g -O3 #-Wno-write-strings -D_FILE_OFF
 ROOTLIBS := $(shell root-config --libs) -lMinuit -lMLP -lXMLIO -lTMVA -lGenVector
 
 #TARGET   := bin/tprimetHHadronicLooper bin/covMatrix_Looper bin/tprimetHHadronicMVABabyMaker
-TARGET   := bin/tprimetHHadronicLooper bin/tprimetHHadronicLooper_v2p7 bin/tprimetHHadronicMVABabyMaker bin/tprimetHHadronicMVABabyMaker_v2p7
+#TARGET   := bin/tprimetHHadronicLooper bin/tprimetHHadronicLooper_v2p7 bin/tprimetHHadronicMVABabyMaker bin/tprimetHHadronicMVABabyMaker_v2p7
+TARGET   := bin/tprimetHHadronicLooper bin/tprimetHHadronicMVABabyMaker
 
 all: ${TARGET}
 

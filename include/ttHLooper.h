@@ -817,7 +817,7 @@ void impute_photon_id(double minID_cut, float maxIDMVA, TF1* photon_fakeID_shape
     return;
   else {
     minIDMVA = photon_fakeID_shape->GetRandom(minID_cut, maxIDMVA);
-    evt_weight *= photon_fakeID_shape->Integral(minID_cut, maxIDMVA) / photon_fakeID_shape->Integral(-0.9, minID_cut);
+    //evt_weight *= photon_fakeID_shape->Integral(minID_cut, maxIDMVA) / photon_fakeID_shape->Integral(-0.9, minID_cut);
     process_id = 18;
     return;
   }
@@ -910,21 +910,20 @@ TF1* get_photon_ID_shape(TString type) {
     f_IDMVA->SetParameter(7, -18116.8);
   }
 
+  else if (type == "fake_tprime") {
+    // tprime (05 Aug 2021)
+    f_IDMVA->SetParameter(0, 435.477);
+    f_IDMVA->SetParameter(1, -487.523);
+    f_IDMVA->SetParameter(2, 1064.27);
+    f_IDMVA->SetParameter(3, -1215.24);
+    f_IDMVA->SetParameter(4, -1752.79);
+    f_IDMVA->SetParameter(5, 3047.33);
+    f_IDMVA->SetParameter(6, 3370.99);
+    f_IDMVA->SetParameter(7, -4173.07);
+  }
+
   else if (type == "fake_runII") {
-    //--------------------------------------------------
-    // tprime (09 May 2021)
-    //--------------------------------------------------
-    //f_IDMVA->SetParameter(0, 382.201);
-    //f_IDMVA->SetParameter(1, -453.285);
-    //f_IDMVA->SetParameter(2, 1661.66);
-    //f_IDMVA->SetParameter(3, -996.144);
-    //f_IDMVA->SetParameter(4, -7009.08);
-    //f_IDMVA->SetParameter(5, 5432.76);
-    //f_IDMVA->SetParameter(6, 12592.4);
-    //f_IDMVA->SetParameter(7, -11305.6);
-    //--------------------------------------------------
     // fcnc
-    //--------------------------------------------------
     f_IDMVA->SetParameter(0, 8818.17);
     f_IDMVA->SetParameter(1, -12755.5);
     f_IDMVA->SetParameter(2, 26130);

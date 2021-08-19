@@ -8,7 +8,9 @@
 #include "THQ_BDT_Helper.h"
 
 void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeName, TString year, TString ext, TString bkg_options, TString mYear = "", TString idx = "", bool fcnc = false, bool blind = true, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
+  //----------------------------------------------------------------------------------------------------
   // init {{{
+  //----------------------------------------------------------------------------------------------------
   TRandom3 rndm(1234);
   name_output_file = name_output_file.ReplaceAll("hist_", "MVABaby_");
   printf("Hello World! (Warm greeting from MakeMVABabies_ttHHadronic.C)\n");
@@ -17,9 +19,6 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   // Benchmark
   TBenchmark *bmark = new TBenchmark();
   bmark->Start("benchmark");
-
-  // Make baby ntuple
-  MakeBabyNtuple( name_output_file.Data() ); //MakeBabyNtuple( Form("plots/MVABaby_tprimetHHadronic_%s.root", (mYear + idx).Data()));
 
   // Loop over events to Analyze
   unsigned int nEventsTotal = 0;
@@ -39,30 +38,43 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   double total_yields = 0.;
 
   TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_runII");
-  //}}}
-  // BDT business{{{
+
+  //----------------------------------------------------------------------------------------------------}}}
+  // options for producing ntuples {{{
   //----------------------------------------------------------------------------------------------------
+  InitBabyNtuple(); // set all boolean false
+
+  debug = false;
+  //Enable_flag_for_Maxime(); // produce_ntuples_for_Maxime
+  //Enable_flag_for_fakePhotonStudy(); // produce_ntuples_for_fakePhotonStudy
+  apply_preselection = false; // study "Low photon ID sideband"
+  apply_preselection = true; // reflect stack plots
+
+  // Make baby ntuple
+  MakeBabyNtuple( name_output_file.Data() );
+
+  //----------------------------------------------------------------------------------------------------}}}
+  // Init MVA Helpers {{{
+  //----------------------------------------------------------------------------------------------------
+  
   // MVA reference (consistency check)
-  //----------------------------------------------------------------------------------------------------
   TString BDT_nrb_xml_file_;
   TString BDT_smh_xml_file_;
   bool use_v3p8;
   use_v3p8 = false;
   use_v3p8 = true;
   if ( use_v3p8 && (name_output_file.Contains("Data") || name_output_file.Contains("EGamma"))) { //v3p8
-      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210620/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
-      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210620/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210620/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210620/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
   } else { //v3p6
-      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210525/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210525/weights/TMVAClassification_BDTG.weights.xml";
-      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210520/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210520/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210525/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210525/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210520/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210520/weights/TMVAClassification_BDTG.weights.xml";
   }
   flashgg::THQ_BDT_Helper *tprimeTagger_nrb = new flashgg::THQ_BDT_Helper("BDTG", BDT_nrb_xml_file_);
   flashgg::THQ_BDT_Helper *tprimeTagger_smh = new flashgg::THQ_BDT_Helper("BDTG", BDT_smh_xml_file_);
 
-  //----------------------------------------------------------------------------------------------------
-  // Init MVA Helpers
-  //----------------------------------------------------------------------------------------------------
-  TString path = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs";
+  // MVAs
+  TString path = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results";
 
   TString mass_tag03 = "M600_M700";
   TString mass_tag04 = "M800_M1000";
@@ -76,22 +88,28 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag05 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
 
   flashgg::InputVariables MVAvarList;
-  //}}}
+
+  //----------------------------------------------------------------------------------------------------}}}
   // counters{{{
-  int counter = 0;
+  //----------------------------------------------------------------------------------------------------
+  int counter = 0; // count events passing selection criteria
   int counter_negative_reco_mass = 0;
   int counter_jet_negative_energy = 0;
   int counter_nrb_same = 0;
   int counter_smh_same = 0;
-  //}}}
+  int counter_one_fake_photon = 0; // check "purity" for gammam + jet
+  int counter_two_fake_photons = 0; // check "purity" for QCD
+  //----------------------------------------------------------------------------------------------------}}}
 
-  bool debug = false;
-  bool produce_ntuples_for_Maxime;
-  bool produce_ntuples_for_fakePhotonStudy;
-
-  produce_ntuples_for_Maxime = false;
-  produce_ntuples_for_fakePhotonStudy = false;
-  produce_ntuples_for_fakePhotonStudy = true;
+  int counter_check = 0;
+  int counter_check_preselection = 0;
+  int counter_check_lowPhotonSideBand = 0;
+  int counter_check_rest = 0;
+  int counter_check_myFunction = 0;
+  int counter_inject_from_CR = 0;
+  int counter_SR_mixed03 = 0;
+  int counter_SR_mixed04 = 0;
+  int counter_SR_mixed05 = 0;
 
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
@@ -119,7 +137,6 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
 
       // Progress
       tprimetHHadronic::progress( nEventsTotal, nEventsChain );
-      InitBabyNtuple();
 
       //----------------------------------------------------------------------------------------------------}}}
       // Block signal region {{{
@@ -145,7 +162,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       minIDMVA_ = dipho_leadIDMVA() <= dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
 
       if (bkg_options.Contains("impute")) {
-        if (isData)
+        if (isData && !produce_ntuples_for_fakePhotonStudy)
           impute_photon_id(min_photon_ID_presel_cut, maxIDMVA_, photon_fakeID_shape_runII, minIDMVA_, evt_weight_, process_id_);
       }
 
@@ -158,15 +175,18 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       bool pass_photon_pt_criteria = dipho_leadPt()>30. && dipho_subleadPt()>18.;
       if(!pass_photon_pt_criteria) continue;
 
-      if (!passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_)) continue;
-      if (minIDMVA_ < -0.7 || maxIDMVA_< -0.7) continue;
+      if(apply_preselection){
+          if (!passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_)) continue;
+          if (minIDMVA_ < -0.7 || maxIDMVA_< -0.7) continue;
+      }
+      
       if (isnan(evt_weight_) || isinf(evt_weight_) || evt_weight_ == 0) continue; //some pu weights are nan/inf and this causes problems for histos 
       if (has_std_overlaps(currentFileTitle, lead_Prompt(), sublead_Prompt(), genPhotonId)) continue;
 
       //for consistency test 
       //bool perform_consistency_check = false;
-      bool perform_consistency_check = true;
-      if(perform_consistency_check && process_id_ == 18) continue;
+      //bool perform_consistency_check = true;
+      //if(perform_consistency_check && process_id_ == 18) continue;
 
       //----------------------------------------------------------------------------------------------------}}}
       // Assign variables values {{{
@@ -201,11 +221,6 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
 
       ht_            = HT();
       dipho_delta_R  = lead_photon.DeltaR(sublead_photon);
-      top_tag_score_ = -1;
-	  top_tag_mass_  = -1;
-      top_tag_pt_    = -1;
-      top_tag_eta_   = -1;
-      top_tag_phi_   = -1;
 
       //njets_ = n_jets();
       njets_ = jets.size();
@@ -422,50 +437,119 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       // 3. 3 kinds of mva scores according to T' mass
       
       if(produce_ntuples_for_Maxime){
-          
         dipho_mass_    = diphoton.M();
         tprime_mass_   = cov_tprime.M();
         tprime_mtilde_ = cov_tprime.M() - cov_top.M() - diphoton.M() + 173. + 125.;
-
-        bdtg_score_nrb_m600_m700_   = mva_nrb_varset8_mixed03_tmva_bdtg->evaluate("BDTG" , MVAvarList);
-        bdtg_score_nrb_m800_m1000_  = mva_nrb_varset8_mixed04_tmva_bdtg->evaluate("BDTG" , MVAvarList);
-        bdtg_score_nrb_m1100_m1200_ = mva_nrb_varset8_mixed05_tmva_bdtg->evaluate("BDTG" , MVAvarList);
-        bdtg_score_smh_m600_m700_   = mva_smh_varset8_mixed03_tmva_bdtg->evaluate("BDTG" , MVAvarList);
-        bdtg_score_smh_m800_m1000_  = mva_smh_varset8_mixed04_tmva_bdtg->evaluate("BDTG" , MVAvarList);
-        bdtg_score_smh_m1100_m1200_ = mva_smh_varset8_mixed05_tmva_bdtg->evaluate("BDTG" , MVAvarList);
       }
+
+      bdtg_score_nrb_m600_m700_   = mva_nrb_varset8_mixed03_tmva_bdtg->evaluate("BDTG" , MVAvarList);
+      bdtg_score_nrb_m800_m1000_  = mva_nrb_varset8_mixed04_tmva_bdtg->evaluate("BDTG" , MVAvarList);
+      bdtg_score_nrb_m1100_m1200_ = mva_nrb_varset8_mixed05_tmva_bdtg->evaluate("BDTG" , MVAvarList);
+      bdtg_score_smh_m600_m700_   = mva_smh_varset8_mixed03_tmva_bdtg->evaluate("BDTG" , MVAvarList);
+      bdtg_score_smh_m800_m1000_  = mva_smh_varset8_mixed04_tmva_bdtg->evaluate("BDTG" , MVAvarList);
+      bdtg_score_smh_m1100_m1200_ = mva_smh_varset8_mixed05_tmva_bdtg->evaluate("BDTG" , MVAvarList);
 
       double mva_value_nrb = tprimeTagger_nrb->evaluate("BDTG" , MVAvarList);
       double mva_value_smh = tprimeTagger_smh->evaluate("BDTG" , MVAvarList);
 
       //----------------------------------------------------------------------------------------------------//}}}
+      // MVA cut values {{{
+      //----------------------------------------------------------------------------------------------------
+      bool pass_mva_cut_bdtg_nrb_mixed03 = bdtg_score_nrb_m600_m700_   > 0.530;
+      bool pass_mva_cut_bdtg_nrb_mixed04 = bdtg_score_nrb_m800_m1000_  > 0.363;
+      bool pass_mva_cut_bdtg_nrb_mixed05 = bdtg_score_nrb_m1100_m1200_ > 0.228;
+      bool pass_mva_cut_bdtg_smh_mixed03 = bdtg_score_smh_m600_m700_   > 0.828;
+      bool pass_mva_cut_bdtg_smh_mixed04 = bdtg_score_smh_m800_m1000_  > 0.826;
+      bool pass_mva_cut_bdtg_smh_mixed05 = bdtg_score_smh_m1100_m1200_ > 0.816;
+
+      bool is_within_SR_mixed03 = pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03;
+      bool is_within_SR_mixed04 = pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04;
+      bool is_within_SR_mixed05 = pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05;
+      bool is_within_CR_mixed03 = pass_mva_cut_bdtg_nrb_mixed03 && !pass_mva_cut_bdtg_smh_mixed03;
+      bool is_within_CR_mixed04 = pass_mva_cut_bdtg_nrb_mixed04 && !pass_mva_cut_bdtg_smh_mixed04;
+      bool is_within_CR_mixed05 = pass_mva_cut_bdtg_nrb_mixed05 && !pass_mva_cut_bdtg_smh_mixed05;
+
+      //----------------------------------------------------------------------------------------------------}}}
+      bool performExcessStudy = false; //{{{
+      if(performExcessStudy) {
+          bool vip_permission;
+          bool in_signal_window = CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.;
+          bool within_limits = counter_inject_from_CR < 320; // # of injected CR events
+          vip_permission = is_within_CR_mixed03 && in_signal_window && within_limits;
+          //vip_permission = assign_permission(run_, lumi_, evt_);
+          
+          bool blind_signal_window = is_data && process_id_ != 18 && blind && in_signal_window;
+          if( blind_signal_window && !vip_permission) continue;
+          if( !(process_id_!=18 && (is_within_SR_mixed03 || vip_permission)) ) continue;
+          if( vip_permission ) counter_inject_from_CR += 1;
+      } //}}}
+      // check signal efficiency
+      if(process_id_ != 18 && is_within_SR_mixed03) counter_SR_mixed03 += 1;
+      if(process_id_ != 18 && is_within_SR_mixed04) counter_SR_mixed04 += 1;
+      if(process_id_ != 18 && is_within_SR_mixed05) counter_SR_mixed05 += 1;
+
+      // Debug: entries in low photon sideband
+      counter_check += 1; // after pre-selection
+      if ( passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_, -999.) )
+          counter_check_preselection += 1;
+      else if ( process_id_==18 || (minIDMVA_ < -0.7 && maxIDMVA_ > -0.7) )
+          counter_check_lowPhotonSideBand += 1;
+      else
+          counter_check_rest += 1;
+
+      if ( process_id_==18 || passes_selection("fake_photon_study", minIDMVA_, maxIDMVA_, -999.) )
+          counter_check_myFunction += 1;
+
       // consistency check {{{
       //----------------------------------------------------------------------------------------------------//
-      counter += 1;
-      if(flag_negative_energy) counter_jet_negative_energy += 1;
-      bool found_discrepancy_nrb = mycheck("BDT (NRB)", counter_nrb_same, MVAscore_BDT_nrb(), mva_value_nrb, dipho_pt());
-      bool found_discrepancy_smh = mycheck("BDT (SMH)", counter_smh_same, MVAscore_BDT_smh(), mva_value_smh, dipho_pt());
+      if(process_id_ != 18) { //exclude data-driven from consistency check
+          counter += 1;
+          if(flag_negative_energy) counter_jet_negative_energy += 1;
+          bool found_discrepancy_nrb = mycheck("BDT (NRB)", counter_nrb_same, MVAscore_BDT_nrb(), mva_value_nrb, dipho_pt());
+          bool found_discrepancy_smh = mycheck("BDT (SMH)", counter_smh_same, MVAscore_BDT_smh(), mva_value_smh, dipho_pt());
 
-      // check inf values
-      bool flag = false;
-      if(chi2_recoMass_wboson()<=0.) { flag = true; printf("chi2_recoMass_wboson() = %f, %f\n", chi2_recoMass_wboson(), cov_wboson.M()); }
-      if(chi2_recoMass_top()<=0.)    { flag = true; printf("chi2_recoMass_top() = %f, %f\n", chi2_recoMass_top(), cov_top.M());          }
-      if(chi2_recoMass_tprime()<=0.) { flag = true; printf("chi2_recoMass_tprime() = %f, %f\n", chi2_recoMass_tprime(), cov_tprime.M()); }
-      if(flag)
-      {
-          counter_negative_reco_mass += 1;
-          tprimeTagger_nrb->print_details(MVAvarList);
-          printf("\n----------------------------------------------------------------------------------------------------\n\n");
+          // check inf values
+          bool flag = false;
+          if(chi2_recoMass_wboson()<=0.) { flag = true; printf("chi2_recoMass_wboson() = %f, %f\n", chi2_recoMass_wboson(), cov_wboson.M()); }
+          if(chi2_recoMass_top()<=0.)    { flag = true; printf("chi2_recoMass_top() = %f, %f\n", chi2_recoMass_top(), cov_top.M());          }
+          if(chi2_recoMass_tprime()<=0.) { flag = true; printf("chi2_recoMass_tprime() = %f, %f\n", chi2_recoMass_tprime(), cov_tprime.M()); }
+          if(flag)
+          {
+              counter_negative_reco_mass += 1;
+              tprimeTagger_nrb->print_details(MVAvarList);
+              printf("\n----------------------------------------------------------------------------------------------------\n\n");
+          }
+          tprimeTagger_nrb->examine_values(MVAvarList); // print out when found Nan or Inf values
       }
-      tprimeTagger_nrb->examine_values(MVAvarList); // print out when found Nan or Inf values
 
       //----------------------------------------------------------------------------------------------------//}}}
       // Fake photon study / oversampling {{{
       //----------------------------------------------------------------------------------------------------//
       if(produce_ntuples_for_fakePhotonStudy) {
 
-          if(leadGenMatch() != 1)    { fake_photon_IDMVA_ = dipho_leadIDMVA()   ; FillBabyNtuple(); }
-          if(subleadGenMatch() != 1) { fake_photon_IDMVA_ = dipho_subleadIDMVA(); FillBabyNtuple(); }
+          // fake photon IDMVA: t_fakePhotonIDMVA
+          if(genPhotonId == 0) { // fake-fake
+              fake_photon_IDMVA_ = dipho_leadIDMVA();
+              FillBabyNtuple_fakePhoton();
+              fake_photon_IDMVA_ = dipho_subleadIDMVA();
+              FillBabyNtuple_fakePhoton();
+              counter_two_fake_photons += 1;
+          } else if (genPhotonId == 1) { // one fake photon
+              if(leadGenMatch() != 1)    { fake_photon_IDMVA_ = dipho_leadIDMVA()   ; }
+              if(subleadGenMatch() != 1) { fake_photon_IDMVA_ = dipho_subleadIDMVA(); }
+              FillBabyNtuple_fakePhoton();
+              counter_one_fake_photon += 1;
+          } else if (genPhotonId == 2) { // prompt-prompt
+          } else {
+              printf("[fake photon study] Case not applicable..\n");
+          }
+
+          // correlation study: t_lowPhotonSideband (GJet/Data only)
+          if ( process_id_==18 || passes_selection("fake_photon_study", minIDMVA_, maxIDMVA_, -999.) )
+              FillBabyNtuple_lowPhotonSideband();
+
+          // general info: t
+          FillBabyNtuple();
 
       } else {
           const float oversample_ggh = 81.;
@@ -496,6 +580,18 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   printf("[check] jet energy < -100 GeV: %d/%d (%.2f)\n", counter_jet_negative_energy, counter, (double) counter_jet_negative_energy / (double) counter);
   printf("[check] BDT(NRB) same: %d/%d (%.2f)\n", counter_nrb_same, counter, (double) counter_nrb_same / (double) counter);
   printf("[check] BDT(SMH) same: %d/%d (%.2f)\n", counter_smh_same, counter, (double) counter_smh_same / (double) counter);
+  printf("[check] one fake photon : %d/%d (%.2f)\n", counter_one_fake_photon, counter, (double) counter_one_fake_photon / (double) counter);
+  printf("[check] two fake photons: %d/%d (%.2f)\n", counter_two_fake_photons, counter, (double) counter_two_fake_photons / (double) counter);
+
+  print_counter("counter_check_preselection", counter_check_preselection, counter_check);
+  print_counter("counter_check_lowPhotonSideBand", counter_check_lowPhotonSideBand, counter_check);
+  print_counter("counter_check_rest", counter_check_rest, counter_check);
+  print_counter("counter_check_myFunction", counter_check_myFunction, counter_check);
+
+  // percentage in SRs after pre-selection (exclude data-driven samples)
+  print_counter("is_within_SR_mixed03", counter_SR_mixed03, counter);
+  print_counter("is_within_SR_mixed04", counter_SR_mixed04, counter);
+  print_counter("is_within_SR_mixed05", counter_SR_mixed05, counter);
 
   if (nEventsChain != nEventsTotal) {
     cout << Form( "ERROR: number of events from files (%d) is not equal to total number of events (%d)", nEventsChain, nEventsTotal ) << endl;

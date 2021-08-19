@@ -138,11 +138,11 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   use_v3p8 = false;
   use_v3p8 = true;
   if ( use_v3p8 && (name_output_file.Contains("Data") || name_output_file.Contains("EGamma"))) { //v3p8
-      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210620/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
-      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210620/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210620/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210620/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
   } else { //v3p6
-      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210525/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210525/weights/TMVAClassification_BDTG.weights.xml";
-      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/20210520/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210520/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210525/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210525/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210520/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210520/weights/TMVAClassification_BDTG.weights.xml";
   }
   flashgg::THQ_BDT_Helper *tprimeTagger_nrb = new flashgg::THQ_BDT_Helper("BDTG", BDT_nrb_xml_file_);
   flashgg::THQ_BDT_Helper *tprimeTagger_smh = new flashgg::THQ_BDT_Helper("BDTG", BDT_smh_xml_file_);
@@ -152,7 +152,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   //----------------------------------------------------------------------------------------------------
   // Init MVA Helpers
   //----------------------------------------------------------------------------------------------------
-  TString path = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs";
+  TString path = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results";
 
   TString mass_tag03 = "M600_M700";
   TString mass_tag04 = "M800_M1000";
@@ -184,7 +184,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   double branching_fraction_hgg = 0.00227;
   double total_yields = 0.;
 
-  TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_runII");
+  TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_runII"); //"fake_tprime"
 
   int counter = 0;
   int counter_special_check = 0;
@@ -200,7 +200,22 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   int counter_tprime_ultraHeavy_mass_13TeV = 0;
   //}}}
   
-  bool does_exist = false;
+  bool perform_fake_photon_study;
+  perform_fake_photon_study = true;
+  perform_fake_photon_study = false;
+
+  int counter_check = 0;
+  int counter_check_preselection = 0;
+  int counter_check_lowPhotonSideBand = 0;
+  int counter_check_rest = 0;
+  int counter_check_myFunction = 0;
+  int counter_check_fill_full = 0;
+  int counter_check_fill_sideband = 0;
+
+  int counter_SR_mixed03 = 0;
+  int counter_SR_mixed04 = 0;
+  int counter_SR_mixed05 = 0;
+
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
     // Get File Content{{{
@@ -236,7 +251,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
         long lumi_ = analyzer.lumi();
         //printf("[Details] Run:Lumi:Event = %ld:%ld:%ld\n", run_, lumi_, evt_);
         
-        does_exist = looking_for_missing_events(run_, lumi_, evt_);
+        bool does_exist = looking_for_missing_events(run_, lumi_, evt_);
         if(does_exist)
         {
             printf("[Good News] Yes! it is there! run:lumi:event = %ld:%ld:%ld, ", run_, lumi_, evt_);
@@ -278,7 +293,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       // Impute, if applicable
       maxIDMVA_ = dipho_leadIDMVA() >  dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
       minIDMVA_ = dipho_leadIDMVA() <= dipho_subleadIDMVA() ? dipho_leadIDMVA() : dipho_subleadIDMVA();
-      if (is_data) impute_photon_id(min_photon_ID_presel_cut, maxIDMVA_, photon_fakeID_shape_runII, minIDMVA_, evt_weight, processId);
+      if (is_data && !perform_fake_photon_study) impute_photon_id(min_photon_ID_presel_cut, maxIDMVA_, photon_fakeID_shape_runII, minIDMVA_, evt_weight, processId);
 
       // Micmic HLT; ensure MC and Data have the same selection
       bool pass_photon_pt_criteria = dipho_leadPt()>30. && dipho_subleadPt()>18.;
@@ -376,8 +391,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       TLorentzVector cov_top = cov_bjet + cov_wboson;
       TLorentzVector cov_tprime = cov_top + diphoton;
 
-      bool pass_eta_criteria_on_wjets = ( cov_wjet1.Eta() < 3. && cov_wjet2.Eta() < 3. );
-      //bool pass_eta_criteria_on_wjets = ( abs(cov_wjet1.Eta()) < 3. && abs(cov_wjet2.Eta()) < 3. );
+      //bool pass_eta_criteria_on_wjets = ( cov_wjet1.Eta() < 3. && cov_wjet2.Eta() < 3. );
+      bool pass_eta_criteria_on_wjets = ( fabs(cov_wjet1.Eta()) < 3. && fabs(cov_wjet2.Eta()) < 3. );
       if( !pass_eta_criteria_on_wjets ) continue;
       if( !has_resonable_reco ) continue;
 
@@ -575,15 +590,35 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       if(leadGenMatch() != 1)    { vProcess[processId]->fill_histogram("h" + syst_ext + "fake_photon_IDMVA" , dipho_leadIDMVA()   , evt_weight, vId); }
       if(subleadGenMatch() != 1) { vProcess[processId]->fill_histogram("h" + syst_ext + "fake_photon_IDMVA" , dipho_subleadIDMVA(), evt_weight, vId); }
 
-      // selection criteria on photon IDMVA
-      if (!passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_, -999.))	continue; // -999 represents no cut on mva values
+      // Debug: entries in low photon sideband
+      counter_check += 1; // before pre-selection
+      if ( passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_, -999.) )
+          counter_check_preselection += 1;
+      else if ( processId==18 || (minIDMVA_ < -0.7 && maxIDMVA_ > -0.7) )
+          counter_check_lowPhotonSideBand += 1;
+      else
+          counter_check_rest += 1;
+
+      if ( processId==18 || passes_selection("fake_photon_study", minIDMVA_, maxIDMVA_, -999.) )
+          counter_check_myFunction += 1;
+
+      // selection criteria on photon IDMVA // -999 represents no cut on mva values
+      if(perform_fake_photon_study)
+      {
+          if ( !(processId==18 || passes_selection("fake_photon_study", minIDMVA_, maxIDMVA_, -999.)) )	continue;
+      }
+      else
+      {
+          if (!passes_selection("ttHHadronic_RunII_MVA_Presel", minIDMVA_, maxIDMVA_, -999.))	continue;
+          if (minIDMVA_ < -0.7 || maxIDMVA_< -0.7) continue;
+      }
 
       total_yields += evt_weight;
 
       //----------------------------------------------------------------------------------------------------}}}
       // Consistency check {{{
       //----------------------------------------------------------------------------------------------------
-      if(processId != 18) { //exclude data-driven from consistency check
+      if(processId != 18 && !perform_fake_photon_study) { //exclude data-driven from consistency check
       counter += 1;
       if(flag_negative_energy) counter_jet_negative_energy += 1;
       if(mass_tprime > 3000.) counter_tprime_ultraHeavy_mass_3TeV += 1;
@@ -667,6 +702,11 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       bool pass_selection_from_Maxime_optimization = criteria_mva_Maxime && criteria_TprimeMass_Maxime;
 
       //----------------------------------------------------------------------------------------------------}}}
+      // check signal efficiency
+      if(processId != 18 && is_within_SR_mixed03) counter_SR_mixed03 += 1;
+      if(processId != 18 && is_within_SR_mixed04) counter_SR_mixed04 += 1;
+      if(processId != 18 && is_within_SR_mixed05) counter_SR_mixed05 += 1;
+
       // consistency check for data in sideband region {{{
       //----------------------------------------------------------------------------------------------------
       if(processId == 10)
@@ -699,9 +739,9 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //****************************************************************************************************}}}
       // Fill histograms {{{
       //****************************************************************************************************
-      //if(pass_tprime_low_mass_criterion){
-      if(is_within_CR_mixed03){
-
+      if(pass_tprime_low_mass_criterion)
+      //if(is_within_CR_mixed03)
+      {
       vProcess[processId]->fill_histogram("h" + syst_ext + "Mass", CMS_hgg_mass(), evt_weight, vId);
       //----------------------------------------------------------------------------------------------------
       // diphoton mass after cutting MVA scores {{{
@@ -746,7 +786,9 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
           if(is_within_CR_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_MggWindow_coarser", mass_tprime, evt_weight, vId); }
           if(is_within_CR_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_MggWindow_coarser", mass_tprime, evt_weight, vId); }
       } //}}}
+      counter_check_fill_full += 1;
       if (!isSignal && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.) continue; //consider NRB events only in sideband region
+      counter_check_fill_sideband += 1;
       //----------------------------------------------------------------------------------------------------
       // Tprime mass after cutting MVA scores {{{
       //----------------------------------------------------------------------------------------------------
@@ -972,6 +1014,19 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
     printf("[check] T' mass > 10TeV: %d/%d (%.2f)\n" , counter_tprime_ultraHeavy_mass_10TeV , counter , (double) counter_tprime_ultraHeavy_mass_10TeV / (double) counter);
     printf("[check] T' mass > 13TeV: %d/%d (%.2f)\n" , counter_tprime_ultraHeavy_mass_13TeV , counter , (double) counter_tprime_ultraHeavy_mass_13TeV / (double) counter);
     printf("[check] counter_special_check = %d\n" , counter_special_check );
+    printf("\n");
+
+    print_counter("counter_check_preselection", counter_check_preselection, counter_check);
+    print_counter("counter_check_lowPhotonSideBand", counter_check_lowPhotonSideBand, counter_check);
+    print_counter("counter_check_rest", counter_check_rest, counter_check);
+    print_counter("counter_check_myFunction", counter_check_myFunction, counter_check);
+    print_counter("counter_check_fill_full", counter_check_fill_full, counter_check);
+    print_counter("counter_check_fill_sideband", counter_check_fill_sideband, counter_check);
+
+    // percentage in SRs after pre-selection (exclude data-driven samples)
+    print_counter("is_within_SR_mixed03", counter_SR_mixed03, counter);
+    print_counter("is_within_SR_mixed04", counter_SR_mixed04, counter);
+    print_counter("is_within_SR_mixed05", counter_SR_mixed05, counter);
 
     delete tree;
     file.Close();

@@ -693,10 +693,18 @@ const double min_photon_ID_presel_cut = -0.7;
 
 bool passes_selection(TString tag, float minIDMVA_, float maxIDMVA_, float mva_value = -1) {
   if (tag == "ttHHadronic_RunII_MVA_Presel") {
-    if (dipho_mass() < 100 || dipho_mass() > 180) 	return false;
-    if (n_jets() < 3)					return false;
-    if (n_L_bjets() < 1)					return false;
-    if (minIDMVA_ < min_photon_ID_presel_cut)		return false;
+    if (dipho_mass() < 100 || dipho_mass() > 180) return false;
+    if (n_jets() < 3)                             return false;
+    if (n_L_bjets() < 1)                          return false;
+    if (minIDMVA_ < min_photon_ID_presel_cut)     return false;
+    return true;
+  }
+  
+  else if (tag == "fake_photon_study") {
+    if (dipho_mass() < 100 || dipho_mass() > 180)                      return false;
+    if (n_jets() < 3)                                                  return false;
+    if (n_L_bjets() < 1)                                               return false;
+    if ( !(minIDMVA_ < min_photon_ID_presel_cut && maxIDMVA_ > min_photon_ID_presel_cut) ) return false;
     return true;
   }
   
@@ -817,6 +825,58 @@ bool looking_for_missing_events(long run, long lumi, long evt)
     if( run == 321051 && lumi == 371  && evt == 514338658  ) return true;
 
     return false;
+}
+
+bool assign_permission(long run, long lumi, long evt)
+{
+    if( run == 274999 && lumi == 312  && evt == 558403117  ) return true;
+    if( run == 274968 && lumi == 212  && evt == 360892604  ) return true;
+    if( run == 275066 && lumi == 92   && evt == 178888062  ) return true;
+    if( run == 275068 && lumi == 174  && evt == 350221660  ) return true;
+    if( run == 275073 && lumi == 516  && evt == 913481500  ) return true;
+    if( run == 275001 && lumi == 264  && evt == 395526366  ) return true;
+    if( run == 274388 && lumi == 205  && evt == 398340675  ) return true;
+    if( run == 273409 && lumi == 112  && evt == 199934205  ) return true;
+    if( run == 274335 && lumi == 140  && evt == 216171021  ) return true;
+    if( run == 274316 && lumi == 768  && evt == 1304923788 ) return true;
+    if( run == 275337 && lumi == 284  && evt == 543769955  ) return true;
+    if( run == 275370 && lumi == 214  && evt == 274116326  ) return true;
+    if( run == 274968 && lumi == 515  && evt == 958085063  ) return true;
+    if( run == 274420 && lumi == 220  && evt == 293726355  ) return true;
+    if( run == 273725 && lumi == 2348 && evt == 3305145859 ) return true;
+    if( run == 274338 && lumi == 149  && evt == 267824708  ) return true;
+    if( run == 275074 && lumi == 326  && evt == 523124504  ) return true;
+    if( run == 274999 && lumi == 970  && evt == 1737390540 ) return true;
+    if( run == 275067 && lumi == 279  && evt == 507580717  ) return true;
+    if( run == 275310 && lumi == 1204 && evt == 1985959068 ) return true;
+    if( run == 273725 && lumi == 1524 && evt == 2226249514 ) return true;
+    if( run == 274969 && lumi == 788  && evt == 1417452685 ) return true;
+    if( run == 274999 && lumi == 147  && evt == 250359913  ) return true;
+    if( run == 274999 && lumi == 109  && evt == 187175964  ) return true;
+    if( run == 274999 && lumi == 17   && evt == 28757253   ) return true;
+    if( run == 274241 && lumi == 177  && evt == 319699864  ) return true;
+    if( run == 274999 && lumi == 958  && evt == 1717521462 ) return true;
+    if( run == 275344 && lumi == 317  && evt == 464403053  ) return true;
+    if( run == 275337 && lumi == 238  && evt == 458241034  ) return true;
+    if( run == 274241 && lumi == 1045 && evt == 1693087197 ) return true;
+    if( run == 274420 && lumi == 164  && evt == 178534939  ) return true;
+    if( run == 274284 && lumi == 175  && evt == 358682096  ) return true;
+    if( run == 274241 && lumi == 754  && evt == 1249087271 ) return true;
+    if( run == 275073 && lumi == 462  && evt == 821082924  ) return true;
+    if( run == 274200 && lumi == 587  && evt == 936263674  ) return true;
+    if( run == 274199 && lumi == 121  && evt == 237982825  ) return true;
+    if( run == 275311 && lumi == 389  && evt == 491860464  ) return true;
+    if( run == 274251 && lumi == 454  && evt == 711809985  ) return true;
+    if( run == 274335 && lumi == 970  && evt == 1782837091 ) return true;
+    if( run == 275311 && lumi == 1120 && evt == 1317091010 ) return true;
+
+    return false;
+}
+
+void print_counter(TString name, int a, int b)
+{
+    double ratio = (double)a / (double)b;
+    printf("[check] %s: %d/%d (%.2f)\n", name.Data(), a, b, ratio);
 }
 
 #endif

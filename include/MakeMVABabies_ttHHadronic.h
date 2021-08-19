@@ -23,20 +23,39 @@ class BabyMaker { //{{{
     ~BabyMaker() {
       if (BabyFile_) delete BabyFile_;
       if (BabyTree_) delete BabyTree_;
+      if (BabyTree_maxPhotonIDMVA_) delete BabyTree_maxPhotonIDMVA_;
+      if (BabyTree_minPhotonIDMVA_) delete BabyTree_minPhotonIDMVA_;
+      if (BabyTree_fakePhotonIDMVA_) delete BabyTree_fakePhotonIDMVA_;
+      if (BabyTree_lowPhotonSideband_) delete BabyTree_lowPhotonSideband_;
     }
     void ScanChain(TChain* chain, TString name_output_file, TString treeName, TString year, TString ext, TString bkg_options, TString mYear, TString idx, bool fcnc, bool blind, bool fast, int nEvents, string skimFilePrefix);
     void MakeBabyNtuple(const char *);
     void InitBabyNtuple();
     void FillBabyNtuple();
+    void FillBabyNtuple_fakePhoton();
+    void FillBabyNtuple_lowPhotonSideband();
     void CloseBabyNtuple();
     
+    void Enable_flag_for_Maxime() {produce_ntuples_for_Maxime = true;}
+    void Enable_flag_for_fakePhotonStudy() {produce_ntuples_for_fakePhotonStudy = true;}
 
   private:
     TFile *BabyFile_;
     TTree *BabyTree_;
+    TTree *BabyTree_maxPhotonIDMVA_;
+    TTree *BabyTree_minPhotonIDMVA_;
+    TTree *BabyTree_fakePhotonIDMVA_;
+    TTree *BabyTree_lowPhotonSideband_;
+
+    bool debug;
+    bool apply_preselection;
+    bool produce_ntuples_for_Maxime;
+    bool produce_ntuples_for_fakePhotonStudy;
+    bool produce_ntuples_for_MVA;
 
     // Variable names
     vector<string> mva_branches = {"maxIDMVA_", "minIDMVA_", "max2_btag_", "max1_btag_", "dipho_delta_R", "njets_", "ht_", "leadptoM_", "subleadptoM_", "leadIDMVA_", "subleadIDMVA_", "lead_eta_", "sublead_eta_", "jet1_pt_", "jet1_eta_", "jet1_btag_", "jet2_pt_", "jet2_eta_", "jet2_btag_", "jet3_pt_", "jet3_eta_", "jet3_btag_", "jet4_pt_", "jet4_eta_", "jet4_btag_", "jet5_pt_", "jet5_eta_", "jet5_btag_", "jet6_pt_", "jet6_eta_", "jet6_btag_", "leadPSV_", "subleadPSV_", "dipho_cosphi_", "dipho_rapidity_", "met_"};
+    //{"maxIDMVA_", "minIDMVA_", "max2_btag_", "max1_btag_", "dipho_delta_R", "njets_", "nbjets_", "ht_", "jet1_pt_", "jet1_eta_", "jet1_btag_", "jet2_pt_", "jet2_eta_", "jet2_btag_", "jet3_pt_", "jet3_eta_", "jet3_btag_", "jet4_pt_", "jet4_eta_", "jet4_btag_", "jet5_pt_", "jet5_eta_", "jet5_btag_", "jet6_pt_", "jet6_eta_", "jet6_btag_", "jet7_pt_", "jet7_eta_", "jet7_btag_", "jet8_pt_", "jet8_eta_", "jet8_btag_", "jet1_phi_", "jet1_energy_", "jet2_phi_", "jet2_energy_", "jet3_phi_", "jet3_energy_", "jet4_phi_", "jet4_energy_", "jet5_phi_", "jet5_energy_", "jet6_phi_", "jet6_energy_", "jet7_phi_", "jet7_energy_", "jet8_phi_", "jet8_energy_", "lead_pT_", "sublead_pT_", "leadptoM_", "subleadptoM_", "leadIDMVA_", "subleadIDMVA_", "lead_eta_", "sublead_eta_", "leadPSV_", "subleadPSV_", "lead_phi_", "sublead_phi_", "dipho_cosphi_", "dipho_rapidity_", "dipho_pt_", "dipho_pt_over_mass_", "met_", "log_met_", "met_phi_", "helicity_angle_", "m_ggj_", "m_jjj_", "chi2_value_", "chi2_bjet_pt_", "chi2_wjet1_pt_", "chi2_wjet2_pt_", "chi2_bjet_eta_", "chi2_wjet1_eta_", "chi2_wjet2_eta_", "chi2_wjets_deltaR_", "chi2_wboson_pt_", "chi2_wboson_eta_", "chi2_wboson_mass_", "chi2_wboson_deltaR_bjet_", "chi2_tbw_mass_", "chi2_tbw_pt_", "chi2_tbw_eta_", "chi2_tbw_deltaR_dipho_", "chi2_tprime_ptOverM_", "chi2_tprime_eta_", "chi2_tprime_deltaR_tbw_", "chi2_tprime_deltaR_dipho_", "chi2_bjet_btagScores_", "chi2_wjet1_btagScores_", "chi2_wjet2_btagScores_", "tprime_pt_ratio_", "chi2_bjet_ptOverM_", "chi2_wjet1_ptOverM_", "chi2_wjet2_ptOverM_", "chi2_wboson_ptOverM_", "chi2_tbw_ptOverM_", "helicity_tprime_", "jet1_ptOverM_", "jet2_ptOverM_", "jet3_ptOverM_", "jet4_ptOverM_"}
     
     //----------------------------------------------------------------------------------------------------
     // For Maxime
@@ -75,12 +94,6 @@ class BabyMaker { //{{{
     float                   lead_sigmaEtoE_;
     float                   sublead_sigmaEtoE_;
 
-    // DNN Business
-    vector<vector<float>>  objects_;
-    vector<vector<float>>  objects_boosted_;
-
-    vector<float> top_candidates_;
-
     // Variable declarations
     float       fake_photon_IDMVA_;
     float       maxIDMVA_;
@@ -89,15 +102,8 @@ class BabyMaker { //{{{
     float       max1_btag_;
     float       dipho_delta_R;
     float   	njets_;
-    //int		    nbjets_;
-    float		    nbjets_;
+    float	    nbjets_;
     float	    ht_;
-
-    float       top_tag_score_;
-    float       top_tag_mass_;
-    float       top_tag_pt_;
-    float       top_tag_eta_;
-    float       top_tag_phi_;
 
     float	    jet1_pt_;
     float       jet1_eta_;
@@ -247,19 +253,17 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyFile_ = new TFile(Form("%s", BabyFilename), "RECREATE");
   BabyFile_->cd();
   BabyTree_ = new TTree("t", "A Baby Ntuple");
+  BabyTree_maxPhotonIDMVA_ = new TTree("t_maxPhotonIDMVA", "A Baby Ntuple for max photon IDMVA");
+  BabyTree_minPhotonIDMVA_ = new TTree("t_minPhotonIDMVA", "A Baby Ntuple for min photon IDMVA");
+  BabyTree_fakePhotonIDMVA_ = new TTree("t_fakePhotonIDMVA", "A Baby Ntuple for fake photon IDMVA");
+  BabyTree_lowPhotonSideband_ = new TTree("t_lowPhotonSideband", "A Baby Ntuple for low photon ID sideband study");
 
-  bool produce_ntuples_for_Maxime;
-  bool produce_ntuples_for_fakePhotonStudy;
-  bool produce_ntuples_for_MVA;
-
-  produce_ntuples_for_Maxime = false;
-  produce_ntuples_for_fakePhotonStudy = false;
-  produce_ntuples_for_fakePhotonStudy = true;
   produce_ntuples_for_MVA = !(produce_ntuples_for_Maxime || produce_ntuples_for_fakePhotonStudy);
   //----------------------------------------------------------------------------------------------------
   // For Maxime
   //----------------------------------------------------------------------------------------------------
   if(produce_ntuples_for_Maxime){
+      printf("[debug] flag1\n");
       BabyTree_->Branch("weight"                            , &evt_weight_    );
       BabyTree_->Branch("dipho_mass"                        , &dipho_mass_    );
       BabyTree_->Branch("Tprime_mass"                       , &tprime_mass_   );
@@ -274,14 +278,83 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   }
 
   if(produce_ntuples_for_fakePhotonStudy){
-      BabyTree_->Branch("weight"    , &evt_weight_ );
-      BabyTree_->Branch("fake_photon_IDMVA" , &fake_photon_IDMVA_   );
+      printf("[debug] flag2\n");
+      // general event info
+      BabyTree_->Branch("weight"            , &evt_weight_        );
+      BabyTree_->Branch("process_id"        , &process_id_        );
+      BabyTree_->Branch("dipho_mass"        , &dipho_mass_        );
+
+      // for simultaneous fit (pre-selection region)
+      BabyTree_maxPhotonIDMVA_->Branch("idmva", &maxIDMVA_);
+      BabyTree_minPhotonIDMVA_->Branch("idmva", &minIDMVA_);
+
+      // for fetching fake photon idmva (idmva >= -0.9)
+      BabyTree_fakePhotonIDMVA_->Branch("idmva", &fake_photon_IDMVA_);
+
+      // for g-jet fake photon correlation study (low photon id sideband)
+      // more {{{
+      BabyTree_lowPhotonSideband_->Branch("idmva"                    , &fake_photon_IDMVA_       );
+      BabyTree_lowPhotonSideband_->Branch("maxIDMVA_"                , &maxIDMVA_                );
+      BabyTree_lowPhotonSideband_->Branch("minIDMVA_"                , &minIDMVA_                );
+      BabyTree_lowPhotonSideband_->Branch("max1_btag_"               , &max1_btag_               );
+      BabyTree_lowPhotonSideband_->Branch("max2_btag_"               , &max2_btag_               );
+      BabyTree_lowPhotonSideband_->Branch("dipho_delta_R"            , &dipho_delta_R            );
+      BabyTree_lowPhotonSideband_->Branch("njets_"                   , &njets_                   );
+      BabyTree_lowPhotonSideband_->Branch("nbjets_"                  , &nbjets_                  );
+      BabyTree_lowPhotonSideband_->Branch("ht_"                      , &ht_                      );
+      BabyTree_lowPhotonSideband_->Branch("leadptoM_"                , &leadptoM_                );
+      BabyTree_lowPhotonSideband_->Branch("subleadptoM_"             , &subleadptoM_             );
+      BabyTree_lowPhotonSideband_->Branch("lead_eta_"                , &lead_eta_                );
+      BabyTree_lowPhotonSideband_->Branch("sublead_eta_"             , &sublead_eta_             );
+      BabyTree_lowPhotonSideband_->Branch("jet1_ptOverM_"            , &jet1_ptOverM_            );
+      BabyTree_lowPhotonSideband_->Branch("jet1_eta_"                , &jet1_eta_                );
+      BabyTree_lowPhotonSideband_->Branch("jet1_btag_"               , &jet1_btag_               );
+      BabyTree_lowPhotonSideband_->Branch("jet2_ptOverM_"            , &jet2_ptOverM_            );
+      BabyTree_lowPhotonSideband_->Branch("jet2_eta_"                , &jet2_eta_                );
+      BabyTree_lowPhotonSideband_->Branch("jet2_btag_"               , &jet2_btag_               );
+      BabyTree_lowPhotonSideband_->Branch("jet3_ptOverM_"            , &jet3_ptOverM_            );
+      BabyTree_lowPhotonSideband_->Branch("jet3_eta_"                , &jet3_eta_                );
+      BabyTree_lowPhotonSideband_->Branch("jet3_btag_"               , &jet3_btag_               );
+      BabyTree_lowPhotonSideband_->Branch("jet4_ptOverM_"            , &jet4_ptOverM_            );
+      BabyTree_lowPhotonSideband_->Branch("jet4_eta_"                , &jet4_eta_                );
+      BabyTree_lowPhotonSideband_->Branch("jet4_btag_"               , &jet4_btag_               );
+      BabyTree_lowPhotonSideband_->Branch("leadPSV_"                 , &leadPSV_                 );
+      BabyTree_lowPhotonSideband_->Branch("subleadPSV_"              , &subleadPSV_              );
+      BabyTree_lowPhotonSideband_->Branch("dipho_cosphi_"            , &dipho_cosphi_            );
+      BabyTree_lowPhotonSideband_->Branch("dipho_rapidity_"          , &dipho_rapidity_          );
+      BabyTree_lowPhotonSideband_->Branch("met_"                     , &met_                     );
+      BabyTree_lowPhotonSideband_->Branch("dipho_pt_over_mass_"      , &dipho_pt_over_mass_      );
+      BabyTree_lowPhotonSideband_->Branch("helicity_angle_"          , &helicity_angle_          );
+      BabyTree_lowPhotonSideband_->Branch("chi2_value_"              , &chi2_value_              );
+      BabyTree_lowPhotonSideband_->Branch("chi2_bjet_ptOverM_"       , &chi2_bjet_ptOverM_       );
+      BabyTree_lowPhotonSideband_->Branch("chi2_bjet_eta_"           , &chi2_bjet_eta_           );
+      BabyTree_lowPhotonSideband_->Branch("chi2_bjet_btagScores_"    , &chi2_bjet_btagScores_    );
+      BabyTree_lowPhotonSideband_->Branch("chi2_wjet1_ptOverM_"      , &chi2_wjet1_ptOverM_      );
+      BabyTree_lowPhotonSideband_->Branch("chi2_wjet1_eta_"          , &chi2_wjet1_eta_          );
+      BabyTree_lowPhotonSideband_->Branch("chi2_wjet1_btagScores_"   , &chi2_wjet1_btagScores_   );
+      BabyTree_lowPhotonSideband_->Branch("chi2_wjet2_ptOverM_"      , &chi2_wjet2_ptOverM_      );
+      BabyTree_lowPhotonSideband_->Branch("chi2_wjet2_eta_"          , &chi2_wjet2_eta_          );
+      BabyTree_lowPhotonSideband_->Branch("chi2_wjet2_btagScores_"   , &chi2_wjet2_btagScores_   );
+      BabyTree_lowPhotonSideband_->Branch("chi2_wjets_deltaR_"       , &chi2_wjets_deltaR_       );
+      BabyTree_lowPhotonSideband_->Branch("chi2_wboson_ptOverM_"     , &chi2_wboson_ptOverM_     );
+      BabyTree_lowPhotonSideband_->Branch("chi2_wboson_eta_"         , &chi2_wboson_eta_         );
+      BabyTree_lowPhotonSideband_->Branch("chi2_wboson_mass_"        , &chi2_wboson_mass_        );
+      BabyTree_lowPhotonSideband_->Branch("chi2_wboson_deltaR_bjet_" , &chi2_wboson_deltaR_bjet_ );
+      BabyTree_lowPhotonSideband_->Branch("chi2_tbw_mass_"           , &chi2_tbw_mass_           );
+      BabyTree_lowPhotonSideband_->Branch("chi2_tbw_ptOverM_"        , &chi2_tbw_ptOverM_        );
+      BabyTree_lowPhotonSideband_->Branch("chi2_tbw_eta_"            , &chi2_tbw_eta_            );
+      BabyTree_lowPhotonSideband_->Branch("chi2_tprime_ptOverM_"     , &chi2_tprime_ptOverM_     );
+      BabyTree_lowPhotonSideband_->Branch("chi2_tprime_eta_"         , &chi2_tprime_eta_         );
+      BabyTree_lowPhotonSideband_->Branch("tprime_pt_ratio_"         , &tprime_pt_ratio_         );
+      BabyTree_lowPhotonSideband_->Branch("helicity_tprime_"         , &helicity_tprime_         );
+      //}}}
   }
 
   //----------------------------------------------------------------------------------------------------
   // my full set var
   //----------------------------------------------------------------------------------------------------
   if(produce_ntuples_for_MVA){
+      printf("[debug] flag3\n");
   // more{{{
   //BabyTree_->Branch("BDTG_TprimeVsHiggs_M600_M700_withNRBcut"      , &bdtg_score_smh_m600_m700_withNRBcut_   );
   //BabyTree_->Branch("BDTG_TprimeVsHiggs_M800_M1000_withNRBcut"     , &bdtg_score_smh_m800_m1000_withNRBcut_  );
@@ -307,9 +380,6 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_->Branch("lead_sigmaEtoE_"         , &lead_sigmaEtoE_         );
   BabyTree_->Branch("sublead_sigmaEtoE_"      , &sublead_sigmaEtoE_      );
 
-  BabyTree_->Branch("objects_"                , &objects_                );
-  BabyTree_->Branch("objects_boosted_"        , &objects_boosted_        );
-
   // Variable branches
   BabyTree_->Branch("maxIDMVA_"           , &maxIDMVA_           );
   BabyTree_->Branch("minIDMVA_"           , &minIDMVA_           );
@@ -319,12 +389,6 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyTree_->Branch("njets_"              , &njets_              );
   BabyTree_->Branch("nbjets_"             , &nbjets_             );
   BabyTree_->Branch("ht_"                 , &ht_                 );
-
-  BabyTree_->Branch("top_tag_score_"      , &top_tag_score_      );
-  BabyTree_->Branch("top_tag_mass_"       , &top_tag_mass_       );
-  BabyTree_->Branch("top_tag_pt_"         , &top_tag_pt_         );
-  BabyTree_->Branch("top_tag_eta_"        , &top_tag_eta_        );
-  BabyTree_->Branch("top_tag_phi_"        , &top_tag_phi_        );
 
   BabyTree_->Branch("jet1_pt_"            , &jet1_pt_            );
   BabyTree_->Branch("jet1_eta_"           , &jet1_eta_           );
@@ -436,12 +500,35 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
 
 inline
 void BabyMaker::InitBabyNtuple () {
+  debug = false;
+  apply_preselection = false;
+  produce_ntuples_for_Maxime = false;
+  produce_ntuples_for_fakePhotonStudy = false;
   return;
 }
 
 inline
 void BabyMaker::FillBabyNtuple(){
   BabyTree_->Fill();
+  if(produce_ntuples_for_fakePhotonStudy) {
+    // simultaneous fit in pre-selection region
+    //BabyTree_maxPhotonIDMVA_->Fill();
+    //BabyTree_minPhotonIDMVA_->Fill();
+  }
+  return;
+}
+
+inline
+void BabyMaker::FillBabyNtuple_fakePhoton(){
+  BabyTree_fakePhotonIDMVA_->Fill();
+  return;
+}
+
+inline
+void BabyMaker::FillBabyNtuple_lowPhotonSideband(){
+  BabyTree_lowPhotonSideband_->Fill();
+  BabyTree_maxPhotonIDMVA_->Fill();
+  BabyTree_minPhotonIDMVA_->Fill();
   return;
 }
 
@@ -449,6 +536,12 @@ inline
 void BabyMaker::CloseBabyNtuple(){
   BabyFile_->cd();
   BabyTree_->Write();
+  if(produce_ntuples_for_fakePhotonStudy) {
+    BabyTree_maxPhotonIDMVA_->Write();
+    BabyTree_minPhotonIDMVA_->Write();
+    BabyTree_fakePhotonIDMVA_->Write();
+    BabyTree_lowPhotonSideband_->Write();
+  }
   BabyFile_->Close();
   return;
 }
