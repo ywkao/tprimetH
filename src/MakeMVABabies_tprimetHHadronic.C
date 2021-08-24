@@ -47,8 +47,8 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   debug = false;
   //Enable_flag_for_Maxime(); // produce_ntuples_for_Maxime
   //Enable_flag_for_fakePhotonStudy(); // produce_ntuples_for_fakePhotonStudy
-  apply_preselection = false; // study "Low photon ID sideband"
   apply_preselection = true; // reflect stack plots
+  //apply_preselection = false; // study "Low photon ID sideband"
 
   // Make baby ntuple
   MakeBabyNtuple( name_output_file.Data() );
@@ -63,7 +63,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   bool use_v3p8;
   use_v3p8 = false;
   use_v3p8 = true;
-  if ( use_v3p8 && (name_output_file.Contains("Data") || name_output_file.Contains("EGamma"))) { //v3p8
+  if ( use_v3p8 && (name_output_file.Contains("Data") || name_output_file.Contains("EGamma") || name_output_file.Contains("GJet_Pt") || name_output_file.Contains("QCD"))) { //v3p8
       BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210620/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
       BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210620/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
   } else { //v3p6
@@ -314,6 +314,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
 
       //bool pass_eta_criteria_on_wjets = ( cov_wjet1.Eta() < 3. && cov_wjet2.Eta() < 3. );
       bool pass_eta_criteria_on_wjets = ( abs(cov_wjet1.Eta()) < 3. && abs(cov_wjet2.Eta()) < 3. );
+
       if( !pass_eta_criteria_on_wjets ) continue;
       if( !has_resonable_reco ) continue;
       //if( !passes_btag_rescale_selection ) continue;
@@ -533,23 +534,28 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
               FillBabyNtuple_fakePhoton();
               fake_photon_IDMVA_ = dipho_subleadIDMVA();
               FillBabyNtuple_fakePhoton();
-              counter_two_fake_photons += 1;
+              if(minIDMVA_<-0.7 && maxIDMVA_<-0.7)
+                counter_two_fake_photons += 1;
           } else if (genPhotonId == 1) { // one fake photon
               if(leadGenMatch() != 1)    { fake_photon_IDMVA_ = dipho_leadIDMVA()   ; }
               if(subleadGenMatch() != 1) { fake_photon_IDMVA_ = dipho_subleadIDMVA(); }
               FillBabyNtuple_fakePhoton();
-              counter_one_fake_photon += 1;
+              if(minIDMVA_<-0.7)
+                counter_one_fake_photon += 1;
           } else if (genPhotonId == 2) { // prompt-prompt
           } else {
               printf("[fake photon study] Case not applicable..\n");
           }
 
-          // correlation study: t_lowPhotonSideband (GJet/Data only)
-          if ( process_id_==18 || passes_selection("fake_photon_study", minIDMVA_, maxIDMVA_, -999.) )
-              FillBabyNtuple_lowPhotonSideband();
+          // correlation study: t_lowPhotonSideband (GJet/QCD only)
+          FillBabyNtuple_lowPhotonSideband();
 
-          // general info: t
-          FillBabyNtuple();
+          // composition study: Data (MC) in low photon sideband
+          if ( process_id_==18 || passes_selection("fake_photon_study", minIDMVA_, maxIDMVA_, -999.) )
+          {
+              // general info: t, t_maxPhotonIDMVA, t_minPhotonIDMVA
+              FillBabyNtuple();
+          }
 
       } else {
           const float oversample_ggh = 81.;

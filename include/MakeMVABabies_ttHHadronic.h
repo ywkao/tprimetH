@@ -293,6 +293,7 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
 
       // for g-jet fake photon correlation study (low photon id sideband)
       // more {{{
+      BabyTree_lowPhotonSideband_->Branch("weight"                   , &evt_weight_              );
       BabyTree_lowPhotonSideband_->Branch("idmva"                    , &fake_photon_IDMVA_       );
       BabyTree_lowPhotonSideband_->Branch("maxIDMVA_"                , &maxIDMVA_                );
       BabyTree_lowPhotonSideband_->Branch("minIDMVA_"                , &minIDMVA_                );

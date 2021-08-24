@@ -167,16 +167,21 @@ if __name__ == "__main__":
     #}}}
 
     if args.test:
-        path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/ntuples_v3.8.1"
-        #create_commands(dict_trees['Data'], ["Data_Era2016.root"], location_data)
+        path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/ntuples_v3.8"
+        create_commands(dict_trees['NRB'], dict_rootfiles['gammaJets'], path)
+        create_commands(dict_trees['NRB'], dict_rootfiles['QCD'], path)
         create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
-        create_commands(dict_trees['NRB'], ["QCD_Era2016.root"], path)
-        create_commands(dict_trees['NRB'], ["GJet_Pt_Era2016.root"], path)
-        create_commands(dict_trees['NRB'], ["QCD_Era2017.root"], path)
-        create_commands(dict_trees['NRB'], ["GJet_Pt_Era2017.root"], path)
-        create_commands(dict_trees['NRB'], ["QCD_Era2018.root"])
-        create_commands(dict_trees['NRB'], ["GJet_Pt_Era2018.root"])
-        create_commands(dict_trees['NRB'], dict_rootfiles['diphoton'])
+
+        #path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/ntuples_v3.8.1"
+        ##create_commands(dict_trees['Data'], ["Data_Era2016.root"], location_data)
+        #create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
+        #create_commands(dict_trees['NRB'], ["QCD_Era2016.root"], path)
+        #create_commands(dict_trees['NRB'], ["GJet_Pt_Era2016.root"], path)
+        #create_commands(dict_trees['NRB'], ["QCD_Era2017.root"], path)
+        #create_commands(dict_trees['NRB'], ["GJet_Pt_Era2017.root"], path)
+        #create_commands(dict_trees['NRB'], ["QCD_Era2018.root"])
+        #create_commands(dict_trees['NRB'], ["GJet_Pt_Era2018.root"])
+        #create_commands(dict_trees['NRB'], dict_rootfiles['diphoton'])
 
         # set1
         #path = "/eos/home-y/ykao/tPrimeExcessHgg/merged_ntuples/ntuples_v3p6p4_2016"
