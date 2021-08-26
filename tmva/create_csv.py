@@ -1,9 +1,14 @@
 #!/usr/bin/env python
-import glob
+import glob, subprocess
 
 #grep "dataset" 20210620/log_tmva_Tprime_NRB_varSet8_M600_M700_20210620_20210620.txt | grep ": 0" | grep "BDT"
+
+date = "20210820"
+date = "20210620"
+
 tmp_file = "tmp.csv"
-csv_file = "mytable.csv"
+csv_file = "output/mytable_%s.csv" % date
+path = "/eos/user/y/ykao/tPrimeExcessHgg/xmlfiles/";
 
 def extract(fin, fout):
     with open(fin, 'r') as f:
@@ -16,13 +21,14 @@ def extract(fin, fout):
                         fout.write(ele + ", ")
                 fout.write("\n")
 
-def make_table(date):
+def make_table():
     log_nrb = []
     log_smh = []
     
+    mass_pair = {600:700,800:1000,1100:1200}
     for mass in [600, 800, 1100]:
-        log_nrb += glob.glob(date + "/log*NRB*M%d*" % mass)
-        log_smh += glob.glob(date + "/log*SMH*M%d*" % mass)
+        log_nrb += glob.glob(path + date + "/log*NRB*M%d_M%d*" % (mass, mass_pair[mass]) )
+        log_smh += glob.glob(path + date + "/log*SMH*M%d_M%d*" % (mass, mass_pair[mass]) )
 
     log_files = log_nrb + log_smh
     with open(tmp_file, 'w') as fout:
@@ -74,5 +80,9 @@ def refine_table():
 #----------------------------------------------------------------------------------------------------#
 
 if __name__ == "__main__":
-    make_table("20210620")
+    make_table()
     refine_table()
+    subprocess.call("vimdiff %s" % tmp_file, shell=True)
+    subprocess.call("vimdiff %s" % csv_file, shell=True)
+    subprocess.call("rm %s" % tmp_file, shell=True)
+
