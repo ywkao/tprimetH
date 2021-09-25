@@ -143,8 +143,8 @@ if __name__ == "__main__":
     if args.set1:
         create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
         create_commands(dict_trees['NRB'], dict_rootfiles['ttX'])
-        create_commands(dict_trees['NRB'], dict_rootfiles['gammaJets'])
-        create_commands(dict_trees['NRB'], dict_rootfiles['QCD'])
+        create_commands(dict_trees['NRB'], dict_rootfiles['gammaJets'], location_data)
+        create_commands(dict_trees['NRB'], dict_rootfiles['QCD'], location_data)
         
     if args.set2:
         create_commands(dict_trees['SMH'], dict_rootfiles['smh_set1'])
@@ -168,8 +168,8 @@ if __name__ == "__main__":
 
     if args.test:
         path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/ntuples_v3.8"
-        create_commands(dict_trees['NRB'], dict_rootfiles['gammaJets'], path)
-        create_commands(dict_trees['NRB'], dict_rootfiles['QCD'], path)
+        #create_commands(dict_trees['NRB'], dict_rootfiles['gammaJets'], path)
+        #create_commands(dict_trees['NRB'], dict_rootfiles['QCD'], path)
         create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
 
         #path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/ntuples_v3.8.1"

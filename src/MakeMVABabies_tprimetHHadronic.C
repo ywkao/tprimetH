@@ -45,7 +45,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   InitBabyNtuple(); // set all boolean false
 
   debug = false;
-  //Enable_flag_for_Maxime(); // produce_ntuples_for_Maxime
+  Enable_flag_for_Maxime(); // produce_ntuples_for_Maxime
   //Enable_flag_for_fakePhotonStudy(); // produce_ntuples_for_fakePhotonStudy
   apply_preselection = true; // reflect stack plots
   //apply_preselection = false; // study "Low photon ID sideband"
@@ -74,18 +74,28 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   flashgg::THQ_BDT_Helper *tprimeTagger_smh = new flashgg::THQ_BDT_Helper("BDTG", BDT_smh_xml_file_);
 
   // MVAs
-  TString path = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results";
+  TString path = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/";
 
-  TString mass_tag03 = "M600_M700";
-  TString mass_tag04 = "M800_M1000";
-  TString mass_tag05 = "M1100_M1200";
+  TString mass_tag03 = "M600_M700_";
+  TString mass_tag04 = "M800_M1000_";
+  TString mass_tag05 = "M1100_M1200_";
 
-  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag03 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag04 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag05 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag03 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag04 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "/20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag05 + "_20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  //flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag03 + "20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  //flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag04 + "20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  //flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag05 + "20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  //flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag03 + "20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  //flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag04 + "20210620/weights/TMVAClassification_BDTG.weights.xml" );
+  //flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag05 + "20210620/weights/TMVAClassification_BDTG.weights.xml" );
+
+  TString date;
+  date = "20210818"; // |eta| < 3.0
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + date + "/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag03 + date + "/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + date + "/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag04 + date + "/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + date + "/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag05 + date + "/weights/TMVAClassification_BDTG.weights.xml" );
+  date = "20210820";
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + date + "/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag03 + date + "/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + date + "/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag04 + date + "/weights/TMVAClassification_BDTG.weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + date + "/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag05 + date + "/weights/TMVAClassification_BDTG.weights.xml" );
 
   flashgg::InputVariables MVAvarList;
 
@@ -312,8 +322,8 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       TLorentzVector cov_top    = cov_bjet + cov_wboson;
       TLorentzVector cov_tprime = cov_top + diphoton;
 
-      //bool pass_eta_criteria_on_wjets = ( cov_wjet1.Eta() < 3. && cov_wjet2.Eta() < 3. );
-      bool pass_eta_criteria_on_wjets = ( abs(cov_wjet1.Eta()) < 3. && abs(cov_wjet2.Eta()) < 3. );
+      bool pass_eta_criteria_on_wjets = ( cov_wjet1.Eta() < 3. && cov_wjet2.Eta() < 3. );
+      //bool pass_eta_criteria_on_wjets = ( abs(cov_wjet1.Eta()) < 3. && abs(cov_wjet2.Eta()) < 3. );
 
       if( !pass_eta_criteria_on_wjets ) continue;
       if( !has_resonable_reco ) continue;

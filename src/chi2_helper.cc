@@ -72,6 +72,7 @@ double chi2_calculator_simple(double w_mass, double t_mass)
 
 double chi2_calculator_2x2(double w_mass, double t_mass)
 {
+    //printf("[debug] inside chi2_calculator_2x2..., ");
     // means & covariance matrix elements are taken from covMatrx_Era2017_M1000.json
     TVectorD vec_mean_values(2);
 
@@ -81,6 +82,8 @@ double chi2_calculator_2x2(double w_mass, double t_mass)
     TVectorD vec_mass(2);
     vec_mass(0) = w_mass - vec_mean_values(0);
     vec_mass(1) = t_mass - vec_mean_values(1);
+    //printf("vec_mass(0) = %.3f, ", vec_mass(0));
+    //printf("vec_mass(1) = %.3f\n", vec_mass(1));
 
     TMatrixD matrix(2,2);
     matrix(0,0) = 305.14;
@@ -198,6 +201,7 @@ double pfDeepCSV_btag_loose_wp = 0.1522;
 
 bool get_the_best_bjj_candidate(std::vector<int> &indices_bjj, std::vector<TLorentzVector> jets, TLorentzVector diphoton, std::vector<double> btag_scores, double &min_chi2_value, TString json_file)
 {
+    //printf("[debug] inside get_the_best_bjj_candidate...\n");
     std::size_t num_jets = jets.size();
     for(std::size_t i = 0; i < num_jets; ++i ){ // b-jet
         if (btag_scores[i] < pfDeepCSV_btag_loose_wp) continue;

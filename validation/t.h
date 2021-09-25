@@ -191,6 +191,10 @@ Int_t t::Cut(Long64_t entry)
    pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M600_M700 > 0.953;
    pass_Tprime_mass = Tprime_mass > 485. && Tprime_mass < 740.;
 
+   // new after Maxime fixed bug
+   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M600_M700 > 0.946;
+   pass_Tprime_mass = Tprime_mass > 470. && Tprime_mass < 800.;
+
    accepted = is_in_sideband && pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass;
    //accepted = is_in_sideband;
    //accepted = true;
