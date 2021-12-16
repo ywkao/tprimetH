@@ -3,7 +3,6 @@
 #include "truth_matching.h"
 #include "sorting.h"
 #include "TMVA/Reader.h" 
-
 #include "THQ_BDT_Helper.h"
 
 int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, TString treeName, TString xml_file, TString mYear, bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
@@ -1200,4 +1199,3 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   delete bmark;
   return 0;
   //}}}
-}

@@ -74,13 +74,17 @@ def print_out_elements(mylist): #{{{
 def create_commands(treename, rootfiles, another_location = "", year = ""): #{{{
     global xml_file
     loc = location
+
+    year_determined_by_input_argument = len(year) > 0
+
     if len(another_location) > 0:
         loc = another_location # will change global value
 
     for rootfile in rootfiles:
-        if len(year) == 0: # use the following if not specified
+        if not year_determined_by_input_argument: # use the following if not specified
             year = rootfile.split('_Era')[1].split('.')[0]
 
+        print ">>> run::create_commands %s, year = %s" % (rootfile, year)
         my_parameters = register_parameters(loc, rootfile, treename, xml_file, year, datetime_tag)
         command_manager(my_parameters)
 #}}}
