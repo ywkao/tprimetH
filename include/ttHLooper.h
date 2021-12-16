@@ -106,7 +106,11 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         //----------------------------------------------------------------------------------------------------
         // special study
         //----------------------------------------------------------------------------------------------------
-        v[i]->add_histogram("h" + syst_labels[j] + "fake_photon_IDMVA"             , 20  , -1     , 1     );
+        v[i]->add_histogram("h" + syst_labels[j] + "fake_photon_IDMVA"            , 20 , -1 , 1     );
+        v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_GEN_deltaR_wjets"  , 25 , 0  , 6     );
+        v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_GEN_deltaR_bW"     , 25 , 0  , 6     );
+        v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_RECO_deltaR_wjets" , 25 , 0  , 6     );
+        v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_RECO_deltaR_bW"    , 25 , 0  , 6     );
 
         //----------------------------------------------------------------------------------------------------
         // Basic variables & Kinematics

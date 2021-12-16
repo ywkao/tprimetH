@@ -250,6 +250,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   int counter_CR_mixed05 = 0;
 
   int counter_evtWeight = 0;
+  int counter_has_reasonable_match = 0;
 
   double yield_SR_mixed03 = 0.;
   double yield_SR_mixed04 = 0.;
@@ -356,7 +357,6 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       double subleadID_ = dipho_leadIDMVA() == maxIDMVA_ ? minIDMVA_ : maxIDMVA_; 
 
       //----------------------------------------------------------------------------------------------------}}}
-      //if(event>100) continue;
       // Assign variables values {{{
       //----------------------------------------------------------------------------------------------------
       my_jets_info my_jets_info_instance;
@@ -777,8 +777,93 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       bool is_within_CR_mixed05 = pass_mva_cut_bdtg_nrb_mixed05 && !pass_mva_cut_bdtg_smh_mixed05;
 
       //----------------------------------------------------------------------------------------------------}}}
+      
+      bool perform_mc_truth_study = false; // {{{
+      if( perform_mc_truth_study && !isData ) {
+          //--------------- GEN information ---------------//
+          vector<float> gen_pdgIds, gen_status;
+          vector<float> mom_pdgIds, mom_status;
+          vector<TLorentzVector> gen_particles = make_gen_particles(gen_pdgIds, gen_status);
+          vector<TLorentzVector> moms = make_mom_particles(mom_pdgIds, mom_status);
 
-      // counters for check signal efficiency
+          TLorentzVector bquark, wquark1, wquark2;
+          
+          int counter_bquark = 0;
+          int counter_wquark = 0;
+          int counter_gen_particles = 0;
+          for( unsigned int i = 0; i < gen_particles.size(); ++i )
+          {
+              bool is_bquark = gen_status[i] == 23 && abs(gen_pdgIds[i]) == 5 && abs(mom_pdgIds[i]) == 6;
+              bool is_wquark = gen_status[i] == 23 && abs(gen_pdgIds[i]) <  6 && abs(mom_pdgIds[i]) == 24;
+
+              if(is_bquark) bquark = gen_particles[i];
+              if(is_wquark && counter_wquark == 1){ wquark2 = gen_particles[i]; counter_wquark += 1; }
+              if(is_wquark && counter_wquark == 0){ wquark1 = gen_particles[i]; counter_wquark += 1; }
+
+              //printf("gen status = %.0f, gen pdgId = %8.0f, mom pdgId = %.0f\n", gen_status[i], gen_pdgIds[i], mom_pdgIds[i]);
+              //printf("gen status = %.0f, pdgId = %8.0f, pt = %.2f\n", gen_status[i], gen_pdgIds[i], gen_particles[i].Pt());
+
+              if( abs(gen_pdgIds[i]) == 5 ) counter_bquark += 1;
+              counter_gen_particles += 1;
+          }
+
+          bool has_reasonable_gen_matching = counter_bquark >= 1 && counter_wquark >= 2;
+          if(has_reasonable_gen_matching)
+          {
+              TLorentzVector gen_wboson = wquark1 + wquark2;
+              TLorentzVector gen_top = bquark + gen_wboson;
+
+              double truthStudy_GEN_deltaR_wjets = wquark1.DeltaR(wquark2);
+              double truthStudy_GEN_deltaR_bW = gen_wboson.DeltaR(bquark);
+
+              if (!isSignal && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.) continue; //consider NRB events only in sideband region
+              vProcess[processId]->fill_histogram("h" + syst_ext + "truthStudy_GEN_deltaR_wjets" , truthStudy_GEN_deltaR_wjets , evt_weight , vId);
+              vProcess[processId]->fill_histogram("h" + syst_ext + "truthStudy_GEN_deltaR_bW"    , truthStudy_GEN_deltaR_bW    , evt_weight , vId);
+          }
+
+          //--------------- Reco. information ---------------//
+
+          // MC-truth matching
+          truth_matching_helper tr(gen_particles, jets, gen_pdgIds, gen_status, mom_pdgIds);
+          bool MC_truth_matching_is_applicable = tr.perform_mc_truth_matching(); // counter_bquark_matching >= 1 && counter_wquark_matching >= 2;
+          if(MC_truth_matching_is_applicable)
+          {
+              TLorentzVector truthMatched_bjet;
+              TLorentzVector truthMatched_wjet1;
+              TLorentzVector truthMatched_wjet2;
+
+              int indices_bjj[3] = {-1};
+              int counter_wjet = 0;
+              for( unsigned int i = 0; i < tr.get_register_jetIndex().size(); ++i )
+              {
+                  bool is_bjet = abs(tr.get_register_pdgId()[i]) == 5 && abs(tr.get_register_mompdgId()[i]) == 6;
+                  bool is_wjet = abs(tr.get_register_pdgId()[i]) <  5 && abs(tr.get_register_mompdgId()[i]) == 24;
+
+                  if(is_bjet){ truthMatched_bjet = jets[tr.get_register_jetIndex()[i]]; indices_bjj[0] = i; }
+                  if(is_wjet && counter_wjet == 0){ truthMatched_wjet1 = jets[tr.get_register_jetIndex()[i]]; counter_wjet += 1; indices_bjj[1] = i; }
+                  if(is_wjet && counter_wjet == 1){ truthMatched_wjet2 = jets[tr.get_register_jetIndex()[i]]; counter_wjet += 1; indices_bjj[2] = i; }
+              }
+
+              bool pass_eta_codition_on_wjets = fabs(truthMatched_wjet1.Eta()) < 3. && fabs(truthMatched_wjet2.Eta()) < 3.;
+              if(pass_eta_codition_on_wjets)
+              {
+                  TLorentzVector truthMatched_wboson = truthMatched_wjet1 + truthMatched_wjet2;
+                  TLorentzVector truthMatched_top    = truthMatched_bjet + truthMatched_wboson;
+                  TLorentzVector truthMatched_tprime = truthMatched_top + diphoton;
+
+                  double truthStudy_RECO_deltaR_wjets = truthMatched_wjet1.DeltaR(truthMatched_wjet2);
+                  double truthStudy_RECO_deltaR_bW = truthMatched_wboson.DeltaR(truthMatched_bjet);
+
+                  if (!isSignal && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.) continue; //consider NRB events only in sideband region
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "truthStudy_RECO_deltaR_wjets" , truthStudy_RECO_deltaR_wjets , evt_weight , vId);
+                  vProcess[processId]->fill_histogram("h" + syst_ext + "truthStudy_RECO_deltaR_bW"    , truthStudy_RECO_deltaR_bW    , evt_weight , vId);
+
+                  counter_has_reasonable_match += 1;
+              }
+          }
+      } // end of MC truth study }}}
+
+      // counters for check signal efficiency {{{
       if(processId != 18 && is_within_SR_mixed03) counter_SR_mixed03 += 1;
       if(processId != 18 && is_within_SR_mixed04) counter_SR_mixed04 += 1;
       if(processId != 18 && is_within_SR_mixed05) counter_SR_mixed05 += 1;
@@ -789,7 +874,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       if(processId != 18 && is_within_SR_mixed03) yield_SR_mixed03 = yield_SR_mixed03 + evt_weight;
       if(processId != 18 && is_within_SR_mixed04) yield_SR_mixed04 = yield_SR_mixed04 + evt_weight;
       if(processId != 18 && is_within_SR_mixed05) yield_SR_mixed05 = yield_SR_mixed05 + evt_weight;
-
+      // }}}
       // consistency check for data in sideband region {{{
       //----------------------------------------------------------------------------------------------------
       if(processId == 10)
@@ -1074,6 +1159,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
     print_counter("is_within_CR_mixed05", counter_CR_mixed05, counter);
 
     print_counter("evt_weight > 15.", counter_evtWeight, counter);
+    print_counter("counter_has_reasonable_match", counter_has_reasonable_match, counter);
 
     printf("yields_within_SR_mixed03 = %f\n", yield_SR_mixed03);
     printf("yields_within_SR_mixed04 = %f\n", yield_SR_mixed04);
