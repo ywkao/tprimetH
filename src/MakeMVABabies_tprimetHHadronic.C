@@ -322,8 +322,8 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       TLorentzVector cov_top    = cov_bjet + cov_wboson;
       TLorentzVector cov_tprime = cov_top + diphoton;
 
-      bool pass_eta_criteria_on_wjets = ( cov_wjet1.Eta() < 3. && cov_wjet2.Eta() < 3. );
-      //bool pass_eta_criteria_on_wjets = ( abs(cov_wjet1.Eta()) < 3. && abs(cov_wjet2.Eta()) < 3. );
+      //bool pass_eta_criteria_on_wjets = ( cov_wjet1.Eta() < 3. && cov_wjet2.Eta() < 3. );
+      bool pass_eta_criteria_on_wjets = ( abs(cov_wjet1.Eta()) < 3. && abs(cov_wjet2.Eta()) < 3. );
 
       if( !pass_eta_criteria_on_wjets ) continue;
       if( !has_resonable_reco ) continue;
@@ -567,6 +567,8 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
               FillBabyNtuple();
           }
 
+      } else if(produce_ntuples_for_Maxime) {
+          if(process_id_!=18) FillBabyNtuple();
       } else {
           const float oversample_ggh = 81.;
           const float oversample_tth = 1.;

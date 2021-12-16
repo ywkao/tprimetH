@@ -60,61 +60,45 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
       for (int i = 0; i < v.size(); i++) {
 
         //----------------------------------------------------------------------------------------------------
-        // Mass with BDT cuts
+        // Mass with BDTG cuts
         //----------------------------------------------------------------------------------------------------
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_nrb_cut_mixed03"            , 50 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_nrb_cut_mixed04"            , 50 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_nrb_cut_mixed05"            , 50 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_nrb_cut_mixed03"           , 50 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_nrb_cut_mixed04"           , 50 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_nrb_cut_mixed05"           , 50 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_smh_cut_mixed03"            , 50 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_smh_cut_mixed04"            , 50 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDT_smh_cut_mixed05"            , 50 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed03"           , 50 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed04"           , 50 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed05"           , 50 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_Maxime_criteria_mixed03"        , 50 , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_nrb_cut_mixed03"         , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_nrb_cut_mixed04"         , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_nrb_cut_mixed05"         , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed03"         , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed04"         , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed05"         , 50  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed03_fine"    , 500 , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed04_fine"    , 500 , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed05_fine"    , 500 , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed03_coarser" , 25  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed04_coarser" , 25  , 0 , 250 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed05_coarser" , 25  , 0 , 250 );
 
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed03_coarser"   , 25 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed04_coarser"   , 25 , 0 , 250 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_smh_cut_mixed05_coarser"   , 25 , 0 , 250 );
-
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDT_smh_cut_mixed03"     , 50 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDT_smh_cut_mixed04"     , 50 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDT_smh_cut_mixed05"     , 50 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_Maxime_criteria_mixed03" , 50 , 0 , 2500 );
-
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR"         , 50  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR"         , 50  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR"         , 50  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine"    , 500 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine"    , 500 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine"    , 500 , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_coarser" , 25  , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_coarser" , 25  , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_coarser" , 25  , 0 , 2500 );
 
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR"         , 50  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR"         , 50  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR"         , 50  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_fine"    , 500 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_fine"    , 500 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_fine"    , 500 , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_coarser" , 25  , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_coarser" , 25  , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_coarser" , 25  , 0 , 2500 );
 
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_fine"    , 500 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_fine"    , 500 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_fine"    , 500 , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_coarser" , 25  , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_coarser" , 25  , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_coarser" , 25  , 0 , 2500 );
 
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_MggWindow_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_MggWindow_fine"    , 250 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_MggWindow_fine"    , 250 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_MggWindow_fine"    , 500 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_MggWindow_fine"    , 500 , 0 , 2500 );
+        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_MggWindow_fine"    , 500 , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_MggWindow_coarser" , 25  , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_MggWindow_coarser" , 25  , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_MggWindow_coarser" , 25  , 0 , 2500 );
@@ -131,6 +115,8 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "NVtx"                          , 25  , 0      , 75    );
         v[i]->add_histogram("h" + syst_labels[j] + "Mass"                          , 100 , 0      , 250   );
         v[i]->add_histogram("h" + syst_labels[j] + "Mass_sideband"                 , 100 , 0      , 250   );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_fine"                     , 500 , 0      , 250   );
+        v[i]->add_histogram("h" + syst_labels[j] + "Mass_sideband_fine"            , 500 , 0      , 250   );
         v[i]->add_histogram("h" + syst_labels[j] + "PtHiggs"                       , 25  , 0      , 400   );
         v[i]->add_histogram("h" + syst_labels[j] + "DiphotonPtOverMass"            , 30  , 0      , 3     );
         v[i]->add_histogram("h" + syst_labels[j] + "PhotonDeltaR"                  , 25  , 0      , 6     );
@@ -142,6 +128,8 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "mass_top_cov"                  , 36  , 0      , 360   );
         v[i]->add_histogram("h" + syst_labels[j] + "mass_tprime_cov"               , 50  , 0      , 2500  );
         v[i]->add_histogram("h" + syst_labels[j] + "mass_tprime_tilde"             , 50  , 0      , 2500  );
+        v[i]->add_histogram("h" + syst_labels[j] + "mass_tprime_cov_fine"          , 500 , 0      , 2500  );
+        v[i]->add_histogram("h" + syst_labels[j] + "mass_tprime_tilde_fine"        , 500 , 0      , 2500  );
         v[i]->add_histogram("h" + syst_labels[j] + "cov_chi2_value"                , 50  , 0      , 100   );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_bjet_pt"                  , 25  , 0      , 500   );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet1_pt"                 , 25  , 0      , 500   );
@@ -259,30 +247,6 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         // MVA Scores
         //----------------------------------------------------------------------------------------------------
         // more{{{
-        // BDT
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_n100"             , 100  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_n2000"            , 2000 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_n100"             , 100  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed04_tmva_n2000"            , 2000 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_n100"             , 100  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed05_tmva_n2000"            , 2000 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_n100"             , 100  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_n2000"            , 2000 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_n100"             , 100  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_n2000"            , 2000 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_n100"             , 100  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_n2000"            , 2000 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_withNRBcut_n100"  , 100  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed03_tmva_withNRBcut_n2000" , 2000 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_withNRBcut_n100"  , 100  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed04_tmva_withNRBcut_n2000" , 2000 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_withNRBcut_n100"  , 100  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_smh_varset8_mixed05_tmva_withNRBcut_n2000" , 2000 , -1. , 1.);
-
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "MVAScore_nrb_smh_varset8_mixed03_tmva" , 50 , 0 , 1 , 50 , 0 , 1);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "MVAScore_nrb_smh_varset8_mixed04_tmva" , 50 , 0 , 1 , 50 , 0 , 1);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "MVAScore_nrb_smh_varset8_mixed05_tmva" , 50 , 0 , 1 , 50 , 0 , 1);
-
         // BDTG
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n30"                    , 30   , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_n100"                   , 100  , -1. , 1.);

@@ -542,12 +542,16 @@ inline
 void BabyMaker::CloseBabyNtuple(){
   BabyFile_->cd();
   BabyTree_->Write();
-  BabyTree_maxPhotonIDMVA_->Write();
-  BabyTree_minPhotonIDMVA_->Write();
-  if(produce_ntuples_for_fakePhotonStudy) {
-    BabyTree_fakePhotonIDMVA_->Write();
-    BabyTree_lowPhotonSideband_->Write();
+
+  if(!produce_ntuples_for_Maxime){
+    BabyTree_maxPhotonIDMVA_->Write();
+    BabyTree_minPhotonIDMVA_->Write();
+    if(produce_ntuples_for_fakePhotonStudy) {
+      BabyTree_fakePhotonIDMVA_->Write();
+      BabyTree_lowPhotonSideband_->Write();
+    }
   }
+
   BabyFile_->Close();
   return;
 }

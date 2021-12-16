@@ -71,14 +71,16 @@ def print_out_elements(mylist): #{{{
     for ele in mylist:
         print ele
 #}}}
-def create_commands(treename, rootfiles, another_location = ""): #{{{
+def create_commands(treename, rootfiles, another_location = "", year = ""): #{{{
     global xml_file
     loc = location
     if len(another_location) > 0:
         loc = another_location # will change global value
 
     for rootfile in rootfiles:
-        year = rootfile.split('_Era')[1].split('.')[0]
+        if len(year) == 0: # use the following if not specified
+            year = rootfile.split('_Era')[1].split('.')[0]
+
         my_parameters = register_parameters(loc, rootfile, treename, xml_file, year, datetime_tag)
         command_manager(my_parameters)
 #}}}
@@ -167,10 +169,17 @@ if __name__ == "__main__":
     #}}}
 
     if args.test:
-        path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/ntuples_v3.8"
+        path = "/afs/cern.ch/work/y/ykao/workspace_ultraLegacy/CMSSW_10_6_8/src/flashgg/Systematics/test/runWS"
+        create_commands(dict_trees['tHq'], ["TprimeBToTH_M-1000_Era2018_numEvent500_ultraLegacy_pilotRun.root"], path, "2018")
+        #create_commands(dict_trees['tHq'], ["TprimeBToTH_M-1000_Era2017_numEvent500_ultraLegacy_storeDeepJet.root"], path, "2017")
+        #create_commands(dict_trees['tHq'], ["TprimeBToTH_M-1000_Era2017_numEvent500_ultraLegacy_reduceCode.root"], path, "2017")
+        #create_commands(dict_trees['tHq'], ["TprimeBToTH_M-1000_Era2017_numEvent500_ultraLegacy_base.root"], path, "2017")
+
+        # previous test {{{
+        #path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/ntuples_v3.8"
         #create_commands(dict_trees['NRB'], dict_rootfiles['gammaJets'], path)
         #create_commands(dict_trees['NRB'], dict_rootfiles['QCD'], path)
-        create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
+        #create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
 
         #path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/ntuples_v3.8.1"
         ##create_commands(dict_trees['Data'], ["Data_Era2016.root"], location_data)
@@ -194,6 +203,7 @@ if __name__ == "__main__":
         #create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
         #create_commands(dict_trees['NRB'], dict_rootfiles['gammaJets'])
         #create_commands(dict_trees['NRB'], dict_rootfiles['QCD'])
+        #}}}
 
     #----------------------------------------------------------------------------------------------------
     # Execution
