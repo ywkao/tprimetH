@@ -222,7 +222,7 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "NbLoose"                       , 16  , -0.5   , 15.5  );
         v[i]->add_histogram("h" + syst_labels[j] + "NbMedium"                      , 16  , -0.5   , 15.5  );
         v[i]->add_histogram("h" + syst_labels[j] + "NbTight"                       , 16  , -0.5   , 15.5  );
-        v[i]->add_histogram("h" + syst_labels[j] + "HT"                            , 50  , 0      , 5000  );
+        v[i]->add_histogram("h" + syst_labels[j] + "HT"                            , 250 , 0      , 5000  );
         v[i]->add_histogram("h" + syst_labels[j] + "MetPt"                         , 25  , 0      , 200   );
         v[i]->add_histogram("h" + syst_labels[j] + "MetPhi"                        , 25  , -3.    , 3.    );
         v[i]->add_histogram("h" + syst_labels[j] + "MaxBTag"                       , 50  , 0      , 1     );
