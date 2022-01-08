@@ -2,40 +2,6 @@
 import glob
 
 version = "v3"
-subversion = 6 # for signal
-signals = [
-    "TprimeBToTH_M-600_Era2017.root",
-    "TprimeBToTH_M-1000_Era2017.root",
-    "TprimeBToTH_M-1000_Era2018.root",
-    "TprimeBToTH_M-1100_Era2018.root",
-    "TprimeBToTH_M-1200_Era2018.root",
-    "TprimeBToTH_M-600_Era2018.root",
-    "TprimeBToTH_M-625_Era2018.root",
-    "TprimeBToTH_M-650_Era2018.root",
-    "TprimeBToTH_M-675_Era2018.root",
-    "TprimeBToTH_M-700_Era2018.root",
-    "TprimeBToTH_M-800_Era2018.root",
-    "TprimeBToTH_M-900_Era2018.root",
-    "TprimeBToTH_M-1100_Era2017.root",
-    "TprimeBToTH_M-1200_Era2017.root",
-    "TprimeBToTH_M-625_Era2017.root",
-    "TprimeBToTH_M-650_Era2017.root",
-    "TprimeBToTH_M-675_Era2017.root",
-    "TprimeBToTH_M-700_Era2017.root",
-    "TprimeBToTH_M-800_Era2017.root",
-    "TprimeBToTH_M-900_Era2017.root",
-    "TprimeBToTH_M-1000_Era2016.root",
-    "TprimeBToTH_M-1100_Era2016.root",
-    "TprimeBToTH_M-1200_Era2016.root",
-    "TprimeBToTH_M-600_Era2016.root",
-    "TprimeBToTH_M-625_Era2016.root",
-    "TprimeBToTH_M-650_Era2016.root",
-    "TprimeBToTH_M-675_Era2016.root",
-    "TprimeBToTH_M-700_Era2016.root",
-    "TprimeBToTH_M-800_Era2016.root",
-    "TprimeBToTH_M-900_Era2016.root",
-]
- 
 signals_2016 = [
     "TprimeBToTH_M-600_Era2016.root",
     "TprimeBToTH_M-625_Era2016.root",
@@ -153,8 +119,99 @@ samples_2018 = [
     "bbHToGG_M-125_4FS_yb2_TuneCP5-13TeV-amcatnlo-pythia8_spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD"
 ]
 
-def little_babies(baby, year):
-  path = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ntuple_production/merged_ntuples/merged_ntuples_%s_%s/" % (version, year)
-  babies = glob.glob(path + "merged_ntuple_" + baby + "/merged_ntuple*.root")
-  return babies
+dict_trees = {
+    "NRB" : "tagsDumper/trees/NRB_13TeV_THQHadronicTag",
+    "SMH" : "tagsDumper/trees/SMH_13TeV_THQHadronicTag",
+    'tHq' : "tagsDumper/trees/tHq_13TeV_THQHadronicTag",
+    'Data': "tagsDumper/trees/Data_13TeV_THQHadronicTag",
+    'UL'  : "tagsDumper/trees/thq_125_13TeV_THQHadronicTag",
+}
 
+dict_rootfiles_ReReco = {
+    'gammaJets' : [ "GJet_Pt_Era2016.root"      , "GJet_Pt_Era2017.root"      , "GJet_Pt_Era2018.root"      , ] ,
+    'QCD'       : [ "QCD_Era2016.root"          , "QCD_Era2017.root"          , "QCD_Era2018.root"          , ] ,
+    'diphoton'  : [ "DiPhotonJets_Era2016.root" , "DiPhotonJets_Era2017.root" , "DiPhotonJets_Era2018.root" , ] ,
+    'smh_set1'  : [ "VBF_Era2016.root"          , "VBF_Era2017.root"          , "VBF_Era2018.root"          ,
+                    "THQ_Era2016.root"          , "THQ_Era2017.root"          , "THQ_Era2018.root"          , ] ,
+    'smh_set2'  : [ "VHToGG_Era2016.root"       , "VHToGG_Era2017.root"       , "VHToGG_Era2018.root"       ,
+                    "GluGluHToGG_Era2016.root"  , "GluGluHToGG_Era2017.root"  , "GluGluHToGG_Era2018.root"  ,
+                    "ttHJet_Era2016.root"       , "ttHJet_Era2017.root"       , "ttHJet_Era2018.root"       , ] ,
+    'ttX'       : [ "TGJets_Era2017.root"       , "TGJets_Era2018.root"       ,
+                    "TTGG_Era2016.root"         , "TTGG_Era2017.root"         , "TTGG_Era2018.root"         ,
+                    "TTGJets_Era2016.root"      , "TTGJets_Era2017.root"      , "TTGJets_Era2018.root"      ,
+                    "TTJets_Era2016.root"       , "TTJets_Era2017.root"       , "TTJets_Era2018.root"       ,
+                    "WG_Era2016.root"           , "WG_Era2017.root"           , "WG_Era2018.root"           ,
+                    "WW_Era2016.root"           , "WW_Era2017.root"           , "WW_Era2018.root"           ,
+                    "WZ_Era2016.root"           , "WZ_Era2017.root"           , "WZ_Era2018.root"           ,
+                    "ZG_Era2016.root"           , "ZG_Era2017.root"           ,
+                    "ZZ_Era2016.root"           , "ZZ_Era2017.root"           , "ZZ_Era2018.root"           , ] ,
+    'Data'      : ["Data_Era2016.root"          , "Data_Era2017.root"         , "Data_Era2018.root"         , ] ,
+
+}
+
+dict_rootfiles_v4p1 = {
+    'gammaJets' : [ "GJet_Pt_Era2017.root"      , "GJet_Pt_Era2018.root"      , ] ,
+    'QCD'       : [ "QCD_Era2016.root"          , "QCD_Era2017.root"          , "QCD_Era2018.root"          , ] ,
+    'diphoton'  : [ "DiPhotonJets_Era2016.root" , "DiPhotonJets_Era2017.root" , "DiPhotonJets_Era2018.root" , ] ,
+    'smh_set1'  : [ "VBF_Era2016.root"          , "VBF_Era2017.root"          , "VBF_Era2018.root"          ,
+                    "THQ_Era2016.root"          , "THQ_Era2017.root"          , "THQ_Era2018.root"          , ] ,
+    'smh_set2'  : [ "VHToGG_Era2016.root"       , "VHToGG_Era2017.root"       , "VHToGG_Era2018.root"       ,
+                    "GluGluHToGG_Era2016.root"  , "GluGluHToGG_Era2017.root"  , "GluGluHToGG_Era2018.root"  ,
+                    "ttHJet_Era2016.root"       , "ttHJet_Era2017.root"       , "ttHJet_Era2018.root"       , ] ,
+    'ttX'       : [ "TGJets_Era2017.root"       , "TGJets_Era2018.root"       ,
+                    "TTGG_Era2016.root"         , "TTGG_Era2017.root"         , "TTGG_Era2018.root"         ,
+                    "TTGJets_Era2016.root"      , "TTGJets_Era2017.root"      ,
+                    "TTJets_Era2016.root"       ,
+                    "WG_Era2017.root"           , "WG_Era2018.root"           ,
+                    "WW_Era2017.root"           ,
+                    "WZ_Era2017.root"           , "WZ_Era2018.root"           ,
+                    "ZG_Era2016.root"           , "ZG_Era2017.root"           ,
+                    "ZZ_Era2016.root"           , "ZZ_Era2017.root"           , ] ,
+    'Data'      : ["Data_Era2016.root"          , "Data_Era2017.root"         , "Data_Era2018.root"         , ] ,
+
+}
+
+dict_rootfiles_16 = {
+    'gammaJets' : [ "GJet_Pt_Era2016.root"      , ] ,
+    'QCD'       : [ "QCD_Era2016.root"          , ] ,
+    'diphoton'  : [ "DiPhotonJets_Era2016.root" , ] ,
+    'smh_set1'  : [ "VBF_Era2016.root"          , 
+                    "THQ_Era2016.root"          , ] ,
+    'smh_set2'  : [ "VHToGG_Era2016.root"       , 
+                    "GluGluHToGG_Era2016.root"  , 
+                    "ttHJet_Era2016.root"       , ] ,
+    'ttX'       : [ 
+                    "TTGG_Era2016.root"         , 
+                    "TTGJets_Era2016.root"      , 
+                    "TTJets_Era2016.root"       , 
+                    "WG_Era2016.root"           , 
+                    "WW_Era2016.root"           , 
+                    "WZ_Era2016.root"           , 
+                    "ZG_Era2016.root"           , 
+                    "ZZ_Era2016.root"           , ] ,
+    'Data'      : ["Data_Era2016.root"          , ] ,
+
+}
+
+dict_rootfiles_UL = {
+    'gammaJets' : [ "GJet_Pt_Era2017.root"      , "GJet_Pt_Era2018.root"      , ] ,
+    'QCD'       : [ "QCD_Era2017.root"          , "QCD_Era2018.root"          , ] ,
+    'diphoton'  : [ "DiPhotonJets_Era2017.root" , "DiPhotonJets_Era2018.root" , ] ,
+    'smh_set1'  : [ "VBF_Era2017.root"          , "VBF_Era2018.root"          ,
+                    "THQ_Era2017.root"          , "THQ_Era2018.root"          , ] ,
+    'smh_set2'  : [ "VHToGG_Era2017.root"       , "VHToGG_Era2018.root"       ,
+                    "GluGluHToGG_Era2017.root"  , "GluGluHToGG_Era2018.root"  ,
+                    "ttHJet_Era2017.root"       , "ttHJet_Era2018.root"       , ] ,
+    'ttX'       : [ "TGJets_Era2017.root"       , "TGJets_Era2018.root"       ,
+                    "TTGG_Era2017.root"         , "TTGG_Era2018.root"         ,
+                    "TTGJets_Era2017.root"      ,
+                    "WG_Era2017.root"           , "WG_Era2018.root"           ,
+                    "WW_Era2017.root"           ,
+                    "WZ_Era2017.root"           , "WZ_Era2018.root"           ,
+                    "ZG_Era2017.root"           ,
+                    "ZZ_Era2017.root"           , ] ,
+    'Data'      : ["Data_Era2017.root"         , "Data_Era2018.root"         , ] ,
+
+}
+
+dict_rootfiles = dict_rootfiles_UL

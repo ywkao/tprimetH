@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 import os, glob, subprocess
 import parallel_utils
-import sample_manager
+import sample_manager as sm
 import datetime
 today = datetime.datetime.today()
 datetime_tag = today.strftime("%Y%m%d") 
@@ -32,7 +32,9 @@ idx_log = 0
 command_list = []
 
 cwd = os.getcwd()
-location = cwd + "/rootfiles/ntuples_v3.6"
+location_v3p6 = cwd + "/rootfiles/ntuples_v3.6"
+location_v3p8 = cwd + "/rootfiles/ntuples_v3.8"
+location = cwd + "/rootfiles/ntuples_v4.1"
 xml_file = "mva/Hadronic__tprime_impute_hct__bdt.xml"
 
 #====================================================================================================#
@@ -68,8 +70,11 @@ def register_parameters(location, rootfile, treename, xml_file, year, datetime_t
     return d
 #}}}
 def print_out_elements(mylist): #{{{
-    for ele in mylist:
-        print ele
+    for command in mylist:
+        l = command.split()
+        rootfile = l[1] + "/" + l[2]
+        #subprocess.call("ls %s" % rootfile, shell=True)
+        print command 
 #}}}
 def create_commands(treename, rootfiles, another_location = "", year = ""): #{{{
     global xml_file
@@ -107,37 +112,6 @@ def create_test_commands(treename, year, location): #{{{
 
     os.chdir(cwd)
 #}}}
-# trees & rootfiles {{{
-dict_trees = {
-    "NRB" : "tagsDumper/trees/NRB_13TeV_THQHadronicTag",
-    "SMH" : "tagsDumper/trees/SMH_13TeV_THQHadronicTag",
-    'tHq' : "tagsDumper/trees/tHq_13TeV_THQHadronicTag",
-    'Data': "tagsDumper/trees/Data_13TeV_THQHadronicTag",
-    'UL'  : "tagsDumper/trees/thq_125_13TeV_THQHadronicTag",
-}
-
-dict_rootfiles = {
-    'gammaJets' : [ "GJet_Pt_Era2016.root"      , "GJet_Pt_Era2017.root"      , "GJet_Pt_Era2018.root"      , ] ,
-    'QCD'       : [ "QCD_Era2016.root"          , "QCD_Era2017.root"          , "QCD_Era2018.root"          , ] ,
-    'diphoton'  : [ "DiPhotonJets_Era2016.root" , "DiPhotonJets_Era2017.root" , "DiPhotonJets_Era2018.root" , ] ,
-    'smh_set1'  : [ "VBF_Era2016.root"          , "VBF_Era2017.root"          , "VBF_Era2018.root"          ,
-                    "THQ_Era2016.root"          , "THQ_Era2017.root"          , "THQ_Era2018.root"          , ] ,
-    'smh_set2'  : [ "VHToGG_Era2016.root"       , "VHToGG_Era2017.root"       , "VHToGG_Era2018.root"       ,
-                    "GluGluHToGG_Era2016.root"  , "GluGluHToGG_Era2017.root"  , "GluGluHToGG_Era2018.root"  ,
-                    "ttHJet_Era2016.root"       , "ttHJet_Era2017.root"       , "ttHJet_Era2018.root"       , ] ,
-    'ttX'       : [ "TGJets_Era2017.root"       , "TGJets_Era2018.root"       ,
-                    "TTGG_Era2016.root"         , "TTGG_Era2017.root"         , "TTGG_Era2018.root"         ,
-                    "TTGJets_Era2016.root"      , "TTGJets_Era2017.root"      , "TTGJets_Era2018.root"      ,
-                    "TTJets_Era2016.root"       , "TTJets_Era2017.root"       , "TTJets_Era2018.root"       ,
-                    "WG_Era2016.root"           , "WG_Era2017.root"           , "WG_Era2018.root"           ,
-                    "WW_Era2016.root"           , "WW_Era2017.root"           , "WW_Era2018.root"           ,
-                    "WZ_Era2016.root"           , "WZ_Era2017.root"           , "WZ_Era2018.root"           ,
-                    "ZG_Era2016.root"           , "ZG_Era2017.root"           ,
-                    "ZZ_Era2016.root"           , "ZZ_Era2017.root"           , "ZZ_Era2018.root"           , ] ,
-    'Data'      : ["Data_Era2016.root"          , "Data_Era2017.root"         , "Data_Era2018.root"         , ] ,
-
-}
-#}}}
 
 #====================================================================================================#
 
@@ -145,75 +119,61 @@ if __name__ == "__main__":
     subprocess.call("mkdir -p plots/log/", shell=True)
     # create commands {{{
     # 3, 25, 3, 3, 3, 6, 9, 10, 10, 10
-    location_data = cwd + "/rootfiles/ntuples_v3.8"
-
     if args.set1:
-        create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
-        create_commands(dict_trees['NRB'], dict_rootfiles['ttX'])
-        create_commands(dict_trees['NRB'], dict_rootfiles['gammaJets'], location_data)
-        create_commands(dict_trees['NRB'], dict_rootfiles['QCD'], location_data)
+        create_commands(sm.dict_trees['Data'], sm.dict_rootfiles_16['Data']     , location_v3p8)
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['ttX']      , location_v3p6)
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['gammaJets'], location_v3p8)
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['QCD']      , location_v3p8)
+
+        create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'])
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['ttX'])
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['gammaJets'])
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['QCD'])
         
     if args.set2:
-        create_commands(dict_trees['SMH'], dict_rootfiles['smh_set1'])
-        create_commands(dict_trees['NRB'], dict_rootfiles['diphoton'])
+        create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles_16['smh_set1'] , location_v3p6)
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['diphoton'] , location_v3p6)
+        create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles['smh_set1'])
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['diphoton'])
 
     if args.set3:
-        create_commands(dict_trees['SMH'], dict_rootfiles['smh_set2'])
+        create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles_16['smh_set2'] , location_v3p6)
+        create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles['smh_set2'])
 
     if args.set4:
-        create_commands(dict_trees['tHq'], sample_manager.signals_2016)
+        create_commands(sm.dict_trees['tHq'] , sm.signals_2016                  , location_v3p6)
 
     if args.set5:
-        create_commands(dict_trees['tHq'], sample_manager.signals_2017)
+        create_commands(sm.dict_trees['tHq'],  sm.signals_2017)
 
     if args.set6:
-        create_commands(dict_trees['tHq'], sample_manager.signals_2018)
-
-    if args.dataOnly:
-        create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
+        create_commands(sm.dict_trees['tHq'],  sm.signals_2018)
     #}}}
 
     if args.test:
         path = "/afs/cern.ch/work/y/ykao/workspace_ultraLegacy/CMSSW_10_6_8/src/flashgg/Systematics/test/runWS"
-        #create_commands(dict_trees['tHq'], ["TprimeBToTH_M-1000_Era2018_numEvent500_ultraLegacy_pilotRun.root"], path, "2018")
-        #create_commands(dict_trees['tHq'], ["TprimeBToTH_M-1000_Era2017_numEvent500_ultraLegacy_storeDeepJet.root"], path, "2017")
-        #create_commands(dict_trees['tHq'], ["TprimeBToTH_M-1000_Era2017_numEvent500_ultraLegacy_reduceCode.root"], path, "2017")
-        #create_commands(dict_trees['tHq'], ["TprimeBToTH_M-1000_Era2017_numEvent500_ultraLegacy_base.root"], path, "2017")
+        create_commands(sm.dict_trees['Data'], sm.dict_rootfiles_16['Data']     , location_v3p8)
+        create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'])
 
-        #path = "/afs/cern.ch/work/y/ykao/workspace_ultraLegacy/CMSSW_10_6_8/src/flashgg/Systematics/test/output_smh_17"
-        #create_commands(dict_trees['UL'], ["THQ_ctcvcp_HToGG_M125_TuneCP5_13TeV-madgraph-pythia8_21.root"], path, "2018")
+    if False:
+        create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'])
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['ttX'])
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['gammaJets'])
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['QCD'])
+        create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles['smh_set1'])
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['diphoton'])
+        create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles['smh_set2'])
+        create_commands(sm.dict_trees['tHq'] , sm.signals_2017)
+        create_commands(sm.dict_trees['tHq'] , sm.signals_2018)
 
-        create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
-
-        # previous test {{{
-        #path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/ntuples_v3.8"
-        #create_commands(dict_trees['NRB'], dict_rootfiles['gammaJets'], path)
-        #create_commands(dict_trees['NRB'], dict_rootfiles['QCD'], path)
-        #create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
-
-        #path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/ntuples_v3.8.1"
-        ##create_commands(dict_trees['Data'], ["Data_Era2016.root"], location_data)
-        #create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
-        #create_commands(dict_trees['NRB'], ["QCD_Era2016.root"], path)
-        #create_commands(dict_trees['NRB'], ["GJet_Pt_Era2016.root"], path)
-        #create_commands(dict_trees['NRB'], ["QCD_Era2017.root"], path)
-        #create_commands(dict_trees['NRB'], ["GJet_Pt_Era2017.root"], path)
-        #create_commands(dict_trees['NRB'], ["QCD_Era2018.root"])
-        #create_commands(dict_trees['NRB'], ["GJet_Pt_Era2018.root"])
-        #create_commands(dict_trees['NRB'], dict_rootfiles['diphoton'])
-
-        # set1
-        #path = "/eos/home-y/ykao/tPrimeExcessHgg/merged_ntuples/ntuples_v3p6p4_2016"
-        #dir_01 = "merged_ntuple_GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCUETP8M1_13TeV_Pythia8_spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3"
-        #dir_02 = "merged_ntuple_GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8_spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3"
-        #create_test_commands(dict_trees['NRB'], 2016, path + "/" + dir_01)
-        #create_test_commands(dict_trees['NRB'], 2016, path + "/" + dir_02)
-
-        # set2
-        #create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
-        #create_commands(dict_trees['NRB'], dict_rootfiles['gammaJets'])
-        #create_commands(dict_trees['NRB'], dict_rootfiles['QCD'])
-        #}}}
+        create_commands(sm.dict_trees['Data'], sm.dict_rootfiles_16['Data']     , location_v3p8)
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['ttX']      , location_v3p6)
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['gammaJets'], location_v3p8)
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['QCD']      , location_v3p8)
+        create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles_16['smh_set1'] , location_v3p6)
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['diphoton'] , location_v3p6)
+        create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles_16['smh_set2'] , location_v3p6)
+        create_commands(sm.dict_trees['tHq'] , sm.signals_2016                  , location_v3p6)
 
     #----------------------------------------------------------------------------------------------------
     # Execution
@@ -222,4 +182,3 @@ if __name__ == "__main__":
         print_out_elements(command_list)
     else:
         parallel_utils.submit_jobs(command_list, 10)
-        #parallel_utils.run(command_list[0])

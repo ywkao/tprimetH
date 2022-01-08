@@ -21,15 +21,10 @@
 #include <TH2F.h>
 #include <TNtuple.h>
 
-// tprimetHHadronic
 #include "ttHLooper.h"
-//#include "tprimetHHadronic.cc"
-//#include "tprimetHHadronic_v3p2.cc"
-//#include "tprimetHHadronic_v3p3.cc" // for the latest samples
-//#include "tprimetHHadronic_v3p3p2.cc" // for testing command
+#include "tprimetHHadronic_v4p1.cc" // include deepJet scores
 //#include "tprimetHHadronic_v3p7.cc" // ntuple with dipho_rapidity
-#include "tprimetHHadronic_v3p5.cc" // ntuple with chi2 masses from producer
-//#include "tprimetHHadronic_v4p1.cc" // include deepJet scores
+//#include "tprimetHHadronic_v3p5.cc" // ntuple with chi2 masses from producer
 
 using namespace std;
 using namespace tprime;

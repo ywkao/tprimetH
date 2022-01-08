@@ -132,10 +132,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   //----------------------------------------------------------------------------------------------------
   TString BDT_nrb_xml_file_;
   TString BDT_smh_xml_file_;
-  bool use_v3p8;
-  use_v3p8 = false;
-  use_v3p8 = true;
-  if ( use_v3p8 && (name_output_file.Contains("Data") || name_output_file.Contains("EGamma") || name_output_file.Contains("GJet_Pt") || name_output_file.Contains("QCD"))) { //v3p8
+  if ( name_output_file.Contains("Data") || name_output_file.Contains("EGamma") || name_output_file.Contains("GJet_Pt") || name_output_file.Contains("QCD") ) { //v3p8
       BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210620/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
       BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210620/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210620/weights/TMVAClassification_BDTG.weights.xml";
   } else { //v3p6
@@ -143,9 +140,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210520/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210520/weights/TMVAClassification_BDTG.weights.xml";
   }
 
-  bool ref_ultraLegacySample;
-  ref_ultraLegacySample = true;
-  ref_ultraLegacySample = false; 
+  bool ref_ultraLegacySample = (mYear!="2016");
   if (ref_ultraLegacySample) {
       BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210820/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210820/weights/TMVAClassification_BDTG.weights.xml";
       BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210818/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210818/weights/TMVAClassification_BDTG.weights.xml";
