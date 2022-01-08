@@ -1,6 +1,11 @@
 plots*
 log*
 
+*.txt
+*.csv
+*.py
+*.sh
+
 python/*pyc
 
 bin
