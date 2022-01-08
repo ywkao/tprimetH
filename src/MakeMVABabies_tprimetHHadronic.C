@@ -38,6 +38,11 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   double total_yields = 0.;
 
   TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_runII");
+  TF1* HT_scale_factor_shape;
+  //HT_scale_factor_shape = get_scale_factor_function_HT(1);
+  //HT_scale_factor_shape = get_scale_factor_function_HT(-1);
+  HT_scale_factor_shape = get_scale_factor_function_HT(0);
+
 
   //----------------------------------------------------------------------------------------------------}}}
   // options for producing ntuples {{{
@@ -45,7 +50,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   InitBabyNtuple(); // set all boolean false
 
   debug = false;
-  Enable_flag_for_Maxime(); // produce_ntuples_for_Maxime
+  //Enable_flag_for_Maxime(); // produce_ntuples_for_Maxime
   //Enable_flag_for_fakePhotonStudy(); // produce_ntuples_for_fakePhotonStudy
   apply_preselection = true; // reflect stack plots
   //apply_preselection = false; // study "Low photon ID sideband"
@@ -174,12 +179,13 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       if (bkg_options.Contains("impute")) {
         if (isData && !produce_ntuples_for_fakePhotonStudy)
           impute_photon_id(min_photon_ID_presel_cut, maxIDMVA_, photon_fakeID_shape_runII, minIDMVA_, evt_weight_, process_id_);
+        // reminder: in fake photon study, we need original min photon idmva for categorize events
       }
 
       if(!produce_ntuples_for_Maxime) {
-      if (is_data && process_id_ != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)  continue;
-      if (is_data && process_id_ != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)
-          printf("[WARNING] Data events in signal region is used! mass = %.2f, process_id_ = %d\n", CMS_hgg_mass(), process_id_);
+        if (is_data && process_id_ != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)  continue;
+        if (is_data && process_id_ != 18 && blind && CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.)
+            printf("[WARNING] Data events in signal region is used! mass = %.2f, process_id_ = %d\n", CMS_hgg_mass(), process_id_);
       }
 
       bool pass_photon_pt_criteria = dipho_leadPt()>30. && dipho_subleadPt()>18.;
@@ -230,6 +236,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
           printf("[Info] Run:Lumi:Event = %d:%d:%d\n", run_, lumi_, evt_);
 
       ht_            = HT();
+      scaled_ht_     = (ht_ / 2500.) - 1.;
       dipho_delta_R  = lead_photon.DeltaR(sublead_photon);
 
       //njets_ = n_jets();
@@ -440,6 +447,12 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
         //}}}
 
       //----------------------------------------------------------------------------------------------------}}}
+      // Additional HT scale factor
+      //----------------------------------------------------------------------------------------------------
+      double scale_factor_HT = HT_scale_factor_shape->Eval(ht_);
+      if(ht_>100. && process_id_ == 18) evt_weight_ *= scale_factor_HT; // imputed QCD
+      //if(ht_>100. && process_id_ ==  2) evt_weight_ *= scale_factor_HT; // DiPhoton
+
       // For Maxime {{{
       //----------------------------------------------------------------------------------------------------
       // Note: 

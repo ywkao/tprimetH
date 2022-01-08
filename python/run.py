@@ -112,7 +112,8 @@ dict_trees = {
     "NRB" : "tagsDumper/trees/NRB_13TeV_THQHadronicTag",
     "SMH" : "tagsDumper/trees/SMH_13TeV_THQHadronicTag",
     'tHq' : "tagsDumper/trees/tHq_13TeV_THQHadronicTag",
-    'Data': "tagsDumper/trees/Data_13TeV_THQHadronicTag"
+    'Data': "tagsDumper/trees/Data_13TeV_THQHadronicTag",
+    'UL'  : "tagsDumper/trees/thq_125_13TeV_THQHadronicTag",
 }
 
 dict_rootfiles = {
@@ -174,10 +175,15 @@ if __name__ == "__main__":
 
     if args.test:
         path = "/afs/cern.ch/work/y/ykao/workspace_ultraLegacy/CMSSW_10_6_8/src/flashgg/Systematics/test/runWS"
-        create_commands(dict_trees['tHq'], ["TprimeBToTH_M-1000_Era2018_numEvent500_ultraLegacy_pilotRun.root"], path, "2018")
+        #create_commands(dict_trees['tHq'], ["TprimeBToTH_M-1000_Era2018_numEvent500_ultraLegacy_pilotRun.root"], path, "2018")
         #create_commands(dict_trees['tHq'], ["TprimeBToTH_M-1000_Era2017_numEvent500_ultraLegacy_storeDeepJet.root"], path, "2017")
         #create_commands(dict_trees['tHq'], ["TprimeBToTH_M-1000_Era2017_numEvent500_ultraLegacy_reduceCode.root"], path, "2017")
         #create_commands(dict_trees['tHq'], ["TprimeBToTH_M-1000_Era2017_numEvent500_ultraLegacy_base.root"], path, "2017")
+
+        #path = "/afs/cern.ch/work/y/ykao/workspace_ultraLegacy/CMSSW_10_6_8/src/flashgg/Systematics/test/output_smh_17"
+        #create_commands(dict_trees['UL'], ["THQ_ctcvcp_HToGG_M125_TuneCP5_13TeV-madgraph-pythia8_21.root"], path, "2018")
+
+        create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
 
         # previous test {{{
         #path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/ntuples_v3.8"

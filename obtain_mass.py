@@ -550,10 +550,14 @@ def make_collective_plot(v_varName, v_myMasses, plotType):
 
     annotate()
     legend.Draw("same")
-    output = dir_output + "/" + nameTag + ".png"
+    output = dir_output + "/" + nameTag
 
-    if isTprime and plotType == "normalized": c2.SaveAs(output)
-    else: c1.SaveAs(output)
+    if isTprime and plotType == "normalized":
+        c2.SaveAs(output + ".png")
+        c2.SaveAs(output + ".pdf")
+    else:
+        c1.SaveAs(output + ".png")
+        c1.SaveAs(output + ".pdf")
 #}}}
 
 def run():
@@ -597,6 +601,10 @@ def make_efficiency(): #{{{
     raw_M800_M1000 = [0.00810, 0.01266, 0.02134, 0.03390, 0.04737, 0.08605, 0.12473, 0.15204, 0.17935, 0.18855, 0.19774, 0.18349, 0.16925, 0.13075, 0.09225]
     raw_M1100_1200 = [0.00242, 0.00311, 0.00408, 0.00535, 0.00699, 0.01878, 0.03057, 0.06607, 0.10157, 0.14412, 0.18667, 0.20925, 0.23183, 0.24890, 0.26597]
 
+    raw_M600_M700  = [0.07882, 0.09317, 0.10533, 0.11234, 0.10923, 0.06883, 0.02264, 0.01262, 0.00778, 0.00539]
+    raw_M800_M1000 = [0.00810, 0.01266, 0.02134, 0.03390, 0.04737, 0.12473, 0.17935, 0.19774, 0.16925, 0.09225]
+    raw_M1100_1200 = [0.00242, 0.00311, 0.00408, 0.00535, 0.00699, 0.03057, 0.10157, 0.18667, 0.23183, 0.26597]
+
     n = len(raw_M600_M700) 
     x = array.array('d')
     efficiency_M600_M700  = array.array('d')
@@ -604,7 +612,8 @@ def make_efficiency(): #{{{
     efficiency_M1100_1200 = array.array('d')
 
     for i in range(n):
-        x.append(masses_v2[i])
+        #x.append(masses_v2[i])
+        x.append(masses[i])
         efficiency_M600_M700.append(raw_M600_M700[i]) 
         efficiency_M800_M1000.append(raw_M800_M1000[i])
         efficiency_M1100_1200.append(raw_M1100_1200[i])
@@ -635,12 +644,13 @@ def make_efficiency(): #{{{
 
     # wrap up
     annotate()
-    output = dir_output + "/signal_efficiency.png"
-    c1.SaveAs(output)
+    output = dir_output + "/signal_efficiency"
+    c1.SaveAs(output + ".png")
+    c1.SaveAs(output + ".pdf")
 #}}}
 
 if __name__ == "__main__":
-    #run()
+    run()
     make_efficiency()
     subprocess.call("ls -lhrt %s" % dir_output, shell=True)
 

@@ -23,6 +23,7 @@ class BabyMaker { //{{{
     ~BabyMaker() {
       if (BabyFile_) delete BabyFile_;
       if (BabyTree_) delete BabyTree_;
+      if (BabyTree_HT_) delete BabyTree_HT_;
       if (BabyTree_maxPhotonIDMVA_) delete BabyTree_maxPhotonIDMVA_;
       if (BabyTree_minPhotonIDMVA_) delete BabyTree_minPhotonIDMVA_;
       if (BabyTree_fakePhotonIDMVA_) delete BabyTree_fakePhotonIDMVA_;
@@ -42,6 +43,7 @@ class BabyMaker { //{{{
   private:
     TFile *BabyFile_;
     TTree *BabyTree_;
+    TTree *BabyTree_HT_;
     TTree *BabyTree_maxPhotonIDMVA_;
     TTree *BabyTree_minPhotonIDMVA_;
     TTree *BabyTree_fakePhotonIDMVA_;
@@ -104,6 +106,7 @@ class BabyMaker { //{{{
     float   	njets_;
     float	    nbjets_;
     float	    ht_;
+    float	    scaled_ht_;
 
     float	    jet1_pt_;
     float       jet1_eta_;
@@ -253,6 +256,7 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
   BabyFile_ = new TFile(Form("%s", BabyFilename), "RECREATE");
   BabyFile_->cd();
   BabyTree_ = new TTree("t", "A Baby Ntuple");
+  BabyTree_HT_ = new TTree("t_HT", "A Baby Ntuple for HT");
   BabyTree_maxPhotonIDMVA_ = new TTree("t_maxPhotonIDMVA", "A Baby Ntuple for max photon IDMVA");
   BabyTree_minPhotonIDMVA_ = new TTree("t_minPhotonIDMVA", "A Baby Ntuple for min photon IDMVA");
   BabyTree_fakePhotonIDMVA_ = new TTree("t_fakePhotonIDMVA", "A Baby Ntuple for fake photon IDMVA");
@@ -284,7 +288,8 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
       BabyTree_->Branch("process_id"        , &process_id_        );
       BabyTree_->Branch("dipho_mass"        , &dipho_mass_        );
 
-      // for simultaneous fit (pre-selection region)
+      // for simultaneous fit purpose (pre-selection region)
+      BabyTree_HT_->Branch("idmva", &scaled_ht_);
       BabyTree_maxPhotonIDMVA_->Branch("idmva", &maxIDMVA_);
       BabyTree_minPhotonIDMVA_->Branch("idmva", &minIDMVA_);
 
@@ -362,6 +367,7 @@ void BabyMaker::MakeBabyNtuple(const char *BabyFilename){
       //BabyTree_->Branch("BDTG_TprimeVsHiggs_M1100_M1200_withNRBcut"    , &bdtg_score_smh_m1100_m1200_withNRBcut_ );
 
       // for simultaneous fit (pre-selection region)
+      BabyTree_HT_->Branch("idmva", &scaled_ht_);
       BabyTree_maxPhotonIDMVA_->Branch("idmva", &maxIDMVA_);
       BabyTree_minPhotonIDMVA_->Branch("idmva", &minIDMVA_);
 
@@ -517,6 +523,7 @@ void BabyMaker::FillBabyNtuple(){
   BabyTree_->Fill();
   // for simultaneous fit purpose (consider only data in preselection)
   if(process_id_!=18){
+    BabyTree_HT_->Fill();
     BabyTree_maxPhotonIDMVA_->Fill();
     BabyTree_minPhotonIDMVA_->Fill();
   }
@@ -544,6 +551,7 @@ void BabyMaker::CloseBabyNtuple(){
   BabyTree_->Write();
 
   if(!produce_ntuples_for_Maxime){
+    BabyTree_HT_->Write();
     BabyTree_maxPhotonIDMVA_->Write();
     BabyTree_minPhotonIDMVA_->Write();
     if(produce_ntuples_for_fakePhotonStudy) {
