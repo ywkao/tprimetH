@@ -722,42 +722,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //----------------------------------------------------------------------------------------------------}}}
       // MVA cut values {{{
       //----------------------------------------------------------------------------------------------------
-      // past {{{
-      // # BDTs on 20210620
-      //vector<double> v_mva_threshold_set2 = {0.530, 0.363, 0.228, 0.828, 0.826, 0.816};
-      //vector<double> v_mva_threshold_set2 = {0.946, 0.363, 0.228, 0.800, 0.826, 0.816};  // Maxime's new config after fixing bug
-      //vector<double> v_mva_threshold_set2 = {0.953, 0.363, 0.228, 0.800, 0.826, 0.816};  // Maxime's config-1  and config-2
-      //vector<double> v_mva_threshold_set2 = {0.955, 0.363, 0.228, 0.800, 0.826, 0.816};  // verify # of events
-
-      // # BDTs on 20210820 (keep ~100 data events in sideband)
-      //vector<double> v_mva_threshold_set1 = {0.544, 0.365, 0.220, 0.823, 0.826, 0.804};
-      //vector<double> v_mva_threshold_set2 = {0.530, 0.393, 0.251, 0.820, 0.822, 0.812};
-      
-      // # BDTs on 20210820 (check with previuos cut values)
-      //vector<double> v_mva_threshold_set1 = {0.530, 0.363, 0.228, 0.828, 0.826, 0.816};
-      //vector<double> v_mva_threshold_set2 = {0.530, 0.363, 0.228, 0.828, 0.826, 0.816};
-
-      // # BDTs on 20210820 (check for comparison in newBase)
-      //vector<double> v_mva_threshold_set1 = {0.539, 0.365, 0.225, 0.828, 0.826, 0.816};
-      //vector<double> v_mva_threshold_set2 = {0.530, 0.363, 0.228, 0.828, 0.826, 0.816};
-
-      // # BDTs on 20210820 (keep ~110 data events in sideband, |eta|<3.0)
-      //vector<double> v_mva_threshold_set1 = {0.544, 0.365, 0.220, 0.816, 0.818, 0.801};
-      //vector<double> v_mva_threshold_set2 = {0.530, 0.393, 0.251, 0.817, 0.812, 0.810};
-      //
-      // # BDTs on 20210820 (keep ~110 data events in sideband, eta<3.0)
-      //vector<double> v_mva_threshold_set1 = {0.549, 0.370, 0.231, 0.823, 0.827, 0.806};
-      //vector<double> v_mva_threshold_set2 = {0.549, 0.370, 0.231, 0.828, 0.826, 0.816};
-
-      // # BDTs on 20210820 (keep events as base BDTGs trained on 20210620)
-      //vector<double> v_mva_threshold_set2 = {0.519, 0.340, 0.204, 0.817, 0.818, 0.802};
-
-      // # BDTs on 20210620 (Maxime's cut values)
-      //vector<double> v_mva_threshold_set2 = {0.943, 0.960, 0.940, 0.800, 0.800, 0.800};
-      // }}}
 
       // # for sync with MakeMVABabies*.C only
-      //vector<double> v_mva_threshold_set2 = {0.530, 0.363, 0.228, 0.828, 0.826, 0.816};
       vector<double> v_mva_threshold_set2 = {0.943, 0.960, 0.950, 0.800, 0.800, 0.800}; // Maxime's opt
 
       bool pass_mva_cut_bdtg_nrb_mixed03 = mva_value_nrb_varset8_mixed03_tmva_bdtg > v_mva_threshold_set2[0];
@@ -776,8 +742,10 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       pass_tprime_low_mass_criterion = mass_tprime > 0.;
 
       bool pass_tprime_low_mass_criterion_mixed03 = mass_tprime > 480. && mass_tprime < 800.; // Maxime's opt
-      bool pass_tprime_low_mass_criterion_mixed04 = mass_tprime > 630. && mass_tprime < 1150.; // Maxime's opt
-      bool pass_tprime_low_mass_criterion_mixed05 = mass_tprime > 750. && mass_tprime < 1600.; // Maxime's opt
+      bool pass_tprime_low_mass_criterion_mixed04 = mass_tprime > 550. && mass_tprime < 1150.; // Maxime's opt
+      bool pass_tprime_low_mass_criterion_mixed05 = mass_tprime > 650. && mass_tprime < 1600.; // Maxime's opt
+      //bool pass_tprime_low_mass_criterion_mixed04 = mass_tprime > 630. && mass_tprime < 1150.; // Maxime's opt
+      //bool pass_tprime_low_mass_criterion_mixed05 = mass_tprime > 750. && mass_tprime < 1600.; // Maxime's opt
       //bool pass_tprime_low_mass_criterion_mixed05 = mass_tprime > 750. && mass_tprime < 1350.; // Maxime's opt
 
       bool is_within_SR_mixed03 = pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03 && pass_tprime_low_mass_criterion_mixed03;
