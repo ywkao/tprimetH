@@ -69,12 +69,14 @@ def register_parameters(location, rootfile, treename, xml_file, year, datetime_t
     d["datetime_tag"] = datetime_tag
     return d
 #}}}
-def print_out_elements(mylist): #{{{
+def print_out_elements(mylist, do_list=True): #{{{
     for command in mylist:
         l = command.split()
         rootfile = l[1] + "/" + l[2]
-        #subprocess.call("ls %s" % rootfile, shell=True)
-        print command 
+        if do_list:
+            subprocess.call("ls %s" % rootfile, shell=True)
+        else:
+            print command 
 #}}}
 def create_commands(treename, rootfiles, another_location = "", year = ""): #{{{
     global xml_file
@@ -179,6 +181,7 @@ if __name__ == "__main__":
     # Execution
     #----------------------------------------------------------------------------------------------------
     if not to_execution:
-        print_out_elements(command_list)
+        #print_out_elements(command_list)
+        print_out_elements(command_list, False)
     else:
         parallel_utils.submit_jobs(command_list, 10)
