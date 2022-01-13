@@ -67,20 +67,22 @@ def low_photon_ID_sideband_study():
     #myhist_Data_Era2016.root
 
 def prepare_data_for_simultaneous_fit(directory="plots"):
-    subprocess.call("hadd -f fakePhotonStudy/MVABaby_Data_simultaneousFit.root %s/MVA*Data*.root" % directory, shell = True)
+    subprocess.call("hadd -f fakePhotonStudy/rootfiles/MVABaby_Data_simultaneousFit.root %s/MVA*Data*.root" % directory, shell = True)
 
 if __name__ == "__main__":
     #customize_hadd()
     usuall_hadd("myhist")
-    #usuall_hadd("myhist", "plots_dataDrivenQCD_scaleHT_central")
-    #combine_only_signal("myhist")
-    #usuall_hadd("myhist", "plots_20210907_Maxime_config01")
-    #usuall_hadd("myhist", "plots_20210907_Maxime_config02")
-    #usuall_hadd("myhist", "plots_20210908_Maxime_verification")
+    #usuall_hadd("MVABaby")
+    #prepare_data_for_simultaneous_fit("plots_20220113_ultraLegacy")
 
     #low_photon_ID_sideband_study()
     #prepare_data_for_simultaneous_fit()
     #prepare_data_for_simultaneous_fit("plots_newBase_20210818")
 
-    #usuall_hadd("MVABaby")
+    #usuall_hadd("myhist", "plots_dataDrivenQCD_scaleHT_central")
+    #combine_only_signal("myhist")
+    #usuall_hadd("myhist", "plots_20210907_Maxime_config01")
+    #usuall_hadd("myhist", "plots_20210907_Maxime_config02")
+    #usuall_hadd("myhist", "plots_20210908_Maxime_verification")
     #usuall_hadd("MVABaby", "plots_newBase_20210818")
+

@@ -51,9 +51,9 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
 
   debug = false;
   //Enable_flag_for_Maxime(); // produce_ntuples_for_Maxime
-  Enable_flag_for_fakePhotonStudy(); // produce_ntuples_for_fakePhotonStudy
-  //apply_preselection = true; // reflect stack plots
-  apply_preselection = false; // study "Low photon ID sideband"
+  //Enable_flag_for_fakePhotonStudy(); // produce_ntuples_for_fakePhotonStudy
+  apply_preselection = true; // reflect stack plots
+  //apply_preselection = false; // study "Low photon ID sideband"
 
   // Make baby ntuple
   MakeBabyNtuple( name_output_file.Data() );
@@ -457,7 +457,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       // Additional HT scale factor
       //----------------------------------------------------------------------------------------------------
       double scale_factor_HT = HT_scale_factor_shape->Eval(ht_);
-      if(ht_>100. && process_id_ == 18) evt_weight_ *= scale_factor_HT; // imputed QCD
+      //if(ht_>100. && process_id_ == 18) evt_weight_ *= scale_factor_HT; // imputed QCD
       //if(ht_>100. && process_id_ ==  2) evt_weight_ *= scale_factor_HT; // DiPhoton
 
       // For Maxime {{{

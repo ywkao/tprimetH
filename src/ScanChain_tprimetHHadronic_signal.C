@@ -249,8 +249,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   //}}}
   
   bool perform_fake_photon_study;
-  perform_fake_photon_study = false;
   perform_fake_photon_study = true;
+  perform_fake_photon_study = false;
 
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
