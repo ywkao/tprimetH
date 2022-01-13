@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 import subprocess
-path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/forMaxime"
+path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/forMaxime/ntuples_BDTG_pureMC_21Jul21"
+path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/forMaxime/ntuples_BDTG_dataDriven_16Oct21"
 
 def run():
     files = [
-        "output_Data_v3p8_21Jul21.root",
-        "output_TprimeBToTH_M-600_v3p6_21Jul21.root",
-        "output_TprimeBToTH_M-650_v3p6_21Jul21.root",
-        "output_TprimeBToTH_M-700_v3p6_21Jul21.root",
+        "output_Data_v3p8_16Oct21.root",
+        #"output_Data_v3p8_21Jul21.root",
+        #"output_TprimeBToTH_M-600_v3p6_21Jul21.root",
+        #"output_TprimeBToTH_M-650_v3p6_21Jul21.root",
+        #"output_TprimeBToTH_M-700_v3p6_21Jul21.root",
         #"output_TprimeBToTH_M-800_v3p6_21Jul21.root",
         #"output_TprimeBToTH_M-900_v3p6_21Jul21.root",
         #"output_TprimeBToTH_M-675_v3p6_21Jul21.root",

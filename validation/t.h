@@ -163,7 +163,8 @@ Int_t t::Cut(Long64_t entry)
    bool pass_Tprime_mass;
    bool accepted;
 
-   // common
+   // past {{{
+   /*
    is_in_sideband   = is_data ? dipho_mass<115. || dipho_mass>135. : true;
    pass_BDG_SMH     = BDTG_TprimeVsHiggs_M600_M700 > 0.80;
 
@@ -194,6 +195,25 @@ Int_t t::Cut(Long64_t entry)
    // new after Maxime fixed bug
    pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M600_M700 > 0.946;
    pass_Tprime_mass = Tprime_mass > 470. && Tprime_mass < 800.;
+   */
+   //}}}
+
+   is_in_sideband   = is_data ? dipho_mass<115. || dipho_mass>135. : true;
+   pass_BDG_SMH     = BDTG_TprimeVsHiggs_M1100_M1200 > 0.80;
+   pass_BDG_SMH     = BDTG_TprimeVsHiggs_M800_M1000 > 0.80;
+   pass_BDG_SMH     = BDTG_TprimeVsHiggs_M600_M700 > 0.80;
+
+   // 3rd bin
+   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M1100_M1200 > 0.950;
+   pass_Tprime_mass = Tprime_mass > 650. && Tprime_mass < 1600.;
+
+   // 2nd bin
+   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M800_M1000 > 0.960;
+   pass_Tprime_mass = Tprime_mass > 550. && Tprime_mass < 1150.;
+
+   // 1st bin
+   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M600_M700 > 0.943;
+   pass_Tprime_mass = Tprime_mass > 480. && Tprime_mass < 800.;
 
    accepted = is_in_sideband && pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass;
    //accepted = is_in_sideband;
