@@ -204,7 +204,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   double branching_fraction_hgg = 0.00227;
   double total_yields = 0.;
 
-  TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_runII"); //"fake_tprime"
+  TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_tprime_ultraLegacy");
   TF1* HT_scale_factor_shape;
   //HT_scale_factor_shape = get_scale_factor_function_HT(1);
   //HT_scale_factor_shape = get_scale_factor_function_HT(-1);
@@ -249,8 +249,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   //}}}
   
   bool perform_fake_photon_study;
-  perform_fake_photon_study = true;
   perform_fake_photon_study = false;
+  perform_fake_photon_study = true;
 
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {

@@ -887,8 +887,20 @@ TF1* get_photon_ID_shape(TString type) {
     f_IDMVA->SetParameter(7, -18116.8);
   }
 
-  else if (type == "fake_tprime") {
-    // tprime (05 Aug 2021)
+  else if (type == "fake_tprime_ultraLegacy") {
+    // tprime UL (13. Jan. 2022)
+    f_IDMVA.SetParameter(0, 178.267  )
+    f_IDMVA.SetParameter(1, -196.404 )
+    f_IDMVA.SetParameter(2, 332.454  )
+    f_IDMVA.SetParameter(3, -524.491 )
+    f_IDMVA.SetParameter(4, -760.702 )
+    f_IDMVA.SetParameter(5, 1831.3   )
+    f_IDMVA.SetParameter(6, 1624.34  )
+    f_IDMVA.SetParameter(7, -2449.23 )
+  }
+
+  else if (type == "fake_tprime_ReReco") {
+    // tprime ReReco (05 Aug 2021)
     f_IDMVA->SetParameter(0, 435.477);
     f_IDMVA->SetParameter(1, -487.523);
     f_IDMVA->SetParameter(2, 1064.27);

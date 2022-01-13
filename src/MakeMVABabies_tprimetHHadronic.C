@@ -37,7 +37,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   double branching_fraction_hgg = 0.00227;
   double total_yields = 0.;
 
-  TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_runII");
+  TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_tprime_ultraLegacy");
   TF1* HT_scale_factor_shape;
   //HT_scale_factor_shape = get_scale_factor_function_HT(1);
   //HT_scale_factor_shape = get_scale_factor_function_HT(-1);
@@ -51,9 +51,9 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
 
   debug = false;
   //Enable_flag_for_Maxime(); // produce_ntuples_for_Maxime
-  //Enable_flag_for_fakePhotonStudy(); // produce_ntuples_for_fakePhotonStudy
-  apply_preselection = true; // reflect stack plots
-  //apply_preselection = false; // study "Low photon ID sideband"
+  Enable_flag_for_fakePhotonStudy(); // produce_ntuples_for_fakePhotonStudy
+  //apply_preselection = true; // reflect stack plots
+  apply_preselection = false; // study "Low photon ID sideband"
 
   // Make baby ntuple
   MakeBabyNtuple( name_output_file.Data() );
@@ -75,6 +75,13 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210525/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210525/weights/TMVAClassification_BDTG.weights.xml";
       BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210520/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210520/weights/TMVAClassification_BDTG.weights.xml";
   }
+
+  bool ref_ultraLegacySample = (mYear!="2016");
+  if (ref_ultraLegacySample) {
+      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210820/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210820/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210818/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210818/weights/TMVAClassification_BDTG.weights.xml";
+  }
+
   flashgg::THQ_BDT_Helper *tprimeTagger_nrb = new flashgg::THQ_BDT_Helper("BDTG", BDT_nrb_xml_file_);
   flashgg::THQ_BDT_Helper *tprimeTagger_smh = new flashgg::THQ_BDT_Helper("BDTG", BDT_smh_xml_file_);
 
