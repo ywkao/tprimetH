@@ -157,6 +157,9 @@ def set_scope(c1, h, scaleTag, maximum): #{{{
 def load_histograms(fin, processes, varName): #{{{
     v_hists, v_herrs = [], []
     for p in processes:
+        histName = varName + "_" + str(p) + "Year_0"
+        histName = varName + "_" + str(p) + "Year_1"
+        histName = varName + "_" + str(p) + "Year_2"
         histName = varName + "_" + str(p)
         h = fin.Get(histName)
         v_hists.append(h)

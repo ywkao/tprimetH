@@ -31,6 +31,7 @@ mass_M1100_M1200 = [1100, 1200]
 ytitles = {
     "yields": {
         "hHT":"Yields / 20 GeV",
+        "hHT_coarse":"Yields / 100 GeV",
         "hJet1pT":"Yields / 20 GeV",
         "hJet2pT":"Yields / 20 GeV",
         "hJet3pT":"Yields / 20 GeV",
@@ -52,6 +53,7 @@ ytitles = {
         "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_relativeDifference":"Yields / 0.02",
     },
     "normalized": {
+        "hHT_coarse":"Arbitrary unit / 20 GeV",
         "hHT":"Arbitrary unit / 20 GeV",
         "hJet1pT":"Arbitrary unit / 20 GeV",
         "hJet2pT":"Arbitrary unit / 20 GeV",
@@ -76,6 +78,7 @@ ytitles = {
 }
 
 xtitles = {
+    "hHT_coarse":"H_{T} [GeV]",
     "hHT":"H_{T} [GeV]",
     "hJet1pT":"Jet1 p_{T} [GeV]",
     "hJet2pT":"Jet2 p_{T} [GeV]",
@@ -186,6 +189,7 @@ colors = {
     "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine":v_set1,
     "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine":v_set1,
     "collective":v_set2,
+    "hHT_coarse":default_color_scheme,
     "hHT":default_color_scheme,
     "hJet1pT":default_color_scheme,
     "hJet2pT":default_color_scheme,
@@ -206,6 +210,7 @@ colors = {
 }
 
 ranges = {
+    "hHT_coarse":[0,3000],
     "hHT":[0,1000],
     "hJet1pT":[0,500],
     "hJet2pT":[0,500],
@@ -252,6 +257,7 @@ leg_pos_set5 = [0.57, 0.20, 0.87, 0.35]
 
 legend_position = {
     "hHT":leg_pos_set1,
+    "hHT_coarse":leg_pos_set1,
     "hJet1pT":leg_pos_set1,
     "hJet2pT":leg_pos_set1,
     "hJet3pT":leg_pos_set1,
@@ -286,6 +292,7 @@ stat_pos_set1 = [0.89, 0.87, 0.20, 0.20]
 stat_pos_set2 = [0.89, 0.87, 0.15, 0.15]
 stat_pos_set3 = [0.43, 0.87, 0.15, 0.15]
 stat_position = {
+    "hHT_coarse":stat_pos_set1,
     "hHT":stat_pos_set1,
     "hMass_fine":stat_pos_set1,
     "hMass_pass_BDTG_smh_cut_mixed03_fine":stat_pos_set1,

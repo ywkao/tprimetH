@@ -17,6 +17,7 @@ rootfile = path + "shortcut_plots/plots_check_BDT_scaleHT/myhist_combine_RunII.r
 rootfile = path + "/plots/myhist_combine_RunII.root"
 rootfile = path + "/plots_dataDriven_n30000/myhist_combine_RunII.root" # only QCD_GammaJets_imputed in it
 rootfile = path + "/plots_dataDriven_n30000_equalScale/myhist_combine_RunII.root" # only QCD_GammaJets_imputed in it
+rootfile = path + "/plots_20220113_ultraLegacy/myhist_combine_RunII.root"
 fin = ROOT.TFile.Open(rootfile, "R")
 
 lshift, rshift = 0.03, 0.00
@@ -26,15 +27,15 @@ c1.SetTicks(1,1)
 c1.SetLeftMargin(0.12+lshift)
 c1.SetRightMargin(0.08)
 
-def make_plot(varName, myMasses, plotType, pauseFit): #{{{
+def make_plot_v0(varName, myMasses, plotType, pauseFit): #{{{
     c1.cd()
     nameTag = varName + "_" + plotType
     legend = get_my_legend(0.60, 0.73, 0.72, 0.85)
 
     backgrounds = "DiPhoton|QCD|GammaJets|TTGG|TTGJets|TTJets|VG" # pure MC
-    backgrounds = "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|TGamma|VG|VV"
     backgrounds = "QCD_GammaJets_imputed|QCD|GammaJets"
     backgrounds = "QCD_GammaJets_imputed"
+    backgrounds = "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|TGamma|VG|VV"
     processes = backgrounds.split('|')
 
     # load hists
@@ -57,12 +58,99 @@ def make_plot(varName, myMasses, plotType, pauseFit): #{{{
 
         # normalization from a simultaneous fit to photon IDMVAs
         if processes[i]=="QCD_GammaJets_imputed":
-            h.Scale(1.076398)
-            h_err.Scale(1.076398)
+            h.Scale(8.91393e-01)
+            h_err.Scale(8.91393e-01)
+        if processes[i]=="DiPhoton":
+            h.Scale(9.56664e-01)
+            h_err.Scale(9.56664e-01)
 
         print ">>> ", i, processes[i], get_total_yields(h)
 
-    legend.AddEntry(v_hists[0], myLabel[processes[0]], "lep")
+    #legend.AddEntry(v_hists[0], myLabel[processes[0]], "lep")
+    legend.AddEntry(v_hists[0], labels[processes[0]], "lep")
+
+    # wrap up
+    maximum = get_maximum(v_hists)
+    scaleTags = ["linear", "log"]
+    for scaleTag in scaleTags:
+        set_scope(c1, v_hists[0], scaleTag, maximum)
+
+        v_hists[0].Draw("ep")
+        legend.Draw("same")
+
+        annotate(lshift, rshift)
+        output = dir_output + "/" + nameTag + "_" + scaleTag
+        c1.SaveAs(output + ".png")
+        c1.SaveAs(output + ".pdf")
+
+        init_hist_collector()
+        break # skip log plot
+#}}}
+def make_plot(varName, myMasses, plotType, pauseFit): #{{{
+    c1.cd()
+    nameTag = varName + "_" + plotType
+    legend = get_my_legend(0.60, 0.73, 0.72, 0.85)
+
+    backgrounds = "DiPhoton|QCD|GammaJets|TTGG|TTGJets|TTJets|VG" # pure MC
+    backgrounds = "QCD_GammaJets_imputed|QCD|GammaJets"
+    backgrounds = "QCD_GammaJets_imputed"
+    backgrounds = "Data|DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|TGamma|VG|VV"
+    processes = backgrounds.split('|')
+
+    # load hists
+    v_hists, v_herrs = load_histograms(fin, processes, varName)
+
+    # loop over hists
+    for i, h in enumerate(v_hists):
+        h_err = v_herrs[i]
+
+        if plotType == "normalized":
+            unc = ctypes.c_double(0.) 
+            nbins = h.GetSize()-1
+            tot_yields = h.IntegralAndError(0, nbins, unc)
+            if tot_yields > 0.:
+                h.Scale(1./tot_yields)
+                h_err.Scale(1./tot_yields)
+
+        set_the_hist(h, varName, ranges[varName], plotType, xtitles[varName], ytitles[plotType][varName], default_color_scheme[processes[i]], dataLike=(i==0))
+        set_the_error_band(h_err)
+
+        # normalization from a simultaneous fit to photon IDMVAs
+        if processes[i]=="QCD_GammaJets_imputed":
+            h.Scale(8.91393e-01)
+            h_err.Scale(8.91393e-01)
+        if processes[i]=="DiPhoton":
+            h.Scale(9.56664e-01)
+            h_err.Scale(9.56664e-01)
+
+        print ">>> ", i, processes[i], get_total_yields(h)
+
+
+
+    chi2 = 0
+    nbins = v_hists[0].GetSize()-1
+    for ibin in range(nbins):
+        data = v_hists[0].GetBinContent(ibin)
+        y, e = 0., 0.
+        for i, h in enumerate(v_hists):
+            if i==0: continue
+            y += h.GetBinContent(ibin)
+            e += pow(h.GetBinError(ibin), 2)
+
+        e = math.sqrt(e)
+
+        ratio = data / y if y>0. else 0.
+        error = calclate_eff_unc(data, y, e)
+        c = pow( (ratio-1.)/error, 2 ) if error>0. else 0.
+        print ratio, "+/-", error, c
+
+        if error > 0.:
+            chi2 += pow( (ratio-1.)/error, 2 )
+
+    print ">>> chi2 =", chi2
+
+    #legend.AddEntry(v_hists[0], myLabel[processes[0]], "lep")
+    legend.AddEntry(v_hists[0], labels[processes[0]], "lep")
 
     # wrap up
     maximum = get_maximum(v_hists)
@@ -135,10 +223,10 @@ def make_comparison_plot(v_varName, myMasses, plotType, pauseFit): #{{{
 def run():
     #make_plot("hMVA_value_nrb_varset8_mixed03_tmva_bdtg_difference", masses, plotType, pauseFit=False)
     #make_plot("hMVA_value_nrb_varset8_mixed03_tmva_bdtg_relativeDifference", masses, plotType, pauseFit=False)
-    make_comparison_plot(my_list_hists, masses, plotType, pauseFit=False)
+    #make_comparison_plot(my_list_hists, masses, plotType, pauseFit=False)
 
+    make_plot("hHT_coarse", masses, plotType, pauseFit=False)
     exit()
-    make_plot("hHT", masses, plotType, pauseFit=False)
 
 
 if __name__ == "__main__":
