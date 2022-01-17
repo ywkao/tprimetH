@@ -204,7 +204,12 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   double branching_fraction_hgg = 0.00227;
   double total_yields = 0.;
 
-  TF1* photon_fakeID_shape_runII = get_photon_ID_shape("fake_tprime_ultraLegacy");
+  TF1* photon_fakeID_shape_runII;
+  if(mYear=="2016")
+      photon_fakeID_shape_runII = get_photon_ID_shape("fake_runII");
+  else
+      photon_fakeID_shape_runII = get_photon_ID_shape("fake_tprime_ultraLegacy");
+
   TF1* HT_scale_factor_shape;
   //HT_scale_factor_shape = get_scale_factor_function_HT(1);
   //HT_scale_factor_shape = get_scale_factor_function_HT(-1);

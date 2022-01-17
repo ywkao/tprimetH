@@ -31,11 +31,14 @@ def usuall_hadd(prefix, directory="plots"):
     combine = ""
     rootfiles = glob.glob("%s/%s*root" % (directory, prefix))
     for root in rootfiles:
-        if 'combine' in root:
-            continue
+        if 'combine' in root: continue
+        #if '2016' in root: continue
+        #if '2017' in root or '2018' in root: continue
         combine = combine + root + " "
     
     command = "hadd -f %s/%s_combine_RunII.root %s" % (directory, prefix, combine)
+    #command = "hadd -f %s/%s_combine_UL1718_RunII.root %s" % (directory, prefix, combine)
+    #command = "hadd -f %s/%s_combine_ReReco16_RunII.root %s" % (directory, prefix, combine)
     subprocess.call(command, shell = True)
 
 def combine_only_signal(prefix, directory="plots"):
@@ -74,6 +77,7 @@ if __name__ == "__main__":
     usuall_hadd("myhist")
     #usuall_hadd("MVABaby")
     #prepare_data_for_simultaneous_fit("plots_20220113_ultraLegacy")
+    #usuall_hadd("myhist", "plots_20220113_ultraLegacy")
 
     #low_photon_ID_sideband_study()
     #prepare_data_for_simultaneous_fit()
