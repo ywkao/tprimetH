@@ -190,7 +190,6 @@ dict_rootfiles_16 = {
                     "ZG_Era2016.root"           , 
                     "ZZ_Era2016.root"           , ] ,
     'Data'      : ["Data_Era2016.root"          , ] ,
-
 }
 
 dict_rootfiles_UL = {
@@ -204,11 +203,12 @@ dict_rootfiles_UL = {
                     "ttHJet_Era2017.root"       , "ttHJet_Era2018.root"       , ] ,
     'ttX'       : [ "TGJets_Era2017.root"       , "TGJets_Era2018.root"       ,
                     "TTGG_Era2017.root"         , "TTGG_Era2018.root"         ,
-                    "TTGJets_Era2017.root"      ,
+                                                  "TTJets_Era2018.root"       ,
+                    "TTGJets_Era2017.root"      , "TTGJets_Era2018.root"      ,
                     "WG_Era2017.root"           , "WG_Era2018.root"           ,
-                    "WW_Era2017.root"           ,
+                    "WW_Era2017.root"           , "WW_Era2018.root"           ,
                     "WZ_Era2017.root"           , "WZ_Era2018.root"           ,
-                    "ZG_Era2017.root"           ,
+                    "ZG_Era2017.root"           , "ZG_Era2018.root"           ,
                     "ZZ_Era2017.root"           , ] ,
     'Data'      : ["Data_Era2017.root"         , "Data_Era2018.root"         , ] ,
 
