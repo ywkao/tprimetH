@@ -91,7 +91,7 @@ def create_commands(treename, rootfiles, another_location = "", year = ""): #{{{
         if not year_determined_by_input_argument: # use the following if not specified
             year = rootfile.split('_Era')[1].split('.')[0]
 
-        print ">>> run::create_commands %s, year = %s" % (rootfile, year)
+        #print ">>> run::create_commands %s, year = %s" % (rootfile, year)
         my_parameters = register_parameters(loc, rootfile, treename, xml_file, year, datetime_tag)
         command_manager(my_parameters)
 #}}}
@@ -122,28 +122,20 @@ if __name__ == "__main__":
     # create commands {{{
     # 3, 25, 3, 3, 3, 6, 9, 10, 10, 10
     if args.set1:
-        create_commands(sm.dict_trees['Data'], sm.dict_rootfiles_16['Data']     , location_v3p8)
-        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['ttX']      , location_v3p6)
-        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['gammaJets'], location_v3p8)
-        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['QCD']      , location_v3p8)
-
         create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'])
         create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['ttX'])
         create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['gammaJets'])
         create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['QCD'])
         
     if args.set2:
-        create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles_16['smh_set1'] , location_v3p6)
-        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['diphoton'] , location_v3p6)
         create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles['smh_set1'])
         create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['diphoton'])
 
     if args.set3:
-        create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles_16['smh_set2'] , location_v3p6)
         create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles['smh_set2'])
 
     if args.set4:
-        create_commands(sm.dict_trees['tHq'] , sm.signals_2016                  , location_v3p6)
+        create_commands(sm.dict_trees['tHq'] , sm.signals_2016)
 
     if args.set5:
         create_commands(sm.dict_trees['tHq'],  sm.signals_2017)
@@ -154,14 +146,10 @@ if __name__ == "__main__":
 
     if args.test:
         path = "/afs/cern.ch/work/y/ykao/workspace_ultraLegacy/CMSSW_10_6_8/src/flashgg/Systematics/test/runWS"
-        create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'], location_v3p8)
-
-        #create_commands(sm.dict_trees['Data'], sm.dict_rootfiles_16['Data']     , location_v3p8)
+        #create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'], location_v3p8)
         #create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'])
-        #create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['diphoton'] , location_v3p6)
         #create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['diphoton'])
 
-    if False:
         create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'])
         create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['ttX'])
         create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['gammaJets'])
@@ -171,15 +159,7 @@ if __name__ == "__main__":
         create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles['smh_set2'])
         create_commands(sm.dict_trees['tHq'] , sm.signals_2017)
         create_commands(sm.dict_trees['tHq'] , sm.signals_2018)
-
-        create_commands(sm.dict_trees['Data'], sm.dict_rootfiles_16['Data']     , location_v3p8)
-        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['ttX']      , location_v3p6)
-        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['gammaJets'], location_v3p8)
-        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['QCD']      , location_v3p8)
-        create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles_16['smh_set1'] , location_v3p6)
-        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles_16['diphoton'] , location_v3p6)
-        create_commands(sm.dict_trees['SMH'] , sm.dict_rootfiles_16['smh_set2'] , location_v3p6)
-        create_commands(sm.dict_trees['tHq'] , sm.signals_2016                  , location_v3p6)
+        create_commands(sm.dict_trees['tHq'] , sm.signals_2016)
 
     #----------------------------------------------------------------------------------------------------
     # Execution

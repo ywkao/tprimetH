@@ -150,7 +150,7 @@ dict_rootfiles_ReReco = {
 }
 
 dict_rootfiles_v4p1 = {
-    'gammaJets' : [ "GJet_Pt_Era2017.root"      , "GJet_Pt_Era2018.root"      , ] ,
+    'gammaJets' : [ "GJet_Pt_Era2016.root"      , "GJet_Pt_Era2017.root"      , "GJet_Pt_Era2018.root"      , ] ,
     'QCD'       : [ "QCD_Era2016.root"          , "QCD_Era2017.root"          , "QCD_Era2018.root"          , ] ,
     'diphoton'  : [ "DiPhotonJets_Era2016.root" , "DiPhotonJets_Era2017.root" , "DiPhotonJets_Era2018.root" , ] ,
     'smh_set1'  : [ "VBF_Era2016.root"          , "VBF_Era2017.root"          , "VBF_Era2018.root"          ,
@@ -158,17 +158,16 @@ dict_rootfiles_v4p1 = {
     'smh_set2'  : [ "VHToGG_Era2016.root"       , "VHToGG_Era2017.root"       , "VHToGG_Era2018.root"       ,
                     "GluGluHToGG_Era2016.root"  , "GluGluHToGG_Era2017.root"  , "GluGluHToGG_Era2018.root"  ,
                     "ttHJet_Era2016.root"       , "ttHJet_Era2017.root"       , "ttHJet_Era2018.root"       , ] ,
-    'ttX'       : [ "TGJets_Era2017.root"       , "TGJets_Era2018.root"       ,
+    'ttX'       : [                               "TGJets_Era2017.root"       , "TGJets_Era2018.root"       ,
                     "TTGG_Era2016.root"         , "TTGG_Era2017.root"         , "TTGG_Era2018.root"         ,
-                    "TTGJets_Era2016.root"      , "TTGJets_Era2017.root"      ,
-                    "TTJets_Era2016.root"       ,
-                    "WG_Era2017.root"           , "WG_Era2018.root"           ,
-                    "WW_Era2017.root"           ,
-                    "WZ_Era2017.root"           , "WZ_Era2018.root"           ,
-                    "ZG_Era2016.root"           , "ZG_Era2017.root"           ,
+                    "TTJets_Era2016.root"       , "TTJets_Era2017.root"       , "TTJets_Era2018.root"       ,
+                    "TTGJets_Era2016.root"      , "TTGJets_Era2017.root"      , "TTGJets_Era2018.root"      ,
+                    "WG_Era2016.root"           , "WG_Era2017.root"           , "WG_Era2018.root"           ,
+                    "WW_Era2016.root"           , "WW_Era2017.root"           , "WW_Era2018.root"           ,
+                    "WZ_Era2016.root"           , "WZ_Era2017.root"           , "WZ_Era2018.root"           ,
+                    "ZG_Era2016.root"           , "ZG_Era2017.root"           , "ZG_Era2018.root"           ,
                     "ZZ_Era2016.root"           , "ZZ_Era2017.root"           , ] ,
-    'Data'      : ["Data_Era2016.root"          , "Data_Era2017.root"         , "Data_Era2018.root"         , ] ,
-
+    'Data'      : [ "Data_Era2016.root"         , "Data_Era2017.root"         , "Data_Era2018.root"         , ] ,
 }
 
 dict_rootfiles_16 = {
@@ -211,8 +210,10 @@ dict_rootfiles_UL = {
                     "ZG_Era2017.root"           , "ZG_Era2018.root"           ,
                     "ZZ_Era2017.root"           , ] ,
     'Data'      : ["Data_Era2017.root"         , "Data_Era2018.root"         , ] ,
-
 }
 
-dict_rootfiles = dict_rootfiles_UL
+
 dict_rootfiles = dict_rootfiles_ReReco
+dict_rootfiles = dict_rootfiles_UL
+dict_rootfiles = dict_rootfiles_v4p1
+
