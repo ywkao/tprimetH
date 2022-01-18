@@ -17,15 +17,50 @@ rootfile = path + "shortcut_plots/plots_check_BDT_scaleHT/myhist_combine_RunII.r
 rootfile = path + "/plots/myhist_combine_RunII.root"
 rootfile = path + "/plots_dataDriven_n30000/myhist_combine_RunII.root" # only QCD_GammaJets_imputed in it
 rootfile = path + "/plots_dataDriven_n30000_equalScale/myhist_combine_RunII.root" # only QCD_GammaJets_imputed in it
+rootfile = path + "/plots_ReReco_HT_study_n30000/myhist_combine_RunII.root" # only QCD_GammaJets_imputed in it
 fin = ROOT.TFile.Open(rootfile, "R")
 
-lshift, rshift = 0.03, 0.00
+lshift, rshift = 0.03, 0.07
 c1 = ROOT.TCanvas("c1", "", 800, 600)
 c1.SetGrid()
 c1.SetTicks(1,1)
 c1.SetLeftMargin(0.12+lshift)
-c1.SetRightMargin(0.08)
+c1.SetRightMargin(0.08+rshift)
 
+def make_2D_plot(varName, myMasses, plotType, pauseFit): #{{{
+    c1.cd()
+    nameTag = varName + "_" + plotType
+    legend = get_my_legend(0.60, 0.73, 0.72, 0.85)
+
+    backgrounds = "QCD_GammaJets_imputed"
+    processes = backgrounds.split('|')
+
+    # load hists
+    v_hists, v_herrs = load_histograms(fin, processes, varName)
+
+    # loop over hists
+    for i, h in enumerate(v_hists):
+        h_err = v_herrs[i]
+
+        h.SetStats(0)
+        h.GetYaxis().SetTitle("#frac{New BDT #minus Old BDT}{Old BDT}")
+        h.GetYaxis().SetTitleOffset(1.02)
+        h.GetYaxis().SetTitleSize(0.05)
+        h.GetYaxis().SetLabelSize(0.04)
+
+        h.GetXaxis().SetTitle("New BDT #minus Old BDT")
+        h.GetXaxis().SetTitleOffset(1.2)
+        h.GetXaxis().SetRangeUser(-0.5, 0.5)
+
+        h.Draw("colz")
+
+        annotate(lshift, rshift)
+        output = dir_output + "/" + nameTag + "_"
+        c1.SaveAs(output + ".png")
+        c1.SaveAs(output + ".pdf")
+
+        init_hist_collector()
+#}}}
 def make_plot(varName, myMasses, plotType, pauseFit): #{{{
     c1.cd()
     nameTag = varName + "_" + plotType
@@ -133,8 +168,11 @@ def make_comparison_plot(v_varName, myMasses, plotType, pauseFit): #{{{
 #}}}
 
 def run():
-    #make_plot("hMVA_value_nrb_varset8_mixed03_tmva_bdtg_difference", masses, plotType, pauseFit=False)
-    #make_plot("hMVA_value_nrb_varset8_mixed03_tmva_bdtg_relativeDifference", masses, plotType, pauseFit=False)
+    make_2D_plot("hMVA_value_nrb_varset8_mixed03_tmva_bdtg_difference2D", masses, plotType, pauseFit=False)
+
+    exit()
+    make_plot("hMVA_value_nrb_varset8_mixed03_tmva_bdtg_difference", masses, plotType, pauseFit=False)
+    make_plot("hMVA_value_nrb_varset8_mixed03_tmva_bdtg_relativeDifference", masses, plotType, pauseFit=False)
     make_comparison_plot(my_list_hists, masses, plotType, pauseFit=False)
 
     exit()

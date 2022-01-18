@@ -140,7 +140,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210520/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210520/weights/TMVAClassification_BDTG.weights.xml";
   }
 
-  bool ref_ultraLegacySample = (mYear!="2016");
+  //bool ref_ultraLegacySample = (mYear!="2016");
+  bool ref_ultraLegacySample = true;
   if (ref_ultraLegacySample) {
       BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210820/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210820/weights/TMVAClassification_BDTG.weights.xml";
       BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210818/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210818/weights/TMVAClassification_BDTG.weights.xml";
@@ -611,6 +612,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //if(ht_>100. && processId == 18) evt_weight *= scale_factor_HT; // imputed QCD
       //if(ht_>100. && processId ==  2) evt_weight *= scale_factor_HT; // DiPhoton
 
+      double weight_from_template_fit = get_weight_from_template_fit(mYear, processId);
+      evt_weight *= weight_from_template_fit;
       //----------------------------------------------------------------------------------------------------}}}
       // Evaluate MVA values {{{
       //----------------------------------------------------------------------------------------------------
@@ -1025,6 +1028,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       double relative_difference = mva_value_nrb_varset8_mixed03_tmva_bdtg>0. ? difference / mva_value_nrb_varset8_mixed03_tmva_bdtg : 999.;
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_difference" , difference , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_relativeDifference" , relative_difference , evt_weight , vId);
+      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_difference2D" , difference, relative_difference , evt_weight , vId);
 
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central_n100"  , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central , evt_weight     , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central_n2000" , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central , evt_weight     , vId);

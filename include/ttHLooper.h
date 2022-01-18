@@ -289,6 +289,7 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         // Investigate HT scale factor (2022.01.03)
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_difference" , 100 , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_relativeDifference" , 1000 , -10. , 10.);
+        v[i]->add_2D_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_difference2D" , 100 , -1. , 1., 100, -1., 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central_n100"  , 100  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up_n100"       , 100  , -1. , 1.);
         v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down_n100"     , 100  , -1. , 1.);
@@ -2105,4 +2106,21 @@ TF1* get_scale_factor_function_HT(int shift) {
     }
 
     return f1;
+}
+
+double get_weight_from_template_fit(TString year, int processId) {
+    // DiPhotonJets and imputed QCD need additional normalization weight
+    if(processId==18 || processId==2) {
+        if(year=="2016") {
+            if(processId==2)  return 1.374142; // gamma gamma + jets
+            if(processId==18) return 1.076398; // (gamma) + jets
+        }
+        if(year=="2017" || year=="2018") {
+            if(processId==2)  return 8.94087e-01; // gamma gamma + jets
+            if(processId==18) return 8.81869e-01; // (gamma) + jets
+        }
+        return 0.; // year info is wrong
+    } else {
+        return 1.;
+    }
 }
