@@ -612,8 +612,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //if(ht_>100. && processId == 18) evt_weight *= scale_factor_HT; // imputed QCD
       //if(ht_>100. && processId ==  2) evt_weight *= scale_factor_HT; // DiPhoton
 
-      //double weight_from_template_fit = get_weight_from_template_fit(mYear, processId);
-      double weight_from_template_fit = 1.;
+      //double weight_from_template_fit = 1.;
+      double weight_from_template_fit = get_weight_from_template_fit(mYear, processId);
       evt_weight *= weight_from_template_fit;
       //----------------------------------------------------------------------------------------------------}}}
       // Evaluate MVA values {{{

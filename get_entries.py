@@ -160,7 +160,7 @@ def check_mvababy(): #{{{
 
 if __name__ == "__main__":
     #check_mvababy_var("process_id_")
-    check_mvababy()
+    #check_mvababy()
 
     #rootfiles/ntuples_v4.1/tmp/*GJet_Ht*
 
@@ -177,6 +177,9 @@ if __name__ == "__main__":
     #input_file = "%s/plots_base_20210806" % path # base 
     #check_myhist("TprimeBToTH_M-600", "TprimeBToTH_M-600", input_file)
     #check_myhist("TprimeBToTH_M-600", "TprimeBToTH_M-600")
+
+    check_myhist("Data", "Data", "shortcut_plots/plots_20220117_forTemplateFit")
+    check_myhist("Data", "Data", "plots_20220118_templateFit")
 
     #check_myhist("Data", "Data", "plots_20210907_Maxime_config01")
     #check_myhist("Data", "Data", "plots_20210907_Maxime_config02")

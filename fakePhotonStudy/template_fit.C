@@ -24,11 +24,11 @@ void template_fit()
     //TString input_file = "./rootfiles/myhist_combine_RunII.root";
     //TString input_tree = "./rootfiles/MVABaby_Data_simultaneousFit.root";
     
-    TString input_file = "./rootfiles/myhist_combine_UL1718_RunII.root";
-    TString input_tree = "./rootfiles/MVABaby_Data_UL1718.root";
+    //TString input_file = "./rootfiles/myhist_combine_UL1718_RunII.root";
+    //TString input_tree = "./rootfiles/MVABaby_Data_UL1718.root";
 
-    //TString input_file = "./rootfiles/myhist_combine_ReReco16_RunII.root";
-    //TString input_tree = "./rootfiles/MVABaby_Data_Era2016.root";
+    TString input_file = "./rootfiles/myhist_combine_ReReco16_RunII.root";
+    TString input_tree = "./rootfiles/MVABaby_Data_Era2016.root";
 
     //TString input_file = "./rootfiles/myhist_low_photon_sideband.root";
     //TString input_tree = "./rootfiles/MVABaby_low_photon_sideband_Data.root";

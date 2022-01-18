@@ -466,6 +466,10 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       //if(ht_>100. && process_id_ == 18) evt_weight_ *= scale_factor_HT; // imputed QCD
       //if(ht_>100. && process_id_ ==  2) evt_weight_ *= scale_factor_HT; // DiPhoton
 
+      //double weight_from_template_fit = 1.;
+      double weight_from_template_fit = get_weight_from_template_fit(mYear, process_id_);
+      evt_weight_ *= weight_from_template_fit;
+
       // For Maxime {{{
       //----------------------------------------------------------------------------------------------------
       // Note: 

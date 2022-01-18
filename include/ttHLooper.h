@@ -2112,12 +2112,12 @@ double get_weight_from_template_fit(TString year, int processId) {
     // DiPhotonJets and imputed QCD need additional normalization weight
     if(processId==18 || processId==2) {
         if(year=="2016") {
-            if(processId==2)  return 1.374142; // gamma gamma + jets
-            if(processId==18) return 1.076398; // (gamma) + jets
+            if(processId==2)  return 1.42820e+00; // gamma gamma + jets
+            if(processId==18) return 1.06401e+00; // (gamma) + jets
         }
         if(year=="2017" || year=="2018") {
-            if(processId==2)  return 8.94087e-01; // gamma gamma + jets
-            if(processId==18) return 8.81869e-01; // (gamma) + jets
+            if(processId==2)  return 9.02357e-01; // gamma gamma + jets
+            if(processId==18) return 9.70475e-01; // (gamma) + jets
         }
         return 0.; // year info is wrong
     } else {
