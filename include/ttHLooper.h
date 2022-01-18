@@ -889,15 +889,15 @@ TF1* get_photon_ID_shape(TString type) {
   }
 
   else if (type == "fake_tprime_ultraLegacy") {
-    // tprime UL (13. Jan. 2022)
-    f_IDMVA->SetParameter(0, 178.267  );
-    f_IDMVA->SetParameter(1, -196.404 );
-    f_IDMVA->SetParameter(2, 332.454  );
-    f_IDMVA->SetParameter(3, -524.491 );
-    f_IDMVA->SetParameter(4, -760.702 );
-    f_IDMVA->SetParameter(5, 1831.3   );
-    f_IDMVA->SetParameter(6, 1624.34  );
-    f_IDMVA->SetParameter(7, -2449.23 );
+    // tprime UL (18. Jan. 2022)
+    f_IDMVA->SetParameter(0, 82.6301  );
+    f_IDMVA->SetParameter(1, -107.917 );
+    f_IDMVA->SetParameter(2, 204.733  );
+    f_IDMVA->SetParameter(3, -96.6356 );
+    f_IDMVA->SetParameter(4, -495.099 );
+    f_IDMVA->SetParameter(5, 389.443  );
+    f_IDMVA->SetParameter(6, 968.924  );
+    f_IDMVA->SetParameter(7, -898.986 );
   }
 
   else if (type == "fake_tprime_ReReco") {

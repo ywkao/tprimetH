@@ -7,8 +7,9 @@ def print_entries(root, name):
     f = ROOT.TFile.Open(root, "R")
     t = f.Get(name)
     entries = t.GetEntries()
-    yields = t.Integral(0, t.GetSize()-1);
-    print root, entries, yields
+    print root, entries
+    #yields = t.Integral(0, t.GetSize()-1);
+    #print root, entries, yields
 
 def print_yields(root, name):
     f = ROOT.TFile.Open(root, "R")
@@ -144,16 +145,24 @@ def check_mvababy_var(var):
 #}}}
 def check_mvababy(): #{{{
     dirs = ["plots", "plots_20210821_lowPhotonID_correlation_study"]
+    dirs = [
+        "plots",
+        "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/shortcut_plots/plots_20220110_fakePhotonStudy/"
+    ]
     for d in dirs:
         for filename in glob.glob(d + "/MVA*GJet*"):
+        #for filename in glob.glob(d + "/MVA*QCD*"):
             #print d, filename
             #print_entries(filename, "t")
-            print_entries(filename, "t_lowPhotonSideband")
+            #print_entries(filename, "t_lowPhotonSideband")
+            print_entries(filename, "t_fakePhotonIDMVA")
 #}}}
 
 if __name__ == "__main__":
-    check_mvababy_var("process_id_")
-    #check_mvababy()
+    #check_mvababy_var("process_id_")
+    check_mvababy()
+
+    #rootfiles/ntuples_v4.1/tmp/*GJet_Ht*
 
     #check_ntuples()
     #check_produced_ntuples()

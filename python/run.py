@@ -149,7 +149,10 @@ if __name__ == "__main__":
         #create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'], location_v3p8)
         #create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'])
         #create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['diphoton'])
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['gammaJets'])
+        create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['QCD'])
 
+    if False:
         create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'])
         create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['ttX'])
         create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['gammaJets'])

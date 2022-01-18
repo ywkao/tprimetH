@@ -62,7 +62,8 @@ def low_photon_ID_sideband_study():
     #subprocess.call("hadd -f %s/MVABaby_%s_GJet.root plots/MVABaby*GJet*.root" % (directory, tag), shell = True)
     #subprocess.call("hadd -f %s/MVABaby_%s_QCD.root plots/MVABaby*QCD*.root" % (directory, tag), shell = True)
     
-    subprocess.call("hadd -f %s/fakePhoton_pdf_v3p8.root plots/MVABaby*GJet*.root plots/MVABaby*QCD*.root" % (directory), shell = True)
+    #subprocess.call("hadd -f %s/fakePhoton_pdf_v3p8.root plots/MVABaby*GJet*.root plots/MVABaby*QCD*.root" % (directory), shell = True)
+    subprocess.call("hadd -f %s/fakePhoton_pdf_v4p1.root plots/MVABaby*GJet*.root plots/MVABaby*QCD*.root" % (directory), shell = True)
 
     #subprocess.call("hadd -f fakePhotonStudy/myhist_combine_2016.root plots/myhist*2016.root", shell = True)
     #myhist_QCD_Era2016.root
@@ -81,8 +82,8 @@ if __name__ == "__main__":
     #prepare_data_for_simultaneous_fit()
     #prepare_data_for_simultaneous_fit("plots_20220113_ultraLegacy")
     #usuall_hadd("myhist", "plots_20220113_ultraLegacy")
-
     #low_photon_ID_sideband_study()
+
     #prepare_data_for_simultaneous_fit()
     #prepare_data_for_simultaneous_fit("plots_newBase_20210818")
 
