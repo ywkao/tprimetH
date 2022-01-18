@@ -71,11 +71,14 @@ def low_photon_ID_sideband_study():
 
 def prepare_data_for_simultaneous_fit(directory="plots"):
     subprocess.call("hadd -f fakePhotonStudy/rootfiles/MVABaby_Data_simultaneousFit.root %s/MVA*Data*.root" % directory, shell = True)
+    #subprocess.call("hadd -f fakePhotonStudy/rootfiles/MVABaby_Data_UL1718.root %s/MVABaby_Data_Era201[78].root" % directory, shell = True)
+    #subprocess.call("cp -p %s/MVABaby_Data_Era2016.root fakePhotonStudy/rootfiles/" % directory, shell = True)
 
 if __name__ == "__main__":
     #customize_hadd()
     usuall_hadd("myhist")
     #usuall_hadd("MVABaby")
+    #prepare_data_for_simultaneous_fit()
     #prepare_data_for_simultaneous_fit("plots_20220113_ultraLegacy")
     #usuall_hadd("myhist", "plots_20220113_ultraLegacy")
 
