@@ -157,9 +157,9 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tprime_eta"               , 25  , -5     , 5     );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tprime_deltaR_tbw"        , 25  , 0      , 6     );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_tprime_deltaR_dipho"      , 25  , 0      , 6     );
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_bjet_btagScores"          , 50  , 0      , 1.    );
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet1_btagScores"         , 50  , 0      , 1.    );
-        v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet2_btagScores"         , 50  , 0      , 1.    );
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_bjet_btagScores"          , 25  , 0      , 1.    );
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet1_btagScores"         , 25  , 0      , 1.    );
+        v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet2_btagScores"         , 25  , 0      , 1.    );
         v[i]->add_histogram("h" + syst_labels[j] + "tprime_pt_ratio"               , 20  , 0      , 10.   );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_bjet_ptOverM"             , 20  , 0      , 10.   );
         v[i]->add_histogram("h" + syst_labels[j] + "chi2_wjet1_ptOverM"            , 20  , 0      , 10.   );
@@ -226,8 +226,8 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "HT_coarse"                     , 30  , 0      , 3000  );
         v[i]->add_histogram("h" + syst_labels[j] + "MetPt"                         , 25  , 0      , 200   );
         v[i]->add_histogram("h" + syst_labels[j] + "MetPhi"                        , 25  , -3.    , 3.    );
-        v[i]->add_histogram("h" + syst_labels[j] + "MaxBTag"                       , 50  , 0      , 1     );
-        v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxBTag"                 , 50  , 0      , 1     );
+        v[i]->add_histogram("h" + syst_labels[j] + "MaxBTag"                       , 25  , 0      , 1     );
+        v[i]->add_histogram("h" + syst_labels[j] + "SecondMaxBTag"                 , 25  , 0      , 1     );
         v[i]->add_histogram("h" + syst_labels[j] + "Jet1pT"                        , 25  , 0      , 500   );
         v[i]->add_histogram("h" + syst_labels[j] + "Jet2pT"                        , 25  , 0      , 500   );
         v[i]->add_histogram("h" + syst_labels[j] + "Jet3pT"                        , 25  , 0      , 500   );

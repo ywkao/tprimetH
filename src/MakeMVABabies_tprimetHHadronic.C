@@ -98,23 +98,14 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   TString mass_tag04 = "M800_M1000_";
   TString mass_tag05 = "M1100_M1200_";
 
-  //flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag03 + "20210620/weights/TMVAClassification_BDTG.weights.xml" );
-  //flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag04 + "20210620/weights/TMVAClassification_BDTG.weights.xml" );
-  //flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "20210620/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag05 + "20210620/weights/TMVAClassification_BDTG.weights.xml" );
-  //flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag03 + "20210620/weights/TMVAClassification_BDTG.weights.xml" );
-  //flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag04 + "20210620/weights/TMVAClassification_BDTG.weights.xml" );
-  //flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + "20210620/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag05 + "20210620/weights/TMVAClassification_BDTG.weights.xml" );
-
-  TString date;
-  date = "20210818"; // |eta| < 3.0
-  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + date + "/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag03 + date + "/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + date + "/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag04 + date + "/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + date + "/dataset_Run2_Tprime_SMH_varSet8_" + mass_tag05 + date + "/weights/TMVAClassification_BDTG.weights.xml" );
-  date = "20210820";
-  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + date + "/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag03 + date + "/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + date + "/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag04 + date + "/weights/TMVAClassification_BDTG.weights.xml" );
-  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper("BDTG" , path + date + "/dataset_Run2_Tprime_NRB_varSet8_" + mass_tag05 + date + "/weights/TMVAClassification_BDTG.weights.xml" );
-
+  TString date = "20220118";
+  TString mvaTag = "BDTG";
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper(mvaTag.Data() , path+date+"/dataset_Run2_Tprime_SMH_varSet8_"+mass_tag03+date+"/weights/TMVAClassification_"+mvaTag+".weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper(mvaTag.Data() , path+date+"/dataset_Run2_Tprime_SMH_varSet8_"+mass_tag04+date+"/weights/TMVAClassification_"+mvaTag+".weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper(mvaTag.Data() , path+date+"/dataset_Run2_Tprime_SMH_varSet8_"+mass_tag05+date+"/weights/TMVAClassification_"+mvaTag+".weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper(mvaTag.Data() , path+date+"/dataset_Run2_Tprime_NRB_varSet8_"+mass_tag03+date+"/weights/TMVAClassification_"+mvaTag+".weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper(mvaTag.Data() , path+date+"/dataset_Run2_Tprime_NRB_varSet8_"+mass_tag04+date+"/weights/TMVAClassification_"+mvaTag+".weights.xml" );
+  flashgg::THQ_BDT_Helper *mva_nrb_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper(mvaTag.Data() , path+date+"/dataset_Run2_Tprime_NRB_varSet8_"+mass_tag05+date+"/weights/TMVAClassification_"+mvaTag+".weights.xml" );
   flashgg::InputVariables MVAvarList;
 
   //----------------------------------------------------------------------------------------------------}}}
