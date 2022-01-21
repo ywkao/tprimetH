@@ -7,8 +7,7 @@ def print_entries(root, name):
     f = ROOT.TFile.Open(root, "R")
     t = f.Get(name)
     entries = t.GetEntries()
-    yields = t.Integral(0, t.GetSize()-1);
-    print root, entries, yields
+    print root, entries
 
 def print_yields(root, name):
     f = ROOT.TFile.Open(root, "R")
@@ -49,10 +48,14 @@ def check_rootfiles_Maxime():
 def check_produced_ntuples():
     path = "/eos/user/y/ykao/tPrimeExcessHgg/merged_ntuples"
     tree = "tagsDumper/trees/NRB_13TeV_THQHadronicTag"
-
     directory = path + "/ntuples_qcdGjet_v3p8_201?/*/"
-    for root in glob.glob(directory + "*root"):
-        print_entries(root, tree)
+    #for root in glob.glob(directory + "*root"): print_entries(root, tree)
+
+    path = "rootfiles/ntuples_v4.1/tmp"
+    path = "rootfiles/ntuples_v3.8"
+    tree = "tagsDumper/trees/Data_13TeV_THQHadronicTag"
+    directory = path + "/"
+    for root in glob.glob(directory + "Data_Era2016*.root"): print_entries(root, tree)
 
 def check_merged_ntuples(directory, tag):
     path = "/eos/home-y/ykao/tPrimeExcessHgg/rootfiles/" + directory
@@ -151,12 +154,26 @@ def check_mvababy(): #{{{
             print_entries(filename, "t_lowPhotonSideband")
 #}}}
 
+def calculate(name, x, y):
+    ratio = 100. * (y-x) / x
+    print "%s: %7.0f, %7.0f, %7.2f %%" % (name, x, y, ratio)
+
+def run():
+    calculate("Data_Era2016B" , 12563. , 8273.  )
+    calculate("Data_Era2016C" , 5846.  , 3819.  )
+    calculate("Data_Era2016D" , 9129.  , 5936.  )
+    calculate("Data_Era2016E" , 9774.  , 6243.  )
+    calculate("Data_Era2016F" , 7422.  , 4753.  )
+    calculate("Data_Era2016G" , 16515. , 10601. )
+    calculate("Data_Era2016H" , 20352. , 13046. )
+
 if __name__ == "__main__":
-    check_mvababy_var("process_id_")
+    #check_mvababy_var("process_id_")
     #check_mvababy()
 
     #check_ntuples()
     #check_produced_ntuples()
+    #run()
 
     path = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH"
     input_file = "%s/plots" % path
