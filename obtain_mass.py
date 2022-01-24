@@ -11,7 +11,7 @@ do_individual=False
 dir_output = "EOS_output_mass"
 rootfile = "plots_20211126/myhist_signal.root"
 rootfile = "plots_20211127_v2/myhist_combine_RunII.root"
-rootfile = "plots_20211128/myhist_combine_RunII.root"
+rootfile = "shortcut_plots/plots_20211128/myhist_combine_RunII.root"
 fin = ROOT.TFile.Open(rootfile, "R")
 
 ROOT.gStyle.SetOptStat("e")
@@ -561,11 +561,11 @@ def make_collective_plot(v_varName, v_myMasses, plotType):
 #}}}
 
 def run():
-    plotTypes = ["normalized"]
     plotTypes = ["yields", "normalized"]
+    plotTypes = ["normalized"]
     for plotType in plotTypes:
-        make_collective_plot(["hMass_fine"], [masses], plotType)
-        make_collective_plot(["hmass_tprime_cov_fine"], [masses], plotType)
+        #make_collective_plot(["hMass_fine"], [masses], plotType)
+        #make_collective_plot(["hmass_tprime_cov_fine"], [masses], plotType)
 
         v_myMasses = [mass_M600_M700, mass_M800_M1000, mass_M1100_M1200]
         v_varName = ["hMass_pass_BDTG_smh_cut_mixed03_fine", "hMass_pass_BDTG_smh_cut_mixed04_fine", "hMass_pass_BDTG_smh_cut_mixed05_fine"]
@@ -651,6 +651,6 @@ def make_efficiency(): #{{{
 
 if __name__ == "__main__":
     run()
-    make_efficiency()
+    #make_efficiency()
     subprocess.call("ls -lhrt %s" % dir_output, shell=True)
 
