@@ -209,11 +209,6 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   else
       photon_fakeID_shape_runII = get_photon_ID_shape("fake_tprime_ultraLegacy");
 
-  TF1* HT_scale_factor_shape;
-  //HT_scale_factor_shape = get_scale_factor_function_HT(1);
-  //HT_scale_factor_shape = get_scale_factor_function_HT(-1);
-  HT_scale_factor_shape = get_scale_factor_function_HT(0);
-
   int counter = 0;
   int counter_special_check = 0;
   int counter_nrb_same = 0;
@@ -604,15 +599,12 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       float chi2_tprime_mass_             = (has_resonable_reco && pass_eta_criteria_on_wjets) ? cov_tprime.M()                   : -999;
       //}}}
       //----------------------------------------------------------------------------------------------------}}}
-      // Additional HT scale factor
+      // Apply normalization factors from template fit
       //----------------------------------------------------------------------------------------------------
-      double scale_factor_HT = HT_scale_factor_shape->Eval(ht_);
-      //if(ht_>100. && processId == 18) evt_weight *= scale_factor_HT; // imputed QCD
-      //if(ht_>100. && processId ==  2) evt_weight *= scale_factor_HT; // DiPhoton
+      double weight_from_template_fit = 1.;
+      //double weight_from_template_fit = get_weight_from_template_fit(mYear, processId);
+      //evt_weight *= weight_from_template_fit;
 
-      //double weight_from_template_fit = 1.;
-      double weight_from_template_fit = get_weight_from_template_fit(mYear, processId);
-      evt_weight *= weight_from_template_fit;
       //----------------------------------------------------------------------------------------------------}}}
       // Evaluate MVA values {{{
       //----------------------------------------------------------------------------------------------------

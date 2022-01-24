@@ -43,12 +43,6 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   else
       photon_fakeID_shape_runII = get_photon_ID_shape("fake_tprime_ultraLegacy");
 
-  TF1* HT_scale_factor_shape;
-  //HT_scale_factor_shape = get_scale_factor_function_HT(1);
-  //HT_scale_factor_shape = get_scale_factor_function_HT(-1);
-  HT_scale_factor_shape = get_scale_factor_function_HT(0);
-
-
   //----------------------------------------------------------------------------------------------------}}}
   // options for producing ntuples {{{
   //----------------------------------------------------------------------------------------------------
@@ -451,15 +445,11 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
         //}}}
 
       //----------------------------------------------------------------------------------------------------}}}
-      // Additional HT scale factor
+      // Apply normalization factors from template fit
       //----------------------------------------------------------------------------------------------------
-      double scale_factor_HT = HT_scale_factor_shape->Eval(ht_);
-      //if(ht_>100. && process_id_ == 18) evt_weight_ *= scale_factor_HT; // imputed QCD
-      //if(ht_>100. && process_id_ ==  2) evt_weight_ *= scale_factor_HT; // DiPhoton
-
-      //double weight_from_template_fit = 1.;
-      double weight_from_template_fit = get_weight_from_template_fit(mYear, process_id_);
-      evt_weight_ *= weight_from_template_fit;
+      double weight_from_template_fit = 1.;
+      //double weight_from_template_fit = get_weight_from_template_fit(mYear, process_id_);
+      //evt_weight_ *= weight_from_template_fit;
 
       // For Maxime {{{
       //----------------------------------------------------------------------------------------------------
