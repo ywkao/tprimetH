@@ -52,11 +52,18 @@ def hadd_ul1718(prefix, directory="plots"):
 def hadd_reReco16(prefix, directory="plots"):
     combine = ""
     rootfiles = glob.glob("%s/%s*root" % (directory, prefix))
-    for root in rootfiles:
-        if 'combine' in root: continue
-        if '2017' in root or '2018' in root: continue
-        combine = combine + root + " "
-    command = "hadd -f fakePhotonStudy/rootfiles/%s_combine_ReReco16_RunII.root %s" % (prefix, combine)
+    if prefix == "MVABaby":
+        for root in rootfiles:
+            if 'combine' in root: continue
+            if '2017' in root or '2018' in root: continue
+            combine = combine + root + " "
+            command = "cp -p %s fakePhotonStudy/rootfiles/" % (combine)
+    else:
+        for root in rootfiles:
+            if 'combine' in root: continue
+            if '2017' in root or '2018' in root: continue
+            combine = combine + root + " "
+        command = "hadd -f fakePhotonStudy/rootfiles/%s_combine_ReReco16_RunII.root %s" % (prefix, combine)
     subprocess.call(command, shell = True)
 
 #----------------------------------------------------------------------------------------------------
@@ -97,9 +104,13 @@ def prepare_data_for_simultaneous_fit(directory="plots"):
 
 if __name__ == "__main__":
     #customize_hadd()
-    usuall_hadd("myhist")
+    #usuall_hadd("myhist")
     #hadd_ul1718("myhist", "shortcut_plots/plots_20220117_forTemplateFit")
     #hadd_reReco16("myhist", "shortcut_plots/plots_20220117_forTemplateFit")
+    hadd_ul1718("MVABaby")
+    hadd_reReco16("MVABaby")
+    #hadd_ul1718("myhist")
+    #hadd_reReco16("myhist")
 
     #usuall_hadd("MVABaby")
     #prepare_data_for_simultaneous_fit()
