@@ -247,6 +247,9 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   double yield_SR_mixed05 = 0.;
   //}}}
   
+  std::map<TString, double> map_pfDeepCSV_btag_loose_wp = { {"2016", 0.2217}, {"2017", 0.1355}, {"2018", 0.1208} };
+  double pfDeepCSV_btag_loose_wp = map_pfDeepCSV_btag_loose_wp[mYear];
+  
   bool perform_fake_photon_study;
   perform_fake_photon_study = true;
   perform_fake_photon_study = false;
@@ -367,6 +370,22 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       lead_photon.SetPtEtaPhiM(dipho_leadPt(), dipho_leadEta(), dipho_leadPhi(), 0.);
       sublead_photon.SetPtEtaPhiM(dipho_subleadPt(), dipho_subleadEta(), dipho_subleadPhi(), 0.);
       TLorentzVector diphoton_v2 = lead_photon + sublead_photon;
+
+      // check nbjets
+      float my_n_bjets = 0;
+      float my_n_bjets_original = 0;
+      bool to_get_nbjets = true;
+      if(to_get_nbjets) {
+          std::size_t num_jets = jets.size();
+          for(std::size_t i = 0; i < num_jets; ++i ){ // b-jet
+              if (btag_scores[i] < pfDeepCSV_btag_loose_wp) continue;
+              my_n_bjets_original += 1;
+              if ( !(fabs(jets[i].Eta())<2.5) ) continue;
+              my_n_bjets += 1;
+          }
+      }
+
+      //printf("[check] n_L_bjets = %.0f, %.0f, my_n_bjets=%.0f\n", n_L_bjets(), my_n_bjets_original, my_n_bjets);
       
       //------------------------------ Variable definitions ------------------------------//
 //    ht_         = get_ht(jets); // function defined in include/ttHLooper.h
@@ -374,7 +393,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       ht_         = HT();
       //njets_      = n_jets();
       njets_      = jets.size();
-      nbjets_     = n_L_bjets();
+      //nbjets_     = n_L_bjets();
+      nbjets_     = my_n_bjets;
       max1_btag_  = btag_scores_sorted[0].second;
       max2_btag_  = btag_scores_sorted[1].second;
       jet1_pt_    = njets_ >= 1 ? jets[0].Pt()   : -999;
@@ -601,9 +621,9 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //----------------------------------------------------------------------------------------------------}}}
       // Apply normalization factors from template fit
       //----------------------------------------------------------------------------------------------------
-      double weight_from_template_fit = 1.;
-      //double weight_from_template_fit = get_weight_from_template_fit(mYear, processId);
-      //evt_weight *= weight_from_template_fit;
+      //double weight_from_template_fit = 1.;
+      double weight_from_template_fit = get_weight_from_template_fit(mYear, processId);
+      evt_weight *= weight_from_template_fit;
 
       //----------------------------------------------------------------------------------------------------}}}
       // Evaluate MVA values {{{
@@ -1109,7 +1129,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 
       // Jets
       vProcess[processId]->fill_histogram("h" + syst_ext + "NJets"         , n_jets()      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "NbLoose"       , n_L_bjets()   , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "NbLoose"       , my_n_bjets    , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "NbMedium"      , n_M_bjets()   , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "NbTight"       , n_T_bjets()   , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "HT"            , ht_           , evt_weight , vId);

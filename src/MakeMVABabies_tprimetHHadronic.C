@@ -113,6 +113,9 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   int counter_one_fake_photon = 0; // check "purity" for gammam + jet
   int counter_two_fake_photons = 0; // check "purity" for QCD
   //----------------------------------------------------------------------------------------------------}}}
+  
+  std::map<TString, double> map_pfDeepCSV_btag_loose_wp = { {"2016", 0.2217}, {"2017", 0.1355}, {"2018", 0.1208} };
+  double pfDeepCSV_btag_loose_wp = map_pfDeepCSV_btag_loose_wp[mYear];
 
   int counter_check = 0;
   int counter_check_preselection = 0;
@@ -237,9 +240,22 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       scaled_ht_     = (ht_ / 2500.) - 1.;
       dipho_delta_R  = lead_photon.DeltaR(sublead_photon);
 
+      // check nbjets
+      float my_n_bjets = 0;
+      bool to_get_nbjets = true;
+      if(to_get_nbjets) {
+          std::size_t num_jets = jets.size();
+          for(std::size_t i = 0; i < num_jets; ++i ){ // b-jet
+              if (btag_scores[i] < pfDeepCSV_btag_loose_wp) continue;
+              if ( !(fabs(jets[i].Eta())<2.5) ) continue;
+              my_n_bjets += 1;
+          }
+      }
+
       //njets_ = n_jets();
       njets_ = jets.size();
-      nbjets_ = n_L_bjets();
+      //nbjets_ = n_L_bjets();
+      nbjets_ = my_n_bjets;
       max1_btag_ = btag_scores_sorted[0].second;
       max2_btag_ = btag_scores_sorted[1].second;
       jet1_pt_   = njets_ >= 1 ? jets[0].Pt()   : -999;
@@ -447,9 +463,9 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       //----------------------------------------------------------------------------------------------------}}}
       // Apply normalization factors from template fit
       //----------------------------------------------------------------------------------------------------
-      double weight_from_template_fit = 1.;
-      //double weight_from_template_fit = get_weight_from_template_fit(mYear, process_id_);
-      //evt_weight_ *= weight_from_template_fit;
+      //double weight_from_template_fit = 1.;
+      double weight_from_template_fit = get_weight_from_template_fit(mYear, process_id_);
+      evt_weight_ *= weight_from_template_fit;
 
       // For Maxime {{{
       //----------------------------------------------------------------------------------------------------
