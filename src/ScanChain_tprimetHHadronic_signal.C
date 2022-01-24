@@ -275,6 +275,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       ++nEventsTotal;
       tprimetHHadronic::progress( nEventsTotal, nEventsChain );
 
+      if(nEventsChain>=100) continue;
       //// for special study
       //if(counter_data_driven_sample_sideband >= 10000) continue;
       //if(counter_data_driven_sample_sideband % 1000 == 0) printf(">>> check data driven counter: %d\n", counter_data_driven_sample_sideband);
@@ -425,7 +426,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       TString json_file = "json/covMatrix_Era2017_M1000.json";
       double min_chi2_value_2x2 = 99999.;
       vector<int> indices_bjj_covMatrix(3, -1);
-      bool has_resonable_reco = get_the_best_bjj_candidate(indices_bjj_covMatrix, jets, diphoton, btag_scores, min_chi2_value_2x2, json_file);
+      bool has_resonable_reco = get_the_best_bjj_candidate(mYear, indices_bjj_covMatrix, jets, diphoton, btag_scores, min_chi2_value_2x2, json_file);
 
       TLorentzVector null;
       TLorentzVector cov_bjet  = has_resonable_reco ? jets[indices_bjj_covMatrix[0]] : null;

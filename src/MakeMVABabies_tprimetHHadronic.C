@@ -317,7 +317,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       TString json_file = "json/covMatrix_Era2017_M1000.json";
       double min_chi2_value_2x2 = 99999.;
       vector<int> indices_bjj_covMatrix(3, -1);
-      bool has_resonable_reco = get_the_best_bjj_candidate(indices_bjj_covMatrix, jets, diphoton, btag_scores, min_chi2_value_2x2, json_file);
+      bool has_resonable_reco = get_the_best_bjj_candidate(mYear, indices_bjj_covMatrix, jets, diphoton, btag_scores, min_chi2_value_2x2, json_file);
 
       TLorentzVector null;
       TLorentzVector cov_bjet   = has_resonable_reco ? jets[indices_bjj_covMatrix[0]] : null;

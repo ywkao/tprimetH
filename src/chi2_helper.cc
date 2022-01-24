@@ -197,14 +197,24 @@ bool get_the_best_wjets_candidate(std::vector<int> &indices_wjets, std::vector<T
     return has_resonable_reco_chi2;
 }
 
-double pfDeepCSV_btag_loose_wp = 0.1522;
+std::map<TString, double> map_pfDeepCSV_btag_loose_wp = {
+    {"2016", 0.2217}, // ReReco16
+    {"2017", 0.1355}, // UL17
+    {"2018", 0.1208}  // UL18
+};
 
-bool get_the_best_bjj_candidate(std::vector<int> &indices_bjj, std::vector<TLorentzVector> jets, TLorentzVector diphoton, std::vector<double> btag_scores, double &min_chi2_value, TString json_file)
+bool get_the_best_bjj_candidate(TString year, std::vector<int> &indices_bjj, std::vector<TLorentzVector> jets, TLorentzVector diphoton, std::vector<double> btag_scores, double &min_chi2_value, TString json_file)
 {
-    //printf("[debug] inside get_the_best_bjj_candidate...\n");
+    double pfDeepCSV_btag_loose_wp = map_pfDeepCSV_btag_loose_wp[year];
+    printf("[check from get_the_best_bjj_candidate] loose wp = %f\n", pfDeepCSV_btag_loose_wp);
+
     std::size_t num_jets = jets.size();
     for(std::size_t i = 0; i < num_jets; ++i ){ // b-jet
+        // consider loose b-jets
         if (btag_scores[i] < pfDeepCSV_btag_loose_wp) continue;
+        // eta condition for b-jets
+        if ( !(fabs(jets[i].Eta())<2.5) ) continue;
+        // loop over rest jets
         for(std::size_t j = 0; j < num_jets-1; ++j ){ // w-jet1
             if(j==i) continue;
             for(std::size_t k = j+1; k < num_jets; ++k ){ // w-jet2
