@@ -170,6 +170,6 @@ if __name__ == "__main__":
     #----------------------------------------------------------------------------------------------------
     if not to_execution:
         print_out_elements(command_list)
-        #print_out_elements(command_list, False)
+        print_out_elements(command_list, False)
     else:
         parallel_utils.submit_jobs(command_list, 10)

@@ -206,7 +206,7 @@ std::map<TString, double> map_pfDeepCSV_btag_loose_wp = {
 bool get_the_best_bjj_candidate(TString year, std::vector<int> &indices_bjj, std::vector<TLorentzVector> jets, TLorentzVector diphoton, std::vector<double> btag_scores, double &min_chi2_value, TString json_file)
 {
     double pfDeepCSV_btag_loose_wp = map_pfDeepCSV_btag_loose_wp[year];
-    printf("[check from get_the_best_bjj_candidate] loose wp = %f\n", pfDeepCSV_btag_loose_wp);
+    //printf("[check from get_the_best_bjj_candidate] loose wp = %f\n", pfDeepCSV_btag_loose_wp);
 
     std::size_t num_jets = jets.size();
     for(std::size_t i = 0; i < num_jets; ++i ){ // b-jet

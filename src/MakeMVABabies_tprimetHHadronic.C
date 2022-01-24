@@ -527,8 +527,9 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
       if(process_id_ != 18) { //exclude data-driven from consistency check
           counter += 1;
           if(flag_negative_energy) counter_jet_negative_energy += 1;
-          bool found_discrepancy_nrb = mycheck("BDT (NRB)", counter_nrb_same, MVAscore_BDT_nrb(), mva_value_nrb, dipho_pt());
-          bool found_discrepancy_smh = mycheck("BDT (SMH)", counter_smh_same, MVAscore_BDT_smh(), mva_value_smh, dipho_pt());
+          // # turn off sanity check for BDT (b-jet criteria change)
+          //bool found_discrepancy_nrb = mycheck("BDT (NRB)", counter_nrb_same, MVAscore_BDT_nrb(), mva_value_nrb, dipho_pt());
+          //bool found_discrepancy_smh = mycheck("BDT (SMH)", counter_smh_same, MVAscore_BDT_smh(), mva_value_smh, dipho_pt());
 
           // check inf values
           bool flag = false;

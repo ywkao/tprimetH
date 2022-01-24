@@ -275,7 +275,6 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       ++nEventsTotal;
       tprimetHHadronic::progress( nEventsTotal, nEventsChain );
 
-      if(nEventsChain>=100) continue;
       //// for special study
       //if(counter_data_driven_sample_sideband >= 10000) continue;
       //if(counter_data_driven_sample_sideband % 1000 == 0) printf(">>> check data driven counter: %d\n", counter_data_driven_sample_sideband);
@@ -690,12 +689,12 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
         //printf("sigmaRV = %f\n", sigmaRV());
       }
 
-      bool found_discrepancy_nrb = mycheck("BDT (NRB)", counter_nrb_same, MVAscore_BDT_nrb(), mva_value_nrb, dipho_pt());
-      bool found_discrepancy_smh = mycheck("BDT (SMH)", counter_smh_same, MVAscore_BDT_smh(), mva_value_smh, dipho_pt());
+      // # turn off sanity check for BDT (b-jet criteria change)
+      //bool found_discrepancy_nrb = mycheck("BDT (NRB)", counter_nrb_same, MVAscore_BDT_nrb(), mva_value_nrb, dipho_pt());
+      //bool found_discrepancy_smh = mycheck("BDT (SMH)", counter_smh_same, MVAscore_BDT_smh(), mva_value_smh, dipho_pt());
       
-      bool check_var = found_discrepancy_nrb || found_discrepancy_smh;
-      check_var = true;
-      check_var = false;
+      //bool check_var = found_discrepancy_nrb || found_discrepancy_smh;
+      bool check_var = false;
       if(check_var)
       {
           long evt_  = analyzer.event();
