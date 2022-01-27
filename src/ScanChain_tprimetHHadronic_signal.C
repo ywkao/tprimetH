@@ -171,6 +171,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   // IMPORTANT NOTE: use only BDTG for producing histograms (2021.09.25)
   //****************************************************************************************************
   date = "20220118";
+  date = "20220125";
   flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper(mvaTag.Data() , path+date+"/dataset_Run2_Tprime_SMH_varSet8_"+mass_tag03+date+"/weights/TMVAClassification_"+mvaTag+".weights.xml" );
   flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper(mvaTag.Data() , path+date+"/dataset_Run2_Tprime_SMH_varSet8_"+mass_tag04+date+"/weights/TMVAClassification_"+mvaTag+".weights.xml" );
   flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed05_tmva_bdtg = new flashgg::THQ_BDT_Helper(mvaTag.Data() , path+date+"/dataset_Run2_Tprime_SMH_varSet8_"+mass_tag05+date+"/weights/TMVAClassification_"+mvaTag+".weights.xml" );

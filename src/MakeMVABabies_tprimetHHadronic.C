@@ -93,6 +93,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
   TString mass_tag05 = "M1100_M1200_";
 
   TString date = "20220118";
+  date = "20220125";
   TString mvaTag = "BDTG";
   flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed03_tmva_bdtg = new flashgg::THQ_BDT_Helper(mvaTag.Data() , path+date+"/dataset_Run2_Tprime_SMH_varSet8_"+mass_tag03+date+"/weights/TMVAClassification_"+mvaTag+".weights.xml" );
   flashgg::THQ_BDT_Helper *mva_smh_varset8_mixed04_tmva_bdtg = new flashgg::THQ_BDT_Helper(mvaTag.Data() , path+date+"/dataset_Run2_Tprime_SMH_varSet8_"+mass_tag04+date+"/weights/TMVAClassification_"+mvaTag+".weights.xml" );
