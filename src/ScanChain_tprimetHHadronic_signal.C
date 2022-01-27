@@ -934,7 +934,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       }
       //----------------------------------------------------------------------------------------------------}}}
 
-      if (!pass_mva_cut_bdtg_nrb_mixed05) continue; // study low stat of BDTG
+      //if (!pass_mva_cut_bdtg_nrb_mixed05) continue; // study low stat of BDTG
 
       //****************************************************************************************************
       // Fill histograms

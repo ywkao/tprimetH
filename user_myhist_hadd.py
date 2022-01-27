@@ -104,11 +104,11 @@ def prepare_data_for_simultaneous_fit(directory="plots"):
 
 if __name__ == "__main__":
     #customize_hadd()
-    #usuall_hadd("myhist")
+    usuall_hadd("myhist")
     #hadd_ul1718("myhist", "shortcut_plots/plots_20220117_forTemplateFit")
     #hadd_reReco16("myhist", "shortcut_plots/plots_20220117_forTemplateFit")
-    hadd_ul1718("MVABaby")
-    hadd_reReco16("MVABaby")
+    #hadd_ul1718("MVABaby")
+    #hadd_reReco16("MVABaby")
     #hadd_ul1718("myhist")
     #hadd_reReco16("myhist")
 
