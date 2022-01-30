@@ -487,8 +487,7 @@ def make_plot(varName, myMasses, plotType, pauseFit): #{{{
             init_hist_collector()
     #}}}
 #}}}
-
-def make_collective_plot(v_varName, v_myMasses, plotType):
+def make_collective_plot(v_varName, v_myMasses, plotType): #{{{
     nameTag = "collective_" + v_varName[-1] + "_" + plotType
 
     isHiggs = 'hMass' in v_varName[0]
@@ -559,8 +558,7 @@ def make_collective_plot(v_varName, v_myMasses, plotType):
         c1.SaveAs(output + ".png")
         c1.SaveAs(output + ".pdf")
 #}}}
-
-def run():
+def run(): #{{{
     plotTypes = ["normalized"]
     plotTypes = ["yields", "normalized"]
     for plotType in plotTypes:
@@ -584,6 +582,7 @@ def run():
         make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine", mass_M600_M700, plotType, pauseFit=True);
         make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine", mass_M800_M1000, plotType, pauseFit=True);
         make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine", mass_M1100_M1200, plotType, pauseFit=False);
+#}}}
 
 def make_efficiency(): #{{{
     c1.cd()
@@ -601,6 +600,17 @@ def make_efficiency(): #{{{
     raw_M800_M1000 = [0.00810, 0.01266, 0.02134, 0.03390, 0.04737, 0.08605, 0.12473, 0.15204, 0.17935, 0.18855, 0.19774, 0.18349, 0.16925, 0.13075, 0.09225]
     raw_M1100_1200 = [0.00242, 0.00311, 0.00408, 0.00535, 0.00699, 0.01878, 0.03057, 0.06607, 0.10157, 0.14412, 0.18667, 0.20925, 0.23183, 0.24890, 0.26597]
 
+    # this is yields...
+    raw_M600_M700  = [4.330118, 4.318567, 3.978509, 3.671579, 3.014113, 0.984341, 0.177052, 0.056795, 0.021329, 0.009484]
+    raw_M800_M1000 = [0.633956, 0.784688, 0.988107, 1.252836, 1.421828, 1.862389, 1.453255, 0.921042, 0.471459, 0.161066]
+    raw_M1100_1200 = [0.173156, 0.190508, 0.219356, 0.258704, 0.28925, 0.505503, 0.849034, 0.89007, 0.661383, 0.468452]
+
+    # new Opt
+    raw_M600_M700  = [0.07881723261649395, 0.09315600472952938, 0.10531241582106607, 0.11232863093347127, 0.10923098241025286, 0.06885776476872829, 0.02264890170249762, 0.012576567703099556, 0.007898987529709994, 0.005681287759836847]
+    raw_M800_M1000 = [0.01153932930248599, 0.016926540456407173, 0.026155510835769412, 0.03832938162686038, 0.0515268237316932, 0.1302799981610713, 0.18590374377958557, 0.20395364152475082, 0.17460025138400975, 0.09648484756704784]
+    raw_M1100_1200 = [0.003151802498440372, 0.004109456713074773, 0.005806424035950595, 0.007914814344730906, 0.01048237463630781, 0.03536153290768795, 0.10861039473193396, 0.19709526570116775, 0.244936756029921, 0.280621110678099]
+
+    # previously
     raw_M600_M700  = [0.07882, 0.09317, 0.10533, 0.11234, 0.10923, 0.06883, 0.02264, 0.01262, 0.00778, 0.00539]
     raw_M800_M1000 = [0.00810, 0.01266, 0.02134, 0.03390, 0.04737, 0.12473, 0.17935, 0.19774, 0.16925, 0.09225]
     raw_M1100_1200 = [0.00242, 0.00311, 0.00408, 0.00535, 0.00699, 0.03057, 0.10157, 0.18667, 0.23183, 0.26597]
@@ -626,7 +636,7 @@ def make_efficiency(): #{{{
     set_graph(gr2, "Efficiency", ROOT.kGreen+3)
     set_graph(gr3, "Efficiency", ROOT.kBlue)
 
-    gr1.SetMaximum(1.0)
+    gr1.SetMaximum(0.5)
 
     gr1.Draw('ACP')
     gr2.Draw('CP')
@@ -644,13 +654,14 @@ def make_efficiency(): #{{{
 
     # wrap up
     annotate()
+    output = dir_output + "/signal_efficiency_newOpt"
     output = dir_output + "/signal_efficiency"
     c1.SaveAs(output + ".png")
     c1.SaveAs(output + ".pdf")
 #}}}
 
 if __name__ == "__main__":
-    run()
+    #run()
     make_efficiency()
     subprocess.call("ls -lhrt %s" % dir_output, shell=True)
 

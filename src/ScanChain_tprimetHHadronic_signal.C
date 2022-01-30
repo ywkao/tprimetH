@@ -733,13 +733,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       bool pass_mva_cut_bdtg_smh_mixed04 = mva_value_smh_varset8_mixed04_tmva_bdtg > v_mva_threshold_set2[4];
       bool pass_mva_cut_bdtg_smh_mixed05 = mva_value_smh_varset8_mixed05_tmva_bdtg > v_mva_threshold_set2[5];
 
-      bool pass_tprime_low_mass_criterion;
-      pass_tprime_low_mass_criterion = mass_tprime > 0.;
-      pass_tprime_low_mass_criterion = mass_tprime > 440. && mass_tprime < 830; // configure-1
-      pass_tprime_low_mass_criterion = mass_tprime > 485. && mass_tprime < 740; // configure-2
-      pass_tprime_low_mass_criterion = mass_tprime > 480. && mass_tprime < 820; // verification
-      pass_tprime_low_mass_criterion = mass_tprime > 470. && mass_tprime < 800; // new after fixing bug
-      pass_tprime_low_mass_criterion = mass_tprime > 0.;
+      bool pass_tprime_low_mass_criterion = mass_tprime > 0.; // dummy
 
       bool pass_tprime_low_mass_criterion_mixed03 = mass_tprime > 480. && mass_tprime < 800.; // Maxime's opt
       bool pass_tprime_low_mass_criterion_mixed04 = mass_tprime > 550. && mass_tprime < 1150.; // Maxime's opt
