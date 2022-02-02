@@ -5,13 +5,14 @@ import array
 import ROOT
 ROOT.gROOT.SetBatch(True)
 
-do_individual=True
 do_individual=False
+do_individual=True
 
 dir_output = "EOS_output_mass"
 rootfile = "plots_20211126/myhist_signal.root"
 rootfile = "plots_20211127_v2/myhist_combine_RunII.root"
 rootfile = "plots_20211128/myhist_combine_RunII.root"
+rootfile = "shortcut_plots/plots_20220120_results_ReReco/myhist_combine_RunII.root"
 fin = ROOT.TFile.Open(rootfile, "R")
 
 ROOT.gStyle.SetOptStat("e")
@@ -451,6 +452,8 @@ def make_plot(varName, myMasses, plotType, pauseFit): #{{{
             annotate()
             output = dir_output + "/individual_" + nameTag + "_" + str(myMasses[i]) + ".png"
             c1.SaveAs(output)
+            output = dir_output + "/individual_" + nameTag + "_" + str(myMasses[i]) + ".pdf"
+            c1.SaveAs(output)
         #}}}
         else: # multi hists {{{
             set_the_hist(h, varName, varName, plotType, colors[varName][myMasses[i]])
@@ -562,6 +565,13 @@ def run(): #{{{
     plotTypes = ["normalized"]
     plotTypes = ["yields", "normalized"]
     for plotType in plotTypes:
+        make_plot("hmass_tprime_cov_fine", masses, plotType, pauseFit=False)
+        make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine", mass_M600_M700, plotType, pauseFit=True);
+        make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine", mass_M800_M1000, plotType, pauseFit=True);
+        make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine", mass_M1100_M1200, plotType, pauseFit=False);
+
+        continue
+
         make_collective_plot(["hMass_fine"], [masses], plotType)
         make_collective_plot(["hmass_tprime_cov_fine"], [masses], plotType)
 
@@ -578,10 +588,6 @@ def run(): #{{{
         make_plot("hMass_pass_BDTG_smh_cut_mixed04_fine", mass_M800_M1000, plotType, pauseFit=True);
         make_plot("hMass_pass_BDTG_smh_cut_mixed05_fine", mass_M1100_M1200, plotType, pauseFit=False);
 
-        make_plot("hmass_tprime_cov_fine", masses, plotType, pauseFit=False)
-        make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine", mass_M600_M700, plotType, pauseFit=True);
-        make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine", mass_M800_M1000, plotType, pauseFit=True);
-        make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine", mass_M1100_M1200, plotType, pauseFit=False);
 #}}}
 
 def make_efficiency(): #{{{
@@ -605,15 +611,15 @@ def make_efficiency(): #{{{
     raw_M800_M1000 = [0.633956, 0.784688, 0.988107, 1.252836, 1.421828, 1.862389, 1.453255, 0.921042, 0.471459, 0.161066]
     raw_M1100_1200 = [0.173156, 0.190508, 0.219356, 0.258704, 0.28925, 0.505503, 0.849034, 0.89007, 0.661383, 0.468452]
 
-    # new Opt
-    raw_M600_M700  = [0.07881723261649395, 0.09315600472952938, 0.10531241582106607, 0.11232863093347127, 0.10923098241025286, 0.06885776476872829, 0.02264890170249762, 0.012576567703099556, 0.007898987529709994, 0.005681287759836847]
-    raw_M800_M1000 = [0.01153932930248599, 0.016926540456407173, 0.026155510835769412, 0.03832938162686038, 0.0515268237316932, 0.1302799981610713, 0.18590374377958557, 0.20395364152475082, 0.17460025138400975, 0.09648484756704784]
-    raw_M1100_1200 = [0.003151802498440372, 0.004109456713074773, 0.005806424035950595, 0.007914814344730906, 0.01048237463630781, 0.03536153290768795, 0.10861039473193396, 0.19709526570116775, 0.244936756029921, 0.280621110678099]
-
     # previously
     raw_M600_M700  = [0.07882, 0.09317, 0.10533, 0.11234, 0.10923, 0.06883, 0.02264, 0.01262, 0.00778, 0.00539]
     raw_M800_M1000 = [0.00810, 0.01266, 0.02134, 0.03390, 0.04737, 0.12473, 0.17935, 0.19774, 0.16925, 0.09225]
     raw_M1100_1200 = [0.00242, 0.00311, 0.00408, 0.00535, 0.00699, 0.03057, 0.10157, 0.18667, 0.23183, 0.26597]
+
+    # new Opt
+    raw_M600_M700  = [0.07881723261649395, 0.09315600472952938, 0.10531241582106607, 0.11232863093347127, 0.10923098241025286, 0.06885776476872829, 0.02264890170249762, 0.012576567703099556, 0.007898987529709994, 0.005681287759836847]
+    raw_M800_M1000 = [0.01153932930248599, 0.016926540456407173, 0.026155510835769412, 0.03832938162686038, 0.0515268237316932, 0.1302799981610713, 0.18590374377958557, 0.20395364152475082, 0.17460025138400975, 0.09648484756704784]
+    raw_M1100_1200 = [0.003151802498440372, 0.004109456713074773, 0.005806424035950595, 0.007914814344730906, 0.01048237463630781, 0.03536153290768795, 0.10861039473193396, 0.19709526570116775, 0.244936756029921, 0.280621110678099]
 
     n = len(raw_M600_M700) 
     x = array.array('d')
@@ -654,8 +660,8 @@ def make_efficiency(): #{{{
 
     # wrap up
     annotate()
-    output = dir_output + "/signal_efficiency_newOpt"
     output = dir_output + "/signal_efficiency"
+    output = dir_output + "/signal_efficiency_newOpt"
     c1.SaveAs(output + ".png")
     c1.SaveAs(output + ".pdf")
 #}}}
