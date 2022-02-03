@@ -12,6 +12,7 @@
 #include <TChain.h>
 #include <TFile.h>
 #include <vector>
+#include <stdlib.h>
 
 // Header file for the classes stored in the TTree if any.
 
@@ -49,15 +50,16 @@ public :
    TBranch        *b_BDTG_TprimeVsHiggs_M1100_M1200;   //!
 
    TString input_file_name;
+   double expected_yields;
 
    My_Cut_Values set_threshold(double a, double b, double c, double d);
 
-   t(TTree *tree=0, TString name="");
+   t(TTree *tree=0, TString name="", double yields=1.);
    virtual ~t();
    virtual Int_t    Cut(Long64_t entry, My_Cut_Values cut, double bdt_nrb, double bdt_smh);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
-   virtual void     Init(TTree *tree, TString name);
+   virtual void     Init(TTree *tree, TString name, double yields);
    virtual void     Loop();
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
@@ -73,7 +75,7 @@ private:
 #endif
 
 #ifdef t_cxx
-t::t(TTree *tree, TString name) : fChain(0) 
+t::t(TTree *tree, TString name, double yields) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
@@ -85,7 +87,7 @@ t::t(TTree *tree, TString name) : fChain(0)
       f->GetObject("t",tree);
 
    }
-   Init(tree, name);
+   Init(tree, name, yields);
 }
 
 t::~t()
@@ -113,7 +115,7 @@ Long64_t t::LoadTree(Long64_t entry)
    return centry;
 }
 
-void t::Init(TTree *tree, TString name)
+void t::Init(TTree *tree, TString name, double yields)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -142,6 +144,7 @@ void t::Init(TTree *tree, TString name)
    Notify();
 
    input_file_name = name;
+   expected_yields = yields;
 }
 
 Bool_t t::Notify()

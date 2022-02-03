@@ -590,36 +590,51 @@ def run(): #{{{
 
 #}}}
 
-def make_efficiency(): #{{{
+# collection_efficiency {{{
+collection_efficiency = {
+    "set0":{
+        # original
+        "raw_M600_M700"  : [ 0.07882, 0.09317, 0.10533, 0.11234, 0.10923, 0.06883, 0.02264, 0.01262, 0.00778, 0.00539 ],
+        "raw_M800_M1000" : [ 0.00810, 0.01266, 0.02134, 0.03390, 0.04737, 0.12473, 0.17935, 0.19774, 0.16925, 0.09225 ],
+        "raw_M1100_1200" : [ 0.00242, 0.00311, 0.00408, 0.00535, 0.00699, 0.03057, 0.10157, 0.18667, 0.23183, 0.26597 ],
+    },
+    "set1":{
+        # signal efficiency of opt1; from log messages && double check from validation code
+        "raw_M600_M700"  : [ 0.07882, 0.09316, 0.10531, 0.11233, 0.10923, 0.06886, 0.02265, 0.01258, 0.00790, 0.00568 ],
+        "raw_M800_M1000" : [ 0.00810, 0.01267, 0.02135, 0.03389, 0.04737, 0.12472, 0.17937, 0.19774, 0.16941, 0.09232 ],
+        "raw_M1100_1200" : [ 0.00214, 0.00280, 0.00364, 0.00491, 0.00635, 0.02916, 0.09825, 0.17936, 0.21772, 0.23706 ],
+    },
+    "set2":{
+        # signal efficiency of opt2
+        "raw_M600_M700"  : [ 0.07882, 0.09316, 0.10531, 0.11233, 0.10923, 0.06886, 0.02265, 0.01258, 0.00790, 0.00568 ],
+        "raw_M800_M1000" : [ 0.01154, 0.01693, 0.02616, 0.03833, 0.05153, 0.13028, 0.18590, 0.20395, 0.17460, 0.09648 ],
+        "raw_M1100_1200" : [ 0.00315, 0.00411, 0.00581, 0.00791, 0.01048, 0.03536, 0.10861, 0.19710, 0.24494, 0.28062 ],
+    },
+}
+#}}}
+def get_ratio_list(key): #{{{
+    result = []
+    opt1 = collection_efficiency["set1"][key]
+    opt2 = collection_efficiency["set2"][key]
+    for i in range(len(opt1)):
+        ratio = opt2[i] / opt1[i]
+        result.append( ratio )
+    return result
+#}}}
+def make_efficiency(ytitle, myParameters, tag, output_stem): #{{{
     c1.cd()
-    # efficiency = # in SR / # in preselection
-    raw_M600_M700 = [0.27, 0.32, 0.35, 0.37, 0.37, 0.21, 0.06, 0.04, 0.02, 0.02]
-    raw_M800_M1000 = [0.03, 0.04, 0.07, 0.11, 0.16, 0.38, 0.51, 0.54, 0.46, 0.24]
-    raw_M1100_1200 = [0.01, 0.01, 0.01, 0.02, 0.02, 0.09, 0.29, 0.50, 0.62, 0.68]
+    ymin = myParameters["ybound"][0]
+    ymax = myParameters["ybound"][1]
+    leg = myParameters["legend"]
 
-    # efficiency = yields in SR / lumi * xsec * BF
-    raw_M600_M700  = [0.08, 0.09, 0.11, 0.11, 0.11, 0.07, 0.02, 0.01, 0.01, 0.01]
-    raw_M800_M1000 = [0.01, 0.01, 0.02, 0.03, 0.05, 0.12, 0.18, 0.20, 0.17, 0.09]
-    raw_M1100_1200 = [0.00, 0.00, 0.00, 0.01, 0.01, 0.03, 0.10, 0.19, 0.23, 0.27]
-
-    raw_M600_M700  = [0.07882, 0.09317, 0.10533, 0.11234, 0.10923, 0.08903, 0.06883, 0.04574, 0.02264, 0.01763, 0.01262, 0.01020, 0.00778, 0.00658, 0.00539]
-    raw_M800_M1000 = [0.00810, 0.01266, 0.02134, 0.03390, 0.04737, 0.08605, 0.12473, 0.15204, 0.17935, 0.18855, 0.19774, 0.18349, 0.16925, 0.13075, 0.09225]
-    raw_M1100_1200 = [0.00242, 0.00311, 0.00408, 0.00535, 0.00699, 0.01878, 0.03057, 0.06607, 0.10157, 0.14412, 0.18667, 0.20925, 0.23183, 0.24890, 0.26597]
-
-    # this is yields...
-    raw_M600_M700  = [4.330118, 4.318567, 3.978509, 3.671579, 3.014113, 0.984341, 0.177052, 0.056795, 0.021329, 0.009484]
-    raw_M800_M1000 = [0.633956, 0.784688, 0.988107, 1.252836, 1.421828, 1.862389, 1.453255, 0.921042, 0.471459, 0.161066]
-    raw_M1100_1200 = [0.173156, 0.190508, 0.219356, 0.258704, 0.28925, 0.505503, 0.849034, 0.89007, 0.661383, 0.468452]
-
-    # previously
-    raw_M600_M700  = [0.07882, 0.09317, 0.10533, 0.11234, 0.10923, 0.06883, 0.02264, 0.01262, 0.00778, 0.00539]
-    raw_M800_M1000 = [0.00810, 0.01266, 0.02134, 0.03390, 0.04737, 0.12473, 0.17935, 0.19774, 0.16925, 0.09225]
-    raw_M1100_1200 = [0.00242, 0.00311, 0.00408, 0.00535, 0.00699, 0.03057, 0.10157, 0.18667, 0.23183, 0.26597]
-
-    # new Opt
-    raw_M600_M700  = [0.07881723261649395, 0.09315600472952938, 0.10531241582106607, 0.11232863093347127, 0.10923098241025286, 0.06885776476872829, 0.02264890170249762, 0.012576567703099556, 0.007898987529709994, 0.005681287759836847]
-    raw_M800_M1000 = [0.01153932930248599, 0.016926540456407173, 0.026155510835769412, 0.03832938162686038, 0.0515268237316932, 0.1302799981610713, 0.18590374377958557, 0.20395364152475082, 0.17460025138400975, 0.09648484756704784]
-    raw_M1100_1200 = [0.003151802498440372, 0.004109456713074773, 0.005806424035950595, 0.007914814344730906, 0.01048237463630781, 0.03536153290768795, 0.10861039473193396, 0.19709526570116775, 0.244936756029921, 0.280621110678099]
+    if tag in collection_efficiency.keys():
+        raw_M600_M700  = collection_efficiency[tag]["raw_M600_M700"]
+        raw_M800_M1000 = collection_efficiency[tag]["raw_M800_M1000"]
+        raw_M1100_1200 = collection_efficiency[tag]["raw_M1100_1200"]
+    else:
+        raw_M600_M700  = get_ratio_list("raw_M600_M700")
+        raw_M800_M1000 = get_ratio_list("raw_M800_M1000")
+        raw_M1100_1200 = get_ratio_list("raw_M1100_1200")
 
     n = len(raw_M600_M700) 
     x = array.array('d')
@@ -638,18 +653,19 @@ def make_efficiency(): #{{{
     gr2 = ROOT.TGraph(n, x, efficiency_M800_M1000)
     gr3 = ROOT.TGraph(n, x, efficiency_M1100_1200)
 
-    set_graph(gr1, "Efficiency", ROOT.kRed)
-    set_graph(gr2, "Efficiency", ROOT.kGreen+3)
-    set_graph(gr3, "Efficiency", ROOT.kBlue)
+    set_graph(gr1, ytitle, ROOT.kRed)
+    set_graph(gr2, ytitle, ROOT.kGreen+3)
+    set_graph(gr3, ytitle, ROOT.kBlue)
 
-    gr1.SetMaximum(0.5)
+    gr1.SetMaximum(ymax)
+    gr1.SetMinimum(ymin)
 
     gr1.Draw('ACP')
     gr2.Draw('CP')
     gr3.Draw('CP')
 
     # local leg
-    legend = ROOT.TLegend(0.17, 0.60, 0.42, 0.85)
+    legend = ROOT.TLegend(leg[0], leg[1], leg[2], leg[3])
     legend.SetLineColor(0)
     legend.SetTextSize(0.04)
     legend.Clear()
@@ -660,14 +676,27 @@ def make_efficiency(): #{{{
 
     # wrap up
     annotate()
-    output = dir_output + "/signal_efficiency"
-    output = dir_output + "/signal_efficiency_newOpt"
+    output = dir_output + "/" + output_stem
     c1.SaveAs(output + ".png")
     c1.SaveAs(output + ".pdf")
 #}}}
 
+myParameterSets = {
+    "eff":{
+        "ybound" : [0.0, 0.5],
+        "legend" : [0.17, 0.60, 0.42, 0.85],
+    },
+    "ratio":{
+        "ybound" : [0.8, 2.0],
+        "legend" : [0.60, 0.60, 0.85, 0.85],
+    },
+}
+
 if __name__ == "__main__":
     #run()
-    make_efficiency()
+    make_efficiency("Efficiency"        , myParameterSets["eff"]   , "set0"  , "signal_efficiency_old")
+    make_efficiency("Efficiency"        , myParameterSets["eff"]   , "set1"  , "signal_efficiency")
+    make_efficiency("Efficiency"        , myParameterSets["eff"]   , "set2"  , "signal_efficiency_newOpt")
+    make_efficiency("Ratio (Opt2/Opt1)" , myParameterSets["ratio"] , "ratio" , "signal_efficiency_comparison")
     subprocess.call("ls -lhrt %s" % dir_output, shell=True)
 

@@ -63,7 +63,7 @@ void t::Loop()
       
    }
 
-   printf("counter_SR1 = %d, yields_SR1 = %.5f\n", counter_SR1, yields_SR1);
-   printf("counter_SR2 = %d, yields_SR2 = %.5f\n", counter_SR2, yields_SR2);
-   printf("counter_SR3 = %d, yields_SR3 = %.5f\n", counter_SR3, yields_SR3);
+   printf("counter_SR1 = %d, yields_SR1 = %.5f, efficiency = %.5f\n", counter_SR1, yields_SR1, yields_SR1/expected_yields);
+   printf("counter_SR2 = %d, yields_SR2 = %.5f, efficiency = %.5f\n", counter_SR2, yields_SR2, yields_SR2/expected_yields);
+   printf("counter_SR3 = %d, yields_SR3 = %.5f, efficiency = %.5f\n", counter_SR3, yields_SR3, yields_SR3/expected_yields);
 }
