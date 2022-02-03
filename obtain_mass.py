@@ -2,6 +2,7 @@
 import subprocess
 import ctypes
 import array
+import math
 import ROOT
 ROOT.gROOT.SetBatch(True)
 
@@ -37,7 +38,7 @@ d_fit_sigma = {"central":[], "error":[]}
 
 #--------------------------------------------------
 
-lumi={"2016":35.9,"2017":41.5,"2018":59.76,"RunII":137}
+lumi={"2016":35.9,"2017":41.5,"2018":59.76,"RunII":137.2}
 
 masses = [600, 625, 650, 675, 700, 800, 900, 1000, 1100, 1200]
 masses_v2 = [600, 625, 650, 675, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200]
@@ -291,7 +292,7 @@ def annotate(): #{{{
     latex.SetTextAlign(11)
     latex.SetTextSize(24)
     latex.DrawLatex( 0.12, 0.912, "#bf{CMS} #it{work in progress}" )
-    latex.DrawLatex( 0.72, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
+    latex.DrawLatex( 0.69, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
 
     #latex.DrawLatex( 0.60, 0.800, "Pre-selection" )
 #}}}
@@ -612,6 +613,12 @@ collection_efficiency = {
     },
 }
 #}}}
+# collection_background {{{
+collection_background = {
+    "set1":{"SR1":13., "SR2":13., "SR3":15.},
+    "set2":{"SR1":13., "SR2":13., "SR3":19.},
+}
+#}}}
 def get_ratio_list(key): #{{{
     result = []
     opt1 = collection_efficiency["set1"][key]
@@ -619,6 +626,18 @@ def get_ratio_list(key): #{{{
     for i in range(len(opt1)):
         ratio = opt2[i] / opt1[i]
         result.append( ratio )
+    return result
+#}}}
+def get_significance(tag, key): #{{{
+    result = []
+    efficiency = collection_efficiency[tag][key]
+    for i in range(len(efficiency)):
+        if i<5: nbkg = collection_background[tag]["SR1"]
+        elif i<8: nbkg = collection_background[tag]["SR2"]
+        else: nbkg = collection_background[tag]["SR3"]
+
+        significance = efficiency[i] / math.sqrt(nbkg)
+        result.append( significance )
     return result
 #}}}
 def make_efficiency(ytitle, myParameters, tag, output_stem): #{{{
@@ -631,10 +650,19 @@ def make_efficiency(ytitle, myParameters, tag, output_stem): #{{{
         raw_M600_M700  = collection_efficiency[tag]["raw_M600_M700"]
         raw_M800_M1000 = collection_efficiency[tag]["raw_M800_M1000"]
         raw_M1100_1200 = collection_efficiency[tag]["raw_M1100_1200"]
-    else:
+    elif tag == "ratio":
         raw_M600_M700  = get_ratio_list("raw_M600_M700")
         raw_M800_M1000 = get_ratio_list("raw_M800_M1000")
         raw_M1100_1200 = get_ratio_list("raw_M1100_1200")
+    elif "significance" in tag:
+        subtag = tag.split(',')[0]
+        raw_M600_M700  = get_significance(subtag, "raw_M600_M700")
+        raw_M800_M1000 = get_significance(subtag, "raw_M800_M1000")
+        raw_M1100_1200 = get_significance(subtag, "raw_M1100_1200")
+    else:
+        print ">>> [ERROR] The tag is not defined. Please check the code."
+        return
+
 
     n = len(raw_M600_M700) 
     x = array.array('d')
@@ -690,13 +718,20 @@ myParameterSets = {
         "ybound" : [0.8, 2.0],
         "legend" : [0.60, 0.60, 0.85, 0.85],
     },
+    "significance":{
+        "ybound" : [0., 0.1],
+        "legend" : [0.17, 0.60, 0.42, 0.85],
+    },
 }
 
 if __name__ == "__main__":
     #run()
-    make_efficiency("Efficiency"        , myParameterSets["eff"]   , "set0"  , "signal_efficiency_old")
-    make_efficiency("Efficiency"        , myParameterSets["eff"]   , "set1"  , "signal_efficiency")
-    make_efficiency("Efficiency"        , myParameterSets["eff"]   , "set2"  , "signal_efficiency_newOpt")
-    make_efficiency("Ratio (Opt2/Opt1)" , myParameterSets["ratio"] , "ratio" , "signal_efficiency_comparison")
+
+    make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set0"               ,  "signal_efficiency_old"        )
+    make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set1"               ,  "signal_efficiency"            )
+    make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set2"               ,  "signal_efficiency_newOpt"     )
+    make_efficiency("Ratio (Opt2/Opt1)"  ,  myParameterSets["ratio"]         ,  "ratio"              ,  "signal_efficiency_comparison" )
+    make_efficiency("Significance"       ,  myParameterSets["significance"]  ,  "set1,significance"  ,  "significance_opt1"            )
+    make_efficiency("Significance"       ,  myParameterSets["significance"]  ,  "set2,significance"  ,  "significance_opt2"            )
     subprocess.call("ls -lhrt %s" % dir_output, shell=True)
 
