@@ -69,14 +69,28 @@ def low_photon_ID_sideband_study():
 def prepare_data_for_simultaneous_fit(directory="plots"):
     subprocess.call("hadd -f fakePhotonStudy/MVABaby_Data_simultaneousFit.root %s/MVA*Data*.root" % directory, shell = True)
 
+def merge_cov_root_files(directory="plots"):
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-600_merged.root %s/*600*Era*.root" % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-625_merged.root %s/*625*Era*.root" % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-650_merged.root %s/*650*Era*.root" % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-675_merged.root %s/*675*Era*.root" % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-700_merged.root %s/*700*Era*.root" % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-800_merged.root %s/*800*Era*.root" % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-900_merged.root %s/*900*Era*.root" % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-1000_merged.root %s/*1000*Era*.root" % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-1100_merged.root %s/*1100*Era*.root" % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-1200_merged.root %s/*1200*Era*.root" % (directory, directory), shell = True)
+
 if __name__ == "__main__":
     #customize_hadd()
-    usuall_hadd("myhist")
+    #usuall_hadd("myhist")
     #usuall_hadd("myhist", "plots_dataDrivenQCD_scaleHT_central")
     #combine_only_signal("myhist")
     #usuall_hadd("myhist", "plots_20210907_Maxime_config01")
     #usuall_hadd("myhist", "plots_20210907_Maxime_config02")
     #usuall_hadd("myhist", "plots_20210908_Maxime_verification")
+
+    merge_cov_root_files()
 
     #low_photon_ID_sideband_study()
     #prepare_data_for_simultaneous_fit()

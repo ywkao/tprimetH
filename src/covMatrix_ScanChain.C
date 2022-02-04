@@ -24,13 +24,32 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
 
   TH1F *h_mass_tm_wboson    = new TH1F("h_mass_tm_wboson"    , ";MC-truth-matched W boson invariant mass [GeV/c^{2}];Entries" , 40 , 0   , 200  );
   TH1F *h_mass_tm_top       = new TH1F("h_mass_tm_top"       , ";MC-truth-matched Top invariant mass [GeV/c^{2}];Entries"     , 40 , 100 , 300  );
-  TH1F *h_mass_tm_tprime    = new TH1F("h_mass_tm_tprime"    , ";MC-truth-matched Tprime invariant mass [GeV/c^{2}];Entries"  , 36 , 200 , 2000 );
+  TH1F *h_mass_tm_tprime    = new TH1F("h_mass_tm_tprime"    , ";MC-truth-matched Tprime invariant mass [GeV/c^{2}];Entries"  , 500, 0   , 2500 );
   TH1F *h_mass_gen_wboson   = new TH1F("h_mass_gen_wboson"   , ";gen-leveled W boson invariant mass [GeV/c^{2}];Entries"      , 40 , 0   , 200  );
   TH1F *h_mass_gen_top      = new TH1F("h_mass_gen_top"      , ";gen-leveled top invariant mass [GeV/c^{2}];Entries"          , 40 , 100 , 300  );
 
   TH1F *h_deltaR_partons    = new TH1F("h_deltaR_partons"    , "; Open angle (parton, matched jet)"                           , 40 , 0.  , 4.   );
   TH1F *h_ptRatio_partons   = new TH1F("h_ptRatio_partons"   , "; abs(p_{T}^{reco} - p_{T}^{gen}) / p_{T}^{gen};Entries"      , 40 , 0.  , 4.   );
   TH1F *h_deltaR_wjets      = new TH1F("h_deltaR_wjets"      , ";Open angle (wjet1, wjet2);Entries"                           , 40 , 0.  , 6.   );
+
+  h_num_bquarks       -> Sumw2();
+  h_num_wquarks       -> Sumw2();
+  h_gen_pdgIds        -> Sumw2();
+  h_mom_pdgIds        -> Sumw2();
+
+  h_num_jets          -> Sumw2();
+  h_num_gen_particles -> Sumw2();
+  h_mass_diphoton     -> Sumw2();
+
+  h_mass_tm_wboson    -> Sumw2();
+  h_mass_tm_top       -> Sumw2();
+  h_mass_tm_tprime    -> Sumw2();
+  h_mass_gen_wboson   -> Sumw2();
+  h_mass_gen_top      -> Sumw2();
+
+  h_deltaR_partons    -> Sumw2();
+  h_ptRatio_partons   -> Sumw2();
+  h_deltaR_wjets      -> Sumw2();
 
   // Loop over events to Analyze
   unsigned int nEventsTotal = 0;
@@ -113,21 +132,21 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
           if( abs(gen_pdgIds[i]) == 5 ) counter_bquark += 1;
           counter_gen_particles += 1;
           
-          h_gen_pdgIds->Fill(gen_pdgIds[i]);
-          h_mom_pdgIds->Fill(mom_pdgIds[i]);
+          h_gen_pdgIds->Fill(gen_pdgIds[i], weight());
+          h_mom_pdgIds->Fill(mom_pdgIds[i], weight());
       }
       //printf("\n");
-      h_num_bquarks->Fill(counter_bquark);
-      h_num_wquarks->Fill(counter_wquark);
-      h_num_gen_particles->Fill(counter_gen_particles);
+      h_num_bquarks->Fill(counter_bquark, weight());
+      h_num_wquarks->Fill(counter_wquark, weight());
+      h_num_gen_particles->Fill(counter_gen_particles, weight());
 
       bool has_reasonable_gen_matching = counter_bquark >= 1 && counter_wquark >= 2;
       if(has_reasonable_gen_matching)
       {
           TLorentzVector gen_wboson = wquark1 + wquark2;
           TLorentzVector gen_top = bquark + gen_wboson;
-          h_mass_gen_wboson -> Fill(gen_wboson.M());
-          h_mass_gen_top    -> Fill(gen_top.M());
+          h_mass_gen_wboson -> Fill(gen_wboson.M(), weight());
+          h_mass_gen_top    -> Fill(gen_top.M(), weight());
           counter_has_reasonable_gen_match += 1;
       }
 
@@ -157,17 +176,17 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
           }
           //printf("\n");
 
-          bool pass_eta_codition_on_wjets = truthMatched_wjet1.Eta() < 3. && truthMatched_wjet2.Eta() < 3.;
-          if(pass_eta_codition_on_wjets)
+          bool pass_eta_coditions = fabs(truthMatched_wjet1.Eta()) < 3. && fabs(truthMatched_wjet2.Eta()) < 3. && fabs(truthMatched_bjet.Eta()) < 2.5;
+          if(pass_eta_coditions)
           {
               TLorentzVector truthMatched_wboson = truthMatched_wjet1 + truthMatched_wjet2;
               TLorentzVector truthMatched_top    = truthMatched_bjet + truthMatched_wboson;
               TLorentzVector truthMatched_tprime = truthMatched_top + diphoton;
 
-              h_deltaR_wjets   -> Fill(truthMatched_wjet1.DeltaR(truthMatched_wjet2));
-              h_mass_tm_wboson -> Fill(truthMatched_wboson.M());
-              h_mass_tm_top    -> Fill(truthMatched_top.M());
-              h_mass_tm_tprime -> Fill(truthMatched_tprime.M());
+              h_deltaR_wjets   -> Fill(truthMatched_wjet1.DeltaR(truthMatched_wjet2), weight());
+              h_mass_tm_wboson -> Fill(truthMatched_wboson.M(), weight());
+              h_mass_tm_top    -> Fill(truthMatched_top.M(), weight());
+              h_mass_tm_tprime -> Fill(truthMatched_tprime.M(), weight());
 
               counter_has_reasonable_match += 1;
 
@@ -183,8 +202,8 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
       }
 
       //--------------- Other info ---------------//
-      h_num_jets         -> Fill(jets.size());
-      h_mass_diphoton    -> Fill(CMS_hgg_mass());
+      h_num_jets         -> Fill(jets.size(), weight());
+      h_mass_diphoton    -> Fill(CMS_hgg_mass(), weight());
       counter_total_selected_events += 1;
     } // end of event loop
 
@@ -245,8 +264,8 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
               if(is_wjet && counter_wjet == 0){ truthMatched_wjet1 = jets[tr.get_register_jetIndex()[i]]; counter_wjet += 1; indices_bjj[1] = i; }
           }
 
-          bool pass_eta_codition_on_wjets = truthMatched_wjet1.Eta() < 3. && truthMatched_wjet2.Eta() < 3.;
-          if(pass_eta_codition_on_wjets)
+          bool pass_eta_coditions = fabs(truthMatched_wjet1.Eta()) < 3. && fabs(truthMatched_wjet2.Eta()) < 3. && fabs(truthMatched_bjet.Eta()) < 2.5;
+          if(pass_eta_coditions)
           {
               TLorentzVector truthMatched_wboson = truthMatched_wjet1 + truthMatched_wjet2;
               TLorentzVector truthMatched_top    = truthMatched_bjet + truthMatched_wboson;

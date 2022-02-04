@@ -6,10 +6,12 @@ parser.add_argument("-t", help = "tag = set1, set2, ..., set6, test", type=str)
 parser.add_argument("-e", help = "enable to process samples"            , action="store_true")
 parser.add_argument("-d", help = "data only"                            , action="store_true")
 parser.add_argument("-m", help = "make mvababies; otherwise histograms" , action="store_true")
+parser.add_argument("-y", help = "perform truth study" , action="store_true")
 args = parser.parse_args()
 
 tag = args.t
 mission = "--make_histograms" if args.m == False else "--make_mvababies"
+if args.y: mission = "--do_truthStudy"
 execution = "--exe" if args.e == True else ""
 
 def run():

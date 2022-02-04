@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--exe"             , help = "executte the script"  , action="store_true")
 parser.add_argument("--make_histograms" , help = "make histograms"      , action="store_true")
 parser.add_argument("--make_mvababies"  , help = "make mvababies"       , action="store_true")
+parser.add_argument("--do_truthStudy"   , help = "do truth study"       , action="store_true")
 parser.add_argument("--set1"            , help = "process set1 samples" , action="store_true")
 parser.add_argument("--set2"            , help = "process set2 samples" , action="store_true")
 parser.add_argument("--set3"            , help = "process set3 samples" , action="store_true")
@@ -24,6 +25,7 @@ args = parser.parse_args()
 to_execution = args.exe
 to_make_histograms = args.make_histograms
 to_make_mvababies = args.make_mvababies
+to_do_truthStudy = args.do_truthStudy
 #}}}
 
 #====================================================================================================#
@@ -53,6 +55,12 @@ def command_manager(d): #{{{
         log = 'plots/log/log_mvababy_%s_%s_%d.txt' % (d["rootfile"].split('.')[0], d["datetime_tag"], idx_log)
         command='%s %s %s %s %s %s 2>&1 | tee %s' % (exe, d["location"], d["rootfile"], d["treename"], d["xml_file"], d["year"], log)
         #command='./bin/covMatrix_Looper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, idx_log)
+
+    if to_do_truthStudy:
+        exe = './bin/covMatrix_Looper'
+        log = 'plots/log/log_truth_%s_%s_%d.txt' % (d["rootfile"].split('.')[0], d["datetime_tag"], idx_log)
+        mass_tag = d["rootfile"].split("M-")[-1].split("_Era")[0]
+        command='%s %s %s %s %s 2>&1 | tee %s' % (exe, d["location"], d["rootfile"], d["year"], mass_tag, log)
 
     command_list.append(command)
     idx_log += 1
@@ -183,7 +191,10 @@ if __name__ == "__main__":
         #path = "/afs/cern.ch/work/y/ykao/workspace_ultraLegacy/CMSSW_10_6_8/src/flashgg/Systematics/test/output_smh_17"
         #create_commands(dict_trees['UL'], ["THQ_ctcvcp_HToGG_M125_TuneCP5_13TeV-madgraph-pythia8_21.root"], path, "2018")
 
-        create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
+        #create_commands(dict_trees['Data'], dict_rootfiles['Data'], location_data)
+        create_commands(dict_trees['tHq'], sample_manager.signals_2016)
+        create_commands(dict_trees['tHq'], sample_manager.signals_2017)
+        create_commands(dict_trees['tHq'], sample_manager.signals_2018)
 
         # previous test {{{
         #path = "/eos/user/y/ykao/tPrimeExcessHgg/rootfiles/ntuples_v3.8"

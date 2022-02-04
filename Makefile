@@ -6,7 +6,7 @@ ROOTLIBS := $(shell root-config --libs) -lMinuit -lMLP -lXMLIO -lTMVA -lGenVecto
 
 #TARGET   := bin/tprimetHHadronicLooper bin/covMatrix_Looper bin/tprimetHHadronicMVABabyMaker
 #TARGET   := bin/tprimetHHadronicLooper bin/tprimetHHadronicLooper_v2p7 bin/tprimetHHadronicMVABabyMaker bin/tprimetHHadronicMVABabyMaker_v2p7
-TARGET   := bin/tprimetHHadronicLooper bin/tprimetHHadronicMVABabyMaker
+TARGET   := bin/tprimetHHadronicLooper bin/tprimetHHadronicMVABabyMaker bin/covMatrix_Looper
 
 all: ${TARGET}
 
