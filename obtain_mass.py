@@ -292,14 +292,14 @@ def get_maximum(v): #{{{
 
     return result
 #}}}
-def annotate(): #{{{
+def annotate(rshift=0): #{{{
     latex = ROOT.TLatex()
     latex.SetNDC()
     latex.SetTextFont(43)
     latex.SetTextAlign(11)
     latex.SetTextSize(24)
     latex.DrawLatex( 0.12, 0.912, "#bf{CMS} #it{work in progress}" )
-    latex.DrawLatex( 0.69, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
+    latex.DrawLatex( 0.69+rshift, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
 
     #latex.DrawLatex( 0.60, 0.800, "Pre-selection" )
 #}}}
@@ -689,9 +689,11 @@ def truth_matched_make_collective_plot(v_varName, v_myMasses, plotType): #{{{
     if isTprime and plotType == "normalized":
         c2.cd()
         legend = ROOT.TLegend(0.70, 0.25, 0.90, 0.85)
+        legend.SetTextSize(0.04)
     else:
         c1.cd()
-        legend = ROOT.TLegend(0.62, 0.25, 0.87, 0.85)
+        legend = ROOT.TLegend(0.62, 0.40, 0.87, 0.87)
+        legend.SetTextSize(0.03)
 
     legend.SetLineColor(0)
     legend.SetTextSize(0.04)
@@ -743,31 +745,29 @@ def truth_matched_make_collective_plot(v_varName, v_myMasses, plotType): #{{{
     maximum = get_maximum(v_hists)
     v_hists[0].SetMaximum(maximum*1.2)
 
-    annotate()
     legend.Draw("same")
     output = dir_output + "/" + nameTag
 
     if isTprime and plotType == "normalized":
+        annotate(0.08)
         c2.SaveAs(output + ".png")
         c2.SaveAs(output + ".pdf")
     else:
+        v_hists[0].SetMaximum(maximum*1e+3)
+        annotate()
+        c1.SetLogy(1)
         c1.SaveAs(output + ".png")
         c1.SaveAs(output + ".pdf")
 #}}}
 def run(): #{{{
-    plotTypes = ["yields", "normalized"]
     plotTypes = ["normalized"]
+    plotTypes = ["yields", "normalized"]
     for plotType in plotTypes:
 
-        make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine", mass_M600_M700, plotType, pauseFit=True);
-        make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine", mass_M800_M1000, plotType, pauseFit=True);
-        make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine", mass_M1100_M1200, plotType, pauseFit=False);
-
-        continue
-
-        truth_matched_make_plot("h_mass_tm_tprime", masses, plotType, pauseFit=False)
+        #truth_matched_make_plot("h_mass_tm_tprime", masses, plotType, pauseFit=False)
         truth_matched_make_collective_plot(["h_mass_tm_tprime"], [masses], plotType)
 
+        break
         continue
 
         make_collective_plot(["hMass_fine"], [masses], plotType)
@@ -946,6 +946,7 @@ def print_table():
     }
 
     d = d_truthMatched
+    d = d_chi2Reco
     for i, mass in enumerate(masses):
         print "%d, %.2f, %.2f" % (mass, d["mean"][i], d["sigma"][i])
 
