@@ -78,6 +78,7 @@ void template_fit()
             h_maxPhotonIDMVA_subtracted -> Add(h_max, -1.0);
             h_minPhotonIDMVA_subtracted -> Add(h_min, -1.0);
 
+            // store the last four samples
             if(i==backgrounds.size()-1) {
                 h_maxPhotonIDMVA_others = (TH1D*) h_max->Clone();
                 h_minPhotonIDMVA_others = (TH1D*) h_min->Clone();
@@ -108,9 +109,6 @@ void template_fit()
         }
     }
 
-    TH1D *h_PhotonIDMVA_combine = new TH1D(*h_maxPhotonIDMVA_subtracted);
-    h_PhotonIDMVA_combine -> Add(h_minPhotonIDMVA_subtracted, 1.0);
-
     TCanvas *c1 = new TCanvas("c1", "", 1600, 600);
     c1->Divide(2);
     c1->cd(1);
@@ -119,6 +117,7 @@ void template_fit()
     makeHist(hs_min, h_minPhotonIDMVA_Data, h_minPhotonIDMVA_others);
     c1->SaveAs("eos_test/photonIDMVA_before.png");
     //}}}
+    
     // observables, create hist templates{{{
     RooRealVar idmva("idmva","Photon ID MVA",-1.,1.);
     RooCategory channel("channel","channel");
