@@ -145,6 +145,10 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   if (ref_ultraLegacySample) {
       BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210820/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210820/weights/TMVAClassification_BDTG.weights.xml";
       BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210818/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210818/weights/TMVAClassification_BDTG.weights.xml";
+      
+      // ul workspace
+      //BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20220125/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20220125/weights/TMVAClassification_BDTG.weights.xml";
+      //BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20220125/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20220125/weights/TMVAClassification_BDTG.weights.xml";
   }
 
   flashgg::THQ_BDT_Helper *tprimeTagger_nrb = new flashgg::THQ_BDT_Helper("BDTG", BDT_nrb_xml_file_);
@@ -685,6 +689,31 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       total_yields += evt_weight;
 
       //----------------------------------------------------------------------------------------------------}}}
+      // MVA cut values {{{
+      //----------------------------------------------------------------------------------------------------
+
+      vector<double> v_mva_threshold_set2 = {0.943, 0.960, 0.950, 0.800, 0.800, 0.800}; // Maxime's opt
+
+      bool pass_mva_cut_bdtg_nrb_mixed03 = mva_value_nrb_varset8_mixed03_tmva_bdtg > v_mva_threshold_set2[0];
+      bool pass_mva_cut_bdtg_nrb_mixed04 = mva_value_nrb_varset8_mixed04_tmva_bdtg > v_mva_threshold_set2[1];
+      bool pass_mva_cut_bdtg_nrb_mixed05 = mva_value_nrb_varset8_mixed05_tmva_bdtg > v_mva_threshold_set2[2];
+      bool pass_mva_cut_bdtg_smh_mixed03 = mva_value_smh_varset8_mixed03_tmva_bdtg > v_mva_threshold_set2[3];
+      bool pass_mva_cut_bdtg_smh_mixed04 = mva_value_smh_varset8_mixed04_tmva_bdtg > v_mva_threshold_set2[4];
+      bool pass_mva_cut_bdtg_smh_mixed05 = mva_value_smh_varset8_mixed05_tmva_bdtg > v_mva_threshold_set2[5];
+
+      bool pass_tprime_low_mass_criterion = mass_tprime > 0.;
+      bool pass_tprime_low_mass_criterion_mixed03 = mass_tprime > 480. && mass_tprime < 800.; // Maxime's opt
+      bool pass_tprime_low_mass_criterion_mixed04 = mass_tprime > 550. && mass_tprime < 1150.; // Maxime's opt
+      bool pass_tprime_low_mass_criterion_mixed05 = mass_tprime > 650. && mass_tprime < 1600.; // Maxime's opt
+
+      bool is_within_SR_mixed03 = pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03 && pass_tprime_low_mass_criterion_mixed03;
+      bool is_within_SR_mixed04 = pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04 && pass_tprime_low_mass_criterion_mixed04;
+      bool is_within_SR_mixed05 = pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05 && pass_tprime_low_mass_criterion_mixed05;
+      bool is_within_CR_mixed03 = pass_mva_cut_bdtg_nrb_mixed03 && !pass_mva_cut_bdtg_smh_mixed03;
+      bool is_within_CR_mixed04 = pass_mva_cut_bdtg_nrb_mixed04 && !pass_mva_cut_bdtg_smh_mixed04;
+      bool is_within_CR_mixed05 = pass_mva_cut_bdtg_nrb_mixed05 && !pass_mva_cut_bdtg_smh_mixed05;
+
+      //----------------------------------------------------------------------------------------------------}}}
       // Consistency check {{{
       //----------------------------------------------------------------------------------------------------
       if(processId != 18 && !perform_fake_photon_study) { //exclude data-driven from consistency check
@@ -716,6 +745,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       
       //bool check_var = found_discrepancy_nrb || found_discrepancy_smh;
       bool check_var = false;
+      //bool check_var = true;
       if(check_var)
       {
           long evt_  = analyzer.event();
@@ -724,86 +754,22 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
           printf("[Info] Run:Lumi:Event = %ld:%ld:%ld\n", run_, lumi_, evt_);
           printf("[check] processId = %d, minIDMVA = %.2f, maxIDMVA = %.2f\n", processId, minIDMVA_, maxIDMVA_);
 
-          // printf format
-          printf("%s: %.10f , " , "diphoton_mass_"           , CMS_hgg_mass()               );
-          printf("%s: %.10f , " , "diphoton_pt_"             , dipho_pt()                   );
-          tprimeTagger_nrb->print_details( MVAvarList );
-          printf("%s: %.10f , " , "score_nrb_"               , mva_value_nrb                );
-          printf("%s: %.10f , " , "score_smh_"               , mva_value_smh                );
+          std::cout << "diphoton_mass_: " << CMS_hgg_mass() << ", ";
+          std::cout << "diphoton_pt_: "   << dipho_pt()   << ", ";
+          tprimeTagger_nrb->print_details_cout( MVAvarList );
+          std::cout << "score_nrb_: "     << mva_value_nrb << ", ";
+          std::cout << "score_smh_: "     << mva_value_smh << ", ";
           printf("\n\n");
+
+          // printf format
+          //printf("%s: %.10f , " , "diphoton_mass_"           , CMS_hgg_mass()               );
+          //printf("%s: %.10f , " , "diphoton_pt_"             , dipho_pt()                   );
+          //tprimeTagger_nrb->print_details( MVAvarList );
+          //printf("%s: %.10f , " , "score_nrb_"               , mva_value_nrb                );
+          //printf("%s: %.10f , " , "score_smh_"               , mva_value_smh                );
+          //printf("\n\n");
       }
       } // end of consistency check
-
-      //----------------------------------------------------------------------------------------------------}}}
-      // MVA cut values {{{
-      //----------------------------------------------------------------------------------------------------
-      // past {{{
-      // # BDTs on 20210620
-      //vector<double> v_mva_threshold_set2 = {0.530, 0.363, 0.228, 0.828, 0.826, 0.816};
-      //vector<double> v_mva_threshold_set2 = {0.946, 0.363, 0.228, 0.800, 0.826, 0.816};  // Maxime's new config after fixing bug
-      //vector<double> v_mva_threshold_set2 = {0.953, 0.363, 0.228, 0.800, 0.826, 0.816};  // Maxime's config-1  and config-2
-      //vector<double> v_mva_threshold_set2 = {0.955, 0.363, 0.228, 0.800, 0.826, 0.816};  // verify # of events
-
-      // # BDTs on 20210820 (keep ~100 data events in sideband)
-      //vector<double> v_mva_threshold_set1 = {0.544, 0.365, 0.220, 0.823, 0.826, 0.804};
-      //vector<double> v_mva_threshold_set2 = {0.530, 0.393, 0.251, 0.820, 0.822, 0.812};
-      
-      // # BDTs on 20210820 (check with previuos cut values)
-      //vector<double> v_mva_threshold_set1 = {0.530, 0.363, 0.228, 0.828, 0.826, 0.816};
-      //vector<double> v_mva_threshold_set2 = {0.530, 0.363, 0.228, 0.828, 0.826, 0.816};
-
-      // # BDTs on 20210820 (check for comparison in newBase)
-      //vector<double> v_mva_threshold_set1 = {0.539, 0.365, 0.225, 0.828, 0.826, 0.816};
-      //vector<double> v_mva_threshold_set2 = {0.530, 0.363, 0.228, 0.828, 0.826, 0.816};
-
-      // # BDTs on 20210820 (keep ~110 data events in sideband, |eta|<3.0)
-      //vector<double> v_mva_threshold_set1 = {0.544, 0.365, 0.220, 0.816, 0.818, 0.801};
-      //vector<double> v_mva_threshold_set2 = {0.530, 0.393, 0.251, 0.817, 0.812, 0.810};
-      //
-      // # BDTs on 20210820 (keep ~110 data events in sideband, eta<3.0)
-      //vector<double> v_mva_threshold_set1 = {0.549, 0.370, 0.231, 0.823, 0.827, 0.806};
-      //vector<double> v_mva_threshold_set2 = {0.549, 0.370, 0.231, 0.828, 0.826, 0.816};
-
-      // # BDTs on 20210820 (keep events as base BDTGs trained on 20210620)
-      //vector<double> v_mva_threshold_set2 = {0.519, 0.340, 0.204, 0.817, 0.818, 0.802};
-
-      // # BDTs on 20210620 (Maxime's cut values)
-      //vector<double> v_mva_threshold_set2 = {0.943, 0.960, 0.940, 0.800, 0.800, 0.800};
-      // }}}
-
-      // # for sync with MakeMVABabies*.C only
-      //vector<double> v_mva_threshold_set2 = {0.530, 0.363, 0.228, 0.828, 0.826, 0.816};
-      vector<double> v_mva_threshold_set2 = {0.943, 0.960, 0.950, 0.800, 0.800, 0.800}; // Maxime's opt
-
-      bool pass_mva_cut_bdtg_nrb_mixed03 = mva_value_nrb_varset8_mixed03_tmva_bdtg > v_mva_threshold_set2[0];
-      bool pass_mva_cut_bdtg_nrb_mixed04 = mva_value_nrb_varset8_mixed04_tmva_bdtg > v_mva_threshold_set2[1];
-      bool pass_mva_cut_bdtg_nrb_mixed05 = mva_value_nrb_varset8_mixed05_tmva_bdtg > v_mva_threshold_set2[2];
-      bool pass_mva_cut_bdtg_smh_mixed03 = mva_value_smh_varset8_mixed03_tmva_bdtg > v_mva_threshold_set2[3];
-      bool pass_mva_cut_bdtg_smh_mixed04 = mva_value_smh_varset8_mixed04_tmva_bdtg > v_mva_threshold_set2[4];
-      bool pass_mva_cut_bdtg_smh_mixed05 = mva_value_smh_varset8_mixed05_tmva_bdtg > v_mva_threshold_set2[5];
-
-      bool pass_tprime_low_mass_criterion;
-      pass_tprime_low_mass_criterion = mass_tprime > 0.;
-      pass_tprime_low_mass_criterion = mass_tprime > 440. && mass_tprime < 830; // configure-1
-      pass_tprime_low_mass_criterion = mass_tprime > 485. && mass_tprime < 740; // configure-2
-      pass_tprime_low_mass_criterion = mass_tprime > 480. && mass_tprime < 820; // verification
-      pass_tprime_low_mass_criterion = mass_tprime > 470. && mass_tprime < 800; // new after fixing bug
-      pass_tprime_low_mass_criterion = mass_tprime > 0.;
-
-      bool pass_tprime_low_mass_criterion_mixed03 = mass_tprime > 480. && mass_tprime < 800.; // Maxime's opt
-      bool pass_tprime_low_mass_criterion_mixed04 = mass_tprime > 630. && mass_tprime < 1150.; // Maxime's opt
-      bool pass_tprime_low_mass_criterion_mixed05 = mass_tprime > 750. && mass_tprime < 1600.; // Maxime's opt
-      //bool pass_tprime_low_mass_criterion_mixed05 = mass_tprime > 750. && mass_tprime < 1350.; // Maxime's opt
-
-      bool is_within_SR_mixed03 = pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03 && pass_tprime_low_mass_criterion_mixed03;
-      bool is_within_SR_mixed04 = pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04 && pass_tprime_low_mass_criterion_mixed04;
-      bool is_within_SR_mixed05 = pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05 && pass_tprime_low_mass_criterion_mixed05;
-      //bool is_within_SR_mixed03 = pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03;
-      //bool is_within_SR_mixed04 = pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04;
-      //bool is_within_SR_mixed05 = pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05;
-      bool is_within_CR_mixed03 = pass_mva_cut_bdtg_nrb_mixed03 && !pass_mva_cut_bdtg_smh_mixed03;
-      bool is_within_CR_mixed04 = pass_mva_cut_bdtg_nrb_mixed04 && !pass_mva_cut_bdtg_smh_mixed04;
-      bool is_within_CR_mixed05 = pass_mva_cut_bdtg_nrb_mixed05 && !pass_mva_cut_bdtg_smh_mixed05;
 
       //----------------------------------------------------------------------------------------------------}}}
       
@@ -891,7 +857,6 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
               }
           }
       } // end of MC truth study }}}
-
       // counters for check signal efficiency {{{
       if(processId != 18 && is_within_SR_mixed03) counter_SR_mixed03 += 1;
       if(processId != 18 && is_within_SR_mixed04) counter_SR_mixed04 += 1;
