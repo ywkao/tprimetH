@@ -65,6 +65,7 @@ def make_fake_photon_IDMVA(var, output, do_fit = False): #{{{
     filename = "rootfiles/fakePhoton_pdf_v3p8.root"
     filename = path + "MVABaby_GJet_Pt_combined.root"
     filename = "rootfiles/fakePhoton_pdf_v4p1.root"
+    filename = "rootfiles_20220118_v2/fakePhoton_pdf_v4p1.root"
     f1 = ROOT.TFile.Open(filename, "R")
     tree = f1.Get("t_fakePhotonIDMVA")
 

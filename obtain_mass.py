@@ -12,6 +12,7 @@ dir_output = "EOS_output_mass"
 rootfile = "plots_20211126/myhist_signal.root"
 rootfile = "plots_20211127_v2/myhist_combine_RunII.root"
 rootfile = "shortcut_plots/plots_20211128/myhist_combine_RunII.root"
+rootfile = "plots_20220215_ultraLegacy/myhist_combine_RunII.root"
 fin = ROOT.TFile.Open(rootfile, "R")
 
 ROOT.gStyle.SetOptStat("e")
@@ -283,14 +284,14 @@ def get_maximum(v): #{{{
 
     return result
 #}}}
-def annotate(): #{{{
+def annotate(lshift=0): #{{{
     latex = ROOT.TLatex()
     latex.SetNDC()
     latex.SetTextFont(43)
     latex.SetTextAlign(11)
     latex.SetTextSize(24)
     latex.DrawLatex( 0.12, 0.912, "#bf{CMS} #it{work in progress}" )
-    latex.DrawLatex( 0.72, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
+    latex.DrawLatex( 0.72+lshift, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
 
     #latex.DrawLatex( 0.60, 0.800, "Pre-selection" )
 #}}}
@@ -499,8 +500,8 @@ def make_collective_plot(v_varName, v_myMasses, plotType):
         c2.cd()
         legend = ROOT.TLegend(0.70, 0.25, 0.90, 0.85)
     else:
-        c1.cd()
-        legend = ROOT.TLegend(0.62, 0.25, 0.87, 0.85)
+        c2.cd()
+        legend = ROOT.TLegend(0.70, 0.25, 0.90, 0.87)
 
     legend.SetLineColor(0)
     legend.SetTextSize(0.04)
@@ -548,24 +549,36 @@ def make_collective_plot(v_varName, v_myMasses, plotType):
     maximum = get_maximum(v_hists)
     v_hists[0].SetMaximum(maximum*1.2)
 
-    annotate()
     legend.Draw("same")
     output = dir_output + "/" + nameTag
 
     if isTprime and plotType == "normalized":
+        annotate()
+        c2.SetLogy(0)
         c2.SaveAs(output + ".png")
         c2.SaveAs(output + ".pdf")
     else:
-        c1.SaveAs(output + ".png")
-        c1.SaveAs(output + ".pdf")
+        annotate(0.06)
+        v_hists[0].SetMaximum(2)
+        v_hists[0].SetMinimum(3e-3)
+        c2.SetLogy(1)
+        c2.SaveAs(output + ".png")
+        c2.SaveAs(output + ".pdf")
+
+        #c1.SaveAs(output + ".png")
+        #c1.SaveAs(output + ".pdf")
 #}}}
 
 def run():
-    plotTypes = ["yields", "normalized"]
     plotTypes = ["normalized"]
+    plotTypes = ["yields", "normalized"]
     for plotType in plotTypes:
         #make_collective_plot(["hMass_fine"], [masses], plotType)
         #make_collective_plot(["hmass_tprime_cov_fine"], [masses], plotType)
+
+        make_collective_plot(["hmass_tprime_cov_fine"], [masses], plotType)
+
+        break
 
         v_myMasses = [mass_M600_M700, mass_M800_M1000, mass_M1100_M1200]
         v_varName = ["hMass_pass_BDTG_smh_cut_mixed03_fine", "hMass_pass_BDTG_smh_cut_mixed04_fine", "hMass_pass_BDTG_smh_cut_mixed05_fine"]
