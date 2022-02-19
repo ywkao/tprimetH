@@ -11,8 +11,12 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
+#include <vector>
+#include <stdlib.h>
 
 // Header file for the classes stored in the TTree if any.
+
+struct My_Cut_Values{ double bdt_nrb; double bdt_smh; double mass_low; double mass_high; };
 
 class t {
 public :
@@ -46,22 +50,32 @@ public :
    TBranch        *b_BDTG_TprimeVsHiggs_M1100_M1200;   //!
 
    TString input_file_name;
+   double expected_yields;
 
-   t(TTree *tree=0, TString name="");
+   My_Cut_Values set_threshold(double a, double b, double c, double d);
+
+   t(TTree *tree=0, TString name="", double yields=1.);
    virtual ~t();
-   virtual Int_t    Cut(Long64_t entry);
+   virtual Int_t    Cut(Long64_t entry, My_Cut_Values cut, double bdt_nrb, double bdt_smh);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
-   virtual void     Init(TTree *tree, TString name);
+   virtual void     Init(TTree *tree, TString name, double yields);
    virtual void     Loop();
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
+
+private:
+   bool is_in_sideband;
+   bool pass_BDG_SMH;
+   bool pass_BDG_NRB;
+   bool pass_Tprime_mass;
+   bool accepted;
 };
 
 #endif
 
 #ifdef t_cxx
-t::t(TTree *tree, TString name) : fChain(0) 
+t::t(TTree *tree, TString name, double yields) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
@@ -73,7 +87,7 @@ t::t(TTree *tree, TString name) : fChain(0)
       f->GetObject("t",tree);
 
    }
-   Init(tree, name);
+   Init(tree, name, yields);
 }
 
 t::~t()
@@ -101,7 +115,7 @@ Long64_t t::LoadTree(Long64_t entry)
    return centry;
 }
 
-void t::Init(TTree *tree, TString name)
+void t::Init(TTree *tree, TString name, double yields)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -130,6 +144,7 @@ void t::Init(TTree *tree, TString name)
    Notify();
 
    input_file_name = name;
+   expected_yields = yields;
 }
 
 Bool_t t::Notify()
@@ -150,80 +165,29 @@ void t::Show(Long64_t entry)
    if (!fChain) return;
    fChain->Show(entry);
 }
-Int_t t::Cut(Long64_t entry)
+
+My_Cut_Values t::set_threshold(double a, double b, double c, double d)
 {
-// This function may be called from Loop.
-// returns  1 if entry is accepted.
-// returns -1 otherwise.
-
-   bool is_data = input_file_name.Contains("Data");
-   bool is_in_sideband;
-   bool pass_BDG_SMH;
-   bool pass_BDG_NRB;
-   bool pass_Tprime_mass;
-   bool accepted;
-
-   // past {{{
-   /*
-   is_in_sideband   = is_data ? dipho_mass<115. || dipho_mass>135. : true;
-   pass_BDG_SMH     = BDTG_TprimeVsHiggs_M600_M700 > 0.80;
-
-   // opt 600
-   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M600_M700 > 0.954561;
-   pass_Tprime_mass = Tprime_mass > 479.037 && Tprime_mass < 729.299;
-
-   // opt 650
-   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M600_M700 > 0.949999;
-   pass_Tprime_mass = Tprime_mass > 524.91 && Tprime_mass < 749.983;
-
-   // opt 700
-   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M600_M700 > 0.957758;
-   pass_Tprime_mass = Tprime_mass > 556.418 && Tprime_mass < 813.935;
-
-   // merged
-   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M600_M700 > 0.955;
-   pass_Tprime_mass = Tprime_mass > 480. && Tprime_mass < 820.;
-
-   // config-1
-   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M600_M700 > 0.953;
-   pass_Tprime_mass = Tprime_mass > 440. && Tprime_mass < 830.;
-
-   // config-2
-   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M600_M700 > 0.953;
-   pass_Tprime_mass = Tprime_mass > 485. && Tprime_mass < 740.;
-
-   // new after Maxime fixed bug
-   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M600_M700 > 0.946;
-   pass_Tprime_mass = Tprime_mass > 470. && Tprime_mass < 800.;
-   */
-   //}}}
-
-   is_in_sideband   = is_data ? dipho_mass<115. || dipho_mass>135. : true;
-
-   // 3rd bin
-   pass_BDG_SMH     = BDTG_TprimeVsHiggs_M1100_M1200 > 0.80;
-   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M1100_M1200 > 0.950;
-   pass_Tprime_mass = Tprime_mass > 650. && Tprime_mass < 1600.;
-   pass_Tprime_mass = Tprime_mass > 750. && Tprime_mass < 1350.;
-
-   // 2nd bin
-   pass_BDG_SMH     = BDTG_TprimeVsHiggs_M800_M1000 > 0.80;
-   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M800_M1000 > 0.960;
-   pass_Tprime_mass = Tprime_mass > 550. && Tprime_mass < 1150.;
-   pass_Tprime_mass = Tprime_mass > 630. && Tprime_mass < 1150.;
-
-   // 1st bin
-   pass_BDG_SMH     = BDTG_TprimeVsHiggs_M600_M700 > 0.80;
-   pass_BDG_NRB     = BDTG_TprimeVsNonHiggs_M600_M700 > 0.943;
-   pass_Tprime_mass = Tprime_mass > 480. && Tprime_mass < 800.;
-
-   accepted = is_in_sideband && pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass;
-   //accepted = is_in_sideband;
-   //accepted = true;
-   
-   if(accepted)
-       return 1;
-   else
-       return -1;
+    My_Cut_Values cut;
+    cut.bdt_nrb   = a;
+    cut.bdt_smh   = b;
+    cut.mass_low  = c;
+    cut.mass_high = d;
+    return cut;    
 }
+
+Int_t t::Cut(Long64_t entry, My_Cut_Values cut, double bdt_nrb, double bdt_smh)
+{
+   bool is_data = input_file_name.Contains("Data");
+
+   is_in_sideband   = is_data ? dipho_mass<115. || dipho_mass>135. : true;
+   pass_BDG_NRB     = bdt_nrb > cut.bdt_nrb;
+   pass_BDG_SMH     = bdt_smh > cut.bdt_smh;
+   pass_Tprime_mass = Tprime_mass > cut.mass_low && Tprime_mass < cut.mass_high;
+   accepted         = is_in_sideband && pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass;
+
+   if(accepted) return 1;
+   else return -1;
+}
+
 #endif // #ifdef t_cxx

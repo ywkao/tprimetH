@@ -618,6 +618,11 @@ def make_efficiency(): #{{{
     raw_M800_M1000 = [0.00810, 0.01266, 0.02134, 0.03390, 0.04737, 0.12473, 0.17935, 0.19774, 0.16925, 0.09225]
     raw_M1100_1200 = [0.00242, 0.00311, 0.00408, 0.00535, 0.00699, 0.03057, 0.10157, 0.18667, 0.23183, 0.26597]
 
+    # Maxime opt2 + UL samples
+    raw_M600_M700  = [ 0.07114, 0.08517, 0.09706, 0.10479, 0.10776, 0.06358, 0.01886, 0.01027, 0.00700, 0.00462 ]
+    raw_M800_M1000 = [ 0.01006, 0.01513, 0.02305, 0.03451, 0.04970, 0.12768, 0.18943, 0.21193, 0.18650, 0.09700 ]
+    raw_M1100_1200 = [ 0.00320, 0.00438, 0.00594, 0.00822, 0.01101, 0.03480, 0.10923, 0.20500, 0.26490, 0.29458 ]
+
     n = len(raw_M600_M700) 
     x = array.array('d')
     efficiency_M600_M700  = array.array('d')
@@ -639,7 +644,7 @@ def make_efficiency(): #{{{
     set_graph(gr2, "Efficiency", ROOT.kGreen+3)
     set_graph(gr3, "Efficiency", ROOT.kBlue)
 
-    gr1.SetMaximum(1.0)
+    gr1.SetMaximum(0.5)
 
     gr1.Draw('ACP')
     gr2.Draw('CP')
@@ -663,7 +668,7 @@ def make_efficiency(): #{{{
 #}}}
 
 if __name__ == "__main__":
-    run()
-    #make_efficiency()
+    #run()
+    make_efficiency()
     subprocess.call("ls -lhrt %s" % dir_output, shell=True)
 
