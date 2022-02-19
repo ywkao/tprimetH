@@ -2,17 +2,20 @@
 import subprocess
 import ctypes
 import array
+import math
 import ROOT
 ROOT.gROOT.SetBatch(True)
 
-do_individual=True
 do_individual=False
+do_individual=True
 
 dir_output = "EOS_output_mass"
 rootfile = "plots_20211126/myhist_signal.root"
 rootfile = "plots_20211127_v2/myhist_combine_RunII.root"
+rootfile = "plots_20211128/myhist_combine_RunII.root"
 rootfile = "shortcut_plots/plots_20211128/myhist_combine_RunII.root"
 rootfile = "plots_20220215_ultraLegacy/myhist_combine_RunII.root"
+rootfile = "shortcut_plots/plots_20220120_results_ReReco/myhist_combine_RunII.root"
 fin = ROOT.TFile.Open(rootfile, "R")
 
 ROOT.gStyle.SetOptStat("e")
@@ -37,7 +40,7 @@ d_fit_sigma = {"central":[], "error":[]}
 
 #--------------------------------------------------
 
-lumi={"2016":35.9,"2017":41.5,"2018":59.76,"RunII":137}
+lumi={"2016":35.9,"2017":41.5,"2018":59.76,"RunII":137.2}
 
 masses = [600, 625, 650, 675, 700, 800, 900, 1000, 1100, 1200]
 masses_v2 = [600, 625, 650, 675, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200]
@@ -52,6 +55,7 @@ ytitles = {
         "hMass_pass_BDTG_smh_cut_mixed04_fine":"Yields / 0.5 GeV",
         "hMass_pass_BDTG_smh_cut_mixed05_fine":"Yields / 0.5 GeV",
         "hmass_tprime_cov_fine":"Yields / 5 GeV",
+        "h_mass_tm_tprime":"Yields / 5 GeV",
         "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine":"Yields / 5 GeV",
         "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine":"Yields / 5 GeV",
         "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine":"Yields / 5 GeV",
@@ -62,6 +66,7 @@ ytitles = {
         "hMass_pass_BDTG_smh_cut_mixed04_fine":"Arbitrary unit / 0.5 GeV",
         "hMass_pass_BDTG_smh_cut_mixed05_fine":"Arbitrary unit / 0.5 GeV",
         "hmass_tprime_cov_fine":"Arbitrary unit / 5 GeV",
+        "h_mass_tm_tprime":"Arbitrary unit / 5 GeV",
         "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine":"Arbitrary unit / 5 GeV",
         "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine":"Arbitrary unit / 5 GeV",
         "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine":"Arbitrary unit / 5 GeV",
@@ -74,6 +79,7 @@ xtitles = {
     "hMass_pass_BDTG_smh_cut_mixed04_fine":"M_{#gamma#gamma} (GeV)",
     "hMass_pass_BDTG_smh_cut_mixed05_fine":"M_{#gamma#gamma} (GeV)",
     "hmass_tprime_cov_fine":"M_{bjj#gamma#gamma} (GeV)",
+    "h_mass_tm_tprime":"M_{bjj#gamma#gamma} (GeV)",
     "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine":"M_{bjj#gamma#gamma} (GeV)",
     "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine":"M_{bjj#gamma#gamma} (GeV)",
     "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine":"M_{bjj#gamma#gamma} (GeV)",
@@ -139,6 +145,7 @@ colors = {
     "hMass_pass_BDTG_smh_cut_mixed04_fine":v_set1,
     "hMass_pass_BDTG_smh_cut_mixed05_fine":v_set1,
     "hmass_tprime_cov_fine":v_set1,
+    "h_mass_tm_tprime":v_set1,
     "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine":v_set1,
     "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine":v_set1,
     "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine":v_set1,
@@ -159,6 +166,7 @@ ranges = {
     "hMass_pass_BDTG_smh_cut_mixed04_fine":[100,180],
     "hMass_pass_BDTG_smh_cut_mixed05_fine":[100,180],
     "hmass_tprime_cov_fine":[200,2500],
+    "h_mass_tm_tprime":[200,2500],
     "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine":[480,800],
     "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine":[630,1150],
     "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine":[750,1600],
@@ -192,6 +200,7 @@ legend_position = {
     "hMass_pass_BDTG_smh_cut_mixed04_fine":leg_pos_set1,
     "hMass_pass_BDTG_smh_cut_mixed05_fine":leg_pos_set1,
     "hmass_tprime_cov_fine":leg_pos_set2,
+    "h_mass_tm_tprime":leg_pos_set2,
     "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine":leg_pos_set2,
     "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine":leg_pos_set2,
     "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine":leg_pos_set2,
@@ -218,6 +227,7 @@ stat_position = {
     "hMass_pass_BDTG_smh_cut_mixed04_fine":stat_pos_set1,
     "hMass_pass_BDTG_smh_cut_mixed05_fine":stat_pos_set1,
     "hmass_tprime_cov_fine":stat_pos_set1,
+    "h_mass_tm_tprime":stat_pos_set1,
     600 :stat_pos_set2,
     625 :stat_pos_set2,
     650 :stat_pos_set2,
@@ -284,14 +294,15 @@ def get_maximum(v): #{{{
 
     return result
 #}}}
-def annotate(lshift=0): #{{{
+def annotate(rshift=0): #{{{
     latex = ROOT.TLatex()
     latex.SetNDC()
     latex.SetTextFont(43)
     latex.SetTextAlign(11)
     latex.SetTextSize(24)
     latex.DrawLatex( 0.12, 0.912, "#bf{CMS} #it{work in progress}" )
-    latex.DrawLatex( 0.72+lshift, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
+    latex.DrawLatex( 0.69+rshift, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
+    #latex.DrawLatex( 0.72+lshift, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
 
     #latex.DrawLatex( 0.60, 0.800, "Pre-selection" )
 #}}}
@@ -379,6 +390,7 @@ def make_fit_summary(d_raw, v_bound, ytitle, output): #{{{
     #legend.AddEntry(gr2, "[800, 1000]", "lp")
     #legend.AddEntry(gr3, "[1100, 1200]", "lp")
     #legend.Draw("same")
+    print ">>>>>", output, d_raw["central"]
 
     # wrap up
     annotate()
@@ -452,6 +464,8 @@ def make_plot(varName, myMasses, plotType, pauseFit): #{{{
             annotate()
             output = dir_output + "/individual_" + nameTag + "_" + str(myMasses[i]) + ".png"
             c1.SaveAs(output)
+            output = dir_output + "/individual_" + nameTag + "_" + str(myMasses[i]) + ".pdf"
+            c1.SaveAs(output)
         #}}}
         else: # multi hists {{{
             set_the_hist(h, varName, varName, plotType, colors[varName][myMasses[i]])
@@ -488,8 +502,7 @@ def make_plot(varName, myMasses, plotType, pauseFit): #{{{
             init_hist_collector()
     #}}}
 #}}}
-
-def make_collective_plot(v_varName, v_myMasses, plotType):
+def make_collective_plot(v_varName, v_myMasses, plotType): #{{{
     nameTag = "collective_" + v_varName[-1] + "_" + plotType
 
     isHiggs = 'hMass' in v_varName[0]
@@ -500,8 +513,10 @@ def make_collective_plot(v_varName, v_myMasses, plotType):
         c2.cd()
         legend = ROOT.TLegend(0.70, 0.25, 0.90, 0.85)
     else:
-        c2.cd()
-        legend = ROOT.TLegend(0.70, 0.25, 0.90, 0.87)
+        c1.cd()
+        legend = ROOT.TLegend(0.62, 0.25, 0.87, 0.85)
+        #c2.cd()
+        #legend = ROOT.TLegend(0.70, 0.25, 0.90, 0.87)
 
     legend.SetLineColor(0)
     legend.SetTextSize(0.04)
@@ -558,27 +573,215 @@ def make_collective_plot(v_varName, v_myMasses, plotType):
         c2.SaveAs(output + ".png")
         c2.SaveAs(output + ".pdf")
     else:
-        annotate(0.06)
-        v_hists[0].SetMaximum(2)
-        v_hists[0].SetMinimum(3e-3)
-        c2.SetLogy(1)
-        c2.SaveAs(output + ".png")
-        c2.SaveAs(output + ".pdf")
-
-        #c1.SaveAs(output + ".png")
-        #c1.SaveAs(output + ".pdf")
+        #annotate(0.06)
+        #v_hists[0].SetMaximum(2)
+        #v_hists[0].SetMinimum(3e-3)
+        #c2.SetLogy(1)
+        c1.SaveAs(output + ".png")
+        c1.SaveAs(output + ".pdf")
 #}}}
 
-def run():
+def truth_matched_make_plot(varName, myMasses, plotType, pauseFit): #{{{
+    c1.cd()
+    nameTag = varName + "_" + plotType
+
+    pos = legend_position[varName][len(myMasses)]
+    legend = ROOT.TLegend(pos[0], pos[1], pos[2], pos[3])
+    legend.SetLineColor(0)
+    legend.SetTextSize(0.04)
+    legend.Clear()
+
+    # load hists {{{
+    v_fins, v_hists, v_herrs = [], [], []
+    for m in myMasses:
+        #_truthMatching_v1
+        rootfile = "plots/covMatrix_TprimeBToTH_M-%d_merged.root" % m
+        fin = ROOT.TFile.Open(rootfile, "R")
+        histName = varName
+        h = fin.Get(histName)
+        v_hists.append(h)
+        h_err = h.Clone()
+        v_herrs.append(h_err)
+
+        v_fins.append(fin)
+    #}}}
+    # loop over hists
+    for i, h in enumerate(v_hists):
+        h_err = v_herrs[i]
+
+        # normalize area #{{{
+        if plotType == "normalized":
+            unc = ctypes.c_double(0.) 
+            nbins = h.GetSize()-1
+            tot_yields = h.IntegralAndError(0, nbins, unc)
+            if tot_yields > 0.:
+                h.Scale(1./tot_yields)
+                h_err.Scale(1./tot_yields)
+        #}}}
+        if do_individual: #{{{
+            my_fit_range = fit_ranges["mgg"]["range"] if 'hMass' in varName else fit_ranges[myMasses[i]]["range"]
+            set_the_hist(h, varName, varName, plotType, ROOT.kBlack)
+
+            h.SetMaximum( h.GetMaximum()*1.2 )
+            h.Draw("hist")
+            h.Fit("gaus", "", "", my_fit_range[0], my_fit_range[1])
+
+            # necessary for showing fit curves
+            h_err = h.Clone()
+            set_the_error_band(h_err)
+            h_err.Draw("E2;same")
+
+            my_leg_pos = legend_position[myMasses[i]] if 'prime' in varName and 'BDTG' in varName else legend_position["tprime"]
+            leg = ROOT.TLegend(my_leg_pos[0],my_leg_pos[1],my_leg_pos[2],my_leg_pos[3])
+            leg.SetLineColor(0)
+            leg.SetTextSize(0.04)
+            leg.AddEntry(h, "M_{T'} = " + str(myMasses[i]) + " GeV", "l")
+            leg.AddEntry(h_err, "Stat. unc.", "f")
+            leg.Draw("same")
+
+            h.SetStats(1)
+            record_fit_result( h.GetListOfFunctions().FindObject("gaus") )
+            
+            my_stat_pos = stat_position[myMasses[i]] if 'prime' in varName and 'BDTG' in varName else stat_position[varName]
+            ROOT.gStyle.SetStatX(my_stat_pos[0])
+            ROOT.gStyle.SetStatY(my_stat_pos[1])
+            ROOT.gStyle.SetStatW(my_stat_pos[2])
+            ROOT.gStyle.SetStatH(my_stat_pos[3])
+
+            annotate()
+            output = dir_output + "/individual_" + nameTag + "_" + str(myMasses[i]) + ".png"
+            c1.SaveAs(output)
+            output = dir_output + "/individual_" + nameTag + "_" + str(myMasses[i]) + ".pdf"
+            c1.SaveAs(output)
+        #}}}
+        else: # multi hists {{{
+            set_the_hist(h, varName, varName, plotType, colors[varName][myMasses[i]])
+            set_the_error_band(h_err)
+
+            legend.AddEntry(h, "M_{T'} = " + str(myMasses[i]) + " GeV", "l")
+            if i == 0: h.Draw("hist")
+            else: h.Draw("hist;same")
+            h_err.Draw("E2;same")
+        #}}}
+
+    # wrap up #{{{
+    if do_individual:
+        if not pauseFit:
+            my_fit_range = fit_ranges["mgg"] if 'hMass' in varName else fit_ranges["tprime"]
+            my_fit_ytitle = fit_ytitles["mgg"] if 'hMass' in varName else fit_ytitles["tprime"]
+            d_fit = {"central":d_fit_mean["central"], "error":d_fit_sigma["central"]}
+            make_fit_summary(d_fit       , my_fit_range['range'] , my_fit_ytitle['range'], nameTag + "_Gaussian")
+            make_fit_summary(d_fit_mean  , my_fit_range['mean']  , my_fit_ytitle['mean' ], nameTag + "_Mean")
+            make_fit_summary(d_fit_sigma , my_fit_range['sigma'] , my_fit_ytitle['sigma'], nameTag + "_Sigma")
+
+            init_fit_containers()
+
+    else:
+        if not pauseFit:
+            maximum = get_maximum(v_hists)
+            v_hists[0].SetMaximum(maximum*1.2)
+
+            annotate()
+            legend.Draw("same")
+            output = dir_output + "/" + nameTag + ".png"
+            c1.SaveAs(output)
+
+            init_hist_collector()
+    #}}}
+#}}}
+def truth_matched_make_collective_plot(v_varName, v_myMasses, plotType): #{{{
+    nameTag = "collective_" + v_varName[-1] + "_" + plotType
+
+    isHiggs = 'hMass' in v_varName[0]
+    isTprime = not isHiggs
+
+    legend = ROOT.TLegend(0, 0, 0, 0)
+    if isTprime and plotType == "normalized":
+        c2.cd()
+        legend = ROOT.TLegend(0.70, 0.25, 0.90, 0.85)
+        legend.SetTextSize(0.04)
+    else:
+        c1.cd()
+        legend = ROOT.TLegend(0.62, 0.40, 0.87, 0.87)
+        legend.SetTextSize(0.03)
+
+    legend.SetLineColor(0)
+    legend.SetTextSize(0.04)
+
+    # load hists {{{
+    v_fins, v_hists, v_herrs, myMasses, myVarName = [], [], [], [], []
+    for i, varName in enumerate(v_varName):
+        for m in v_myMasses[i]:
+            rootfile = "plots/covMatrix_TprimeBToTH_M-%d_merged.root" % m
+            fin = ROOT.TFile.Open(rootfile, "R")
+            histName = varName
+            h = fin.Get(histName)
+            v_hists.append(h)
+
+            h_err = h.Clone()
+            v_herrs.append(h_err)
+            
+            myMasses.append(m)
+            myVarName.append(varName)
+
+            v_fins.append(fin)
+
+            entries = h.GetEntries()
+            print ">>> load:", histName, entries
+    #}}}
+    # loop over hists
+    for i, h in enumerate(v_hists):
+        h_err = v_herrs[i]
+
+        # normalize area #{{{
+        if plotType == "normalized":
+            unc = ctypes.c_double(0.) 
+            nbins = h.GetSize()-1
+            tot_yields = h.IntegralAndError(0, nbins, unc)
+            if tot_yields > 0.:
+                h.Scale(1./tot_yields)
+                h_err.Scale(1./tot_yields)
+        #}}}
+
+        rangeTag = "fullTprime" if isTprime else myVarName[i]
+        set_the_hist(h, myVarName[i], rangeTag, plotType, colors["collective"][myMasses[i]])
+        set_the_error_band(h_err)
+
+        legend.AddEntry(h, "M_{T'} = " + str(myMasses[i]) + " GeV", "l")
+        if i == 0: h.Draw("hist")
+        else: h.Draw("hist;same")
+        h_err.Draw("E2;same")
+
+    maximum = get_maximum(v_hists)
+    v_hists[0].SetMaximum(maximum*1.2)
+
+    legend.Draw("same")
+    output = dir_output + "/" + nameTag
+
+    if isTprime and plotType == "normalized":
+        annotate(0.08)
+        c2.SaveAs(output + ".png")
+        c2.SaveAs(output + ".pdf")
+    else:
+        v_hists[0].SetMaximum(maximum*1e+3)
+        annotate()
+        c1.SetLogy(1)
+        c1.SaveAs(output + ".png")
+        c1.SaveAs(output + ".pdf")
+#}}}
+def run(): #{{{
     plotTypes = ["normalized"]
     plotTypes = ["yields", "normalized"]
     for plotType in plotTypes:
-        #make_collective_plot(["hMass_fine"], [masses], plotType)
-        #make_collective_plot(["hmass_tprime_cov_fine"], [masses], plotType)
 
-        make_collective_plot(["hmass_tprime_cov_fine"], [masses], plotType)
+        #truth_matched_make_plot("h_mass_tm_tprime", masses, plotType, pauseFit=False)
+        truth_matched_make_collective_plot(["h_mass_tm_tprime"], [masses], plotType)
 
         break
+        continue
+
+        make_collective_plot(["hMass_fine"], [masses], plotType)
+        make_collective_plot(["hmass_tprime_cov_fine"], [masses], plotType)
 
         v_myMasses = [mass_M600_M700, mass_M800_M1000, mass_M1100_M1200]
         v_varName = ["hMass_pass_BDTG_smh_cut_mixed03_fine", "hMass_pass_BDTG_smh_cut_mixed04_fine", "hMass_pass_BDTG_smh_cut_mixed05_fine"]
@@ -588,40 +791,108 @@ def run():
 
         continue 
 
-        make_plot("hMass_fine", masses, plotType, pauseFit=False)
-        make_plot("hMass_pass_BDTG_smh_cut_mixed03_fine", mass_M600_M700, plotType, pauseFit=True);
-        make_plot("hMass_pass_BDTG_smh_cut_mixed04_fine", mass_M800_M1000, plotType, pauseFit=True);
-        make_plot("hMass_pass_BDTG_smh_cut_mixed05_fine", mass_M1100_M1200, plotType, pauseFit=False);
-
         make_plot("hmass_tprime_cov_fine", masses, plotType, pauseFit=False)
         make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine", mass_M600_M700, plotType, pauseFit=True);
         make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine", mass_M800_M1000, plotType, pauseFit=True);
         make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine", mass_M1100_M1200, plotType, pauseFit=False);
 
-def make_efficiency(): #{{{
+        continue
+
+        make_plot("hMass_fine", masses, plotType, pauseFit=False)
+        make_plot("hMass_pass_BDTG_smh_cut_mixed03_fine", mass_M600_M700, plotType, pauseFit=True);
+        make_plot("hMass_pass_BDTG_smh_cut_mixed04_fine", mass_M800_M1000, plotType, pauseFit=True);
+        make_plot("hMass_pass_BDTG_smh_cut_mixed05_fine", mass_M1100_M1200, plotType, pauseFit=False);
+
+#}}}
+
+# myParameterSets {{{
+myParameterSets = {
+    "eff":{
+        "ybound" : [0.0, 0.5],
+        "legend" : [0.17, 0.60, 0.42, 0.85],
+    },
+    "ratio":{
+        "ybound" : [0.8, 2.0],
+        "legend" : [0.60, 0.60, 0.85, 0.85],
+    },
+    "significance":{
+        "ybound" : [0., 0.1],
+        "legend" : [0.17, 0.60, 0.42, 0.85],
+    },
+}
+#}}}
+# collection_efficiency {{{
+collection_efficiency = {
+    "set0":{
+        # original
+        "raw_M600_M700"  : [ 0.07882, 0.09317, 0.10533, 0.11234, 0.10923, 0.06883, 0.02264, 0.01262, 0.00778, 0.00539 ],
+        "raw_M800_M1000" : [ 0.00810, 0.01266, 0.02134, 0.03390, 0.04737, 0.12473, 0.17935, 0.19774, 0.16925, 0.09225 ],
+        "raw_M1100_1200" : [ 0.00242, 0.00311, 0.00408, 0.00535, 0.00699, 0.03057, 0.10157, 0.18667, 0.23183, 0.26597 ],
+    },
+    "set1":{
+        # signal efficiency of opt1; from log messages && double check from validation code
+        "raw_M600_M700"  : [ 0.07882, 0.09316, 0.10531, 0.11233, 0.10923, 0.06886, 0.02265, 0.01258, 0.00790, 0.00568 ],
+        "raw_M800_M1000" : [ 0.00810, 0.01267, 0.02135, 0.03389, 0.04737, 0.12472, 0.17937, 0.19774, 0.16941, 0.09232 ],
+        "raw_M1100_1200" : [ 0.00214, 0.00280, 0.00364, 0.00491, 0.00635, 0.02916, 0.09825, 0.17936, 0.21772, 0.23706 ],
+    },
+    "set2":{
+        # signal efficiency of opt2
+        "raw_M600_M700"  : [ 0.07882, 0.09316, 0.10531, 0.11233, 0.10923, 0.06886, 0.02265, 0.01258, 0.00790, 0.00568 ],
+        "raw_M800_M1000" : [ 0.01154, 0.01693, 0.02616, 0.03833, 0.05153, 0.13028, 0.18590, 0.20395, 0.17460, 0.09648 ],
+        "raw_M1100_1200" : [ 0.00315, 0.00411, 0.00581, 0.00791, 0.01048, 0.03536, 0.10861, 0.19710, 0.24494, 0.28062 ],
+    },
+}
+#}}}
+# collection_background {{{
+collection_background = {
+    "set1":{"SR1":13., "SR2":13., "SR3":15.},
+    "set2":{"SR1":13., "SR2":13., "SR3":19.},
+}
+#}}}
+def get_ratio_list(key): #{{{
+    result = []
+    opt1 = collection_efficiency["set1"][key]
+    opt2 = collection_efficiency["set2"][key]
+    for i in range(len(opt1)):
+        ratio = opt2[i] / opt1[i]
+        result.append( ratio )
+    return result
+#}}}
+def get_significance(tag, key): #{{{
+    result = []
+    efficiency = collection_efficiency[tag][key]
+    for i in range(len(efficiency)):
+        if i<5: nbkg = collection_background[tag]["SR1"]
+        elif i<8: nbkg = collection_background[tag]["SR2"]
+        else: nbkg = collection_background[tag]["SR3"]
+
+        significance = efficiency[i] / math.sqrt(nbkg)
+        result.append( significance )
+    return result
+#}}}
+def make_efficiency(ytitle, myParameters, tag, output_stem): #{{{
     c1.cd()
-    # efficiency = # in SR / # in preselection
-    raw_M600_M700 = [0.27, 0.32, 0.35, 0.37, 0.37, 0.21, 0.06, 0.04, 0.02, 0.02]
-    raw_M800_M1000 = [0.03, 0.04, 0.07, 0.11, 0.16, 0.38, 0.51, 0.54, 0.46, 0.24]
-    raw_M1100_1200 = [0.01, 0.01, 0.01, 0.02, 0.02, 0.09, 0.29, 0.50, 0.62, 0.68]
+    ymin = myParameters["ybound"][0]
+    ymax = myParameters["ybound"][1]
+    leg = myParameters["legend"]
 
-    # efficiency = yields in SR / lumi * xsec * BF
-    raw_M600_M700  = [0.08, 0.09, 0.11, 0.11, 0.11, 0.07, 0.02, 0.01, 0.01, 0.01]
-    raw_M800_M1000 = [0.01, 0.01, 0.02, 0.03, 0.05, 0.12, 0.18, 0.20, 0.17, 0.09]
-    raw_M1100_1200 = [0.00, 0.00, 0.00, 0.01, 0.01, 0.03, 0.10, 0.19, 0.23, 0.27]
+    if tag in collection_efficiency.keys():
+        raw_M600_M700  = collection_efficiency[tag]["raw_M600_M700"]
+        raw_M800_M1000 = collection_efficiency[tag]["raw_M800_M1000"]
+        raw_M1100_1200 = collection_efficiency[tag]["raw_M1100_1200"]
+    elif tag == "ratio":
+        raw_M600_M700  = get_ratio_list("raw_M600_M700")
+        raw_M800_M1000 = get_ratio_list("raw_M800_M1000")
+        raw_M1100_1200 = get_ratio_list("raw_M1100_1200")
+    elif "significance" in tag:
+        subtag = tag.split(',')[0]
+        raw_M600_M700  = get_significance(subtag, "raw_M600_M700")
+        raw_M800_M1000 = get_significance(subtag, "raw_M800_M1000")
+        raw_M1100_1200 = get_significance(subtag, "raw_M1100_1200")
+    else:
+        print ">>> [ERROR] The tag is not defined. Please check the code."
+        return
 
-    raw_M600_M700  = [0.07882, 0.09317, 0.10533, 0.11234, 0.10923, 0.08903, 0.06883, 0.04574, 0.02264, 0.01763, 0.01262, 0.01020, 0.00778, 0.00658, 0.00539]
-    raw_M800_M1000 = [0.00810, 0.01266, 0.02134, 0.03390, 0.04737, 0.08605, 0.12473, 0.15204, 0.17935, 0.18855, 0.19774, 0.18349, 0.16925, 0.13075, 0.09225]
-    raw_M1100_1200 = [0.00242, 0.00311, 0.00408, 0.00535, 0.00699, 0.01878, 0.03057, 0.06607, 0.10157, 0.14412, 0.18667, 0.20925, 0.23183, 0.24890, 0.26597]
-
-    raw_M600_M700  = [0.07882, 0.09317, 0.10533, 0.11234, 0.10923, 0.06883, 0.02264, 0.01262, 0.00778, 0.00539]
-    raw_M800_M1000 = [0.00810, 0.01266, 0.02134, 0.03390, 0.04737, 0.12473, 0.17935, 0.19774, 0.16925, 0.09225]
-    raw_M1100_1200 = [0.00242, 0.00311, 0.00408, 0.00535, 0.00699, 0.03057, 0.10157, 0.18667, 0.23183, 0.26597]
-
-    # Maxime opt2 + UL samples
-    raw_M600_M700  = [ 0.07114, 0.08517, 0.09706, 0.10479, 0.10776, 0.06358, 0.01886, 0.01027, 0.00700, 0.00462 ]
-    raw_M800_M1000 = [ 0.01006, 0.01513, 0.02305, 0.03451, 0.04970, 0.12768, 0.18943, 0.21193, 0.18650, 0.09700 ]
-    raw_M1100_1200 = [ 0.00320, 0.00438, 0.00594, 0.00822, 0.01101, 0.03480, 0.10923, 0.20500, 0.26490, 0.29458 ]
 
     n = len(raw_M600_M700) 
     x = array.array('d')
@@ -640,18 +911,19 @@ def make_efficiency(): #{{{
     gr2 = ROOT.TGraph(n, x, efficiency_M800_M1000)
     gr3 = ROOT.TGraph(n, x, efficiency_M1100_1200)
 
-    set_graph(gr1, "Efficiency", ROOT.kRed)
-    set_graph(gr2, "Efficiency", ROOT.kGreen+3)
-    set_graph(gr3, "Efficiency", ROOT.kBlue)
+    set_graph(gr1, ytitle, ROOT.kRed)
+    set_graph(gr2, ytitle, ROOT.kGreen+3)
+    set_graph(gr3, ytitle, ROOT.kBlue)
 
-    gr1.SetMaximum(0.5)
+    gr1.SetMaximum(ymax)
+    gr1.SetMinimum(ymin)
 
     gr1.Draw('ACP')
     gr2.Draw('CP')
     gr3.Draw('CP')
 
     # local leg
-    legend = ROOT.TLegend(0.17, 0.60, 0.42, 0.85)
+    legend = ROOT.TLegend(leg[0], leg[1], leg[2], leg[3])
     legend.SetLineColor(0)
     legend.SetTextSize(0.04)
     legend.Clear()
@@ -662,13 +934,42 @@ def make_efficiency(): #{{{
 
     # wrap up
     annotate()
-    output = dir_output + "/signal_efficiency"
+    output = dir_output + "/" + output_stem
     c1.SaveAs(output + ".png")
     c1.SaveAs(output + ".pdf")
 #}}}
 
+def print_table():
+    d_truthMatched = {
+        "mean"  : [591.6356280075765, 617.0505835075256, 641.7154687861536, 667.2351406292238, 691.9987463351088, 791.8962036666315, 892.404825524083, 992.3640684839321, 1090.1008777524553, 1189.7729364519132],
+        "sigma" : [33.47260805675623, 33.64542645597922, 34.75886025719647, 34.96547808286919, 36.09416659587231, 38.84964860907429, 41.66784483821874, 43.77282160024162, 47.88652410255988, 50.95605874794532],
+    }
+    
+    d_chi2Reco = {
+        "mean"  : [594.5139804215879, 619.6000533950236, 644.3287027625523, 669.8153555829203, 694.6125449011694, 794.5142070223213, 894.8067276613455, 995.0613712066372, 1094.8835918972766, 1196.290542653962],
+        "sigma" : [42.292654944597054, 42.837103189639755, 43.66046201681102, 43.216809922131155, 44.34587740990952, 48.366166248595555, 50.47963630239109, 53.399695259135484, 60.92999143647047, 65.25723594233416],
+    }
+
+    d_optimizedSRs = {
+        "mean"  : [598.2945430239862, 622.0008032250128, 645.5207252048275, 670.693154707722, 694.6167128213145, 796.889235945871, 895.4720117244987, 994.6950616907042, 1095.5454900556917, 1196.0433062029094],
+        "sigma" : [36.802685605145996, 37.534065345159945, 38.59124791321471, 38.62303670409102, 39.96873417547624, 43.804972473451556, 46.60216411747778, 49.900477862828545, 57.70042792695089, 62.767913101575516],
+    }
+
+    d = d_truthMatched
+    d = d_chi2Reco
+    for i, mass in enumerate(masses):
+        print "%d, %.2f, %.2f" % (mass, d["mean"][i], d["sigma"][i])
+
 if __name__ == "__main__":
     #run()
-    make_efficiency()
+    print_table()
+
+    #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set0"               ,  "signal_efficiency_old"        )
+    #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set1"               ,  "signal_efficiency"            )
+    #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set2"               ,  "signal_efficiency_newOpt"     )
+    #make_efficiency("Ratio (Opt2/Opt1)"  ,  myParameterSets["ratio"]         ,  "ratio"              ,  "signal_efficiency_comparison" )
+    #make_efficiency("Significance"       ,  myParameterSets["significance"]  ,  "set1,significance"  ,  "significance_opt1"            )
+    #make_efficiency("Significance"       ,  myParameterSets["significance"]  ,  "set2,significance"  ,  "significance_opt2"            )
+
     subprocess.call("ls -lhrt %s" % dir_output, shell=True)
 
