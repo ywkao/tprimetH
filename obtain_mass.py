@@ -14,8 +14,8 @@ rootfile = "plots_20211126/myhist_signal.root"
 rootfile = "plots_20211127_v2/myhist_combine_RunII.root"
 rootfile = "plots_20211128/myhist_combine_RunII.root"
 rootfile = "shortcut_plots/plots_20211128/myhist_combine_RunII.root"
-rootfile = "plots_20220215_ultraLegacy/myhist_combine_RunII.root"
 rootfile = "shortcut_plots/plots_20220120_results_ReReco/myhist_combine_RunII.root"
+rootfile = "plots_20220215_ultraLegacy/myhist_combine_RunII.root"
 fin = ROOT.TFile.Open(rootfile, "R")
 
 ROOT.gStyle.SetOptStat("e")
@@ -302,7 +302,6 @@ def annotate(rshift=0): #{{{
     latex.SetTextSize(24)
     latex.DrawLatex( 0.12, 0.912, "#bf{CMS} #it{work in progress}" )
     latex.DrawLatex( 0.69+rshift, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
-    #latex.DrawLatex( 0.72+lshift, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
 
     #latex.DrawLatex( 0.60, 0.800, "Pre-selection" )
 #}}}
@@ -508,15 +507,12 @@ def make_collective_plot(v_varName, v_myMasses, plotType): #{{{
     isHiggs = 'hMass' in v_varName[0]
     isTprime = not isHiggs
 
+    c2.cd()
     legend = ROOT.TLegend(0, 0, 0, 0)
     if isTprime and plotType == "normalized":
-        c2.cd()
         legend = ROOT.TLegend(0.70, 0.25, 0.90, 0.85)
     else:
-        c1.cd()
-        legend = ROOT.TLegend(0.62, 0.25, 0.87, 0.85)
-        #c2.cd()
-        #legend = ROOT.TLegend(0.70, 0.25, 0.90, 0.87)
+        legend = ROOT.TLegend(0.70, 0.25, 0.90, 0.87)
 
     legend.SetLineColor(0)
     legend.SetTextSize(0.04)
@@ -573,12 +569,14 @@ def make_collective_plot(v_varName, v_myMasses, plotType): #{{{
         c2.SaveAs(output + ".png")
         c2.SaveAs(output + ".pdf")
     else:
-        #annotate(0.06)
-        #v_hists[0].SetMaximum(2)
-        #v_hists[0].SetMinimum(3e-3)
-        #c2.SetLogy(1)
-        c1.SaveAs(output + ".png")
-        c1.SaveAs(output + ".pdf")
+        annotate(0.08)
+        v_hists[0].SetMaximum(2)
+        v_hists[0].SetMinimum(3e-3)
+        c2.SetLogy(1)
+        c2.SaveAs(output + ".png")
+        c2.SaveAs(output + ".pdf")
+        #c1.SaveAs(output + ".png")
+        #c1.SaveAs(output + ".pdf")
 #}}}
 
 def truth_matched_make_plot(varName, myMasses, plotType, pauseFit): #{{{
@@ -695,14 +693,14 @@ def truth_matched_make_collective_plot(v_varName, v_myMasses, plotType): #{{{
     isHiggs = 'hMass' in v_varName[0]
     isTprime = not isHiggs
 
+    c2.cd()
     legend = ROOT.TLegend(0, 0, 0, 0)
     if isTprime and plotType == "normalized":
-        c2.cd()
         legend = ROOT.TLegend(0.70, 0.25, 0.90, 0.85)
         legend.SetTextSize(0.04)
     else:
-        c1.cd()
-        legend = ROOT.TLegend(0.62, 0.40, 0.87, 0.87)
+        #legend = ROOT.TLegend(0.62, 0.40, 0.87, 0.87)
+        legend = ROOT.TLegend(0.70, 0.25, 0.90, 0.87)
         legend.SetTextSize(0.03)
 
     legend.SetLineColor(0)
@@ -763,47 +761,59 @@ def truth_matched_make_collective_plot(v_varName, v_myMasses, plotType): #{{{
         c2.SaveAs(output + ".png")
         c2.SaveAs(output + ".pdf")
     else:
-        v_hists[0].SetMaximum(maximum*1e+3)
-        annotate()
-        c1.SetLogy(1)
-        c1.SaveAs(output + ".png")
-        c1.SaveAs(output + ".pdf")
+        #v_hists[0].SetMaximum(maximum*1e+3)
+        #annotate()
+        #c1.SetLogy(1)
+        #c1.SaveAs(output + ".png")
+        #c1.SaveAs(output + ".pdf")
+
+        annotate(0.08)
+        v_hists[0].SetMaximum(2e-2)
+        v_hists[0].SetMinimum(5e-5)
+        c2.SetLogy(1)
+        c2.SaveAs(output + ".png")
+        c2.SaveAs(output + ".pdf")
 #}}}
-def run(): #{{{
-    plotTypes = ["normalized"]
+def run():
     plotTypes = ["yields", "normalized"]
     for plotType in plotTypes:
-
-        #truth_matched_make_plot("h_mass_tm_tprime", masses, plotType, pauseFit=False)
         truth_matched_make_collective_plot(["h_mass_tm_tprime"], [masses], plotType)
+        truth_matched_make_plot("h_mass_tm_tprime", masses, plotType, pauseFit=False)
+
+        make_collective_plot(["hmass_tprime_cov_fine"], [masses], plotType)
+        make_plot("hmass_tprime_cov_fine", masses, plotType, pauseFit=False)
+        #make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine", mass_M600_M700, plotType, pauseFit=True);
+        #make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine", mass_M800_M1000, plotType, pauseFit=True);
+        #make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine", mass_M1100_M1200, plotType, pauseFit=False);
 
         break
-        continue
 
+        # truth-matched tprime mass
+        truth_matched_make_plot("h_mass_tm_tprime", masses, plotType, pauseFit=False)
+        truth_matched_make_collective_plot(["h_mass_tm_tprime"], [masses], plotType)
+
+        # collective mass at pre-selection
         make_collective_plot(["hMass_fine"], [masses], plotType)
         make_collective_plot(["hmass_tprime_cov_fine"], [masses], plotType)
 
+        # collective mass in SRs
         v_myMasses = [mass_M600_M700, mass_M800_M1000, mass_M1100_M1200]
         v_varName = ["hMass_pass_BDTG_smh_cut_mixed03_fine", "hMass_pass_BDTG_smh_cut_mixed04_fine", "hMass_pass_BDTG_smh_cut_mixed05_fine"]
         make_collective_plot(v_varName, v_myMasses, plotType)
         v_varName = ["hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine", "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine", "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine"]
         make_collective_plot(v_varName, v_myMasses, plotType)
 
-        continue 
-
+        # individual tprime mass
         make_plot("hmass_tprime_cov_fine", masses, plotType, pauseFit=False)
         make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine", mass_M600_M700, plotType, pauseFit=True);
         make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine", mass_M800_M1000, plotType, pauseFit=True);
         make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine", mass_M1100_M1200, plotType, pauseFit=False);
 
-        continue
-
+        # individual diphoton mass
         make_plot("hMass_fine", masses, plotType, pauseFit=False)
         make_plot("hMass_pass_BDTG_smh_cut_mixed03_fine", mass_M600_M700, plotType, pauseFit=True);
         make_plot("hMass_pass_BDTG_smh_cut_mixed04_fine", mass_M800_M1000, plotType, pauseFit=True);
         make_plot("hMass_pass_BDTG_smh_cut_mixed05_fine", mass_M1100_M1200, plotType, pauseFit=False);
-
-#}}}
 
 # myParameterSets {{{
 myParameterSets = {
@@ -938,31 +948,45 @@ def make_efficiency(ytitle, myParameters, tag, output_stem): #{{{
     c1.SaveAs(output + ".png")
     c1.SaveAs(output + ".pdf")
 #}}}
-
-def print_table():
+def print_table(): #{{{
     d_truthMatched = {
-        "mean"  : [591.6356280075765, 617.0505835075256, 641.7154687861536, 667.2351406292238, 691.9987463351088, 791.8962036666315, 892.404825524083, 992.3640684839321, 1090.1008777524553, 1189.7729364519132],
-        "sigma" : [33.47260805675623, 33.64542645597922, 34.75886025719647, 34.96547808286919, 36.09416659587231, 38.84964860907429, 41.66784483821874, 43.77282160024162, 47.88652410255988, 50.95605874794532],
+        # UL
+        "mean"  : [591.7422245535906, 616.7964678175068, 641.9047186627778, 667.3478854771507, 692.3606143580628, 792.0191005498772, 892.4164252671072, 992.6634130718895, 1090.1128494807404, 1189.938400902008],
+        "sigma" : [33.40508596772729, 34.20618757373258, 34.50885359376469, 35.04579960480873, 35.80212050685839, 38.792532761728026, 41.36244636938451, 43.70585311373045, 48.62135898031542, 51.10782569213134],
+        # re-reco
+        #"mean"  : [591.6356280075765, 617.0505835075256, 641.7154687861536, 667.2351406292238, 691.9987463351088, 791.8962036666315, 892.404825524083, 992.3640684839321, 1090.1008777524553, 1189.7729364519132],
+        #"sigma" : [33.47260805675623, 33.64542645597922, 34.75886025719647, 34.96547808286919, 36.09416659587231, 38.84964860907429, 41.66784483821874, 43.77282160024162, 47.88652410255988, 50.95605874794532],
     }
     
     d_chi2Reco = {
-        "mean"  : [594.5139804215879, 619.6000533950236, 644.3287027625523, 669.8153555829203, 694.6125449011694, 794.5142070223213, 894.8067276613455, 995.0613712066372, 1094.8835918972766, 1196.290542653962],
-        "sigma" : [42.292654944597054, 42.837103189639755, 43.66046201681102, 43.216809922131155, 44.34587740990952, 48.366166248595555, 50.47963630239109, 53.399695259135484, 60.92999143647047, 65.25723594233416],
+        # UL
+        "mean"  : [594.4624161244712, 619.4435721482763, 644.3618195271547, 670.1065013996899, 694.6075424249361, 794.3459354102622, 894.7819784051075, 995.4243019532349, 1094.9337136248432, 1196.2570310956594],
+        "sigma" : [42.505079436417596, 43.05969017577434, 42.96212829444454, 43.318045977212954, 44.01516163583761, 48.1275650345531, 50.034969946084104, 53.305246378014814, 61.48481629383566, 64.997354327005],
+        # re-reco
+        #"mean"  : [594.5139804215879, 619.6000533950236, 644.3287027625523, 669.8153555829203, 694.6125449011694, 794.5142070223213, 894.8067276613455, 995.0613712066372, 1094.8835918972766, 1196.290542653962],
+        #"sigma" : [42.292654944597054, 42.837103189639755, 43.66046201681102, 43.216809922131155, 44.34587740990952, 48.366166248595555, 50.47963630239109, 53.399695259135484, 60.92999143647047, 65.25723594233416],
     }
 
     d_optimizedSRs = {
-        "mean"  : [598.2945430239862, 622.0008032250128, 645.5207252048275, 670.693154707722, 694.6167128213145, 796.889235945871, 895.4720117244987, 994.6950616907042, 1095.5454900556917, 1196.0433062029094],
-        "sigma" : [36.802685605145996, 37.534065345159945, 38.59124791321471, 38.62303670409102, 39.96873417547624, 43.804972473451556, 46.60216411747778, 49.900477862828545, 57.70042792695089, 62.767913101575516],
+        # UL
+        "mean"  : [599.0794873121029, 622.2173375901691, 646.0866086326679, 670.8964323419657, 694.7780728183799, 796.9769300765835, 895.5581385152174, 995.254029915167, 1096.1191328943892, 1196.1605032706486],
+        "sigma" : [36.3324058100035, 38.17465830328524, 37.62849983402401, 38.327823063790184, 39.48041605717497, 43.06817618168014, 46.03411687158084, 49.71573618608189, 58.165514497174506, 62.49492133972582],
+        # re-reco
+        #"mean"  : [598.2945430239862, 622.0008032250128, 645.5207252048275, 670.693154707722, 694.6167128213145, 796.889235945871, 895.4720117244987, 994.6950616907042, 1095.5454900556917, 1196.0433062029094],
+        #"sigma" : [36.802685605145996, 37.534065345159945, 38.59124791321471, 38.62303670409102, 39.96873417547624, 43.804972473451556, 46.60216411747778, 49.900477862828545, 57.70042792695089, 62.767913101575516],
     }
 
-    d = d_truthMatched
     d = d_chi2Reco
+    d = d_truthMatched
     for i, mass in enumerate(masses):
-        print "%d, %.2f, %.2f" % (mass, d["mean"][i], d["sigma"][i])
+        v = [ d_chi2Reco["mean"][i], d_chi2Reco["sigma"][i], d_truthMatched["mean"][i], d_truthMatched["sigma"][i] ]
+        print "%4d & %4.0f & %.0f & %4.0f & %.0f \\\\" % (mass, v[0], v[1], v[2], v[3])
+        #print "%d, %.2f, %.2f" % (mass, d["mean"][i], d["sigma"][i])
+#}}}
 
 if __name__ == "__main__":
-    #run()
-    print_table()
+    run()
+    #print_table()
 
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set0"               ,  "signal_efficiency_old"        )
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set1"               ,  "signal_efficiency"            )

@@ -102,9 +102,23 @@ def prepare_data_for_simultaneous_fit(directory="plots"):
     #subprocess.call("hadd -f fakePhotonStudy/rootfiles/MVABaby_Data_UL1718.root %s/MVABaby_Data_Era201[78].root" % directory, shell = True)
     #subprocess.call("cp -p %s/MVABaby_Data_Era2016.root fakePhotonStudy/rootfiles/" % directory, shell = True)
 
+def merge_cov_root_files(directory="plots"):
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-600_merged.root %s/*600*Era*.root"   % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-625_merged.root %s/*625*Era*.root"   % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-650_merged.root %s/*650*Era*.root"   % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-675_merged.root %s/*675*Era*.root"   % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-700_merged.root %s/*700*Era*.root"   % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-800_merged.root %s/*800*Era*.root"   % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-900_merged.root %s/*900*Era*.root"   % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-1000_merged.root %s/*1000*Era*.root" % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-1100_merged.root %s/*1100*Era*.root" % (directory, directory), shell = True)
+    subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-1200_merged.root %s/*1200*Era*.root" % (directory, directory), shell = True)
+
 if __name__ == "__main__":
+    merge_cov_root_files()
+
     #customize_hadd()
-    usuall_hadd("myhist")
+    #usuall_hadd("myhist")
     #hadd_ul1718("myhist", "shortcut_plots/plots_20220117_forTemplateFit")
     #hadd_reReco16("myhist", "shortcut_plots/plots_20220117_forTemplateFit")
     #hadd_ul1718("MVABaby")

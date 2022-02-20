@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--exe"             , help = "executte the script"  , action="store_true")
 parser.add_argument("--make_histograms" , help = "make histograms"      , action="store_true")
 parser.add_argument("--make_mvababies"  , help = "make mvababies"       , action="store_true")
+parser.add_argument("--do_truthStudy"   , help = "do truth study"       , action="store_true")
 parser.add_argument("--set1"            , help = "process set1 samples" , action="store_true")
 parser.add_argument("--set2"            , help = "process set2 samples" , action="store_true")
 parser.add_argument("--set3"            , help = "process set3 samples" , action="store_true")
@@ -24,6 +25,7 @@ args = parser.parse_args()
 to_execution = args.exe
 to_make_histograms = args.make_histograms
 to_make_mvababies = args.make_mvababies
+to_do_truthStudy = args.do_truthStudy
 #}}}
 
 #====================================================================================================#
@@ -55,6 +57,12 @@ def command_manager(d): #{{{
         log = 'plots/log/log_mvababy_%s_%s_%d.txt' % (d["rootfile"].split('.')[0], d["datetime_tag"], idx_log)
         command='%s %s %s %s %s %s 2>&1 | tee %s' % (exe, d["location"], d["rootfile"], d["treename"], d["xml_file"], d["year"], log)
         #command='./bin/covMatrix_Looper %s %s %s %s 2>&1 | tee dir_log/log_%s_%d' % (location, rootfile, year, mass, datetime_tag, idx_log)
+
+    if to_do_truthStudy:
+        exe = './bin/covMatrix_Looper'
+        log = 'plots/log/log_truth_%s_%s_%d.txt' % (d["rootfile"].split('.')[0], d["datetime_tag"], idx_log)
+        mass_tag = d["rootfile"].split("M-")[-1].split("_Era")[0]
+        command='%s %s %s %s %s 2>&1 | tee %s' % (exe, d["location"], d["rootfile"], d["year"], mass_tag, log)
 
     command_list.append(command)
     idx_log += 1
@@ -141,6 +149,11 @@ if __name__ == "__main__":
         create_commands(sm.dict_trees['tHq'],  sm.signals_2017)
 
     if args.set6:
+        create_commands(sm.dict_trees['tHq'],  sm.signals_2018)
+
+    if to_do_truthStudy:
+        create_commands(sm.dict_trees['tHq'] , sm.signals_2016)
+        create_commands(sm.dict_trees['tHq'],  sm.signals_2017)
         create_commands(sm.dict_trees['tHq'],  sm.signals_2018)
     #}}}
 

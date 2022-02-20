@@ -1,14 +1,14 @@
 {
-    "mass_reco_w" : 85.50,
-    "mass_reco_top" : 175.23,
-    "mass_reco_tprime" : 978.02,
-    "covMatrix_00" : 280.07,
-    "covMatrix_01" : 250.24,
-    "covMatrix_02" : 655.51,
-    "covMatrix_10" : 250.24,
-    "covMatrix_11" : 515.18,
-    "covMatrix_12" : 1228.26,
-    "covMatrix_20" : 655.51,
-    "covMatrix_21" : 1228.26,
-    "covMatrix_22" : 7458.88
+    "mass_reco_w" : 83.68,
+    "mass_reco_top" : 173.89,
+    "mass_reco_tprime" : 975.17,
+    "covMatrix_00" : 140.08,
+    "covMatrix_01" : 130.30,
+    "covMatrix_02" : 292.14,
+    "covMatrix_10" : 130.30,
+    "covMatrix_11" : 323.91,
+    "covMatrix_12" : 705.25,
+    "covMatrix_20" : 292.14,
+    "covMatrix_21" : 705.25,
+    "covMatrix_22" : 5585.92
 }
