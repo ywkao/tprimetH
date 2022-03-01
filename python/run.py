@@ -152,9 +152,11 @@ if __name__ == "__main__":
         create_commands(sm.dict_trees['tHq'],  sm.signals_2018)
 
     if to_do_truthStudy:
-        create_commands(sm.dict_trees['tHq'] , sm.signals_2016)
-        create_commands(sm.dict_trees['tHq'],  sm.signals_2017)
-        create_commands(sm.dict_trees['tHq'],  sm.signals_2018)
+        create_commands(sm.dict_trees['tHq'], ["TprimeBToTH_total_covStudy.root"], location, "2017")
+        
+        # create_commands(sm.dict_trees['tHq'] , sm.signals_2016)
+        # create_commands(sm.dict_trees['tHq'],  sm.signals_2017)
+        # create_commands(sm.dict_trees['tHq'],  sm.signals_2018)
     #}}}
 
     if args.test:
@@ -162,7 +164,7 @@ if __name__ == "__main__":
         #create_commands(sm.dict_trees['tHq'], ["output_TprimeBToTH_M-1000_n500_UL17_v2.root"], path, "2017")
 
         #create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'], location_v3p8)
-        create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'])
+        #create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'])
         #create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['diphoton'])
 
         #create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['gammaJets'])

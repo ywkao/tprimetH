@@ -389,7 +389,8 @@ def make_fit_summary(d_raw, v_bound, ytitle, output): #{{{
     #legend.AddEntry(gr2, "[800, 1000]", "lp")
     #legend.AddEntry(gr3, "[1100, 1200]", "lp")
     #legend.Draw("same")
-    print ">>>>>", output, d_raw["central"]
+    print ">>>>> central:", output, d_raw["central"]
+    print ">>>>> error:  ", output, d_raw["error"]
 
     # wrap up
     annotate()
@@ -593,7 +594,7 @@ def truth_matched_make_plot(varName, myMasses, plotType, pauseFit): #{{{
     v_fins, v_hists, v_herrs = [], [], []
     for m in myMasses:
         #_truthMatching_v1
-        rootfile = "plots/covMatrix_TprimeBToTH_M-%d_merged.root" % m
+        rootfile = "shortcut_plots/plots_20220219_ultraLegacy_truthMatchStudy/covMatrix_TprimeBToTH_M-%d_merged.root" % m
         fin = ROOT.TFile.Open(rootfile, "R")
         histName = varName
         h = fin.Get(histName)
@@ -710,7 +711,7 @@ def truth_matched_make_collective_plot(v_varName, v_myMasses, plotType): #{{{
     v_fins, v_hists, v_herrs, myMasses, myVarName = [], [], [], [], []
     for i, varName in enumerate(v_varName):
         for m in v_myMasses[i]:
-            rootfile = "plots/covMatrix_TprimeBToTH_M-%d_merged.root" % m
+            rootfile = "shortcut_plots/plots_20220219_ultraLegacy_truthMatchStudy/covMatrix_TprimeBToTH_M-%d_merged.root" % m
             fin = ROOT.TFile.Open(rootfile, "R")
             histName = varName
             h = fin.Get(histName)
@@ -777,8 +778,8 @@ def truth_matched_make_collective_plot(v_varName, v_myMasses, plotType): #{{{
 def run():
     plotTypes = ["yields", "normalized"]
     for plotType in plotTypes:
-        truth_matched_make_collective_plot(["h_mass_tm_tprime"], [masses], plotType)
-        truth_matched_make_plot("h_mass_tm_tprime", masses, plotType, pauseFit=False)
+        #truth_matched_make_collective_plot(["h_mass_tm_tprime"], [masses], plotType)
+        #truth_matched_make_plot("h_mass_tm_tprime", masses, plotType, pauseFit=False)
 
         make_collective_plot(["hmass_tprime_cov_fine"], [masses], plotType)
         make_plot("hmass_tprime_cov_fine", masses, plotType, pauseFit=False)
@@ -957,8 +958,14 @@ def make_efficiency(ytitle, myParameters, tag, output_stem): #{{{
 def print_table(): #{{{
     d_truthMatched = {
         # UL
-        "mean"  : [591.7422245535906, 616.7964678175068, 641.9047186627778, 667.3478854771507, 692.3606143580628, 792.0191005498772, 892.4164252671072, 992.6634130718895, 1090.1128494807404, 1189.938400902008],
-        "sigma" : [33.40508596772729, 34.20618757373258, 34.50885359376469, 35.04579960480873, 35.80212050685839, 38.792532761728026, 41.36244636938451, 43.70585311373045, 48.62135898031542, 51.10782569213134],
+        "central" : {
+            "mean"  : [591.7422245535906, 616.7964678175068, 641.9047186627778, 667.3478854771507, 692.3606143580628, 792.0191005498772, 892.4164252671072, 992.6634130718895, 1090.1128494807404, 1189.938400902008],
+            "sigma" : [33.40508596772729, 34.20618757373258, 34.50885359376469, 35.04579960480873, 35.80212050685839, 38.792532761728026, 41.36244636938451, 43.70585311373045, 48.62135898031542, 51.10782569213134],
+        },
+        "error" : {
+            "mean" : [0.15837716001231042, 0.16484834775422239, 0.16365022172250895, 0.16692821854651974, 0.1720523169764633, 0.15840150753714166, 0.17760178590559034, 0.2035290555776958, 0.21565871974897613, 0.22941976666599112],
+            "sigma" : [0.18223440669885704, 0.19492125961547302, 0.19587963206512882, 0.20274542003327412, 0.21328739171438826, 0.1822684420800016, 0.21807604905107425, 0.26264968718811943, 0.235612971307539, 0.2618688427925555],
+        },
         # re-reco
         #"mean"  : [591.6356280075765, 617.0505835075256, 641.7154687861536, 667.2351406292238, 691.9987463351088, 791.8962036666315, 892.404825524083, 992.3640684839321, 1090.1008777524553, 1189.7729364519132],
         #"sigma" : [33.47260805675623, 33.64542645597922, 34.75886025719647, 34.96547808286919, 36.09416659587231, 38.84964860907429, 41.66784483821874, 43.77282160024162, 47.88652410255988, 50.95605874794532],
@@ -966,8 +973,14 @@ def print_table(): #{{{
     
     d_chi2Reco = {
         # UL
-        "mean"  : [594.4624161244712, 619.4435721482763, 644.3618195271547, 670.1065013996899, 694.6075424249361, 794.3459354102622, 894.7819784051075, 995.4243019532349, 1094.9337136248432, 1196.2570310956594],
-        "sigma" : [42.505079436417596, 43.05969017577434, 42.96212829444454, 43.318045977212954, 44.01516163583761, 48.1275650345531, 50.034969946084104, 53.305246378014814, 61.48481629383566, 64.997354327005],
+        "central" : {
+            "mean"  : [594.4624161244712, 619.4435721482763, 644.3618195271547, 670.1065013996899, 694.6075424249361, 794.3459354102622, 894.7819784051075, 995.4243019532349, 1094.9337136248432, 1196.2570310956594],
+            "sigma" : [42.505079436417596, 43.05969017577434, 42.96212829444454, 43.318045977212954, 44.01516163583761, 48.1275650345531, 50.034969946084104, 53.305246378014814, 61.48481629383566, 64.997354327005],
+        },
+        "error" : {
+            "mean" : [0.1872437624688, 0.19388744757311074, 0.1912572137345035, 0.19240116113910952, 0.19980871854810295, 0.18789903288597729, 0.2032028693325588, 0.23340595973935124, 0.23766980974557345, 0.255301617418865],
+            "sigma" : [0.2916677337105753, 0.3072521263809591, 0.2998432774143005, 0.30725343579861786, 0.32028291079482685, 0.27930035173433865, 0.31560937630962016, 0.3860828961652416, 0.34836561102383357, 0.39834118844757427],
+        },
         # re-reco
         #"mean"  : [594.5139804215879, 619.6000533950236, 644.3287027625523, 669.8153555829203, 694.6125449011694, 794.5142070223213, 894.8067276613455, 995.0613712066372, 1094.8835918972766, 1196.290542653962],
         #"sigma" : [42.292654944597054, 42.837103189639755, 43.66046201681102, 43.216809922131155, 44.34587740990952, 48.366166248595555, 50.47963630239109, 53.399695259135484, 60.92999143647047, 65.25723594233416],
@@ -985,19 +998,26 @@ def print_table(): #{{{
     d = d_chi2Reco
     d = d_truthMatched
     for i, mass in enumerate(masses):
-        v = [ d_chi2Reco["mean"][i], d_chi2Reco["sigma"][i], d_truthMatched["mean"][i], d_truthMatched["sigma"][i] ]
-        print "%4d & %4.0f & %.0f & %4.0f & %.0f \\\\" % (mass, v[0], v[1], v[2], v[3])
+        pairs = []
+        pairs.append( "%6.1f $\\pm$ %.1f" % (d_chi2Reco    ["central"]["mean"][i]  , d_chi2Reco    ["error"]["mean"][i])  )
+        pairs.append( "%4.1f $\\pm$ %.1f" % (d_chi2Reco    ["central"]["sigma"][i] , d_chi2Reco    ["error"]["sigma"][i]) )
+
+        pairs.append( "%6.1f $\\pm$ %.1f" % (d_truthMatched["central"]["mean"][i]  , d_truthMatched["error"]["mean"][i])  )
+        pairs.append( "%4.1f $\\pm$ %.1f" % (d_truthMatched["central"]["sigma"][i] , d_truthMatched["error"]["sigma"][i]) )
+
+        print "%4d & %s & %s & %s & %s \\\\" % (mass, pairs[0], pairs[1], pairs[2], pairs[3])
+        #print "%4d & %5.1f & %.1f & %5.1f & %.1f \\\\" % (mass, v[0], v[1], v[2], v[3])
         #print "%d, %.2f, %.2f" % (mass, d["mean"][i], d["sigma"][i])
 #}}}
 
 if __name__ == "__main__":
     #run()
-    #print_table()
+    print_table()
 
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set0"               ,  "signal_efficiency_old"        )
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set1"               ,  "signal_efficiency"            )
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set2"               ,  "signal_efficiency_newOpt"     )
-    make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set3"               ,  "signal_efficiency"     )
+    #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set3"               ,  "signal_efficiency"     )
     #make_efficiency("Ratio (Opt2/Opt1)"  ,  myParameterSets["ratio"]         ,  "ratio"              ,  "signal_efficiency_comparison" )
     #make_efficiency("Significance"       ,  myParameterSets["significance"]  ,  "set1,significance"  ,  "significance_opt1"            )
     #make_efficiency("Significance"       ,  myParameterSets["significance"]  ,  "set2,significance"  ,  "significance_opt2"            )
