@@ -115,10 +115,10 @@ def merge_cov_root_files(directory="plots"):
     subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-1200_merged.root %s/*1200*Era*.root" % (directory, directory), shell = True)
 
 if __name__ == "__main__":
-    merge_cov_root_files()
+    #merge_cov_root_files()
 
     #customize_hadd()
-    #usuall_hadd("myhist")
+    usuall_hadd("myhist")
     #hadd_ul1718("myhist", "shortcut_plots/plots_20220117_forTemplateFit")
     #hadd_reReco16("myhist", "shortcut_plots/plots_20220117_forTemplateFit")
     #hadd_ul1718("MVABaby")
