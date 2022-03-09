@@ -201,10 +201,11 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   //----------------------------------------------------------------------------------------------------
   bool debug = false;
 
+  // lumi ref: https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM#SummaryTable
   cout << "mYear: " << mYear << endl;
-  double lumi_2016 = 35.9;
-  double lumi_2017 = 41.5;
-  double lumi_2018 = 59.76;
+  double lumi_2016 = 36.33; //35.9;
+  double lumi_2017 = 41.48; //41.5;
+  double lumi_2018 = 59.83; //59.76;
   double branching_fraction_hgg = 0.00227;
   double total_yields = 0.;
 
@@ -626,8 +627,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //----------------------------------------------------------------------------------------------------}}}
       // Apply normalization factors from template fit
       //----------------------------------------------------------------------------------------------------
-      //double weight_from_template_fit = 1.;
-      double weight_from_template_fit = get_weight_from_template_fit(mYear, processId);
+      double weight_from_template_fit = 1.;
+      //double weight_from_template_fit = get_weight_from_template_fit(mYear, processId);
       evt_weight *= weight_from_template_fit;
 
       //----------------------------------------------------------------------------------------------------}}}
@@ -899,7 +900,9 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       }
       //----------------------------------------------------------------------------------------------------}}}
 
-      //if (!pass_mva_cut_bdtg_nrb_mixed05) continue; // study low stat of BDTG
+      //if (!is_within_SR_mixed03) continue; // check kinematics in SR1
+      //if (!is_within_SR_mixed04) continue; // check kinematics in SR2
+      //if (!is_within_SR_mixed05) continue; // check kinematics in SR3
 
       //****************************************************************************************************
       // Fill histograms
@@ -1004,22 +1007,22 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       vProcess[processId]->fill_2D_histogram("h" + syst_ext + "MVAScore_nrb_smh_varset8_mixed05_tmva_bdtg" , mva_value_nrb_varset8_mixed05_tmva_bdtg , mva_value_smh_varset8_mixed05_tmva_bdtg , evt_weight , vId);
 
       // Investigate HT scale factor (2022.01.03)
-      double difference = mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central - mva_value_nrb_varset8_mixed03_tmva_bdtg;
-      double relative_difference = mva_value_nrb_varset8_mixed03_tmva_bdtg>0. ? difference / mva_value_nrb_varset8_mixed03_tmva_bdtg : 999.;
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_difference" , difference , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_relativeDifference" , relative_difference , evt_weight , vId);
-      vProcess[processId]->fill_2D_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_difference2D" , difference, relative_difference , evt_weight , vId);
+      //double difference = mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central - mva_value_nrb_varset8_mixed03_tmva_bdtg;
+      //double relative_difference = mva_value_nrb_varset8_mixed03_tmva_bdtg>0. ? difference / mva_value_nrb_varset8_mixed03_tmva_bdtg : 999.;
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_difference" , difference , evt_weight , vId);
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_relativeDifference" , relative_difference , evt_weight , vId);
+      //vProcess[processId]->fill_2D_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_difference2D" , difference, relative_difference , evt_weight , vId);
 
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central_n100"  , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central , evt_weight     , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central_n2000" , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central , evt_weight     , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up_n100"       , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up      , evt_weight     , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down_n100"     , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down    , evt_weight     , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up_n2000"      , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up      , evt_weight     , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down_n2000"    , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down    , evt_weight     , vId);
-      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up_n100"       , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up      , evt_weight*1.5 , vId);
-      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down_n100"     , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down    , evt_weight*0.5 , vId);
-      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up_n2000"      , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up      , evt_weight*1.5 , vId);
-      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down_n2000"    , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down    , evt_weight*0.5 , vId);
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central_n100"  , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central , evt_weight     , vId);
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central_n2000" , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central , evt_weight     , vId);
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up_n100"       , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up      , evt_weight     , vId);
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down_n100"     , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down    , evt_weight     , vId);
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up_n2000"      , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up      , evt_weight     , vId);
+      //vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down_n2000"    , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down    , evt_weight     , vId);
+      ////vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up_n100"       , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up      , evt_weight*1.5 , vId);
+      ////vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down_n100"     , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down    , evt_weight*0.5 , vId);
+      ////vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up_n2000"      , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up      , evt_weight*1.5 , vId);
+      ////vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down_n2000"    , mva_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down    , evt_weight*0.5 , vId);
 
       //----------------------------------------------------------------------------------------------------}}}
       // Kinematics {{{
@@ -1075,20 +1078,30 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       vProcess[processId]->fill_histogram("h" + syst_ext + "helicity_tprime"          , helicity_tprime_          , evt_weight , vId);
 
       // Leading photon
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPt"        , dipho_leadPt()       , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadEta"       , dipho_leadEta()      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPhi"       , dipho_leadPhi()      , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadIDMVA"     , leadID_              , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPToM"      , dipho_lead_ptoM()    , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPixelSeed"    , dipho_lead_haspixelseed()    , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPt"            , dipho_leadPt()            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadEta"           , dipho_leadEta()           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPhi"           , dipho_leadPhi()           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadIDMVA"         , leadID_                   , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPToM"          , dipho_lead_ptoM()         , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadPixelSeed"     , dipho_lead_haspixelseed() , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadSigmaIEtaIEta" , dipho_lead_sieip()        , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadHOverE"        , dipho_lead_hoe()          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadR9"            , dipho_leadR9()            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonLeadSigmaEOverE"   , dipho_lead_sigmaEoE()     , evt_weight , vId);
+
 
       // Subleading photon
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPt"     , dipho_subleadPt()    , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadEta"    , dipho_subleadEta()   , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPhi"    , dipho_subleadPhi()   , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadIDMVA"  , subleadID_           , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPToM"   , dipho_sublead_ptoM() , evt_weight , vId);
-      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPixelSeed" , dipho_sublead_haspixelseed() , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPt"            , dipho_subleadPt()            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadEta"           , dipho_subleadEta()           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPhi"           , dipho_subleadPhi()           , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadIDMVA"         , subleadID_                   , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPToM"          , dipho_sublead_ptoM()         , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadPixelSeed"     , dipho_sublead_haspixelseed() , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadSigmaIEtaIEta" , dipho_sublead_sieip()        , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadHOverE"        , dipho_sublead_hoe()          , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadR9"            , dipho_subleadR9()            , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonSubleadSigmaEOverE"   , dipho_sublead_sigmaEoE()     , evt_weight , vId);
+    
 
       // Min/Max ID photon
       vProcess[processId]->fill_histogram("h" + syst_ext + "PhotonMaxIDMVA"      , maxIDMVA_            , evt_weight , vId);

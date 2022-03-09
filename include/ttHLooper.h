@@ -287,15 +287,15 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_2D_histogram("h" + syst_labels[j] + "MVAScore_nrb_smh_varset8_mixed05_tmva_bdtg" , 50 , 0 , 1 , 50 , 0 , 1);
 
         // Investigate HT scale factor (2022.01.03)
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_difference" , 100 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_relativeDifference" , 1000 , -10. , 10.);
-        v[i]->add_2D_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_difference2D" , 100 , -1. , 1., 100, -1., 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central_n100"  , 100  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up_n100"       , 100  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down_n100"     , 100  , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central_n2000" , 2000 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up_n2000"      , 2000 , -1. , 1.);
-        v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down_n2000"    , 2000 , -1. , 1.);
+        //v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_difference" , 100 , -1. , 1.);
+        //v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_relativeDifference" , 1000 , -10. , 10.);
+        //v[i]->add_2D_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_difference2D" , 100 , -1. , 1., 100, -1., 1.);
+        //v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central_n100"  , 100  , -1. , 1.);
+        //v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up_n100"       , 100  , -1. , 1.);
+        //v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down_n100"     , 100  , -1. , 1.);
+        //v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_central_n2000" , 2000 , -1. , 1.);
+        //v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_up_n2000"      , 2000 , -1. , 1.);
+        //v[i]->add_histogram("h" + syst_labels[j] + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_scaleHT_down_n2000"    , 2000 , -1. , 1.);
         //}}}
 
       }
