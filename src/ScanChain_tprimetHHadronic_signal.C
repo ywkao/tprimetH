@@ -627,8 +627,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //----------------------------------------------------------------------------------------------------}}}
       // Apply normalization factors from template fit
       //----------------------------------------------------------------------------------------------------
-      double weight_from_template_fit = 1.;
-      //double weight_from_template_fit = get_weight_from_template_fit(mYear, processId);
+      //double weight_from_template_fit = 1.;
+      double weight_from_template_fit = get_weight_from_template_fit(mYear, processId);
       evt_weight *= weight_from_template_fit;
 
       //----------------------------------------------------------------------------------------------------}}}

@@ -119,14 +119,13 @@ if __name__ == "__main__":
 
     #customize_hadd()
     usuall_hadd("myhist")
-    #hadd_ul1718("myhist", "shortcut_plots/plots_20220117_forTemplateFit")
-    #hadd_reReco16("myhist", "shortcut_plots/plots_20220117_forTemplateFit")
+    #usuall_hadd("MVABaby")
+
     #hadd_ul1718("MVABaby")
     #hadd_reReco16("MVABaby")
-    #hadd_ul1718("myhist")
-    #hadd_reReco16("myhist")
+    #hadd_ul1718("myhist"  , "plots_20220309_updateLumi_forSimultaneousFit")
+    #hadd_reReco16("myhist", "plots_20220309_updateLumi_forSimultaneousFit")
 
-    #usuall_hadd("MVABaby")
     #prepare_data_for_simultaneous_fit()
     #prepare_data_for_simultaneous_fit("plots_20220113_ultraLegacy")
     #usuall_hadd("myhist", "plots_20220113_ultraLegacy")
