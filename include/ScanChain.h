@@ -875,4 +875,10 @@ void print_counter(TString name, int a, int b)
     printf("[check] %s: %d/%d (%.2f)\n", name.Data(), a, b, ratio);
 }
 
+void print_counter(TString name, double a, double b)
+{
+    double ratio = a / b;
+    printf("[check] %s: %.2f/%.2f (%.2f)\n", name.Data(), a, b, ratio);
+}
+
 #endif
