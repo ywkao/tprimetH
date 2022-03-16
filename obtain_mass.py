@@ -16,6 +16,7 @@ rootfile = "plots_20211128/myhist_combine_RunII.root"
 rootfile = "shortcut_plots/plots_20211128/myhist_combine_RunII.root"
 rootfile = "shortcut_plots/plots_20220120_results_ReReco/myhist_combine_RunII.root"
 rootfile = "shortcut_plots/plots_20220215_ultraLegacy/myhist_combine_RunII.root"
+rootfile = "plots_20220310_updatedLumi/myhist_combine_RunII.root"
 fin = ROOT.TFile.Open(rootfile, "R")
 
 ROOT.gStyle.SetOptStat("e")
@@ -40,7 +41,7 @@ d_fit_sigma = {"central":[], "error":[]}
 
 #--------------------------------------------------
 
-lumi={"2016":35.9,"2017":41.5,"2018":59.76,"RunII":137.2}
+lumi={"2016":35.9,"2017":41.5,"2018":59.76,"RunII":138}
 
 masses = [600, 625, 650, 675, 700, 800, 900, 1000, 1100, 1200]
 masses_v2 = [600, 625, 650, 675, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200]
@@ -301,7 +302,7 @@ def annotate(rshift=0): #{{{
     latex.SetTextAlign(11)
     latex.SetTextSize(24)
     latex.DrawLatex( 0.12, 0.912, "#bf{CMS} #it{work in progress}" )
-    latex.DrawLatex( 0.69+rshift, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
+    latex.DrawLatex( 0.70+rshift, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
 
     #latex.DrawLatex( 0.60, 0.800, "Pre-selection" )
 #}}}
@@ -1012,12 +1013,12 @@ def print_table(): #{{{
 
 if __name__ == "__main__":
     #run()
-    print_table()
+    #print_table()
 
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set0"               ,  "signal_efficiency_old"        )
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set1"               ,  "signal_efficiency"            )
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set2"               ,  "signal_efficiency_newOpt"     )
-    #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set3"               ,  "signal_efficiency"     )
+    make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set3"               ,  "signal_efficiency"     )
     #make_efficiency("Ratio (Opt2/Opt1)"  ,  myParameterSets["ratio"]         ,  "ratio"              ,  "signal_efficiency_comparison" )
     #make_efficiency("Significance"       ,  myParameterSets["significance"]  ,  "set1,significance"  ,  "significance_opt1"            )
     #make_efficiency("Significance"       ,  myParameterSets["significance"]  ,  "set2,significance"  ,  "significance_opt2"            )
