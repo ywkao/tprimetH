@@ -160,11 +160,11 @@ if __name__ == "__main__":
     #}}}
 
     if args.test:
-        path = "/afs/cern.ch/work/y/ykao/workspace_ultraLegacy/CMSSW_10_6_8/src/flashgg/Systematics/test/runWS"
+        #path = "/afs/cern.ch/work/y/ykao/workspace_ultraLegacy/CMSSW_10_6_8/src/flashgg/Systematics/test/runWS"
         #create_commands(sm.dict_trees['tHq'], ["output_TprimeBToTH_M-1000_n500_UL17_v2.root"], path, "2017")
 
         #create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'], location_v3p8)
-        #create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'])
+        create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'])
         #create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['diphoton'])
 
         #create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['gammaJets'])
