@@ -60,6 +60,16 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
       for (int i = 0; i < v.size(); i++) {
 
         //----------------------------------------------------------------------------------------------------
+        // special study
+        //----------------------------------------------------------------------------------------------------
+        v[i]->add_histogram("h" + syst_labels[j] + "fake_photon_IDMVA"            , 20 , -1 , 1     );
+        v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_GEN_deltaR_wjets"  , 25 , 0  , 6     );
+        v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_GEN_deltaR_bW"     , 25 , 0  , 6     );
+        v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_RECO_deltaR_wjets" , 25 , 0  , 6     );
+        v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_RECO_deltaR_bW"    , 25 , 0  , 6     );
+        continue;
+
+        //----------------------------------------------------------------------------------------------------
         // Mass with BDTG cuts
         //----------------------------------------------------------------------------------------------------
         v[i]->add_histogram("h" + syst_labels[j] + "Mass_pass_BDTG_nrb_cut_mixed03"         , 50  , 0 , 250 );
@@ -102,15 +112,6 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_MggWindow_coarser" , 25  , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_MggWindow_coarser" , 25  , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_MggWindow_coarser" , 25  , 0 , 2500 );
-
-        //----------------------------------------------------------------------------------------------------
-        // special study
-        //----------------------------------------------------------------------------------------------------
-        v[i]->add_histogram("h" + syst_labels[j] + "fake_photon_IDMVA"            , 20 , -1 , 1     );
-        v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_GEN_deltaR_wjets"  , 25 , 0  , 6     );
-        v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_GEN_deltaR_bW"     , 25 , 0  , 6     );
-        v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_RECO_deltaR_wjets" , 25 , 0  , 6     );
-        v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_RECO_deltaR_bW"    , 25 , 0  , 6     );
 
         //----------------------------------------------------------------------------------------------------
         // Basic variables & Kinematics

@@ -15,14 +15,15 @@ def print_dictionary(d):
 
     # print summary
     if not is_dictionary_with_one_sample:
-        samples = ["SMH"] + m.samples["data"] + m.samples["signal"]
+        samples = m.samples["data"] + ["SMH"] + m.samples["signal"]
         for key in m.keywords:
-            print "\n%s, yields, percentage" % key
-            output = map(lambda x: "%12s, %5.2f, %5.1f %%" % (m.convert_signal_title[x], d[x][key]["value"], 100.*d[x][key]["value"]/d[x][key]["total"]), samples)
 
             if False:
                 print "\n%s, yields, total, percentage" % key
                 output = map(lambda x: "%18s, %5.2f, %6.2f, %5.2f %%" % (x, d[x][key]["value"], d[x][key]["total"], 100.*d[x][key]["value"]/d[x][key]["total"]), samples)
+            else:
+                print "\n%s, yields, percentage" % key
+                output = map(lambda x: "%12s, %5.2f, %5.1f %%" % (m.convert_signal_title[x], d[x][key]["value"], 100.*d[x][key]["value"]/d[x][key]["total"]), samples)
 
             for ele in list(output): print ele
 
@@ -41,3 +42,11 @@ def merge_dictionary(d, samples):
 
     #print_dictionary(output)
     d["SMH"] = output
+
+def check(l):
+    print l
+    for i, e in enumerate(l):
+        if i+1 == len(l):
+            continue
+        else:
+            print e - l[i+1]

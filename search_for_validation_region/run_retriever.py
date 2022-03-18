@@ -14,6 +14,7 @@ path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/
 
 path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots/log"
 
+my_data_list = { "key":[], "value":[] } 
 
 def get_summary_of_a_sample(sample):
     d_sum = h.get_empty_dict(sample)
@@ -21,10 +22,8 @@ def get_summary_of_a_sample(sample):
     # sum over three years
     for log in glob.glob( path + "/*%s*" % sample ):
         with open(log, 'r') as fin:
-            # use filter
             contents = filter(lambda x: "vs_" in x or "within" in x, fin.readlines())
 
-            print log
             for key in m.keywords:
                 line = filter(lambda x: key in x, contents)
                 line = list(line)[0]
@@ -33,9 +32,16 @@ def get_summary_of_a_sample(sample):
                 total = float(line.split(":")[1].split("/")[1].split()[0])
                 d_sum[key]["value"] += value
                 d_sum[key]["total"] += total
-                print line.strip(), value, total
+                #print line.strip(), value, total
 
-    h.print_dictionary(d_sum)
+    if sample == "Data":
+        global my_data_list
+        for key in m.keywords:
+            my_data_list["key"].append( key )
+            my_data_list["value"].append( d_sum[key]["value"] )
+            d_sum[key]["total"] = 115728.
+
+    #h.print_dictionary(d_sum)
     my_big_dictionary[sample] = d_sum
 
 def get_summary(sample):
@@ -43,12 +49,13 @@ def get_summary(sample):
 
 if __name__ == "__main__":
     my_big_dictionary = {}
-    #get_summary("smh")
     get_summary("data")
-    #get_summary("signal")
+    get_summary("smh")
+    get_summary("signal")
 
-    #h.merge_dictionary(my_big_dictionary, m.samples["smh"])
-    #h.print_dictionary(my_big_dictionary)
+    h.merge_dictionary(my_big_dictionary, m.samples["smh"])
+    h.print_dictionary(my_big_dictionary)
+
+    #h.check(my_data_list["value"])
 
     #get_summary("nrb")
-

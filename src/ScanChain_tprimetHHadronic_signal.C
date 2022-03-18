@@ -268,14 +268,14 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   int vs_counter_MT_large_480 = 0;
   int vs_counter_MT_large_800 = 0;
 
-  int vs_counter_bdt_smh_800 = 0;
-  int vs_counter_bdt_smh_700 = 0;
-  int vs_counter_bdt_smh_600 = 0;
-  int vs_counter_bdt_smh_500 = 0;
-  int vs_counter_bdt_smh_400 = 0;
-  int vs_counter_bdt_smh_300 = 0;
-  int vs_counter_bdt_smh_200 = 0;
-  int vs_counter_bdt_smh_100 = 0;
+  //int vs_counter_bdt_smh_800 = 0;
+  //int vs_counter_bdt_smh_700 = 0;
+  //int vs_counter_bdt_smh_600 = 0;
+  //int vs_counter_bdt_smh_500 = 0;
+  //int vs_counter_bdt_smh_400 = 0;
+  //int vs_counter_bdt_smh_300 = 0;
+  //int vs_counter_bdt_smh_200 = 0;
+  //int vs_counter_bdt_smh_100 = 0;
   int vs_counter_bdt_nrb_800 = 0;
   int vs_counter_bdt_nrb_700 = 0;
   int vs_counter_bdt_nrb_600 = 0;
@@ -299,14 +299,14 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   double vs_yields_MT_large_480 = 0.;
   double vs_yields_MT_large_800 = 0.;
 
-  double vs_yields_bdt_smh_800 = 0.;
-  double vs_yields_bdt_smh_700 = 0.;
-  double vs_yields_bdt_smh_600 = 0.;
-  double vs_yields_bdt_smh_500 = 0.;
-  double vs_yields_bdt_smh_400 = 0.;
-  double vs_yields_bdt_smh_300 = 0.;
-  double vs_yields_bdt_smh_200 = 0.;
-  double vs_yields_bdt_smh_100 = 0.;
+  //double vs_yields_bdt_smh_800 = 0.;
+  //double vs_yields_bdt_smh_700 = 0.;
+  //double vs_yields_bdt_smh_600 = 0.;
+  //double vs_yields_bdt_smh_500 = 0.;
+  //double vs_yields_bdt_smh_400 = 0.;
+  //double vs_yields_bdt_smh_300 = 0.;
+  //double vs_yields_bdt_smh_200 = 0.;
+  //double vs_yields_bdt_smh_100 = 0.;
   double vs_yields_bdt_nrb_800 = 0.;
   double vs_yields_bdt_nrb_700 = 0.;
   double vs_yields_bdt_nrb_600 = 0.;
@@ -572,7 +572,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       // use mass reconstructed at producer level for better consistency in significant digit; v3p5 onward
       chi2_wboson_mass_         = chi2_recoMass_wboson();
       chi2_tbw_mass_            = chi2_recoMass_top();
-      chi2_value_               = chi2_calculator_2x2(chi2_wboson_mass_, chi2_tbw_mass_, json_file);
+      //chi2_value_               = chi2_calculator_2x2(chi2_wboson_mass_, chi2_tbw_mass_, json_file);
+      chi2_value_               = chi2_calculator_2x2(chi2_wboson_mass_, chi2_tbw_mass_);
   
       chi2_bjet_ptOverM_        = (has_resonable_reco && pass_eta_criteria_on_wjets)  ? cov_bjet.Pt() / chi2_tbw_mass_          : -999;
       chi2_wjet1_ptOverM_       = (has_resonable_reco && pass_eta_criteria_on_wjets)  ? cov_wjet1.Pt() / chi2_wboson_mass_      : -999;
@@ -938,12 +939,13 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 
       bool perform_validation_search = true;
       if (perform_validation_search) {
-          bool mgg_sideband = (CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.); //consider NRB events only in sideband region
+          bool mgg_sideband = !(CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.); //consider NRB events only in sideband region
           //bool base_cut = mgg_sideband && pass_mva_cut_bdtg_nrb_mixed03 && pass_tprime_low_mass_criterion_mixed03;
           // Don't care about NRB for the moment
           bool base_cut;
+          bool sideband_selector = ( isSignal || (!isSignal && mgg_sideband && processId!=18) );
 
-          base_cut = ( isSignal || (!isSignal && mgg_sideband && processId!=18) ) && pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03;
+          base_cut = sideband_selector && pass_mva_cut_bdtg_nrb_mixed03 && !pass_mva_cut_bdtg_smh_mixed03;
           // apply inveted sliding cuts on bdtg smh
           if(base_cut && mass_tprime < 300.) vs_counter_MT_less_300 += 1;
           if(base_cut && mass_tprime < 320.) vs_counter_MT_less_320 += 1;
@@ -973,26 +975,26 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
           if(base_cut && mass_tprime > 480.) vs_yields_MT_large_480 += evt_weight;
           if(base_cut && mass_tprime > 800.) vs_yields_MT_large_800 += evt_weight;
 
-          base_cut = ( isSignal || (!isSignal && mgg_sideband) ) && mva_value_nrb_varset8_mixed03_tmva_bdtg < 0.500 && pass_tprime_low_mass_criterion_mixed03;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.800) vs_counter_bdt_smh_800 += 1;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.700) vs_counter_bdt_smh_700 += 1;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.600) vs_counter_bdt_smh_600 += 1;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.500) vs_counter_bdt_smh_500 += 1;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.400) vs_counter_bdt_smh_400 += 1;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.300) vs_counter_bdt_smh_300 += 1;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.200) vs_counter_bdt_smh_200 += 1;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.100) vs_counter_bdt_smh_100 += 1;
+          //// not ideal: scan bdt-nrb makes more sense
+          //base_cut = sideband_selector && mva_value_nrb_varset8_mixed03_tmva_bdtg < 0.500 && pass_tprime_low_mass_criterion_mixed03;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.800) vs_counter_bdt_smh_800 += 1;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.700) vs_counter_bdt_smh_700 += 1;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.600) vs_counter_bdt_smh_600 += 1;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.500) vs_counter_bdt_smh_500 += 1;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.400) vs_counter_bdt_smh_400 += 1;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.300) vs_counter_bdt_smh_300 += 1;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.200) vs_counter_bdt_smh_200 += 1;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.100) vs_counter_bdt_smh_100 += 1;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.800) vs_yields_bdt_smh_800 += evt_weight;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.700) vs_yields_bdt_smh_700 += evt_weight;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.600) vs_yields_bdt_smh_600 += evt_weight;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.500) vs_yields_bdt_smh_500 += evt_weight;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.400) vs_yields_bdt_smh_400 += evt_weight;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.300) vs_yields_bdt_smh_300 += evt_weight;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.200) vs_yields_bdt_smh_200 += evt_weight;
+          //if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.100) vs_yields_bdt_smh_100 += evt_weight;
 
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.800) vs_yields_bdt_smh_800 += evt_weight;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.700) vs_yields_bdt_smh_700 += evt_weight;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.600) vs_yields_bdt_smh_600 += evt_weight;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.500) vs_yields_bdt_smh_500 += evt_weight;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.400) vs_yields_bdt_smh_400 += evt_weight;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.300) vs_yields_bdt_smh_300 += evt_weight;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.200) vs_yields_bdt_smh_200 += evt_weight;
-          if(base_cut && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.100) vs_yields_bdt_smh_100 += evt_weight;
-
-          base_cut = ( isSignal || (!isSignal && mgg_sideband) ) && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.800 && pass_tprime_low_mass_criterion_mixed03;
+          base_cut = sideband_selector && mva_value_smh_varset8_mixed03_tmva_bdtg < 0.800 && pass_tprime_low_mass_criterion_mixed03 && mva_value_smh_varset8_mixed03_tmva_bdtg > 0.200;
           if(base_cut && mva_value_nrb_varset8_mixed03_tmva_bdtg < 0.800) vs_counter_bdt_nrb_800 += 1;
           if(base_cut && mva_value_nrb_varset8_mixed03_tmva_bdtg < 0.700) vs_counter_bdt_nrb_700 += 1;
           if(base_cut && mva_value_nrb_varset8_mixed03_tmva_bdtg < 0.600) vs_counter_bdt_nrb_600 += 1;
@@ -1049,12 +1051,12 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //****************************************************************************************************
       // Fill histograms
       //****************************************************************************************************
+      /*
       if(evt_weight>15.) counter_evtWeight += 1;
       vProcess[processId]->fill_histogram("h" + syst_ext + "Mass", CMS_hgg_mass(), evt_weight, vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_fine", CMS_hgg_mass(), evt_weight, vId);
 
-      //if(!is_within_SR_mixed03) continue; // check njets signal efficiency in SR1
-      if(pass_tprime_low_mass_criterion) //if(is_within_CR_mixed03)
+      if(pass_tprime_low_mass_criterion)
       {
       // diphoton mass after cutting MVA scores {{{
       //----------------------------------------------------------------------------------------------------
@@ -1292,6 +1294,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet4_ptOverM" , jet4_ptOverM_ , evt_weight , vId);
       //}}}
       } // end of tprime mass criterion
+      */
 
     } // end of event loop
     // print info & clean up{{{
@@ -1348,14 +1351,14 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
     print_counter("vs_counter_MT_large_480", vs_counter_MT_large_480, counter);
     print_counter("vs_counter_MT_large_800", vs_counter_MT_large_800, counter);
 
-    print_counter("vs_counter_bdt_smh_800", vs_counter_bdt_smh_800, counter);
-    print_counter("vs_counter_bdt_smh_700", vs_counter_bdt_smh_700, counter);
-    print_counter("vs_counter_bdt_smh_600", vs_counter_bdt_smh_600, counter);
-    print_counter("vs_counter_bdt_smh_500", vs_counter_bdt_smh_500, counter);
-    print_counter("vs_counter_bdt_smh_400", vs_counter_bdt_smh_400, counter);
-    print_counter("vs_counter_bdt_smh_300", vs_counter_bdt_smh_300, counter);
-    print_counter("vs_counter_bdt_smh_200", vs_counter_bdt_smh_200, counter);
-    print_counter("vs_counter_bdt_smh_100", vs_counter_bdt_smh_100, counter);
+    //print_counter("vs_counter_bdt_smh_800", vs_counter_bdt_smh_800, counter);
+    //print_counter("vs_counter_bdt_smh_700", vs_counter_bdt_smh_700, counter);
+    //print_counter("vs_counter_bdt_smh_600", vs_counter_bdt_smh_600, counter);
+    //print_counter("vs_counter_bdt_smh_500", vs_counter_bdt_smh_500, counter);
+    //print_counter("vs_counter_bdt_smh_400", vs_counter_bdt_smh_400, counter);
+    //print_counter("vs_counter_bdt_smh_300", vs_counter_bdt_smh_300, counter);
+    //print_counter("vs_counter_bdt_smh_200", vs_counter_bdt_smh_200, counter);
+    //print_counter("vs_counter_bdt_smh_100", vs_counter_bdt_smh_100, counter);
     print_counter("vs_counter_bdt_nrb_800", vs_counter_bdt_nrb_800, counter);
     print_counter("vs_counter_bdt_nrb_700", vs_counter_bdt_nrb_700, counter);
     print_counter("vs_counter_bdt_nrb_600", vs_counter_bdt_nrb_600, counter);
@@ -1380,14 +1383,14 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
     print_counter("vs_yields_MT_large_480", vs_yields_MT_large_480, total_yields);
     print_counter("vs_yields_MT_large_800", vs_yields_MT_large_800, total_yields);
 
-    print_counter("vs_yields_bdt_smh_800", vs_yields_bdt_smh_800, total_yields);
-    print_counter("vs_yields_bdt_smh_700", vs_yields_bdt_smh_700, total_yields);
-    print_counter("vs_yields_bdt_smh_600", vs_yields_bdt_smh_600, total_yields);
-    print_counter("vs_yields_bdt_smh_500", vs_yields_bdt_smh_500, total_yields);
-    print_counter("vs_yields_bdt_smh_400", vs_yields_bdt_smh_400, total_yields);
-    print_counter("vs_yields_bdt_smh_300", vs_yields_bdt_smh_300, total_yields);
-    print_counter("vs_yields_bdt_smh_200", vs_yields_bdt_smh_200, total_yields);
-    print_counter("vs_yields_bdt_smh_100", vs_yields_bdt_smh_100, total_yields);
+    //print_counter("vs_yields_bdt_smh_800", vs_yields_bdt_smh_800, total_yields);
+    //print_counter("vs_yields_bdt_smh_700", vs_yields_bdt_smh_700, total_yields);
+    //print_counter("vs_yields_bdt_smh_600", vs_yields_bdt_smh_600, total_yields);
+    //print_counter("vs_yields_bdt_smh_500", vs_yields_bdt_smh_500, total_yields);
+    //print_counter("vs_yields_bdt_smh_400", vs_yields_bdt_smh_400, total_yields);
+    //print_counter("vs_yields_bdt_smh_300", vs_yields_bdt_smh_300, total_yields);
+    //print_counter("vs_yields_bdt_smh_200", vs_yields_bdt_smh_200, total_yields);
+    //print_counter("vs_yields_bdt_smh_100", vs_yields_bdt_smh_100, total_yields);
     print_counter("vs_yields_bdt_nrb_800", vs_yields_bdt_nrb_800, total_yields);
     print_counter("vs_yields_bdt_nrb_700", vs_yields_bdt_nrb_700, total_yields);
     print_counter("vs_yields_bdt_nrb_600", vs_yields_bdt_nrb_600, total_yields);

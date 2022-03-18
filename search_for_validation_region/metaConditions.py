@@ -91,18 +91,6 @@ keywords_v2 = [
 ]
 
 keywords_v3 = [
-    "vs_yields_MT_less_300",
-    "vs_yields_MT_less_320",
-    "vs_yields_MT_less_340",
-    "vs_yields_MT_less_360",
-    "vs_yields_MT_less_380",
-    "vs_yields_MT_less_400",
-    "vs_yields_MT_less_420",
-    "vs_yields_MT_less_440",
-    "vs_yields_MT_less_460",
-    "vs_yields_MT_less_480",
-    "vs_yields_MT_less_550",
-
     "vs_yields_bdt_smh_800",
     "vs_yields_bdt_smh_700",
     "vs_yields_bdt_smh_600",
@@ -114,22 +102,29 @@ keywords_v3 = [
 ]
 
 keywords_v4 = [
-    #"vs_yields_MT_less_400",
-    ##"vs_yields_MT_less_420",
-    #"vs_yields_MT_less_440",
-    ##"vs_yields_MT_less_460",
-    #"vs_yields_MT_less_480",
     #"vs_yields_MT_less_550",
+    "vs_yields_MT_less_400",
+    "vs_yields_MT_less_440",
+    "vs_yields_MT_less_480",
+    "vs_yields_MT_large_480",
+    "vs_yields_MT_large_800",
+]
 
-    #"vs_yields_MT_large_480",
-    #"vs_yields_MT_large_800",
-
-    #"vs_counter_MT_large_480",
-    #"vs_counter_MT_large_800",
+keywords_sr = [
+    "vs_counter_MT_less_480",
+    "vs_counter_MT_large_480",
+    "vs_counter_MT_large_800",
 
     "is_within_SR_mixed03",
     "is_within_SR_mixed04",
     "is_within_SR_mixed05",
+
+    #"vs_counter_MT_less_400",
+    #"vs_counter_MT_less_440",
+    #"vs_counter_MT_less_480",
+    #"vs_counter_MT_less_550",
+    #"vs_counter_MT_large_480",
+    #"vs_counter_MT_large_800",
 ]
 
 keywords_v5 = [
@@ -146,4 +141,5 @@ keywords_v5 = [
     #"yields_within_SR_mixed03",
 ]
 
+keywords = keywords_sr
 keywords = keywords_v4
