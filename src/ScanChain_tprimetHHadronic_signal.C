@@ -240,9 +240,6 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   int counter_SR_mixed03 = 0;
   int counter_SR_mixed04 = 0;
   int counter_SR_mixed05 = 0;
-  int counter_CR_mixed03 = 0;
-  int counter_CR_mixed04 = 0;
-  int counter_CR_mixed05 = 0;
 
   int counter_evtWeight = 0;
   int counter_has_reasonable_match = 0;
@@ -289,6 +286,8 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   bool perform_fake_photon_study;
   perform_fake_photon_study = true;
   perform_fake_photon_study = false;
+
+  bool perform_validation_search = false;
 
   // File Loop
   while ( (currentFile = (TFile*)fileIter.Next()) ) {
@@ -742,9 +741,6 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       bool is_within_SR_mixed03 = pass_mva_cut_bdtg_nrb_mixed03 && pass_mva_cut_bdtg_smh_mixed03 && pass_tprime_low_mass_criterion_mixed03;
       bool is_within_SR_mixed04 = pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04 && pass_tprime_low_mass_criterion_mixed04;
       bool is_within_SR_mixed05 = pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05 && pass_tprime_low_mass_criterion_mixed05;
-      bool is_within_CR_mixed03 = pass_mva_cut_bdtg_nrb_mixed03 && !pass_mva_cut_bdtg_smh_mixed03;
-      bool is_within_CR_mixed04 = pass_mva_cut_bdtg_nrb_mixed04 && !pass_mva_cut_bdtg_smh_mixed04;
-      bool is_within_CR_mixed05 = pass_mva_cut_bdtg_nrb_mixed05 && !pass_mva_cut_bdtg_smh_mixed05;
 
       //----------------------------------------------------------------------------------------------------}}}
       // Consistency check {{{
@@ -894,17 +890,12 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       if(processId != 18 && is_within_SR_mixed03) counter_SR_mixed03 += 1;
       if(processId != 18 && is_within_SR_mixed04) counter_SR_mixed04 += 1;
       if(processId != 18 && is_within_SR_mixed05) counter_SR_mixed05 += 1;
-      if(processId != 18 && is_within_CR_mixed03) counter_CR_mixed03 += 1;
-      if(processId != 18 && is_within_CR_mixed04) counter_CR_mixed04 += 1;
-      if(processId != 18 && is_within_CR_mixed05) counter_CR_mixed05 += 1;
 
       if(processId != 18 && is_within_SR_mixed03) yield_SR_mixed03 = yield_SR_mixed03 + evt_weight;
       if(processId != 18 && is_within_SR_mixed04) yield_SR_mixed04 = yield_SR_mixed04 + evt_weight;
       if(processId != 18 && is_within_SR_mixed05) yield_SR_mixed05 = yield_SR_mixed05 + evt_weight;
       // }}}
-
-      bool perform_validation_search = true;
-      if (perform_validation_search) {
+      if (perform_validation_search) { //{{{
           bool mgg_sideband = !(CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.); //consider NRB events only in sideband region
           //bool base_cut = mgg_sideband && pass_mva_cut_bdtg_nrb_mixed03 && pass_tprime_low_mass_criterion_mixed03;
           // Don't care about NRB for the moment
@@ -942,8 +933,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
           if(base_cut && bdt_nrb > 0.200 && bdt_nrb < 0.300) vs_yields_bdt_nrb_300 += evt_weight;
           if(base_cut && bdt_nrb > 0.100 && bdt_nrb < 0.200) vs_yields_bdt_nrb_200 += evt_weight;
           if(base_cut && bdt_nrb < 0.100) vs_yields_bdt_nrb_100 += evt_weight;
-      }
-
+      } //}}}
       // consistency check for data in sideband region {{{
       //----------------------------------------------------------------------------------------------------
       if(processId == 10)
@@ -981,7 +971,6 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //****************************************************************************************************
       // Fill histograms
       //****************************************************************************************************
-      /*
       if(evt_weight>15.) counter_evtWeight += 1;
       vProcess[processId]->fill_histogram("h" + syst_ext + "Mass", CMS_hgg_mass(), evt_weight, vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_fine", CMS_hgg_mass(), evt_weight, vId);
@@ -1014,13 +1003,6 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
           if(is_within_SR_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_coarser", mass_tprime, evt_weight, vId); }
           if(is_within_SR_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_coarser", mass_tprime, evt_weight, vId); }
           if(is_within_SR_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_coarser", mass_tprime, evt_weight, vId); }
-
-          if(is_within_CR_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_MggWindow_fine"   , mass_tprime, evt_weight, vId); }
-          if(is_within_CR_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_MggWindow_fine"   , mass_tprime, evt_weight, vId); }
-          if(is_within_CR_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_MggWindow_fine"   , mass_tprime, evt_weight, vId); }
-          if(is_within_CR_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_MggWindow_coarser", mass_tprime, evt_weight, vId); }
-          if(is_within_CR_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_MggWindow_coarser", mass_tprime, evt_weight, vId); }
-          if(is_within_CR_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_MggWindow_coarser", mass_tprime, evt_weight, vId); }
       } //}}}
       counter_check_fill_full += 1;
       if(processId==18) counter_data_driven_sample += 1;
@@ -1037,13 +1019,6 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       if(is_within_SR_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_coarser" , mass_tprime , evt_weight , vId); }
       if(is_within_SR_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_coarser" , mass_tprime , evt_weight , vId); }
       if(is_within_SR_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_coarser" , mass_tprime , evt_weight , vId); }
-
-      if(is_within_CR_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_fine"    , mass_tprime , evt_weight , vId); }
-      if(is_within_CR_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_fine"    , mass_tprime , evt_weight , vId); }
-      if(is_within_CR_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_fine"    , mass_tprime , evt_weight , vId); }
-      if(is_within_CR_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_coarser" , mass_tprime , evt_weight , vId); }
-      if(is_within_CR_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_coarser" , mass_tprime , evt_weight , vId); }
-      if(is_within_CR_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_coarser" , mass_tprime , evt_weight , vId); }
 
       //----------------------------------------------------------------------------------------------------}}}
       // MVA Scores {{{
@@ -1224,7 +1199,6 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       if (jet4_pt() >= 0) vProcess[processId]->fill_histogram("h" + syst_ext + "jet4_ptOverM" , jet4_ptOverM_ , evt_weight , vId);
       //}}}
       } // end of tprime mass criterion
-      */
 
     } // end of event loop
     // print info & clean up{{{
@@ -1251,9 +1225,6 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
     print_counter("is_within_SR_mixed03", counter_SR_mixed03, counter_data);
     print_counter("is_within_SR_mixed04", counter_SR_mixed04, counter_data);
     print_counter("is_within_SR_mixed05", counter_SR_mixed05, counter_data);
-    print_counter("is_within_CR_mixed03", counter_CR_mixed03, counter_data);
-    print_counter("is_within_CR_mixed04", counter_CR_mixed04, counter_data);
-    print_counter("is_within_CR_mixed05", counter_CR_mixed05, counter_data);
 
     print_counter("evt_weight > 15.", counter_evtWeight, counter);
     print_counter("counter_has_reasonable_match", counter_has_reasonable_match, counter);
@@ -1265,35 +1236,38 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
     printf("counter_data_driven_sample = %d\n", counter_data_driven_sample);
     printf("counter_data_driven_sample_sideband = %d\n", counter_data_driven_sample_sideband);
 
-    // apply inveted sliding cuts on bdtg smh
-    printf("\n");
-    print_counter("vs_yields_MT_less_300", vs_yields_MT_less_300, total_yields);
-    print_counter("vs_yields_MT_less_320", vs_yields_MT_less_320, total_yields);
-    print_counter("vs_yields_MT_less_340", vs_yields_MT_less_340, total_yields);
-    print_counter("vs_yields_MT_less_360", vs_yields_MT_less_360, total_yields);
-    print_counter("vs_yields_MT_less_380", vs_yields_MT_less_380, total_yields);
-    print_counter("vs_yields_MT_less_400", vs_yields_MT_less_400, total_yields);
-    print_counter("vs_yields_MT_less_420", vs_yields_MT_less_420, total_yields);
-    print_counter("vs_yields_MT_less_440", vs_yields_MT_less_440, total_yields);
-    print_counter("vs_yields_MT_less_460", vs_yields_MT_less_460, total_yields);
-    print_counter("vs_yields_MT_less_480", vs_yields_MT_less_480, total_yields);
-    print_counter("vs_yields_MT_less_550", vs_yields_MT_less_550, total_yields);
-    print_counter("vs_yields_MT_large_480", vs_yields_MT_large_480, total_yields);
-    print_counter("vs_yields_MT_large_800", vs_yields_MT_large_800, total_yields);
+    // validation region study {{{
+    if (perform_validation_search) {
+        printf("\n");
+        print_counter("vs_yields_MT_less_300", vs_yields_MT_less_300, total_yields);
+        print_counter("vs_yields_MT_less_320", vs_yields_MT_less_320, total_yields);
+        print_counter("vs_yields_MT_less_340", vs_yields_MT_less_340, total_yields);
+        print_counter("vs_yields_MT_less_360", vs_yields_MT_less_360, total_yields);
+        print_counter("vs_yields_MT_less_380", vs_yields_MT_less_380, total_yields);
+        print_counter("vs_yields_MT_less_400", vs_yields_MT_less_400, total_yields);
+        print_counter("vs_yields_MT_less_420", vs_yields_MT_less_420, total_yields);
+        print_counter("vs_yields_MT_less_440", vs_yields_MT_less_440, total_yields);
+        print_counter("vs_yields_MT_less_460", vs_yields_MT_less_460, total_yields);
+        print_counter("vs_yields_MT_less_480", vs_yields_MT_less_480, total_yields);
+        print_counter("vs_yields_MT_less_550", vs_yields_MT_less_550, total_yields);
+        print_counter("vs_yields_MT_large_480", vs_yields_MT_large_480, total_yields);
+        print_counter("vs_yields_MT_large_800", vs_yields_MT_large_800, total_yields);
 
-    print_counter("vs_counter_bdt_nrb_800", vs_counter_bdt_nrb_800, counter);
-    print_counter("vs_yields_bdt_nrb_800", vs_yields_bdt_nrb_800, total_yields);
-    print_counter("vs_yields_bdt_nrb_780", vs_yields_bdt_nrb_780, total_yields);
-    print_counter("vs_yields_bdt_nrb_760", vs_yields_bdt_nrb_760, total_yields);
-    print_counter("vs_yields_bdt_nrb_740", vs_yields_bdt_nrb_740, total_yields);
-    print_counter("vs_yields_bdt_nrb_720", vs_yields_bdt_nrb_720, total_yields);
-    print_counter("vs_yields_bdt_nrb_700", vs_yields_bdt_nrb_700, total_yields);
-    print_counter("vs_yields_bdt_nrb_600", vs_yields_bdt_nrb_600, total_yields);
-    print_counter("vs_yields_bdt_nrb_500", vs_yields_bdt_nrb_500, total_yields);
-    print_counter("vs_yields_bdt_nrb_400", vs_yields_bdt_nrb_400, total_yields);
-    print_counter("vs_yields_bdt_nrb_300", vs_yields_bdt_nrb_300, total_yields);
-    print_counter("vs_yields_bdt_nrb_200", vs_yields_bdt_nrb_200, total_yields);
-    print_counter("vs_yields_bdt_nrb_100", vs_yields_bdt_nrb_100, total_yields);
+        print_counter("vs_counter_bdt_nrb_800", vs_counter_bdt_nrb_800, counter);
+        print_counter("vs_yields_bdt_nrb_800", vs_yields_bdt_nrb_800, total_yields);
+        print_counter("vs_yields_bdt_nrb_780", vs_yields_bdt_nrb_780, total_yields);
+        print_counter("vs_yields_bdt_nrb_760", vs_yields_bdt_nrb_760, total_yields);
+        print_counter("vs_yields_bdt_nrb_740", vs_yields_bdt_nrb_740, total_yields);
+        print_counter("vs_yields_bdt_nrb_720", vs_yields_bdt_nrb_720, total_yields);
+        print_counter("vs_yields_bdt_nrb_700", vs_yields_bdt_nrb_700, total_yields);
+        print_counter("vs_yields_bdt_nrb_600", vs_yields_bdt_nrb_600, total_yields);
+        print_counter("vs_yields_bdt_nrb_500", vs_yields_bdt_nrb_500, total_yields);
+        print_counter("vs_yields_bdt_nrb_400", vs_yields_bdt_nrb_400, total_yields);
+        print_counter("vs_yields_bdt_nrb_300", vs_yields_bdt_nrb_300, total_yields);
+        print_counter("vs_yields_bdt_nrb_200", vs_yields_bdt_nrb_200, total_yields);
+        print_counter("vs_yields_bdt_nrb_100", vs_yields_bdt_nrb_100, total_yields);
+    }
+    //}}}
 
     delete tree;
     file.Close();

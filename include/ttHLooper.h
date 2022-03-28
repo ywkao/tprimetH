@@ -67,7 +67,6 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_GEN_deltaR_bW"     , 25 , 0  , 6     );
         v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_RECO_deltaR_wjets" , 25 , 0  , 6     );
         v[i]->add_histogram("h" + syst_labels[j] + "truthStudy_RECO_deltaR_bW"    , 25 , 0  , 6     );
-        continue;
 
         //----------------------------------------------------------------------------------------------------
         // Mass with BDTG cuts
@@ -92,26 +91,12 @@ void add_variables(vector<Process*> v, TString tag, vector<TString> syst_labels 
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_coarser" , 25  , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_coarser" , 25  , 0 , 2500 );
 
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_fine"    , 500 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_fine"    , 500 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_fine"    , 500 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_coarser" , 25  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_coarser" , 25  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_coarser" , 25  , 0 , 2500 );
-
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_fine"    , 500 , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_fine"    , 500 , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_fine"    , 500 , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_coarser" , 25  , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_coarser" , 25  , 0 , 2500 );
         v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_coarser" , 25  , 0 , 2500 );
-
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_MggWindow_fine"    , 500 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_MggWindow_fine"    , 500 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_MggWindow_fine"    , 500 , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_CR_MggWindow_coarser" , 25  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_CR_MggWindow_coarser" , 25  , 0 , 2500 );
-        v[i]->add_histogram("h" + syst_labels[j] + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_CR_MggWindow_coarser" , 25  , 0 , 2500 );
 
         //----------------------------------------------------------------------------------------------------
         // Basic variables & Kinematics
