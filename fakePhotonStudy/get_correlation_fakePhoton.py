@@ -11,8 +11,11 @@ import sort
 # global variables
 #----------------------------------------------------------------------------------------------------#
 path = "../plots_lowPhotonIDstudy_fakePhotonStudy_20210815/"
+path = "./rootfiles_ReReco/"
 path = "./rootfiles/"
 directory = "/eos/user/y/ykao/www/tprimetH_THQHadronic/test/"
+directory = "/eos/user/y/ykao/www/tprimetH_THQHadronic/fake_photon_correlation/"
+directory = "/eos/user/y/ykao/www/tprimetH_THQHadronic/fake_photon_correlation_ul/"
 c1 = ROOT.TCanvas("c1", "", 800, 600)
 
 #----------------------------------------------------------------------------------------------------#

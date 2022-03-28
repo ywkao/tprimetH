@@ -4,16 +4,10 @@ import glob
 import helper as h
 import metaConditions as m
 
-path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots_20220316_search_validation_region/log"
-path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/shortcut_plots/plots_20220310_updatedLumi/log"
-path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/shortcut_plots/plots_20220220_checkYields/log"
-
-path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/shortcut_plots/plots_20220215_ultraLegacy/log"
-path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/shortcut_plots/plots_20220216_ultraLegacy_noTemplateSF/log"
-path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/shortcut_plots/plots_20220302_updatMET_xrange/log"
-
+path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots_20220318_v5/log"
 path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots/log"
 
+my_big_dictionary = {}
 my_data_list = { "key":[], "value":[] } 
 
 def get_summary_of_a_sample(sample):
@@ -41,21 +35,23 @@ def get_summary_of_a_sample(sample):
             my_data_list["value"].append( d_sum[key]["value"] )
             d_sum[key]["total"] = 115728.
 
-    #h.print_dictionary(d_sum)
+    h.print_dictionary(d_sum)
     my_big_dictionary[sample] = d_sum
 
 def get_summary(sample):
     summary = map(lambda x: get_summary_of_a_sample(x), m.samples[sample])
 
 if __name__ == "__main__":
-    my_big_dictionary = {}
+
+    #get_summary("data")
+    #h.check(my_data_list["value"])
+    #exit()
+
     get_summary("data")
     get_summary("smh")
     get_summary("signal")
 
     h.merge_dictionary(my_big_dictionary, m.samples["smh"])
     h.print_dictionary(my_big_dictionary)
-
-    #h.check(my_data_list["value"])
 
     #get_summary("nrb")

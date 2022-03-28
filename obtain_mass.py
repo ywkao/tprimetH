@@ -16,7 +16,7 @@ rootfile = "plots_20211128/myhist_combine_RunII.root"
 rootfile = "shortcut_plots/plots_20211128/myhist_combine_RunII.root"
 rootfile = "shortcut_plots/plots_20220120_results_ReReco/myhist_combine_RunII.root"
 rootfile = "shortcut_plots/plots_20220215_ultraLegacy/myhist_combine_RunII.root"
-rootfile = "plots_20220310_updatedLumi/myhist_combine_RunII.root"
+rootfile = "shortcut_plots/plots_20220310_updatedLumi/myhist_combine_RunII.root"
 fin = ROOT.TFile.Open(rootfile, "R")
 
 ROOT.gStyle.SetOptStat("e")
@@ -572,6 +572,12 @@ def make_collective_plot(v_varName, v_myMasses, plotType): #{{{
         c2.SaveAs(output + ".pdf")
     else:
         annotate(0.08)
+        v_hists[0].SetMaximum(0.6)
+        v_hists[0].SetMinimum(0.0)
+        c2.SetLogy(0)
+        c2.SaveAs(output + "_linear.png")
+        c2.SaveAs(output + "_linear.pdf")
+
         v_hists[0].SetMaximum(2)
         v_hists[0].SetMinimum(3e-3)
         c2.SetLogy(1)
@@ -783,7 +789,7 @@ def run():
         #truth_matched_make_plot("h_mass_tm_tprime", masses, plotType, pauseFit=False)
 
         make_collective_plot(["hmass_tprime_cov_fine"], [masses], plotType)
-        make_plot("hmass_tprime_cov_fine", masses, plotType, pauseFit=False)
+        #make_plot("hmass_tprime_cov_fine", masses, plotType, pauseFit=False)
         #make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine", mass_M600_M700, plotType, pauseFit=True);
         #make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine", mass_M800_M1000, plotType, pauseFit=True);
         #make_plot("hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine", mass_M1100_M1200, plotType, pauseFit=False);
@@ -1012,13 +1018,13 @@ def print_table(): #{{{
 #}}}
 
 if __name__ == "__main__":
-    #run()
+    run()
     #print_table()
 
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set0"               ,  "signal_efficiency_old"        )
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set1"               ,  "signal_efficiency"            )
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set2"               ,  "signal_efficiency_newOpt"     )
-    make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set3"               ,  "signal_efficiency"     )
+    #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set3"               ,  "signal_efficiency"     )
     #make_efficiency("Ratio (Opt2/Opt1)"  ,  myParameterSets["ratio"]         ,  "ratio"              ,  "signal_efficiency_comparison" )
     #make_efficiency("Significance"       ,  myParameterSets["significance"]  ,  "set1,significance"  ,  "significance_opt1"            )
     #make_efficiency("Significance"       ,  myParameterSets["significance"]  ,  "set2,significance"  ,  "significance_opt2"            )
