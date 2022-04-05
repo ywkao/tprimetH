@@ -81,6 +81,7 @@ class t {
         TH1D* h_counter_validation_region;
         TH2D* h_map;
 
+        int n_validation_regions;
         TString tag;
         bool is_data;
         int counter_SR1;
@@ -162,9 +163,9 @@ void t::Init(TTree *tree, TString input)
     c1->SetRightMargin(0.15);
     c1->SetLeftMargin(0.15);
 
+    n_validation_regions = 170;
     h_counter_signal_region = new TH1D("h_counter_signal_region", ";Signal regions; Yields", 3, 0, 3);
-    h_counter_validation_region = new TH1D("h_counter_validation_region", ";Validation regions; Yields", 50, 0, 50);
-    //h_counter_validation_region->SetStats(0);
+    h_counter_validation_region = new TH1D("h_counter_validation_region", ";Validation regions; Yields", n_validation_regions, 0, n_validation_regions);
     h_counter_validation_region->SetMinimum(0.);
 
     h_map = new TH2D("h_map", ";BDT-NRB;BDT-SMH", 50, 0., 1., 50, 0., 1.);
@@ -247,16 +248,16 @@ Int_t t::Cut(const Long64_t &entry, const My_Cut_Values &cut, const double &bdt_
 
 void t::Report()
 {
-    for(int i=0; i<50; ++i) {
+    for(int i=0; i<n_validation_regions; ++i) {
         printf("in VR%d: %.2f\n", i+1, h_counter_validation_region->GetBinContent(i+1));
     }
 
     printf("in SR1: %.2f\n", h_counter_signal_region->GetBinContent(1));
     printf("in SR2: %.2f\n", h_counter_signal_region->GetBinContent(2));
     printf("in SR3: %.2f\n", h_counter_signal_region->GetBinContent(3));
-    printf("counter_SR1 = %d, yields_SR1 = %.2f\n", counter_SR1, yields_SR1);
-    printf("counter_SR2 = %d, yields_SR2 = %.2f\n", counter_SR2, yields_SR2);
-    printf("counter_SR3 = %d, yields_SR3 = %.2f\n", counter_SR3, yields_SR3);
+    //printf("counter_SR1 = %d, yields_SR1 = %.2f\n", counter_SR1, yields_SR1);
+    //printf("counter_SR2 = %d, yields_SR2 = %.2f\n", counter_SR2, yields_SR2);
+    //printf("counter_SR3 = %d, yields_SR3 = %.2f\n", counter_SR3, yields_SR3);
 }
 
 void t::Make_plots()

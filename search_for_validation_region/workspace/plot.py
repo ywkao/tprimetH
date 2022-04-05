@@ -26,7 +26,7 @@ def evaluate():
         significance = smh / math.sqrt(data_sideband/6.) if data_sideband > 0. else 0.
         h.SetBinContent(i+1, significance)
         h.SetError(error)
-        #print ">>>", i+1, smh, data_sideband, significance
+        print ">>>", i+1, smh, data_sideband, significance
 
     vh.append(h)
 
@@ -49,12 +49,12 @@ def make_plot():
     # smh
     rightmax = 1.1 * vh[1].GetMaximum()
     scale = ROOT.gPad.GetUymax() / rightmax
-    vh[1].SetLineColor(ROOT.kBlue)
+    vh[1].SetLineColor(ROOT.kBlue-7)
     vh[1].Scale(scale)
     vh[1].Draw("hist;same")
-    axis = ROOT.TGaxis(ROOT.gPad.GetUxmax(), ROOT.gPad.GetUymin(), ROOT.gPad.GetUxmax(), ROOT.gPad.GetUymax(), 0, rightmax, 510, "+L")
-    axis.SetLineColor(ROOT.kBlue)
-    axis.SetLabelColor(ROOT.kBlue)
+    axis = ROOT.TGaxis(ROOT.gPad.GetUxmax()*1.12, ROOT.gPad.GetUymin(), ROOT.gPad.GetUxmax()*1.12, ROOT.gPad.GetUymax(), 0, rightmax, 510, "+L")
+    axis.SetLineColor(ROOT.kBlue-7)
+    axis.SetLabelColor(ROOT.kBlue-7)
     axis.Draw()
 
     ## signal
@@ -78,16 +78,18 @@ def make_plot():
     vh[-1].SetLineColor(ROOT.kRed-7)
     vh[-1].Scale(scale)
     vh[-1].Draw("lp0;same")
-    axis_sig = ROOT.TGaxis(55, ROOT.gPad.GetUymin(), 55, ROOT.gPad.GetUymax(), 0, rightmax, 510, "+L")
+    axis_sig = ROOT.TGaxis(ROOT.gPad.GetUxmax()*0.999, ROOT.gPad.GetUymin(), ROOT.gPad.GetUxmax()*0.999, ROOT.gPad.GetUymax(), 0, rightmax, 510, "+L")
     axis_sig.SetLineColor(ROOT.kRed-7)
     axis_sig.SetLabelColor(ROOT.kRed-7)
     axis_sig.SetLabelOffset(0.01)
     axis_sig.Draw()
 
     # legend
-    legend = ROOT.TLegend(0.20, 0.65, 0.50, 0.85)
+    legend = ROOT.TLegend(0.18, 0.67, 0.30, 0.87)
+    #legend = ROOT.TLegend(0.20, 0.65, 0.50, 0.85)
+    #legend = ROOT.TLegend(0.40, 0.40, 0.70, 0.60)
     legend.SetLineColor(0)
-    legend.SetTextSize(0.04)
+    legend.SetTextSize(0.03)
     legend.AddEntry(vh[0], "Data in sideband", "lep")
     legend.AddEntry(vh[1], "SMH", "f")
     #legend.AddEntry(vh[2], "VLQ-M600", "f")
