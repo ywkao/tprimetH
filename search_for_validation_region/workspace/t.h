@@ -65,8 +65,8 @@ class t {
         t(TTree *tree=0, TString input="");
         virtual ~t();
         virtual Int_t    Cut(Long64_t entry);
-        virtual Int_t    Cut(Long64_t entry, My_Cut_Values cut, double bdt_nrb, double bdt_smh);
-        virtual My_Cut_Values set_threshold(vector<double> a, vector<double> b, vector<double> c);
+        virtual Int_t    Cut(const Long64_t &entry, const My_Cut_Values &cut, const double &bdt_nrb, const double &bdt_smh);
+        virtual My_Cut_Values set_threshold(const vector<double> &a, const vector<double> &b, const vector<double> &c);
         virtual Int_t    GetEntry(Long64_t entry);
         virtual Long64_t LoadTree(Long64_t entry);
         virtual void     Init(TTree *tree, TString input);
@@ -222,7 +222,7 @@ Int_t t::Cut(Long64_t entry)
         return -1;
 }
 
-My_Cut_Values t::set_threshold(vector<double> a, vector<double> b, vector<double> c)
+My_Cut_Values t::set_threshold(const vector<double> &a, const vector<double> &b, const vector<double> &c)
 {
     My_Cut_Values cut;
     cut.bdt_nrb_lowerBound = a[0];
@@ -234,7 +234,7 @@ My_Cut_Values t::set_threshold(vector<double> a, vector<double> b, vector<double
     return cut;    
 }
 
-Int_t t::Cut(Long64_t entry, My_Cut_Values cut, double bdt_nrb, double bdt_smh)
+Int_t t::Cut(const Long64_t &entry, const My_Cut_Values &cut, const double &bdt_nrb, const double &bdt_smh)
 {
    bool pass_BDG_NRB     = bdt_nrb > cut.bdt_nrb_lowerBound  && bdt_nrb <= cut.bdt_nrb_upperBound;
    bool pass_BDG_SMH     = bdt_smh > cut.bdt_smh_lowerBound  && bdt_smh <= cut.bdt_smh_upperBound;
