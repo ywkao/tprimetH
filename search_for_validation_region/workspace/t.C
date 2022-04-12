@@ -20,6 +20,7 @@ void t::Loop()
     My_Cut_Values cut_VR_val  = set_threshold( {0.580,0.780}, {0.000,0.800}, {0.00,480.}  );
     My_Cut_Values cut_VR_val2 = set_threshold( {0.460,0.780}, {0.000,0.800}, {0.00,480.}  );
     My_Cut_Values cut_VR_val3 = set_threshold( {0.180,0.780}, {0.000,0.800}, {0.00,480.}  );
+    My_Cut_Values cut_check   = set_threshold( {0.000,1.000}, {0.000,1.000}, {480.,5000.} );
 
     int nCuts = 156;
     double step = 0.005;
@@ -58,9 +59,10 @@ void t::Loop()
         if (Cut(ientry, cut_VR_sig, BDTG_TprimeVsNonHiggs_M600_M700  , BDTG_TprimeVsHiggs_M600_M700)   > 0){ h_counter_validation_region->Fill(value+1., weight); }
         if (Cut(ientry, cut_VR_inv, BDTG_TprimeVsNonHiggs_M600_M700  , BDTG_TprimeVsHiggs_M600_M700)   > 0){ h_counter_validation_region->Fill(value+2., weight); }
         if (Cut(ientry, cut_VR_inv2, BDTG_TprimeVsNonHiggs_M600_M700  , BDTG_TprimeVsHiggs_M600_M700)  > 0){ h_counter_validation_region->Fill(value+3., weight); }
-        if (Cut(ientry, cut_VR_val, BDTG_TprimeVsNonHiggs_M600_M700  , BDTG_TprimeVsHiggs_M600_M700)   > 0){ h_counter_validation_region->Fill(value+4., weight); }
-        if (Cut(ientry, cut_VR_val2, BDTG_TprimeVsNonHiggs_M600_M700  , BDTG_TprimeVsHiggs_M600_M700)  > 0){ h_counter_validation_region->Fill(value+5., weight); }
-        if (Cut(ientry, cut_VR_val3, BDTG_TprimeVsNonHiggs_M600_M700  , BDTG_TprimeVsHiggs_M600_M700)  > 0){ h_counter_validation_region->Fill(value+6., weight); }
+        if (Cut(ientry, cut_VR_val2, BDTG_TprimeVsNonHiggs_M600_M700  , BDTG_TprimeVsHiggs_M600_M700)  > 0){ h_counter_validation_region->Fill(value+4., weight); }
+        if (Cut(ientry, cut_VR_val3, BDTG_TprimeVsNonHiggs_M600_M700  , BDTG_TprimeVsHiggs_M600_M700)  > 0){ h_counter_validation_region->Fill(value+5., weight); }
+        if (Cut(ientry, cut_check  , BDTG_TprimeVsNonHiggs_M600_M700  , BDTG_TprimeVsHiggs_M600_M700)  > 0){ h_counter_validation_region->Fill(value+6., weight); }
+        if (Cut(ientry, cut_VR_val, BDTG_TprimeVsNonHiggs_M600_M700  , BDTG_TprimeVsHiggs_M600_M700)   > 0){ h_counter_validation_region->Fill(value+7., weight); }
 
         // reference points
         if (Cut(ientry, cut_SR1, BDTG_TprimeVsNonHiggs_M600_M700  , BDTG_TprimeVsHiggs_M600_M700)   > 0){ h_counter_signal_region->Fill(0.5, weight); }

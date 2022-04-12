@@ -36,6 +36,7 @@ command_list = []
 cwd = os.getcwd()
 location_v3p6 = cwd + "/rootfiles/ntuples_v3.6"
 location_v3p8 = cwd + "/rootfiles/ntuples_v3.8"
+location_v4p2 = cwd + "/rootfiles/ntuples_v4.2"
 location = cwd + "/rootfiles/ntuples_v4.1"
 xml_file = "mva/Hadronic__tprime_impute_hct__bdt.xml"
 
@@ -164,7 +165,7 @@ if __name__ == "__main__":
         #create_commands(sm.dict_trees['tHq'], ["output_TprimeBToTH_M-1000_n500_UL17_v2.root"], path, "2017")
 
         #create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'], location_v3p8)
-        create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'])
+        create_commands(sm.dict_trees['Data'], sm.dict_rootfiles['Data'], location_v4p2)
         #create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['diphoton'])
 
         #create_commands(sm.dict_trees['NRB'] , sm.dict_rootfiles['gammaJets'])
