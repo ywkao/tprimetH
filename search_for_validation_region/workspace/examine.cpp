@@ -1,4 +1,5 @@
 #include "t.C"
+#include "p.C"
 
 int main(int argc, char *argv[])
 {
@@ -16,7 +17,10 @@ int main(int argc, char *argv[])
     if (!f || !f->IsOpen()) { f = new TFile(input); }
     f->GetObject("t",tree);
 
-    t mytree(tree, input);
+    //t mytree(tree, input);
+    //mytree.Loop();
+
+    p mytree(tree, input);
     mytree.Loop();
 
     return 0;

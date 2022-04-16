@@ -15,20 +15,21 @@
 #include <TH2D.h>
 #include <TCanvas.h>
 #include <vector>
+#include "toolbox.h"
 
 using namespace std;
 
 // Header file for the classes stored in the TTree if any.
-struct My_Cut_Values{
-    double bdt_nrb_lowerBound;
-    double bdt_nrb_upperBound;
-
-    double bdt_smh_lowerBound;
-    double bdt_smh_upperBound;
-
-    double mass_lowerBound;
-    double mass_upperBound;
-};
+//struct My_Cut_Values{
+//    double bdt_nrb_lowerBound;
+//    double bdt_nrb_upperBound;
+//
+//    double bdt_smh_lowerBound;
+//    double bdt_smh_upperBound;
+//
+//    double mass_lowerBound;
+//    double mass_upperBound;
+//};
 
 class t {
     public :

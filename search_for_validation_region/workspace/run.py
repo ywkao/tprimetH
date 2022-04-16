@@ -14,7 +14,10 @@ if __name__ == "__main__":
     subprocess.call("mkdir -p eos/signal_region", shell=True)
     subprocess.call("mkdir -p ./log", shell=True)
     #process( "output_Data.root" )
-    process( "output_Data_v4p2.root" )
+    #process( "output_Data_v4p2.root" )
+    process( "output_Data_600_700_leptonic.root" )
+    process( "output_Data_800_1000_leptonic.root" )
+    process( "output_Data_1100_1200_leptonic.root" )
 
     exit()
 
