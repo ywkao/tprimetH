@@ -598,6 +598,7 @@ void BabyMaker::ScanChain(TChain* chain, TString name_output_file, TString treeN
 
       } else if(produce_ntuples_for_Maxime) {
           if(process_id_!=18) FillBabyNtuple();
+          //if(process_id_==18) FillBabyNtuple(); // for (gamma) + jets ntuples
       } else {
           const float oversample_ggh = 81.;
           const float oversample_tth = 1.;

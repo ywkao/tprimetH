@@ -143,12 +143,12 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
   //bool ref_ultraLegacySample = (mYear!="2016");
   bool ref_ultraLegacySample = true;
   if (ref_ultraLegacySample) {
-      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210820/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210820/weights/TMVAClassification_BDTG.weights.xml";
-      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210818/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210818/weights/TMVAClassification_BDTG.weights.xml";
+      //BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210820/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20210820/weights/TMVAClassification_BDTG.weights.xml";
+      //BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20210818/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20210818/weights/TMVAClassification_BDTG.weights.xml";
       
       // ul workspace
-      //BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20220125/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20220125/weights/TMVAClassification_BDTG.weights.xml";
-      //BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20220125/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20220125/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_nrb_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20220125/dataset_Run2_Tprime_NRB_varSet8_M600_M700_20220125/weights/TMVAClassification_BDTG.weights.xml";
+      BDT_smh_xml_file_ = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/ttH/MVAs/results/20220125/dataset_Run2_Tprime_SMH_varSet8_M600_M700_20220125/weights/TMVAClassification_BDTG.weights.xml";
   }
 
   flashgg::THQ_BDT_Helper *tprimeTagger_nrb = new flashgg::THQ_BDT_Helper("BDTG", BDT_nrb_xml_file_);
@@ -358,7 +358,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
           if (!pass_json(mYear, analyzer.run(), analyzer.lumi())) continue;
       }
 
-      bool blind = true;
+      bool blind = false; // unblind
       int genPhotonId = isData ? -1 : categorize_photons(leadGenMatch(), subleadGenMatch()); // overlap removal for ttX
       int processId = categorize_process(currentFileTitle, genPhotonId);
       bool is_signal = (processId >= 27 && processId <= 36); // signal id in [27, 36]

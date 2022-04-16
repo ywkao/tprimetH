@@ -77,9 +77,13 @@ class t {
         virtual void     Make_plots();
     private:
         TCanvas* c1;
+        TCanvas* c2;
         TH1D* h_counter_signal_region;
         TH1D* h_counter_validation_region;
         TH2D* h_map;
+        TH2D* h_mass_map_SR1;
+        TH2D* h_mass_map_SR2;
+        TH2D* h_mass_map_SR3;
 
         int n_validation_regions;
         TString tag;
@@ -154,7 +158,17 @@ void t::Init(TTree *tree, TString input)
     is_data = input.Contains("Data");
     if(is_data) tag = "data";
     else if(input.Contains("SMH")) tag = "smh";
-    else if(input.Contains("Tprime")) tag = "sig";
+    else if(input.Contains("NRB")) tag = "nrb";
+    else if(input.Contains("TprimeBToTH_M-600")) tag = "sig_M600";
+    else if(input.Contains("TprimeBToTH_M-625")) tag = "sig_M625";
+    else if(input.Contains("TprimeBToTH_M-650")) tag = "sig_M650";
+    else if(input.Contains("TprimeBToTH_M-675")) tag = "sig_M675";
+    else if(input.Contains("TprimeBToTH_M-700")) tag = "sig_M700";
+    else if(input.Contains("TprimeBToTH_M-800")) tag = "sig_M800";
+    else if(input.Contains("TprimeBToTH_M-900")) tag = "sig_M900";
+    else if(input.Contains("TprimeBToTH_M-1000")) tag = "sig_M1000";
+    else if(input.Contains("TprimeBToTH_M-1100")) tag = "sig_M1100";
+    else if(input.Contains("TprimeBToTH_M-1200")) tag = "sig_M1200";
     else tag = "others";
 
     c1 = new TCanvas("c1", "", 800, 600);
@@ -163,6 +177,12 @@ void t::Init(TTree *tree, TString input)
     c1->SetRightMargin(0.15);
     c1->SetLeftMargin(0.15);
 
+    c2 = new TCanvas("c2", "", 800, 800);
+    c2->SetGrid();
+    c2->SetTicks();
+    c2->SetRightMargin(0.15);
+    c2->SetLeftMargin(0.15);
+
     n_validation_regions = 170;
     h_counter_signal_region = new TH1D("h_counter_signal_region", ";Signal regions; Yields", 3, 0, 3);
     h_counter_validation_region = new TH1D("h_counter_validation_region", ";Validation regions; Yields", n_validation_regions, 0, n_validation_regions);
@@ -170,6 +190,29 @@ void t::Init(TTree *tree, TString input)
 
     h_map = new TH2D("h_map", ";BDT-NRB;BDT-SMH", 50, 0., 1., 50, 0., 1.);
     h_map->SetStats(0);
+
+    //h_mass_map_SR1 = new TH2D("h_mass_map_SR1", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 24, 400., 1600.);
+    //h_mass_map_SR2 = new TH2D("h_mass_map_SR2", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 24, 400., 1600.);
+    //h_mass_map_SR3 = new TH2D("h_mass_map_SR3", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 24, 400., 1600.);
+    h_mass_map_SR1 = new TH2D("h_mass_map_SR1", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 7, 450., 800.);
+    h_mass_map_SR2 = new TH2D("h_mass_map_SR2", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 12, 550., 1150.);
+    h_mass_map_SR3 = new TH2D("h_mass_map_SR3", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 19, 650., 1600.);
+    h_mass_map_SR1->SetStats(0);
+    h_mass_map_SR2->SetStats(0);
+    h_mass_map_SR3->SetStats(0);
+
+    if(is_data) {
+        h_mass_map_SR1->SetMaximum(3);
+        h_mass_map_SR2->SetMaximum(3);
+        h_mass_map_SR3->SetMaximum(3);
+        h_mass_map_SR1->SetMinimum(1);
+        h_mass_map_SR2->SetMinimum(1);
+        h_mass_map_SR3->SetMinimum(1);
+    } else {
+        h_mass_map_SR1->SetMinimum(0);
+        h_mass_map_SR2->SetMinimum(0);
+        h_mass_map_SR3->SetMinimum(0);
+    }
 
     counter_SR1 = 0;
     counter_SR2 = 0;
@@ -213,7 +256,10 @@ void t::Show(Long64_t entry)
 
 Int_t t::Cut(Long64_t entry)
 {
+    // unblind
+    return 1;
 
+    // blind
     bool is_in_mgg_window = dipho_mass > 115. && dipho_mass < 135.;
     bool pass_mgg_cut = (is_data && !is_in_mgg_window) || (!is_data);
 
@@ -237,9 +283,12 @@ My_Cut_Values t::set_threshold(const vector<double> &a, const vector<double> &b,
 
 Int_t t::Cut(const Long64_t &entry, const My_Cut_Values &cut, const double &bdt_nrb, const double &bdt_smh)
 {
+   
+   bool is_in_mgg_window = dipho_mass > 115. && dipho_mass < 135.;
    bool pass_BDG_NRB     = bdt_nrb > cut.bdt_nrb_lowerBound  && bdt_nrb <= cut.bdt_nrb_upperBound;
    bool pass_BDG_SMH     = bdt_smh > cut.bdt_smh_lowerBound  && bdt_smh <= cut.bdt_smh_upperBound;
    bool pass_Tprime_mass = Tprime_mass > cut.mass_lowerBound && Tprime_mass < cut.mass_upperBound;
+   //bool accepted         = pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass && is_in_mgg_window;
    bool accepted         = pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass;
 
    if(accepted) return 1;
@@ -248,13 +297,17 @@ Int_t t::Cut(const Long64_t &entry, const My_Cut_Values &cut, const double &bdt_
 
 void t::Report()
 {
-    for(int i=0; i<n_validation_regions; ++i) {
-        printf("in VR%d: %.2f\n", i+1, h_counter_validation_region->GetBinContent(i+1));
-    }
 
     printf("in SR1: %.2f\n", h_counter_signal_region->GetBinContent(1));
     printf("in SR2: %.2f\n", h_counter_signal_region->GetBinContent(2));
     printf("in SR3: %.2f\n", h_counter_signal_region->GetBinContent(3));
+
+    return;
+
+    for(int i=0; i<n_validation_regions; ++i) {
+        printf("in VR%d: %.2f\n", i+1, h_counter_validation_region->GetBinContent(i+1));
+    }
+
     //printf("counter_SR1 = %d, yields_SR1 = %.2f\n", counter_SR1, yields_SR1);
     //printf("counter_SR2 = %d, yields_SR2 = %.2f\n", counter_SR2, yields_SR2);
     //printf("counter_SR3 = %d, yields_SR3 = %.2f\n", counter_SR3, yields_SR3);
@@ -264,6 +317,7 @@ void t::Make_plots()
 {
     TString output;
 
+    c1->cd();
     h_counter_signal_region->Draw("hist;text");
     output = "eos/signal_region/h_counter_signal_region_" + tag;
     c1->SaveAs(output + ".png");
@@ -282,5 +336,21 @@ void t::Make_plots()
     output = "eos/h_map_" + tag;
     c1->SaveAs(output + ".png");
     c1->SaveAs(output + ".pdf");
+
+    c2->cd();
+    h_mass_map_SR1->Draw("colz");
+    output = "eos/h_mass_map_SR1_" + tag;
+    c2->SaveAs(output + ".png");
+    c2->SaveAs(output + ".pdf");
+
+    h_mass_map_SR2->Draw("colz");
+    output = "eos/h_mass_map_SR2_" + tag;
+    c2->SaveAs(output + ".png");
+    c2->SaveAs(output + ".pdf");
+
+    h_mass_map_SR3->Draw("colz");
+    output = "eos/h_mass_map_SR3_" + tag;
+    c2->SaveAs(output + ".png");
+    c2->SaveAs(output + ".pdf");
 }
 #endif // #ifdef t_cxx

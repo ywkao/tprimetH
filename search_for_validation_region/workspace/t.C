@@ -71,6 +71,10 @@ void t::Loop()
         if (Cut(ientry, cut_SR1, BDTG_TprimeVsNonHiggs_M600_M700  , BDTG_TprimeVsHiggs_M600_M700)   > 0){ counter_SR1 += 1; yields_SR1 += weight; }
         if (Cut(ientry, cut_SR2, BDTG_TprimeVsNonHiggs_M800_M1000 , BDTG_TprimeVsHiggs_M800_M1000)  > 0){ counter_SR2 += 1; yields_SR2 += weight; }
         if (Cut(ientry, cut_SR3, BDTG_TprimeVsNonHiggs_M1100_M1200, BDTG_TprimeVsHiggs_M1100_M1200) > 0){ counter_SR3 += 1; yields_SR3 += weight; }
+
+        if (Cut(ientry, cut_SR1, BDTG_TprimeVsNonHiggs_M600_M700  , BDTG_TprimeVsHiggs_M600_M700)   > 0){ h_mass_map_SR1->Fill(dipho_mass, Tprime_mass, weight); }
+        if (Cut(ientry, cut_SR2, BDTG_TprimeVsNonHiggs_M800_M1000 , BDTG_TprimeVsHiggs_M800_M1000)  > 0){ h_mass_map_SR2->Fill(dipho_mass, Tprime_mass, weight); }
+        if (Cut(ientry, cut_SR3, BDTG_TprimeVsNonHiggs_M1100_M1200, BDTG_TprimeVsHiggs_M1100_M1200) > 0){ h_mass_map_SR3->Fill(dipho_mass, Tprime_mass, weight); }
     }
 
     Report();
