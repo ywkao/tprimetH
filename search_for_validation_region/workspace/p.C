@@ -22,9 +22,9 @@ void p::Loop()
         nb = fChain->GetEntry(jentry);   nbytes += nb;
         // if (Cut(ientry) < 0) continue;
 
-        if (is_SR1 && Cut(ientry, cut_SR1, MVAscore_TprimeVsNonHiggs, MVAscore_TprimeVsHiggs) > 0){ h_mass_map_SR1->Fill(dipho_mass, Tprime_mass, weight); }
-        if (is_SR2 && Cut(ientry, cut_SR2, MVAscore_TprimeVsNonHiggs, MVAscore_TprimeVsHiggs) > 0){ h_mass_map_SR2->Fill(dipho_mass, Tprime_mass, weight); }
-        if (is_SR3 && Cut(ientry, cut_SR3, MVAscore_TprimeVsNonHiggs, MVAscore_TprimeVsHiggs) > 0){ h_mass_map_SR3->Fill(dipho_mass, Tprime_mass, weight); }
+        if (is_SR1 && Cut(ientry,cut_SR1,MVAscore_TprimeVsNonHiggs,MVAscore_TprimeVsHiggs) > 0){ h_mass_map_SR1->Fill(dipho_mass,Tprime_mass,weight); h_mass_diphoton_SR1->Fill(dipho_mass,weight);}
+        if (is_SR2 && Cut(ientry,cut_SR2,MVAscore_TprimeVsNonHiggs,MVAscore_TprimeVsHiggs) > 0){ h_mass_map_SR2->Fill(dipho_mass,Tprime_mass,weight); h_mass_diphoton_SR2->Fill(dipho_mass,weight);}
+        if (is_SR3 && Cut(ientry,cut_SR3,MVAscore_TprimeVsNonHiggs,MVAscore_TprimeVsHiggs) > 0){ h_mass_map_SR3->Fill(dipho_mass,Tprime_mass,weight); h_mass_diphoton_SR3->Fill(dipho_mass,weight);}
     }
 
     Report();

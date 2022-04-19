@@ -8,5 +8,5 @@ TARGET = bin/examine
 
 all: $(TARGET)
 
-bin/examine: examine.cpp t.C t.h toolbox.h
+bin/examine: examine.cpp t.C t.h toolbox.h p.C p.h
 	$(CC) $(CFLAGS) -I${ROOTSYS}/include -o bin/examine examine.cpp $(ROOTLIBS)

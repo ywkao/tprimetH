@@ -15,13 +15,20 @@ int main(int argc, char *argv[])
     TTree *tree = 0;
     TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(input);
     if (!f || !f->IsOpen()) { f = new TFile(input); }
-    f->GetObject("t",tree);
 
-    //t mytree(tree, input);
-    //mytree.Loop();
+    bool is_leptonic = input.Contains("leptonic");
 
-    p mytree(tree, input);
-    mytree.Loop();
+    if(!is_leptonic) {
+        //--- hadronic channel ---//
+        f->GetObject("t",tree);
+        t mytree(tree, input);
+        mytree.Loop();
+    } else {
+        //--- leptonic channel ---//
+        f->GetObject("Data_13TeV_THQLeptonicTag",tree);
+        p mytree(tree, input);
+        mytree.Loop();
+    }
 
     return 0;
 }

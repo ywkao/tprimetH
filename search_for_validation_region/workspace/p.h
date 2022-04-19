@@ -53,6 +53,7 @@ class p {
         virtual void     Show(Long64_t entry = -1);
         virtual void     Report();
         virtual void     Make_plots();
+        virtual void     Annotate();
 
     private:
         TString tag;
@@ -60,10 +61,14 @@ class p {
         bool is_SR1;
         bool is_SR2;
         bool is_SR3;
+        TCanvas* c1;
         TCanvas* c2;
         TH2D* h_mass_map_SR1;
         TH2D* h_mass_map_SR2;
         TH2D* h_mass_map_SR3;
+        TH1D* h_mass_diphoton_SR1;
+        TH1D* h_mass_diphoton_SR2;
+        TH1D* h_mass_diphoton_SR3;
 };
 
 #endif
@@ -126,6 +131,12 @@ void p::Init(TTree *tree, TString input)
     if( input.Contains("800_1000") )  { is_SR1=false ; is_SR2=true  ; is_SR3=false ; }
     if( input.Contains("1100_1200") ) { is_SR1=false ; is_SR2=false ; is_SR3=true  ; }
 
+    c1 = new TCanvas("c1", "", 800, 600);
+    c1->SetGrid();
+    c1->SetTicks();
+    c1->SetRightMargin(0.15);
+    c1->SetLeftMargin(0.15);
+
     c2 = new TCanvas("c2", "", 800, 800);
     c2->SetGrid();
     c2->SetTicks();
@@ -138,6 +149,22 @@ void p::Init(TTree *tree, TString input)
     h_mass_map_SR1->SetStats(0);
     h_mass_map_SR2->SetStats(0);
     h_mass_map_SR3->SetStats(0);
+
+    h_mass_diphoton_SR1 = new TH1D("h_mass_diphoton_SR1", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
+    h_mass_diphoton_SR2 = new TH1D("h_mass_diphoton_SR2", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
+    h_mass_diphoton_SR3 = new TH1D("h_mass_diphoton_SR3", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
+    //h_mass_diphoton_SR1->SetStats(0);
+    //h_mass_diphoton_SR2->SetStats(0);
+    //h_mass_diphoton_SR3->SetStats(0);
+    h_mass_diphoton_SR1->SetMinimum(0);
+    h_mass_diphoton_SR2->SetMinimum(0);
+    h_mass_diphoton_SR3->SetMinimum(0);
+    h_mass_diphoton_SR1->SetMarkerStyle(20);
+    h_mass_diphoton_SR2->SetMarkerStyle(20);
+    h_mass_diphoton_SR3->SetMarkerStyle(20);
+    h_mass_diphoton_SR1->SetLineColor(kBlack);
+    h_mass_diphoton_SR2->SetLineColor(kBlack);
+    h_mass_diphoton_SR3->SetLineColor(kBlack);
 
     if(is_data) {
         h_mass_map_SR1->SetMaximum(3);
@@ -230,6 +257,17 @@ void p::Report()
     return;
 }
 
+void p::Annotate()
+{
+    TLatex latex;
+    latex.SetNDC();
+    latex.SetTextFont(43);
+    latex.SetTextAlign(11);
+    latex.SetTextSize(26);
+    latex.DrawLatex( 0.15, 0.912, "#bf{CMS} #it{Preliminary}" );
+    latex.DrawLatex( 0.63, 0.912, "138 fb^{-1} (13 TeV)" );
+}
+
 void p::Make_plots()
 {
     TString output;
@@ -238,27 +276,50 @@ void p::Make_plots()
     if(is_data) option = "ep";
     else option = "hist";
 
-    c2->cd();
 
     if(is_SR1) {
+        c2->cd();
         h_mass_map_SR1->Draw("colz");
-        output = "eos/h_mass_map_SR1_" + tag;
+        output = "eos_lep/h_mass_map_SR1_" + tag;
+        Annotate();
         c2->SaveAs(output + ".png");
         c2->SaveAs(output + ".pdf");
+
+        c1->cd();
+        h_mass_diphoton_SR1->Draw("ep");
+        output = "eos_lep/h_mass_diphoton_SR1_" + tag;
+        c1->SaveAs(output + ".png");
+        c1->SaveAs(output + ".pdf");
     }
 
     if(is_SR2) {
+        c2->cd();
         h_mass_map_SR2->Draw("colz");
-        output = "eos/h_mass_map_SR2_" + tag;
+        output = "eos_lep/h_mass_map_SR2_" + tag;
+        Annotate();
         c2->SaveAs(output + ".png");
         c2->SaveAs(output + ".pdf");
+
+        c1->cd();
+        h_mass_diphoton_SR2->Draw("ep");
+        output = "eos_lep/h_mass_diphoton_SR2_" + tag;
+        c1->SaveAs(output + ".png");
+        c1->SaveAs(output + ".pdf");
     }
 
     if(is_SR3) {
+        c2->cd();
         h_mass_map_SR3->Draw("colz");
-        output = "eos/h_mass_map_SR3_" + tag;
+        output = "eos_lep/h_mass_map_SR3_" + tag;
+        Annotate();
         c2->SaveAs(output + ".png");
         c2->SaveAs(output + ".pdf");
+
+        c1->cd();
+        h_mass_diphoton_SR3->Draw("ep");
+        output = "eos_lep/h_mass_diphoton_SR3_" + tag;
+        c1->SaveAs(output + ".png");
+        c1->SaveAs(output + ".pdf");
     }
 }
 #endif // #ifdef p_cxx

@@ -14,6 +14,7 @@
 #include <TH1D.h>
 #include <TH2D.h>
 #include <TCanvas.h>
+#include <TLatex.h>
 #include <vector>
 #include "toolbox.h"
 
@@ -75,6 +76,7 @@ class t {
         virtual Bool_t   Notify();
         virtual void     Show(Long64_t entry = -1);
         virtual void     Report();
+        virtual void     Annotate();
         virtual void     Make_plots();
     private:
         TCanvas* c1;
@@ -85,6 +87,9 @@ class t {
         TH2D* h_mass_map_SR1;
         TH2D* h_mass_map_SR2;
         TH2D* h_mass_map_SR3;
+        TH1D* h_mass_diphoton_SR1;
+        TH1D* h_mass_diphoton_SR2;
+        TH1D* h_mass_diphoton_SR3;
 
         int n_validation_regions;
         TString tag;
@@ -202,6 +207,19 @@ void t::Init(TTree *tree, TString input)
     h_mass_map_SR2->SetStats(0);
     h_mass_map_SR3->SetStats(0);
 
+    h_mass_diphoton_SR1 = new TH1D("h_mass_diphoton_SR1", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
+    h_mass_diphoton_SR2 = new TH1D("h_mass_diphoton_SR2", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
+    h_mass_diphoton_SR3 = new TH1D("h_mass_diphoton_SR3", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
+    h_mass_diphoton_SR1->SetMinimum(0);
+    h_mass_diphoton_SR2->SetMinimum(0);
+    h_mass_diphoton_SR3->SetMinimum(0);
+    h_mass_diphoton_SR1->SetMarkerStyle(20);
+    h_mass_diphoton_SR2->SetMarkerStyle(20);
+    h_mass_diphoton_SR3->SetMarkerStyle(20);
+    h_mass_diphoton_SR1->SetLineColor(kBlack);
+    h_mass_diphoton_SR2->SetLineColor(kBlack);
+    h_mass_diphoton_SR3->SetLineColor(kBlack);
+
     if(is_data) {
         h_mass_map_SR1->SetMaximum(3);
         h_mass_map_SR2->SetMaximum(3);
@@ -314,43 +332,77 @@ void t::Report()
     //printf("counter_SR3 = %d, yields_SR3 = %.2f\n", counter_SR3, yields_SR3);
 }
 
+void t::Annotate()
+{
+    TLatex latex;
+    latex.SetNDC();
+    latex.SetTextFont(43);
+    latex.SetTextAlign(11);
+    latex.SetTextSize(26);
+    latex.DrawLatex( 0.15, 0.912, "#bf{CMS} #it{Preliminary}" );
+    latex.DrawLatex( 0.63, 0.912, "138 fb^{-1} (13 TeV)" );
+}
+
 void t::Make_plots()
 {
     TString output;
 
     c1->cd();
-    h_counter_signal_region->Draw("hist;text");
-    output = "eos/signal_region/h_counter_signal_region_" + tag;
+    //h_counter_signal_region->Draw("hist;text");
+    //output = "eos/signal_region/h_counter_signal_region_" + tag;
+    //c1->SaveAs(output + ".png");
+    //c1->SaveAs(output + ".pdf");
+
+    //TString option = "";
+    //if(is_data) option = "ep";
+    //else option = "hist";
+
+    //h_counter_validation_region->Draw(option);
+    //output = "eos/h_counter_validation_region_" + tag;
+    //c1->SaveAs(output + ".png");
+    //c1->SaveAs(output + ".pdf");
+
+    //h_map->Draw("colz");
+    //output = "eos/h_map_" + tag;
+    //c1->SaveAs(output + ".png");
+    //c1->SaveAs(output + ".pdf");
+
+    //--- 1D plots ---//
+    c1->cd();
+    h_mass_diphoton_SR1->Draw("ep");
+    output = "eos_had/h_mass_diphoton_SR1_" + tag;
     c1->SaveAs(output + ".png");
     c1->SaveAs(output + ".pdf");
 
-    TString option = "";
-    if(is_data) option = "ep";
-    else option = "hist";
-
-    h_counter_validation_region->Draw(option);
-    output = "eos/h_counter_validation_region_" + tag;
+    c1->cd();
+    h_mass_diphoton_SR2->Draw("ep");
+    output = "eos_had/h_mass_diphoton_SR2_" + tag;
     c1->SaveAs(output + ".png");
     c1->SaveAs(output + ".pdf");
 
-    h_map->Draw("colz");
-    output = "eos/h_map_" + tag;
+    c1->cd();
+    h_mass_diphoton_SR3->Draw("ep");
+    output = "eos_had/h_mass_diphoton_SR3_" + tag;
     c1->SaveAs(output + ".png");
     c1->SaveAs(output + ".pdf");
 
+    //--- 2D plots ---//
     c2->cd();
     h_mass_map_SR1->Draw("colz");
-    output = "eos/h_mass_map_SR1_" + tag;
+    output = "eos_had/h_mass_map_SR1_" + tag;
+    Annotate();
     c2->SaveAs(output + ".png");
     c2->SaveAs(output + ".pdf");
 
     h_mass_map_SR2->Draw("colz");
-    output = "eos/h_mass_map_SR2_" + tag;
+    output = "eos_had/h_mass_map_SR2_" + tag;
+    Annotate();
     c2->SaveAs(output + ".png");
     c2->SaveAs(output + ".pdf");
 
     h_mass_map_SR3->Draw("colz");
-    output = "eos/h_mass_map_SR3_" + tag;
+    output = "eos_had/h_mass_map_SR3_" + tag;
+    Annotate();
     c2->SaveAs(output + ".png");
     c2->SaveAs(output + ".pdf");
 }
