@@ -54,7 +54,7 @@ def register(fin, histname, tag, samples, legend):
                 if i==0: result += content
                 else: result += ",  " + content
 
-            print ">>> %-12s, %-25s, %s" % (tag, s, result)
+            #print ">>> %-12s, %-25s, %s" % (tag, s, result)
 
     if tag == "backgrounds" or tag == "smHiggs":
         tot_unc = math.sqrt(tot_unc)

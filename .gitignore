@@ -8,19 +8,24 @@ log*
 
 python/*pyc
 
+tmp*
+test
+
 bin
-
 build
-
 rootfiles
 
-stashed
-
-src/history
-
 dir_log
+stashed
+json*
 
 mva/*xml
+src/history
+fakePhotonStudy/rootfiles*
+fakePhotonStudy/eos*
+fakePhotonStudy/*root
+
+stack_plots/*pyc
 
 # temporary
 python/*

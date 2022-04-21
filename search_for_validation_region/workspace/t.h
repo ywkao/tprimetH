@@ -367,6 +367,8 @@ void t::Make_plots()
     //c1->SaveAs(output + ".png");
     //c1->SaveAs(output + ".pdf");
 
+    return;
+
     //--- 1D plots ---//
     c1->cd();
     h_mass_diphoton_SR1->Draw("ep");

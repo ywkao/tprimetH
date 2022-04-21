@@ -802,6 +802,16 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
 
       //----------------------------------------------------------------------------------------------------}}}
       
+      if(false && evt_weight < 0. && is_within_SR_mixed03) {
+          // check specific bin
+          //bool in_mgg_window = CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.;
+          bool in_mgg_window = CMS_hgg_mass() > 130. && CMS_hgg_mass() < 135.;
+          if(in_mgg_window) {
+              printf(">>> negative weight found in [130, 135], evt_weight = %.2f\n", evt_weight);
+              evt_weight = 0.;
+          }
+      }
+
       bool perform_mc_truth_study = false; // {{{
       if( perform_mc_truth_study && !isData ) {
           //--------------- GEN information ---------------//

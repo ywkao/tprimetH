@@ -6,6 +6,10 @@ ROOT.gROOT.SetBatch(True)
 
 path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots_20220328_ultraLegacy/myhist_combine_RunII.root"
 path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots_20220419_ultraLegacy_unblind/myhist_combine_RunII.root"
+path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots_20220420_v2/myhist_combine_RunII.root"
+
+path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots/myhist_combine_RunII.root"
+path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots_20220419_ultraLegacy_unblind/myhist_combine_RunII.root"
 fin = ROOT.TFile(path, 'R')
 
 def load(fin, histname, my_signals):
@@ -67,13 +71,24 @@ def make_plot(histname):
     hr.Draw("e1")
 
     # save
-    #output = "eos/" + histname.replace("h", "THQHadronicTag_", 1)
-    output = "output/" + histname.replace("h", "THQHadronicTag_", 1)
+    output = "eos/" + histname.replace("h", "THQHadronicTag_", 1)
+    #output = "output/" + histname.replace("h", "THQHadronicTag_", 1)
     c1.SaveAs(output + ".png")
     c1.SaveAs(output + ".pdf")
 
 
 if __name__ == "__main__":
     c1 = p.init_canvas()
-    for histname in m.hists:
+
+    core = [
+        #"hMass",
+        #"hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine",
+        #"hMass_pass_BDTG_smh_cut_mixed03",
+        "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine",
+        "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine",
+        "hMass_pass_BDTG_smh_cut_mixed04",
+        "hMass_pass_BDTG_smh_cut_mixed05",
+    ]
+
+    for histname in core:
         make_plot(histname)

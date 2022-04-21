@@ -20,9 +20,12 @@ int main(int argc, char *argv[])
 
     if(!is_leptonic) {
         //--- hadronic channel ---//
+        printf(">>> hadronic channel: %s\n", input.Data());
+
         f->GetObject("t",tree);
         t mytree(tree, input);
         mytree.Loop();
+
     } else {
         //--- leptonic channel ---//
         f->GetObject("Data_13TeV_THQLeptonicTag",tree);

@@ -22,6 +22,9 @@ void t::Loop()
     My_Cut_Values cut_VR_val3 = set_threshold( {0.180,0.780}, {0.000,0.800}, {0.00,480.}  );
     My_Cut_Values cut_check   = set_threshold( {0.000,1.000}, {0.000,1.000}, {480.,5000.} );
 
+    double yields = 0.;
+    double sumW2 = 0.;
+
     int nCuts = 156;
     double step = 0.005;
     vector<My_Cut_Values> cut_VRs;
@@ -75,7 +78,27 @@ void t::Loop()
         if (Cut(ientry,cut_SR1,BDTG_TprimeVsNonHiggs_M600_M700  ,BDTG_TprimeVsHiggs_M600_M700)   > 0){ h_mass_map_SR1->Fill(dipho_mass,Tprime_mass,weight); h_mass_diphoton_SR1->Fill(dipho_mass,weight); }
         if (Cut(ientry,cut_SR2,BDTG_TprimeVsNonHiggs_M800_M1000 ,BDTG_TprimeVsHiggs_M800_M1000)  > 0){ h_mass_map_SR2->Fill(dipho_mass,Tprime_mass,weight); h_mass_diphoton_SR2->Fill(dipho_mass,weight); }
         if (Cut(ientry,cut_SR3,BDTG_TprimeVsNonHiggs_M1100_M1200,BDTG_TprimeVsHiggs_M1100_M1200) > 0){ h_mass_map_SR3->Fill(dipho_mass,Tprime_mass,weight); h_mass_diphoton_SR3->Fill(dipho_mass,weight); }
+
+        //if (Cut(ientry,cut_SR1,BDTG_TprimeVsNonHiggs_M600_M700  ,BDTG_TprimeVsHiggs_M600_M700) > 0)
+        //if (Cut(ientry,cut_SR2,BDTG_TprimeVsNonHiggs_M800_M1000  ,BDTG_TprimeVsHiggs_M800_M1000) > 0)
+        if (Cut(ientry,cut_SR3,BDTG_TprimeVsNonHiggs_M1100_M1200  ,BDTG_TprimeVsHiggs_M1100_M1200) > 0)
+        {
+            bool is_signal_window = dipho_mass > 115. && dipho_mass < 135.;
+            if(!is_signal_window) continue;
+
+            //bool specific_bin = dipho_mass > 130. && dipho_mass < 135.;
+            //if(weight < 0. && specific_bin) {
+            //    printf(">>> negative weight: %.2f\n", weight);
+            //    continue;
+            //}
+
+            yields += weight;
+            sumW2 += weight*weight;
+        }
     }
+
+    double uncertainty = sqrt(sumW2);
+    printf("result: %.2f \\pm %.2f\n", yields, uncertainty);
 
     Report();
     Make_plots();

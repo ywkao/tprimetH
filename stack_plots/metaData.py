@@ -101,16 +101,6 @@ map_lumi = {
     "default": 138,
 }
 
-hist_mass_core = [
-    #"hMass",
-    "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine",
-    "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine",
-    "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine",
-    "hMass_pass_BDTG_smh_cut_mixed03",
-    "hMass_pass_BDTG_smh_cut_mixed04",
-    "hMass_pass_BDTG_smh_cut_mixed05",
-]
-
 hist_mass = [
     "hMass",
     "hMass_sideband",
@@ -383,5 +373,4 @@ map_xtitles = {
 #--------------------------------------------------
 
 hists = hist_mass + hist_var
-hists = hist_mass_core
 
