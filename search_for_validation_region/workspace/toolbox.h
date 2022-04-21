@@ -46,7 +46,7 @@ void Yield_Calculator::Add(const double &weight)
 
 void Yield_Calculator::Report(TString tag)
 {
-    printf(">>>>> Yield_Calculator::Report\n");
+    //printf(">>>>> Yield_Calculator::Report\n");
     uncertainty = sqrt(sumW2);
     printf("%s: %.2f \\pm %.2f\n", tag.Data(), yields, uncertainty);
 }

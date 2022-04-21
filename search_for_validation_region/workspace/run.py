@@ -6,7 +6,9 @@ path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/
 
 def process(root):
     log = root.replace("root", "txt").replace("output", "log")
-    command = "./bin/examine %s/%s 2>&1 > log/%s" % (path, root, log)
+    #command = "./bin/examine %s/%s 2>&1 > log/%s" % (path, root, log)
+    command = "./bin/examine %s/%s" % (path, root)
+    print ">>>", command
     subprocess.call(command, shell=True)
 
 def create_2D_plots():
@@ -48,12 +50,12 @@ if __name__ == "__main__":
     subprocess.call("mkdir -p eos/signal_region", shell=True)
     subprocess.call("mkdir -p ./log", shell=True)
 
-    #process( "output_Data.root" )
     process( "output_Data_v4p2.root" )
-    process( "output_SMH.root" )
-    process( "output_NRB_v4p2.root" )
 
     exit()
+
+    process( "output_SMH.root" )
+    process( "output_NRB_v4p2.root" )
 
     process_VLQ_signal()
     process_NRB()

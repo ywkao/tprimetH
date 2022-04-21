@@ -78,6 +78,7 @@ class t {
         virtual void     Report();
         virtual void     Annotate();
         //virtual void     Make_plots();
+        virtual void     Make_plots_2D_mass();
         virtual void     Make_plots_2D_phase_space();
         virtual void     Make_plots_validation_regions();
 
@@ -87,6 +88,9 @@ class t {
         TH1D* h_counter_signal_region;
         TH1D* h_counter_validation_region;
         TH2D* h_validation_map;
+        TH2D* h_bdt_map_SR1;
+        TH2D* h_bdt_map_SR2;
+        TH2D* h_bdt_map_SR3;
         TH2D* h_mass_map_SR1;
         TH2D* h_mass_map_SR2;
         TH2D* h_mass_map_SR3;
@@ -100,12 +104,24 @@ class t {
         Yield_Calculator yc_SR1;
         Yield_Calculator yc_SR2;
         Yield_Calculator yc_SR3;
-        //int counter_SR1;
-        //int counter_SR2;
-        //int counter_SR3;
-        //double yields_SR1;
-        //double yields_SR2;
-        //double yields_SR3;
+        Yield_Calculator yc_mp_SR1;
+        Yield_Calculator yc_mp_SR2;
+        Yield_Calculator yc_mp_SR3;
+
+        // defining cuts
+        My_Cut_Values cut_SR1     ;
+        My_Cut_Values cut_SR2     ;
+        My_Cut_Values cut_SR3     ;
+        My_Cut_Values cut_VR1     ;
+        My_Cut_Values cut_VR_smh  ;
+        My_Cut_Values cut_VR_sig  ;
+        My_Cut_Values cut_VR_inv  ;
+        My_Cut_Values cut_VR_inv2 ;
+        My_Cut_Values cut_VR_val  ;
+        My_Cut_Values cut_VR_val2 ;
+        My_Cut_Values cut_VR_val3 ;
+        My_Cut_Values cut_check   ;
+
 };
 
 #endif
@@ -201,11 +217,14 @@ void t::Init(TTree *tree, TString input)
     h_counter_validation_region->SetMinimum(0.);
 
     h_validation_map = new TH2D("h_validation_map", ";BDT-NRB;BDT-SMH", 50, 0., 1., 50, 0., 1.);
+    h_bdt_map_SR1    = new TH2D("h_bdt_map_SR1", ";BDT-NRB;BDT-SMH", 50, 0., 1., 50, 0., 1.);
+    h_bdt_map_SR2    = new TH2D("h_bdt_map_SR2", ";BDT-NRB;BDT-SMH", 50, 0., 1., 50, 0., 1.);
+    h_bdt_map_SR3    = new TH2D("h_bdt_map_SR3", ";BDT-NRB;BDT-SMH", 50, 0., 1., 50, 0., 1.);
     h_validation_map->SetStats(0);
+    h_bdt_map_SR1->SetStats(0);
+    h_bdt_map_SR2->SetStats(0);
+    h_bdt_map_SR3->SetStats(0);
 
-    //h_mass_map_SR1 = new TH2D("h_mass_map_SR1", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 24, 400., 1600.);
-    //h_mass_map_SR2 = new TH2D("h_mass_map_SR2", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 24, 400., 1600.);
-    //h_mass_map_SR3 = new TH2D("h_mass_map_SR3", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 24, 400., 1600.);
     h_mass_map_SR1 = new TH2D("h_mass_map_SR1", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 7, 450., 800.);
     h_mass_map_SR2 = new TH2D("h_mass_map_SR2", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 12, 550., 1150.);
     h_mass_map_SR3 = new TH2D("h_mass_map_SR3", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 19, 650., 1600.);
@@ -239,13 +258,6 @@ void t::Init(TTree *tree, TString input)
         h_mass_map_SR3->SetMinimum(0);
     }
 
-    //counter_SR1 = 0;
-    //counter_SR2 = 0;
-    //counter_SR3 = 0;
-    //yields_SR1 = 0;
-    //yields_SR2 = 0;
-    //yields_SR3 = 0;
-
     fChain->SetBranchAddress("weight", &weight, &b_weight);
     fChain->SetBranchAddress("dipho_mass", &dipho_mass, &b_dipho_mass);
     fChain->SetBranchAddress("Tprime_mass", &Tprime_mass, &b_Tprime_mass);
@@ -256,6 +268,25 @@ void t::Init(TTree *tree, TString input)
     fChain->SetBranchAddress("BDTG_TprimeVsHiggs_M600_M700", &BDTG_TprimeVsHiggs_M600_M700, &b_BDTG_TprimeVsHiggs_M600_M700);
     fChain->SetBranchAddress("BDTG_TprimeVsHiggs_M800_M1000", &BDTG_TprimeVsHiggs_M800_M1000, &b_BDTG_TprimeVsHiggs_M800_M1000);
     fChain->SetBranchAddress("BDTG_TprimeVsHiggs_M1100_M1200", &BDTG_TprimeVsHiggs_M1100_M1200, &b_BDTG_TprimeVsHiggs_M1100_M1200);
+
+    //++++++++++++++++++++++++++++++++++++++++++++++++++
+    // defining cuts
+    //++++++++++++++++++++++++++++++++++++++++++++++++++
+    
+    // Reminder: BDT-NRB bounds, BDT-SMH bounds, MT' bounds
+    cut_SR1     = set_threshold( {0.943,1.000}, {0.800,1.000}, {480.,800.}  );
+    cut_SR2     = set_threshold( {0.960,1.000}, {0.800,1.000}, {550.,1150.} );
+    cut_SR3     = set_threshold( {0.950,1.000}, {0.800,1.000}, {650.,1600.} );
+    cut_VR1     = set_threshold( {0.780,0.800}, {0.000,0.800}, {0.00,480.}  );
+    cut_VR_smh  = set_threshold( {0.000,0.800}, {0.800,1.000}, {0.00,480.}  );
+    cut_VR_sig  = set_threshold( {0.800,1.000}, {0.800,1.000}, {0.00,480.}  );
+    cut_VR_inv  = set_threshold( {0.800,1.000}, {0.600,0.800}, {0.00,480.}  );
+    cut_VR_inv2 = set_threshold( {0.800,1.000}, {0.000,0.600}, {0.00,480.}  );
+    cut_VR_val  = set_threshold( {0.580,0.780}, {0.000,0.800}, {0.00,480.}  );
+    cut_VR_val2 = set_threshold( {0.460,0.780}, {0.000,0.800}, {0.00,480.}  );
+    cut_VR_val3 = set_threshold( {0.180,0.780}, {0.000,0.800}, {0.00,480.}  );
+    cut_check   = set_threshold( {0.000,1.000}, {0.000,1.000}, {480.,5000.} );
+
     Notify();
 }
 
@@ -333,6 +364,10 @@ void t::Report()
     yc_SR2.Report("SR2");
     yc_SR3.Report("SR3");
 
+    yc_mp_SR1.Report("middle-purity SR1");
+    yc_mp_SR2.Report("middle-purity SR2");
+    yc_mp_SR3.Report("middle-purity SR3");
+
     return;
 
     printf("in SR1: %.2f\n", h_counter_signal_region->GetBinContent(1));
@@ -343,9 +378,6 @@ void t::Report()
         printf("in VR%d: %.2f\n", i+1, h_counter_validation_region->GetBinContent(i+1));
     }
 
-    //printf("counter_SR1 = %d, yields_SR1 = %.2f\n", counter_SR1, yields_SR1);
-    //printf("counter_SR2 = %d, yields_SR2 = %.2f\n", counter_SR2, yields_SR2);
-    //printf("counter_SR3 = %d, yields_SR3 = %.2f\n", counter_SR3, yields_SR3);
 }
 
 void t::Annotate()
@@ -385,6 +417,30 @@ void t::Make_plots_validation_regions()
 }
 
 void t::Make_plots_2D_phase_space()
+{
+    TString output;
+
+    c2->cd();
+    h_bdt_map_SR1->Draw("colz");
+    output = "eos/h_bdt_map_SR1_" + tag;
+    Annotate();
+    c2->SaveAs(output + ".png");
+    c2->SaveAs(output + ".pdf");
+
+    h_bdt_map_SR2->Draw("colz");
+    output = "eos/h_bdt_map_SR2_" + tag;
+    Annotate();
+    c2->SaveAs(output + ".png");
+    c2->SaveAs(output + ".pdf");
+
+    h_bdt_map_SR3->Draw("colz");
+    output = "eos/h_bdt_map_SR3_" + tag;
+    Annotate();
+    c2->SaveAs(output + ".png");
+    c2->SaveAs(output + ".pdf");
+}
+
+void t::Make_plots_2D_mass()
 {
     TString output;
 
