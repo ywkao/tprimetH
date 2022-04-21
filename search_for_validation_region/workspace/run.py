@@ -9,32 +9,13 @@ def process(root):
     command = "./bin/examine %s/%s 2>&1 > log/%s" % (path, root, log)
     subprocess.call(command, shell=True)
 
-if __name__ == "__main__":
-    subprocess.call("make", shell=True)
-    subprocess.call("mkdir -p eos/signal_region", shell=True)
-    subprocess.call("mkdir -p ./log", shell=True)
-    #process( "output_Data.root" )
+def create_2D_plots():
+    process( "output_Data_v4p2.root" )
+    process( "output_Data_600_700_leptonic.root" )
+    process( "output_Data_800_1000_leptonic.root" )
+    process( "output_Data_1100_1200_leptonic.root" )
 
-    process( "output_imputedQCD_v4p2.root" )
-    process( "output_DiPhotonJets.root" )
-    process( "output_TTGG.root" )
-    process( "output_TTGJets.root" )
-    process( "output_TTJets.root" )
-    process( "output_WG.root" )
-
-    #process( "output_DiPhotonJets.root" )
-    #process( "output_TTGG.root" )
-    #process( "output_TTGJets.root" )
-
-    #process( "output_Data_v4p2.root" )
-    #process( "output_Data_600_700_leptonic.root" )
-    #process( "output_Data_800_1000_leptonic.root" )
-    #process( "output_Data_1100_1200_leptonic.root" )
-
-    exit()
-
-    process( "output_SMH.root" )
-    process( "output_NRB.root" )
+def process_VLQ_signal():
     process( "output_TprimeBToTH_M-600.root" )
     process( "output_TprimeBToTH_M-625.root" )
     process( "output_TprimeBToTH_M-650.root" )
@@ -46,27 +27,37 @@ if __name__ == "__main__":
     process( "output_TprimeBToTH_M-1100.root" )
     process( "output_TprimeBToTH_M-1200.root" )
 
-    exit()
-
+def process_NRB():
+    #process( "output_imputedQCD.root" )
+    process( "output_imputedQCD_v4p2.root" )
     process( "output_DiPhotonJets.root" )
-    process( "output_imputedQCD.root" )
     process( "output_TTGG.root" )
     process( "output_TTGJets.root" )
     process( "output_TTJets.root" )
     process( "output_WG.root" )
-    subprocess.call("./check_yields.sh", shell=True)
 
-    exit()
-
+def process_SMH():
     process( "output_ttHJet.root" )
     process( "output_GluGluHToGG.root" )
     process( "output_THQ.root" )
     process( "output_VBF.root" )
     process( "output_VHToGG.root" )
 
-    #myhist_combine_RunII.root
-    #process( "MVABaby_Data_Era2016.root" )
-    #process( "MVABaby_Data_Era2017.root" )
-    #process( "MVABaby_Data_Era2018.root" )
-    #process( "MVABaby_Data_combined.root" )
+if __name__ == "__main__":
+    subprocess.call("make", shell=True)
+    subprocess.call("mkdir -p eos/signal_region", shell=True)
+    subprocess.call("mkdir -p ./log", shell=True)
+
+    #process( "output_Data.root" )
+    process( "output_Data_v4p2.root" )
+    process( "output_SMH.root" )
+    process( "output_NRB_v4p2.root" )
+
+    exit()
+
+    process_VLQ_signal()
+    process_NRB()
+    process_SMH()
+
+    subprocess.call("./check_yields.sh", shell=True)
 

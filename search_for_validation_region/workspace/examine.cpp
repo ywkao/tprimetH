@@ -18,16 +18,16 @@ int main(int argc, char *argv[])
 
     bool is_leptonic = input.Contains("leptonic");
 
+    //--- hadronic channel ---//
     if(!is_leptonic) {
-        //--- hadronic channel ---//
         printf(">>> hadronic channel: %s\n", input.Data());
 
         f->GetObject("t",tree);
         t mytree(tree, input);
         mytree.Loop();
 
+    //--- leptonic channel ---//
     } else {
-        //--- leptonic channel ---//
         f->GetObject("Data_13TeV_THQLeptonicTag",tree);
         p mytree(tree, input);
         mytree.Loop();

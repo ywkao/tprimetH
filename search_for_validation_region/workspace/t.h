@@ -66,8 +66,8 @@ class t {
 
         t(TTree *tree=0, TString input="");
         virtual ~t();
-        virtual Int_t    Cut(Long64_t entry);
-        virtual Int_t    Cut(const Long64_t &entry, const My_Cut_Values &cut, const double &bdt_nrb, const double &bdt_smh);
+        virtual Int_t    Cut(Long64_t entry, bool unblind);
+        virtual Int_t    Cut(const Long64_t &entry, const My_Cut_Values &cut, const vector<double> &bdts, bool set_mgg_window=false);
         virtual My_Cut_Values set_threshold(const vector<double> &a, const vector<double> &b, const vector<double> &c);
         virtual Int_t    GetEntry(Long64_t entry);
         virtual Long64_t LoadTree(Long64_t entry);
@@ -77,13 +77,16 @@ class t {
         virtual void     Show(Long64_t entry = -1);
         virtual void     Report();
         virtual void     Annotate();
-        virtual void     Make_plots();
+        //virtual void     Make_plots();
+        virtual void     Make_plots_2D_phase_space();
+        virtual void     Make_plots_validation_regions();
+
     private:
         TCanvas* c1;
         TCanvas* c2;
         TH1D* h_counter_signal_region;
         TH1D* h_counter_validation_region;
-        TH2D* h_map;
+        TH2D* h_validation_map;
         TH2D* h_mass_map_SR1;
         TH2D* h_mass_map_SR2;
         TH2D* h_mass_map_SR3;
@@ -194,8 +197,8 @@ void t::Init(TTree *tree, TString input)
     h_counter_validation_region = new TH1D("h_counter_validation_region", ";Validation regions; Yields", n_validation_regions, 0, n_validation_regions);
     h_counter_validation_region->SetMinimum(0.);
 
-    h_map = new TH2D("h_map", ";BDT-NRB;BDT-SMH", 50, 0., 1., 50, 0., 1.);
-    h_map->SetStats(0);
+    h_validation_map = new TH2D("h_validation_map", ";BDT-NRB;BDT-SMH", 50, 0., 1., 50, 0., 1.);
+    h_validation_map->SetStats(0);
 
     //h_mass_map_SR1 = new TH2D("h_mass_map_SR1", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 24, 400., 1600.);
     //h_mass_map_SR2 = new TH2D("h_mass_map_SR2", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 24, 400., 1600.);
@@ -273,10 +276,10 @@ void t::Show(Long64_t entry)
     fChain->Show(entry);
 }
 
-Int_t t::Cut(Long64_t entry)
+Int_t t::Cut(Long64_t entry, bool unblind)
 {
     // unblind
-    return 1;
+    if(unblind) return 1;
 
     // blind
     bool is_in_mgg_window = dipho_mass > 115. && dipho_mass < 135.;
@@ -300,18 +303,25 @@ My_Cut_Values t::set_threshold(const vector<double> &a, const vector<double> &b,
     return cut;    
 }
 
-Int_t t::Cut(const Long64_t &entry, const My_Cut_Values &cut, const double &bdt_nrb, const double &bdt_smh)
+Int_t t::Cut(const Long64_t &entry, const My_Cut_Values &cut, const vector<double> &bdts, bool set_mgg_window /*=false*/)
 {
-   
-   bool is_in_mgg_window = dipho_mass > 115. && dipho_mass < 135.;
-   bool pass_BDG_NRB     = bdt_nrb > cut.bdt_nrb_lowerBound  && bdt_nrb <= cut.bdt_nrb_upperBound;
-   bool pass_BDG_SMH     = bdt_smh > cut.bdt_smh_lowerBound  && bdt_smh <= cut.bdt_smh_upperBound;
-   bool pass_Tprime_mass = Tprime_mass > cut.mass_lowerBound && Tprime_mass < cut.mass_upperBound;
-   //bool accepted         = pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass && is_in_mgg_window;
-   bool accepted         = pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass;
 
-   if(accepted) return 1;
-   else return -1;
+    double bdt_nrb = bdts[0];
+    double bdt_smh = bdts[1];
+
+    bool is_in_mgg_window = dipho_mass > 115. && dipho_mass < 135.;
+    bool pass_BDG_NRB     = bdt_nrb > cut.bdt_nrb_lowerBound  && bdt_nrb <= cut.bdt_nrb_upperBound;
+    bool pass_BDG_SMH     = bdt_smh > cut.bdt_smh_lowerBound  && bdt_smh <= cut.bdt_smh_upperBound;
+    bool pass_Tprime_mass = Tprime_mass > cut.mass_lowerBound && Tprime_mass < cut.mass_upperBound;
+    bool accepted;
+
+    if(set_mgg_window)
+        accepted = pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass && is_in_mgg_window;
+    else
+        accepted = pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass;
+
+    if(accepted) return 1;
+    else return -1;
 }
 
 void t::Report()
@@ -343,31 +353,34 @@ void t::Annotate()
     latex.DrawLatex( 0.63, 0.912, "138 fb^{-1} (13 TeV)" );
 }
 
-void t::Make_plots()
+void t::Make_plots_validation_regions()
 {
     TString output;
 
     c1->cd();
-    //h_counter_signal_region->Draw("hist;text");
-    //output = "eos/signal_region/h_counter_signal_region_" + tag;
-    //c1->SaveAs(output + ".png");
-    //c1->SaveAs(output + ".pdf");
+    h_counter_signal_region->Draw("hist;text");
+    output = "eos/signal_region/h_counter_signal_region_" + tag;
+    c1->SaveAs(output + ".png");
+    c1->SaveAs(output + ".pdf");
 
-    //TString option = "";
-    //if(is_data) option = "ep";
-    //else option = "hist";
+    TString option = "";
+    if(is_data) option = "ep";
+    else option = "hist";
 
-    //h_counter_validation_region->Draw(option);
-    //output = "eos/h_counter_validation_region_" + tag;
-    //c1->SaveAs(output + ".png");
-    //c1->SaveAs(output + ".pdf");
+    h_counter_validation_region->Draw(option);
+    output = "eos/h_counter_validation_region_" + tag;
+    c1->SaveAs(output + ".png");
+    c1->SaveAs(output + ".pdf");
 
-    //h_map->Draw("colz");
-    //output = "eos/h_map_" + tag;
-    //c1->SaveAs(output + ".png");
-    //c1->SaveAs(output + ".pdf");
+    h_validation_map->Draw("colz");
+    output = "eos/h_validation_map_" + tag;
+    c1->SaveAs(output + ".png");
+    c1->SaveAs(output + ".pdf");
+}
 
-    return;
+void t::Make_plots_2D_phase_space()
+{
+    TString output;
 
     //--- 1D plots ---//
     c1->cd();
