@@ -97,12 +97,15 @@ class t {
         int n_validation_regions;
         TString tag;
         bool is_data;
-        int counter_SR1;
-        int counter_SR2;
-        int counter_SR3;
-        double yields_SR1;
-        double yields_SR2;
-        double yields_SR3;
+        Yield_Calculator yc_SR1;
+        Yield_Calculator yc_SR2;
+        Yield_Calculator yc_SR3;
+        //int counter_SR1;
+        //int counter_SR2;
+        //int counter_SR3;
+        //double yields_SR1;
+        //double yields_SR2;
+        //double yields_SR3;
 };
 
 #endif
@@ -236,12 +239,12 @@ void t::Init(TTree *tree, TString input)
         h_mass_map_SR3->SetMinimum(0);
     }
 
-    counter_SR1 = 0;
-    counter_SR2 = 0;
-    counter_SR3 = 0;
-    yields_SR1 = 0;
-    yields_SR2 = 0;
-    yields_SR3 = 0;
+    //counter_SR1 = 0;
+    //counter_SR2 = 0;
+    //counter_SR3 = 0;
+    //yields_SR1 = 0;
+    //yields_SR2 = 0;
+    //yields_SR3 = 0;
 
     fChain->SetBranchAddress("weight", &weight, &b_weight);
     fChain->SetBranchAddress("dipho_mass", &dipho_mass, &b_dipho_mass);
@@ -326,12 +329,15 @@ Int_t t::Cut(const Long64_t &entry, const My_Cut_Values &cut, const vector<doubl
 
 void t::Report()
 {
+    yc_SR1.Report("SR1");
+    yc_SR2.Report("SR2");
+    yc_SR3.Report("SR3");
+
+    return;
 
     printf("in SR1: %.2f\n", h_counter_signal_region->GetBinContent(1));
     printf("in SR2: %.2f\n", h_counter_signal_region->GetBinContent(2));
     printf("in SR3: %.2f\n", h_counter_signal_region->GetBinContent(3));
-
-    return;
 
     for(int i=0; i<n_validation_regions; ++i) {
         printf("in VR%d: %.2f\n", i+1, h_counter_validation_region->GetBinContent(i+1));

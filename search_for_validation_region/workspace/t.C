@@ -84,9 +84,9 @@ void t::Loop()
         if (Cut(ientry , cut_SR1 , v_bdts_SR1) > 0) { h_counter_signal_region-> Fill(0.5 , weight); }
         if (Cut(ientry , cut_SR2 , v_bdts_SR2) > 0) { h_counter_signal_region-> Fill(1.5 , weight); }
         if (Cut(ientry , cut_SR3 , v_bdts_SR3) > 0) { h_counter_signal_region-> Fill(2.5 , weight); }
-        if (Cut(ientry , cut_SR1 , v_bdts_SR1) > 0) { counter_SR1 += 1; yields_SR1 += weight; }
-        if (Cut(ientry , cut_SR2 , v_bdts_SR2) > 0) { counter_SR2 += 1; yields_SR2 += weight; }
-        if (Cut(ientry , cut_SR3 , v_bdts_SR3) > 0) { counter_SR3 += 1; yields_SR3 += weight; }
+        //if (Cut(ientry , cut_SR1 , v_bdts_SR1) > 0) { counter_SR1 += 1; yields_SR1 += weight; }
+        //if (Cut(ientry , cut_SR2 , v_bdts_SR2) > 0) { counter_SR2 += 1; yields_SR2 += weight; }
+        //if (Cut(ientry , cut_SR3 , v_bdts_SR3) > 0) { counter_SR3 += 1; yields_SR3 += weight; }
         if (Cut(ientry , cut_SR1 , v_bdts_SR1) > 0) { h_mass_map_SR1-> Fill(dipho_mass , Tprime_mass , weight); h_mass_diphoton_SR1-> Fill(dipho_mass , weight); }
         if (Cut(ientry , cut_SR2 , v_bdts_SR2) > 0) { h_mass_map_SR2-> Fill(dipho_mass , Tprime_mass , weight); h_mass_diphoton_SR2-> Fill(dipho_mass , weight); }
         if (Cut(ientry , cut_SR3 , v_bdts_SR3) > 0) { h_mass_map_SR3-> Fill(dipho_mass , Tprime_mass , weight); h_mass_diphoton_SR3-> Fill(dipho_mass , weight); }
@@ -94,9 +94,11 @@ void t::Loop()
         //++++++++++++++++++++++++++++++++++++++++++++++++++
         // check yields
         //++++++++++++++++++++++++++++++++++++++++++++++++++
-        ////if (Cut(ientry,cut_SR1,BDTG_TprimeVsNonHiggs_M600_M700  ,BDTG_TprimeVsHiggs_M600_M700) > 0)
-        ////if (Cut(ientry,cut_SR2,BDTG_TprimeVsNonHiggs_M800_M1000  ,BDTG_TprimeVsHiggs_M800_M1000) > 0)
-        //if (Cut(ientry,cut_SR3,BDTG_TprimeVsNonHiggs_M1100_M1200  ,BDTG_TprimeVsHiggs_M1100_M1200) > 0)
+        if (Cut(ientry , cut_SR1 , v_bdts_SR1) > 0) { yc_SR1.Add(weight); }
+        if (Cut(ientry , cut_SR2 , v_bdts_SR2) > 0) { yc_SR2.Add(weight); }
+        if (Cut(ientry , cut_SR3 , v_bdts_SR3) > 0) { yc_SR3.Add(weight); }
+
+        //if (Cut(ientry , cut_SR3 , v_bdts_SR3) > 0)
         //{
         //    bool is_signal_window = dipho_mass > 115. && dipho_mass < 135.;
         //    if(!is_signal_window) continue;
