@@ -31,12 +31,13 @@ def process_VLQ_signal():
 
 def process_NRB():
     #process( "output_imputedQCD.root" )
-    process( "output_imputedQCD_v4p2.root" )
     process( "output_DiPhotonJets.root" )
+    process( "output_imputedQCD_v4p2.root" )
     process( "output_TTGG.root" )
     process( "output_TTGJets.root" )
     process( "output_TTJets.root" )
     process( "output_WG.root" )
+    process( "output_NRB_v4p2.root" )
 
 def process_SMH():
     process( "output_ttHJet.root" )
@@ -50,16 +51,19 @@ if __name__ == "__main__":
     subprocess.call("mkdir -p eos/signal_region", shell=True)
     subprocess.call("mkdir -p ./log", shell=True)
 
+    #process( "output_Data.root" )
     process( "output_Data_v4p2.root" )
+    #create_2D_plots()
 
     exit()
 
+    process( "output_Data_v4p2.root" )
     process( "output_SMH.root" )
-    process( "output_NRB_v4p2.root" )
-
     process_VLQ_signal()
+    subprocess.call("./check_yields.sh", shell=True)
+
+    exit()
+
     process_NRB()
     process_SMH()
-
-    subprocess.call("./check_yields.sh", shell=True)
 

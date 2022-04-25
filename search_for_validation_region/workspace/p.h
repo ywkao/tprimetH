@@ -42,8 +42,8 @@ class p {
 
         p(TTree *tree=0, TString input="");
         virtual ~p();
-        virtual Int_t    Cut(Long64_t entry);
-        virtual Int_t    Cut(const Long64_t &entry, const My_Cut_Values &cut, const double &bdt_nrb, const double &bdt_smh);
+        virtual Int_t    Cut(Long64_t entry, bool unblind);
+        virtual Int_t    Cut(const Long64_t &entry, const My_Cut_Values &cut, const vector<double> &bdts, bool set_mgg_window=false);
         virtual My_Cut_Values set_threshold(const vector<double> &a, const vector<double> &b, const vector<double> &c);
         virtual Int_t    GetEntry(Long64_t entry);
         virtual Long64_t LoadTree(Long64_t entry);
@@ -61,6 +61,12 @@ class p {
         bool is_SR1;
         bool is_SR2;
         bool is_SR3;
+
+        Yield_Calculator yc_SR1;
+        Yield_Calculator yc_SR2;
+        Yield_Calculator yc_SR3;
+        Yield_Calculator yc_mp_SR1;
+
         TCanvas* c1;
         TCanvas* c2;
         TH2D* h_mass_map_SR1;
@@ -213,12 +219,20 @@ void p::Show(Long64_t entry)
     if (!fChain) return;
     fChain->Show(entry);
 }
-Int_t p::Cut(Long64_t entry)
+Int_t p::Cut(Long64_t entry, bool unblind)
 {
-    // This function may be called from Loop.
-    // returns  1 if entry is accepted.
-    // returns -1 otherwise.
-    return 1;
+    // unblind
+    if(unblind) return 1;
+
+    // blind
+    bool is_in_mgg_window = dipho_mass > 115. && dipho_mass < 135.;
+    //bool pass_mgg_cut = (is_data && !is_in_mgg_window) || (!is_data);
+    bool pass_mgg_cut = (is_data && !is_in_mgg_window) || (!is_data && is_in_mgg_window);
+
+    if(pass_mgg_cut)
+        return 1;
+    else
+        return -1;
 }
 
 My_Cut_Values p::set_threshold(const vector<double> &a, const vector<double> &b, const vector<double> &c)
@@ -233,15 +247,22 @@ My_Cut_Values p::set_threshold(const vector<double> &a, const vector<double> &b,
     return cut;    
 }
 
-Int_t p::Cut(const Long64_t &entry, const My_Cut_Values &cut, const double &bdt_nrb, const double &bdt_smh)
+Int_t p::Cut(const Long64_t &entry, const My_Cut_Values &cut, const vector<double> &bdts, bool set_mgg_window /*=false*/)
 {
+
+    double bdt_nrb = bdts[0];
+    double bdt_smh = bdts[1];
 
     bool is_in_mgg_window = dipho_mass > 115. && dipho_mass < 135.;
     bool pass_BDG_NRB     = bdt_nrb > cut.bdt_nrb_lowerBound  && bdt_nrb <= cut.bdt_nrb_upperBound;
     bool pass_BDG_SMH     = bdt_smh > cut.bdt_smh_lowerBound  && bdt_smh <= cut.bdt_smh_upperBound;
     bool pass_Tprime_mass = Tprime_mass > cut.mass_lowerBound && Tprime_mass < cut.mass_upperBound;
-    //bool accepted         = pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass && is_in_mgg_window;
-    bool accepted         = pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass;
+    bool accepted;
+
+    if(set_mgg_window)
+        accepted = pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass && is_in_mgg_window;
+    else
+        accepted = pass_BDG_SMH && pass_BDG_NRB && pass_Tprime_mass;
 
     if(accepted) return 1;
     else return -1;
@@ -249,6 +270,12 @@ Int_t p::Cut(const Long64_t &entry, const My_Cut_Values &cut, const double &bdt_
 
 void p::Report()
 {
+
+    yc_SR1.Report("SR1");
+    yc_SR2.Report("SR2");
+    yc_SR3.Report("SR3");
+
+    yc_mp_SR1.Report("middle-purity SR1");
 
     //printf("in SR1: %.2f\n", h_counter_signal_region->GetBinContent(1));
     //printf("in SR2: %.2f\n", h_counter_signal_region->GetBinContent(2));

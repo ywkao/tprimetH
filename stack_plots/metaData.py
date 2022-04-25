@@ -28,9 +28,22 @@ map_range = {
     "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine" : [450.,1250.],
     "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine" : [550.,1700.],
 
-    #"hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine" : [480.,800.],
-    #"hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine" : [550.,1150.],
-    #"hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine" : [650.,1600.],
+    "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_fine" : [480.,800.],
+    "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_fine" : [550.,1150.],
+    "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_fine" : [650.,1600.],
+
+    "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_n50" : [0., 1.],
+    "hMVA_value_nrb_varset8_mixed04_tmva_bdtg_n50" : [0., 1.],
+    "hMVA_value_nrb_varset8_mixed05_tmva_bdtg_n50" : [0., 1.],
+    "hMVA_value_smh_varset8_mixed03_tmva_bdtg_n50" : [0., 1.],
+    "hMVA_value_smh_varset8_mixed04_tmva_bdtg_n50" : [0., 1.],
+    "hMVA_value_smh_varset8_mixed05_tmva_bdtg_n50" : [0., 1.],
+    "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_mggWindow_n50" : [0., 1.],
+    "hMVA_value_nrb_varset8_mixed04_tmva_bdtg_mggWindow_n50" : [0., 1.],
+    "hMVA_value_nrb_varset8_mixed05_tmva_bdtg_mggWindow_n50" : [0., 1.],
+    "hMVA_value_smh_varset8_mixed03_tmva_bdtg_mggWindow_n50" : [0., 1.],
+    "hMVA_value_smh_varset8_mixed04_tmva_bdtg_mggWindow_n50" : [0., 1.],
+    "hMVA_value_smh_varset8_mixed05_tmva_bdtg_mggWindow_n50" : [0., 1.],
 }
 
 signals = "TprimeBToTH_M-600|TprimeBToTH_M-900|TprimeBToTH_M-1200"
@@ -119,9 +132,6 @@ hist_mass = [
     "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_coarser",
     "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_coarser",
     "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_coarser",
-    "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine",
-    "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine",
-    "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine",
     "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_fine",
     "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_fine",
     "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_fine",
@@ -366,6 +376,20 @@ map_xtitles = {
     "hPhotonSubleadHOverE"                                        : "h/E(#gamma_{2})",
     "hPhotonSubleadR9"                                            : "R9(#gamma_{2})",
     "hPhotonSubleadSigmaEOverE"                                   : "#sigma_{E}/E (#gamma_{2})",
+
+    # BDT scores
+    "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_n50"           : "BDT-NRB score",
+    "hMVA_value_nrb_varset8_mixed04_tmva_bdtg_n50"           : "BDT-NRB score",
+    "hMVA_value_nrb_varset8_mixed05_tmva_bdtg_n50"           : "BDT-NRB score",
+    "hMVA_value_smh_varset8_mixed03_tmva_bdtg_n50"           : "BDT-SMH score",
+    "hMVA_value_smh_varset8_mixed04_tmva_bdtg_n50"           : "BDT-SMH score",
+    "hMVA_value_smh_varset8_mixed05_tmva_bdtg_n50"           : "BDT-SMH score",
+    "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_mggWindow_n50" : "BDT-NRB score",
+    "hMVA_value_nrb_varset8_mixed04_tmva_bdtg_mggWindow_n50" : "BDT-NRB score",
+    "hMVA_value_nrb_varset8_mixed05_tmva_bdtg_mggWindow_n50" : "BDT-NRB score",
+    "hMVA_value_smh_varset8_mixed03_tmva_bdtg_mggWindow_n50" : "BDT-SMH score",
+    "hMVA_value_smh_varset8_mixed04_tmva_bdtg_mggWindow_n50" : "BDT-SMH score",
+    "hMVA_value_smh_varset8_mixed05_tmva_bdtg_mggWindow_n50" : "BDT-SMH score",
 }
 
 #--------------------------------------------------

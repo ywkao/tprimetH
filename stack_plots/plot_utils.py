@@ -37,7 +37,9 @@ def register(fin, histname, tag, samples, legend):
 
         vh.append(h)
 
-        # report
+        #++++++++++++++++++++++++++++++++++++++++++++++++++
+        # calculate yields
+        #++++++++++++++++++++++++++++++++++++++++++++++++++
         unc = ROOT.Double(0)
         nbins = h.GetSize()-1;
         yields = h.IntegralAndError(0, nbins, unc);
@@ -46,17 +48,26 @@ def register(fin, histname, tag, samples, legend):
             tot_unc += pow(unc, 2)
         #print ">>> %-12s, %-25s, %.2f \\pm %.2f" % (tag, s, yields, unc)
 
+        #++++++++++++++++++++++++++++++++++++++++++++++++++
+        # calculate yields in sideband
+        #++++++++++++++++++++++++++++++++++++++++++++++++++
+        #if histname == "hMass":
+
+        #++++++++++++++++++++++++++++++++++++++++++++++++++
         # mgg negative bin study
+        #++++++++++++++++++++++++++++++++++++++++++++++++++
+        # print out each of four bins of [115, 135]
         if tag == "backgrounds":
             result, mybins = "", [24, 25, 26, 27]
             for i, ele in enumerate(mybins):
                 content = "%.2f \\pm %.2f" % (h.GetBinContent(ele), h.GetBinError(ele))
                 if i==0: result += content
                 else: result += ",  " + content
-
             #print ">>> %-12s, %-25s, %s" % (tag, s, result)
 
-    if tag == "backgrounds" or tag == "smHiggs":
+    # report yields in mgg [115, 135]
+    print_bkg_info = 'Tprime_Mass' in histname and (tag == "backgrounds" or tag == "smHiggs")
+    if print_bkg_info:
         tot_unc = math.sqrt(tot_unc)
         print ">>> %-12s, %.2f \\pm %.2f" % (tag, tot_yields, tot_unc)
 
@@ -151,14 +162,13 @@ def annotate():
     latex.DrawLatex( 0.65, 0.935, "138 fb^{-1} (13#scale[0.75]{ }TeV)" )
 
 def signal_selector(histname):
-    if histname == "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine" :
-        return "TprimeBToTH_M-600"
-    elif histname == "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine" :
-        return "TprimeBToTH_M-900"
-    elif histname == "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine" :
-        return "TprimeBToTH_M-1200"
-    else:
-        return m.signals
+    if   histname == "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine" : return "TprimeBToTH_M-600"
+    elif histname == "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine" : return "TprimeBToTH_M-900"
+    elif histname == "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine" : return "TprimeBToTH_M-1200"
+    elif histname == "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_fine" : return "TprimeBToTH_M-600"
+    elif histname == "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_fine" : return "TprimeBToTH_M-900"
+    elif histname == "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_fine" : return "TprimeBToTH_M-1200"
+    else: return m.signals
 
 def get_scale(histname):
 

@@ -317,7 +317,8 @@ Int_t t::Cut(Long64_t entry, bool unblind)
 
     // blind
     bool is_in_mgg_window = dipho_mass > 115. && dipho_mass < 135.;
-    bool pass_mgg_cut = (is_data && !is_in_mgg_window) || (!is_data);
+    //bool pass_mgg_cut = (is_data && !is_in_mgg_window) || (!is_data);
+    bool pass_mgg_cut = (is_data && !is_in_mgg_window) || (!is_data && is_in_mgg_window);
 
     if(pass_mgg_cut)
         return 1;

@@ -13,12 +13,13 @@ void t::Loop()
     // embark on middle purity region study
     //==================================================
     //My_Cut_Values cut_mp_SR1 = set_threshold( {0.000,0.943}, {0.800,1.000}, {480.,800.}  );
+    //My_Cut_Values cut_mp_SR1 = set_threshold( {0.000,0.910}, {0.800,1.000}, {480.,800.}  );
     //My_Cut_Values cut_mp_SR2 = set_threshold( {0.000,0.960}, {0.800,1.000}, {550.,1150.} );
     //My_Cut_Values cut_mp_SR3 = set_threshold( {0.000,0.950}, {0.800,1.000}, {650.,1600.} );
 
-    My_Cut_Values cut_mp_SR1 = set_threshold( {0.910,0.943}, {0.600,0.800}, {480.,800.}  );
-    My_Cut_Values cut_mp_SR2 = set_threshold( {0.900,0.960}, {0.600,0.800}, {550.,1150.} );
-    My_Cut_Values cut_mp_SR3 = set_threshold( {0.880,0.950}, {0.600,0.800}, {650.,1600.} );
+    My_Cut_Values cut_mp_SR1 = set_threshold( {0.910,0.943}, {0.700,1.000}, {480.,800.}  );
+    My_Cut_Values cut_mp_SR2 = set_threshold( {0.880,0.960}, {0.700,1.000}, {550.,1150.} );
+    My_Cut_Values cut_mp_SR3 = set_threshold( {0.850,0.950}, {0.700,1.000}, {650.,1600.} );
 
     //==================================================
     // set up for validation region scanning
@@ -121,6 +122,9 @@ void t::Loop()
     fout->cd();
     h_counter_signal_region->Write();
     h_counter_validation_region->Write();
+    h_bdt_map_SR1->Write();
+    h_bdt_map_SR2->Write();
+    h_bdt_map_SR3->Write();
     fout->Write();
     fout->Close();
 }

@@ -10,6 +10,9 @@ path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/
 
 path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots/myhist_combine_RunII.root"
 path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots_20220419_ultraLegacy_unblind/myhist_combine_RunII.root"
+
+path = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots_20220422_v4p1/myhist_combine_RunII.root"
+
 fin = ROOT.TFile(path, 'R')
 
 def load(fin, histname, my_signals):
@@ -81,14 +84,32 @@ if __name__ == "__main__":
     c1 = p.init_canvas()
 
     core = [
-        #"hMass",
-        #"hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine",
-        #"hMass_pass_BDTG_smh_cut_mixed03",
-        "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine",
-        "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine",
+        "hMass",
+        "hMass_pass_BDTG_smh_cut_mixed03",
         "hMass_pass_BDTG_smh_cut_mixed04",
         "hMass_pass_BDTG_smh_cut_mixed05",
+        "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_fine",
+        "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_fine",
+        "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_fine",
+        #"hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine",
+        #"hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine",
+        #"hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine",
     ]
 
-    for histname in core:
+    bdts = [
+        "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_n50",
+        "hMVA_value_nrb_varset8_mixed04_tmva_bdtg_n50",
+        "hMVA_value_nrb_varset8_mixed05_tmva_bdtg_n50",
+        "hMVA_value_smh_varset8_mixed03_tmva_bdtg_n50",
+        "hMVA_value_smh_varset8_mixed04_tmva_bdtg_n50",
+        "hMVA_value_smh_varset8_mixed05_tmva_bdtg_n50",
+        "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_mggWindow_n50",
+        "hMVA_value_nrb_varset8_mixed04_tmva_bdtg_mggWindow_n50",
+        "hMVA_value_nrb_varset8_mixed05_tmva_bdtg_mggWindow_n50",
+        "hMVA_value_smh_varset8_mixed03_tmva_bdtg_mggWindow_n50",
+        "hMVA_value_smh_varset8_mixed04_tmva_bdtg_mggWindow_n50",
+        "hMVA_value_smh_varset8_mixed05_tmva_bdtg_mggWindow_n50",
+    ]
+
+    for histname in bdts:
         make_plot(histname)
