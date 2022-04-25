@@ -742,6 +742,10 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       bool is_within_SR_mixed04 = pass_mva_cut_bdtg_nrb_mixed04 && pass_mva_cut_bdtg_smh_mixed04 && pass_tprime_low_mass_criterion_mixed04;
       bool is_within_SR_mixed05 = pass_mva_cut_bdtg_nrb_mixed05 && pass_mva_cut_bdtg_smh_mixed05 && pass_tprime_low_mass_criterion_mixed05;
 
+      bool is_within_crosscheck_mixed03 = (mva_value_nrb_varset8_mixed03_tmva_bdtg > 0.90 || mva_value_smh_varset8_mixed03_tmva_bdtg > 0.70) && pass_tprime_low_mass_criterion_mixed03;
+      bool is_within_crosscheck_mixed04 = (mva_value_nrb_varset8_mixed04_tmva_bdtg > 0.90 || mva_value_smh_varset8_mixed04_tmva_bdtg > 0.70) && pass_tprime_low_mass_criterion_mixed04;
+      bool is_within_crosscheck_mixed05 = (mva_value_nrb_varset8_mixed05_tmva_bdtg > 0.90 || mva_value_smh_varset8_mixed05_tmva_bdtg > 0.70) && pass_tprime_low_mass_criterion_mixed05;
+
       //----------------------------------------------------------------------------------------------------}}}
       // Consistency check {{{
       //----------------------------------------------------------------------------------------------------
@@ -973,6 +977,32 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
           }
       }
       //----------------------------------------------------------------------------------------------------}}}
+      // cross-check for data in mgg window {{{
+      //----------------------------------------------------------------------------------------------------
+      if(processId == 10)
+      {
+          bool in_mgg_window = CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.;
+          long evt_  = analyzer.event();
+          long run_  = analyzer.run();
+          long lumi_ = analyzer.lumi();
+
+          if(is_within_crosscheck_mixed03 && in_mgg_window)
+          {
+              printf("[crosscheck-03] Run:Lumi:Event = %ld:%ld:%ld, ", run_, lumi_, evt_);
+              printf("CMS_hgg_mass = %f\n", CMS_hgg_mass());
+          }
+          if(is_within_crosscheck_mixed04 && in_mgg_window)
+          {
+              printf("[crosscheck-04] Run:Lumi:Event = %ld:%ld:%ld, ", run_, lumi_, evt_);
+              printf("CMS_hgg_mass = %f\n", CMS_hgg_mass());
+          }
+          if(is_within_crosscheck_mixed05 && in_mgg_window)
+          {
+              printf("[crosscheck-05] Run:Lumi:Event = %ld:%ld:%ld, ", run_, lumi_, evt_);
+              printf("CMS_hgg_mass = %f\n", CMS_hgg_mass());
+          }
+      }
+      //----------------------------------------------------------------------------------------------------}}}
 
       //if (!is_within_SR_mixed03) continue; // check kinematics in SR1
       //if (!is_within_SR_mixed04) continue; // check kinematics in SR2
@@ -1023,10 +1053,9 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       // Tprime mass after cutting MVA scores {{{
       //----------------------------------------------------------------------------------------------------
       // in SR
-      bool in_mgg_window = CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.;
-      if(is_within_SR_mixed03 && in_mgg_window) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine"    , mass_tprime , evt_weight , vId); }
-      if(is_within_SR_mixed04 && in_mgg_window) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine"    , mass_tprime , evt_weight , vId); }
-      if(is_within_SR_mixed05 && in_mgg_window) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine"    , mass_tprime , evt_weight , vId); }
+      if(is_within_SR_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine"    , mass_tprime , evt_weight , vId); }
+      if(is_within_SR_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine"    , mass_tprime , evt_weight , vId); }
+      if(is_within_SR_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine"    , mass_tprime , evt_weight , vId); }
       if(is_within_SR_mixed03) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed03_SR_coarser" , mass_tprime , evt_weight , vId); }
       if(is_within_SR_mixed04) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed04_SR_coarser" , mass_tprime , evt_weight , vId); }
       if(is_within_SR_mixed05) { vProcess[processId]->fill_histogram("h" + syst_ext + "Tprime_Mass_pass_BDTG_smh_cut_mixed05_SR_coarser" , mass_tprime , evt_weight , vId); }
@@ -1048,6 +1077,20 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_n2000" , mva_value_smh_varset8_mixed04_tmva_bdtg , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n50"   , mva_value_smh_varset8_mixed05_tmva_bdtg , evt_weight , vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_n2000" , mva_value_smh_varset8_mixed05_tmva_bdtg , evt_weight , vId);
+
+      bool in_mgg_window = CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.;
+      if(in_mgg_window) {
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed03_tmva_bdtg_mggWindow_n50"   , mva_value_nrb_varset8_mixed03_tmva_bdtg , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed04_tmva_bdtg_mggWindow_n50"   , mva_value_nrb_varset8_mixed04_tmva_bdtg , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_nrb_varset8_mixed05_tmva_bdtg_mggWindow_n50"   , mva_value_nrb_varset8_mixed05_tmva_bdtg , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_mggWindow_n50"   , mva_value_smh_varset8_mixed03_tmva_bdtg , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_mggWindow_n50"   , mva_value_smh_varset8_mixed04_tmva_bdtg , evt_weight , vId);
+      vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_mggWindow_n50"   , mva_value_smh_varset8_mixed05_tmva_bdtg , evt_weight , vId);
+
+      if(pass_mva_cut_bdtg_nrb_mixed03 && pass_tprime_low_mass_criterion_mixed03) vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_mggWindow_withNRBcut_n50" , mva_value_smh_varset8_mixed03_tmva_bdtg , evt_weight , vId);
+      if(pass_mva_cut_bdtg_nrb_mixed04 && pass_tprime_low_mass_criterion_mixed04) vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed04_tmva_bdtg_mggWindow_withNRBcut_n50" , mva_value_smh_varset8_mixed04_tmva_bdtg , evt_weight , vId);
+      if(pass_mva_cut_bdtg_nrb_mixed05 && pass_tprime_low_mass_criterion_mixed05) vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed05_tmva_bdtg_mggWindow_withNRBcut_n50" , mva_value_smh_varset8_mixed05_tmva_bdtg , evt_weight , vId);
+      }
 
       if(pass_mva_cut_bdtg_nrb_mixed03){
       vProcess[processId]->fill_histogram("h" + syst_ext + "MVA_value_smh_varset8_mixed03_tmva_bdtg_withNRBcut_n50"   , mva_value_smh_varset8_mixed03_tmva_bdtg , evt_weight , vId);
