@@ -359,6 +359,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       }
 
       bool blind = false; // unblind
+      //bool blind = true;
       int genPhotonId = isData ? -1 : categorize_photons(leadGenMatch(), subleadGenMatch()); // overlap removal for ttX
       int processId = categorize_process(currentFileTitle, genPhotonId);
       bool is_signal = (processId >= 27 && processId <= 36); // signal id in [27, 36]
@@ -1011,6 +1012,7 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //****************************************************************************************************
       // Fill histograms
       //****************************************************************************************************
+      if ( !(CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.) ) continue; // consider evt in [115, 135]
       if(evt_weight>15.) counter_evtWeight += 1;
       vProcess[processId]->fill_histogram("h" + syst_ext + "Mass", CMS_hgg_mass(), evt_weight, vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_fine", CMS_hgg_mass(), evt_weight, vId);
