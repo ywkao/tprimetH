@@ -4,28 +4,20 @@ import subprocess
 
 def customize_hadd():
     combine = ""
-    rootfiles = glob.glob("plots*base/myhist*root")
-    rootfiles = glob.glob("plots_20210707/myhist*root")
-    rootfiles = glob.glob("collection/plots_20210703_base/myhist*root")
-    rootfiles = glob.glob("plots_20210804_v2/myhist*root")
-    rootfiles = glob.glob("plots/myhist*root")
-    rootfiles = glob.glob("plots_20210907_Maxime_config01/myhist*root")
-    rootfiles = glob.glob("plots_20210907_Maxime_config02/myhist*root")
+    #rootfiles = glob.glob("plots_20220425_v4p1_v1/myhist*root")
+    #rootfiles = glob.glob("shortcut_plots/plots_20220412_ultraLegacy_blind/myhist*root")
+    #rootfiles = glob.glob("plots_20220426_mgg_115_135_v4p1/myhist*root")
+    rootfiles = glob.glob("shortcut_plots/plots_20220412_ultraLegacy_blind/myhist*root")
     for root in rootfiles:
-        if 'combine' in root:
-            continue
+        if 'combine' in root: continue
+        if 'Data' in root: continue
         combine = combine + root + " "
     
-    #combine += "shortcut_plots/plots_20210828_oldWjetsCondition_newBDT/myhist_VBF*.root "
-    #combine += "shortcut_plots/plots_20210828_oldWjetsCondition_newBDT/myhist_THQ*.root "
-    #combine += "shortcut_plots/plots_20210828_oldWjetsCondition_newBDT/myhist_DiPhoton*.root "
-
-    combine += "shortcut_plots/plots_20210905_newBase_newBDT_previousCutValues/myhist_VBF*.root "
-    combine += "shortcut_plots/plots_20210905_newBase_newBDT_previousCutValues/myhist_THQ*.root "
-    combine += "shortcut_plots/plots_20210905_newBase_newBDT_previousCutValues/myhist_DiPhoton*.root "
-    
-    subprocess.call("hadd -f plots_20210907_Maxime_config02/myhist_combine_RunII.root %s" % combine, shell = True)
-    #subprocess.call("hadd -f plots/myhist_combine_RunII.root %s" % combine, shell = True)
+    target = "plots_20220425_v4p2_v1"
+    target = "plots_20220425_unblind_v4p2"
+    target = "plots"
+    combine += "%s/myhist_Data*.root " % target
+    subprocess.call("hadd -f %s/myhist_combine_RunII.root %s" % (target, combine), shell = True)
 
 def usuall_hadd(prefix, directory="plots"):
     combine = ""
@@ -115,12 +107,14 @@ def merge_cov_root_files(directory="plots"):
     subprocess.call("hadd -f %s/covMatrix_TprimeBToTH_M-1200_merged.root %s/*1200*Era*.root" % (directory, directory), shell = True)
 
 if __name__ == "__main__":
-    #merge_cov_root_files()
 
     #customize_hadd()
+    #exit()
+
     usuall_hadd("myhist")
     #usuall_hadd("MVABaby")
 
+    #merge_cov_root_files()
     #hadd_ul1718("MVABaby")
     #hadd_reReco16("MVABaby")
     #hadd_ul1718("myhist"  , "plots_20220309_updateLumi_forSimultaneousFit")
