@@ -7,7 +7,7 @@
 void t::Loop()
 {
     if (fChain == 0) return;
-    TFile *fout = new TFile("eos/output_" + tag + ".root", "RECREATE");
+    TFile *fout = new TFile("eos/output_" + tag + "_hadronic.root", "RECREATE");
 
     //==================================================
     // embark on middle purity region study
@@ -56,8 +56,11 @@ void t::Loop()
         //++++++++++++++++++++++++++++++++++++++++++++++++++
         // (un)-blind mgg window
         //++++++++++++++++++++++++++++++++++++++++++++++++++
-        bool unblind_mgg_window = false;
+        bool unblind_mgg_window = true;
         if (Cut(ientry, unblind_mgg_window) < 0) continue;
+
+        //bool is_in_mgg_window = dipho_mass > 115. && dipho_mass < 135.;
+        //if(!is_in_mgg_window) continue;
 
         //++++++++++++++++++++++++++++++++++++++++++++++++++
         // 2D BDT maps
@@ -103,6 +106,8 @@ void t::Loop()
         if (Cut(ientry , cut_SR2 , v_bdts_SR2) > 0) { h_mass_map_SR2->Fill(dipho_mass , Tprime_mass , weight); h_mass_diphoton_SR2-> Fill(dipho_mass , weight); }
         if (Cut(ientry , cut_SR3 , v_bdts_SR3) > 0) { h_mass_map_SR3->Fill(dipho_mass , Tprime_mass , weight); h_mass_diphoton_SR3-> Fill(dipho_mass , weight); }
 
+        if (Cut(ientry , cut_mp_SR1 , v_bdts_SR1) > 0) { h_mass_map_mp_SR1->Fill(dipho_mass , Tprime_mass , weight); h_mass_diphoton_mp_SR1-> Fill(dipho_mass , weight); }
+
         //++++++++++++++++++++++++++++++++++++++++++++++++++
         // middle-purity regions
         //++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -112,19 +117,24 @@ void t::Loop()
     }
 
     Report();
-    Make_plots_2D_phase_space();
+    Make_plots_2D_mass_middle_purity();
 
     if(false && is_data) {
         Make_plots_2D_mass();
+        Make_plots_2D_phase_space();
         Make_plots_validation_regions();
     }
 
     fout->cd();
-    h_counter_signal_region->Write();
-    h_counter_validation_region->Write();
-    h_bdt_map_SR1->Write();
-    h_bdt_map_SR2->Write();
-    h_bdt_map_SR3->Write();
+    h_mass_map_SR1->Write();
+    h_mass_map_SR2->Write();
+    h_mass_map_SR3->Write();
+    h_mass_map_mp_SR1->Write();
+    //h_counter_signal_region->Write();
+    //h_counter_validation_region->Write();
+    //h_bdt_map_SR1->Write();
+    //h_bdt_map_SR2->Write();
+    //h_bdt_map_SR3->Write();
     fout->Write();
     fout->Close();
 }

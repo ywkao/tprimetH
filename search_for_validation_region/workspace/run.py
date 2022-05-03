@@ -52,8 +52,8 @@ if __name__ == "__main__":
     subprocess.call("mkdir -p ./log", shell=True)
 
     #process( "output_Data.root" )
-    process( "output_Data_v4p2.root" )
-    #create_2D_plots()
+    #process( "output_Data_v4p2.root" )
+    create_2D_plots()
 
     exit()
 

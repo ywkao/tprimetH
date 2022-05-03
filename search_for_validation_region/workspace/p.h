@@ -53,6 +53,7 @@ class p {
         virtual void     Show(Long64_t entry = -1);
         virtual void     Report();
         virtual void     Make_plots();
+        virtual void     Make_plots_middle_purity();
         virtual void     Annotate();
 
     private:
@@ -72,9 +73,11 @@ class p {
         TH2D* h_mass_map_SR1;
         TH2D* h_mass_map_SR2;
         TH2D* h_mass_map_SR3;
+        TH2D* h_mass_map_mp_SR1;
         TH1D* h_mass_diphoton_SR1;
         TH1D* h_mass_diphoton_SR2;
         TH1D* h_mass_diphoton_SR3;
+        TH1D* h_mass_diphoton_mp_SR1;
 };
 
 #endif
@@ -152,37 +155,46 @@ void p::Init(TTree *tree, TString input)
     h_mass_map_SR1 = new TH2D("h_mass_map_SR1", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 7, 450., 800.);
     h_mass_map_SR2 = new TH2D("h_mass_map_SR2", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 12, 550., 1150.);
     h_mass_map_SR3 = new TH2D("h_mass_map_SR3", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 19, 650., 1600.);
+    h_mass_map_mp_SR1 = new TH2D("h_mass_map_mp_SR1", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 7, 450., 800.);
     h_mass_map_SR1->SetStats(0);
     h_mass_map_SR2->SetStats(0);
     h_mass_map_SR3->SetStats(0);
+    h_mass_map_mp_SR1->SetStats(0);
 
     h_mass_diphoton_SR1 = new TH1D("h_mass_diphoton_SR1", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
     h_mass_diphoton_SR2 = new TH1D("h_mass_diphoton_SR2", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
     h_mass_diphoton_SR3 = new TH1D("h_mass_diphoton_SR3", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
+    h_mass_diphoton_mp_SR1 = new TH1D("h_mass_diphoton_mp_SR1", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
     //h_mass_diphoton_SR1->SetStats(0);
     //h_mass_diphoton_SR2->SetStats(0);
     //h_mass_diphoton_SR3->SetStats(0);
     h_mass_diphoton_SR1->SetMinimum(0);
     h_mass_diphoton_SR2->SetMinimum(0);
     h_mass_diphoton_SR3->SetMinimum(0);
+    h_mass_diphoton_mp_SR1->SetMinimum(0);
     h_mass_diphoton_SR1->SetMarkerStyle(20);
     h_mass_diphoton_SR2->SetMarkerStyle(20);
     h_mass_diphoton_SR3->SetMarkerStyle(20);
+    h_mass_diphoton_mp_SR1->SetMarkerStyle(20);
     h_mass_diphoton_SR1->SetLineColor(kBlack);
     h_mass_diphoton_SR2->SetLineColor(kBlack);
     h_mass_diphoton_SR3->SetLineColor(kBlack);
+    h_mass_diphoton_mp_SR1->SetLineColor(kBlack);
 
     if(is_data) {
         h_mass_map_SR1->SetMaximum(3);
         h_mass_map_SR2->SetMaximum(3);
         h_mass_map_SR3->SetMaximum(3);
+        h_mass_map_mp_SR1->SetMaximum(3);
         h_mass_map_SR1->SetMinimum(1);
         h_mass_map_SR2->SetMinimum(1);
         h_mass_map_SR3->SetMinimum(1);
+        h_mass_map_mp_SR1->SetMinimum(1);
     } else {
         h_mass_map_SR1->SetMinimum(0);
         h_mass_map_SR2->SetMinimum(0);
         h_mass_map_SR3->SetMinimum(0);
+        h_mass_map_mp_SR1->SetMinimum(0);
     }
 
     // Set branch addresses and branch pointers
@@ -303,18 +315,19 @@ void p::Make_plots()
     if(is_data) option = "ep";
     else option = "hist";
 
+    TString dir = "eos_lep";
+    tag += "_leptonic";
 
     if(is_SR1) {
-        c2->cd();
         h_mass_map_SR1->Draw("colz");
-        output = "eos_lep/h_mass_map_SR1_" + tag;
+        output = dir + "/h_mass_map_SR1_" + tag;
         Annotate();
         c2->SaveAs(output + ".png");
         c2->SaveAs(output + ".pdf");
 
         c1->cd();
         h_mass_diphoton_SR1->Draw("ep");
-        output = "eos_lep/h_mass_diphoton_SR1_" + tag;
+        output = dir + "/h_mass_diphoton_SR1_" + tag;
         c1->SaveAs(output + ".png");
         c1->SaveAs(output + ".pdf");
     }
@@ -322,14 +335,14 @@ void p::Make_plots()
     if(is_SR2) {
         c2->cd();
         h_mass_map_SR2->Draw("colz");
-        output = "eos_lep/h_mass_map_SR2_" + tag;
+        output = dir + "/h_mass_map_SR2_" + tag;
         Annotate();
         c2->SaveAs(output + ".png");
         c2->SaveAs(output + ".pdf");
 
         c1->cd();
         h_mass_diphoton_SR2->Draw("ep");
-        output = "eos_lep/h_mass_diphoton_SR2_" + tag;
+        output = dir + "/h_mass_diphoton_SR2_" + tag;
         c1->SaveAs(output + ".png");
         c1->SaveAs(output + ".pdf");
     }
@@ -337,14 +350,41 @@ void p::Make_plots()
     if(is_SR3) {
         c2->cd();
         h_mass_map_SR3->Draw("colz");
-        output = "eos_lep/h_mass_map_SR3_" + tag;
+        output = dir + "/h_mass_map_SR3_" + tag;
         Annotate();
         c2->SaveAs(output + ".png");
         c2->SaveAs(output + ".pdf");
 
         c1->cd();
         h_mass_diphoton_SR3->Draw("ep");
-        output = "eos_lep/h_mass_diphoton_SR3_" + tag;
+        output = dir + "/h_mass_diphoton_SR3_" + tag;
+        c1->SaveAs(output + ".png");
+        c1->SaveAs(output + ".pdf");
+    }
+}
+
+void p::Make_plots_middle_purity()
+{
+    TString output;
+
+    TString option = "";
+    if(is_data) option = "ep";
+    else option = "hist";
+
+    TString dir = "eos_lep";
+    tag += "_leptonic";
+
+    if(is_SR1) {
+        c2->cd();
+        h_mass_map_mp_SR1->Draw("colz");
+        output = dir + "/h_mass_map_middle_purity_" + tag;
+        Annotate();
+        c2->SaveAs(output + ".png");
+        c2->SaveAs(output + ".pdf");
+
+        c1->cd();
+        h_mass_diphoton_mp_SR1->Draw("ep");
+        output = dir + "/h_mass_diphoton_middle_purity_" + tag;
         c1->SaveAs(output + ".png");
         c1->SaveAs(output + ".pdf");
     }

@@ -79,6 +79,7 @@ class t {
         virtual void     Annotate();
         //virtual void     Make_plots();
         virtual void     Make_plots_2D_mass();
+        virtual void     Make_plots_2D_mass_middle_purity();
         virtual void     Make_plots_2D_phase_space();
         virtual void     Make_plots_validation_regions();
 
@@ -94,9 +95,11 @@ class t {
         TH2D* h_mass_map_SR1;
         TH2D* h_mass_map_SR2;
         TH2D* h_mass_map_SR3;
+        TH2D* h_mass_map_mp_SR1;
         TH1D* h_mass_diphoton_SR1;
         TH1D* h_mass_diphoton_SR2;
         TH1D* h_mass_diphoton_SR3;
+        TH1D* h_mass_diphoton_mp_SR1;
 
         int n_validation_regions;
         TString tag;
@@ -228,34 +231,43 @@ void t::Init(TTree *tree, TString input)
     h_mass_map_SR1 = new TH2D("h_mass_map_SR1", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 7, 450., 800.);
     h_mass_map_SR2 = new TH2D("h_mass_map_SR2", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 12, 550., 1150.);
     h_mass_map_SR3 = new TH2D("h_mass_map_SR3", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 19, 650., 1600.);
+    h_mass_map_mp_SR1 = new TH2D("h_mass_map_mp_SR1", ";M_{#gamma#gamma} (GeV);M_{T'} (GeV)", 80, 100., 180., 7, 450., 800.);
     h_mass_map_SR1->SetStats(0);
     h_mass_map_SR2->SetStats(0);
     h_mass_map_SR3->SetStats(0);
+    h_mass_map_mp_SR1->SetStats(0);
 
     h_mass_diphoton_SR1 = new TH1D("h_mass_diphoton_SR1", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
     h_mass_diphoton_SR2 = new TH1D("h_mass_diphoton_SR2", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
     h_mass_diphoton_SR3 = new TH1D("h_mass_diphoton_SR3", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
+    h_mass_diphoton_mp_SR1 = new TH1D("h_mass_diphoton_mp_SR1", ";M_{#gamma#gamma} (GeV);Entries", 80, 100., 180.);
     h_mass_diphoton_SR1->SetMinimum(0);
     h_mass_diphoton_SR2->SetMinimum(0);
     h_mass_diphoton_SR3->SetMinimum(0);
+    h_mass_diphoton_mp_SR1->SetMinimum(0);
     h_mass_diphoton_SR1->SetMarkerStyle(20);
     h_mass_diphoton_SR2->SetMarkerStyle(20);
     h_mass_diphoton_SR3->SetMarkerStyle(20);
+    h_mass_diphoton_mp_SR1->SetMarkerStyle(20);
     h_mass_diphoton_SR1->SetLineColor(kBlack);
     h_mass_diphoton_SR2->SetLineColor(kBlack);
     h_mass_diphoton_SR3->SetLineColor(kBlack);
+    h_mass_diphoton_mp_SR1->SetLineColor(kBlack);
 
     if(is_data) {
         h_mass_map_SR1->SetMaximum(3);
         h_mass_map_SR2->SetMaximum(3);
         h_mass_map_SR3->SetMaximum(3);
+        h_mass_map_mp_SR1->SetMaximum(3);
         h_mass_map_SR1->SetMinimum(1);
         h_mass_map_SR2->SetMinimum(1);
         h_mass_map_SR3->SetMinimum(1);
+        h_mass_map_mp_SR1->SetMinimum(1);
     } else {
         h_mass_map_SR1->SetMinimum(0);
         h_mass_map_SR2->SetMinimum(0);
         h_mass_map_SR3->SetMinimum(0);
+        h_mass_map_mp_SR1->SetMinimum(0);
     }
 
     fChain->SetBranchAddress("weight", &weight, &b_weight);
@@ -444,42 +456,63 @@ void t::Make_plots_2D_phase_space()
 void t::Make_plots_2D_mass()
 {
     TString output;
+    TString dir = "eos_had";
+    tag += "_hadronic";
 
     //--- 1D plots ---//
     c1->cd();
     h_mass_diphoton_SR1->Draw("ep");
-    output = "eos_had/h_mass_diphoton_SR1_" + tag;
+    output = dir + "/h_mass_diphoton_SR1_" + tag;
     c1->SaveAs(output + ".png");
     c1->SaveAs(output + ".pdf");
 
     c1->cd();
     h_mass_diphoton_SR2->Draw("ep");
-    output = "eos_had/h_mass_diphoton_SR2_" + tag;
+    output = dir + "/h_mass_diphoton_SR2_" + tag;
     c1->SaveAs(output + ".png");
     c1->SaveAs(output + ".pdf");
 
     c1->cd();
     h_mass_diphoton_SR3->Draw("ep");
-    output = "eos_had/h_mass_diphoton_SR3_" + tag;
+    output = dir + "/h_mass_diphoton_SR3_" + tag;
     c1->SaveAs(output + ".png");
     c1->SaveAs(output + ".pdf");
 
     //--- 2D plots ---//
-    c2->cd();
     h_mass_map_SR1->Draw("colz");
-    output = "eos_had/h_mass_map_SR1_" + tag;
+    output = dir + "/h_mass_map_SR1_" + tag;
     Annotate();
     c2->SaveAs(output + ".png");
     c2->SaveAs(output + ".pdf");
 
     h_mass_map_SR2->Draw("colz");
-    output = "eos_had/h_mass_map_SR2_" + tag;
+    output = dir + "/h_mass_map_SR2_" + tag;
     Annotate();
     c2->SaveAs(output + ".png");
     c2->SaveAs(output + ".pdf");
 
     h_mass_map_SR3->Draw("colz");
-    output = "eos_had/h_mass_map_SR3_" + tag;
+    output = dir + "/h_mass_map_SR3_" + tag;
+    Annotate();
+    c2->SaveAs(output + ".png");
+    c2->SaveAs(output + ".pdf");
+}
+
+void t::Make_plots_2D_mass_middle_purity()
+{
+    TString output;
+    TString dir = "eos_had";
+    tag += "_hadronic";
+
+    c1->cd();
+    h_mass_diphoton_mp_SR1->Draw("ep");
+    output = dir + "/h_mass_diphoton_middle_purity_" + tag;
+    c1->SaveAs(output + ".png");
+    c1->SaveAs(output + ".pdf");
+
+    c2->cd();
+    h_mass_map_mp_SR1->Draw("colz");
+    output = dir + "/h_mass_map_middle_purity_" + tag;
     Annotate();
     c2->SaveAs(output + ".png");
     c2->SaveAs(output + ".pdf");
