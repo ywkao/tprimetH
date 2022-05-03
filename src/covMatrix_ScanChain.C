@@ -4,6 +4,10 @@
 #include <fstream>
 
 // # warning: Need to consider lumi in this code!
+bool pass_forward_parton_criteria()
+{
+
+}
 
 int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, TString mass_tag,  bool fast = true, int nEvents = -1, string skimFilePrefix = "test") {
   // Output File
@@ -13,45 +17,61 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
   TBenchmark *bmark = new TBenchmark();
   bmark->Start("benchmark");
 
+  bool flag_look_for_forward_jets = true;
+
+  double lumi_2016 = 36.33; //35.9;
+  double lumi_2017 = 41.48; //41.5;
+  double lumi_2018 = 59.83; //59.76;
+
   // Example Histograms
   TDirectory *rootdir = gDirectory->GetDirectory("Rint:");
-  TH1F *h_num_bquarks       = new TH1F("h_num_bquarks"       , ";b-quark multiplicity;Entries"                                , 10 , 0   , 10   );
-  TH1F *h_num_wquarks       = new TH1F("h_num_wquarks"       , ";w-quark multiplicity;Entries"                                , 10 , 0   , 10   );
-  TH1F *h_gen_pdgIds        = new TH1F("h_gen_pdgIds"        , ";gen pdgIds;Entries"                                          , 60 , -30 , 30   );
-  TH1F *h_mom_pdgIds        = new TH1F("h_mom_pdgIds"        , ";mom pdgIds;Entries"                                          , 60 , -30 , 30   );
+  TH1F *h_num_bquarks           = new TH1F("h_num_bquarks"           , ";b-quark multiplicity;Entries"                                , 10  , 0   , 10   );
+  TH1F *h_num_wquarks           = new TH1F("h_num_wquarks"           , ";w-quark multiplicity;Entries"                                , 10  , 0   , 10   );
+  TH1F *h_gen_pdgIds            = new TH1F("h_gen_pdgIds"            , ";gen pdgIds;Entries"                                          , 60  , -30 , 30   );
+  TH1F *h_mom_pdgIds            = new TH1F("h_mom_pdgIds"            , ";mom pdgIds;Entries"                                          , 60  , -30 , 30   );
 
-  TH1F *h_num_jets          = new TH1F("h_num_jets"          , ";Jet multiplicity;Entries"                                    , 16 , 0   , 16   );
-  TH1F *h_num_gen_particles = new TH1F("h_num_gen_particles" , ";Number of gen-level particles;Entries"                       , 16 , 0   , 16   );
-  TH1F *h_mass_diphoton     = new TH1F("h_mass_diphoton"     , ";Diphoton invariant mass [GeV/c^{2}];Entries"                 , 40 , 100 , 180  );
+  TH1F *h_pt_forward_light_jet  = new TH1F("h_pt_forward_light_jet"  , ";Foward light quark pT [GeV];Entries"                         , 25  , 0   , 500  );
+  TH1F *h_pt_forward_b_jet      = new TH1F("h_pt_forward_b_jet"      , ";Foward b quark pT [GeV];Entries"                             , 25  , 0   , 500  );
+  TH1F *h_eta_forward_light_jet = new TH1F("h_eta_forward_light_jet" , ";Foward light quark eta;Entries"                              , 25  , -5  , 5    );
+  TH1F *h_eta_forward_b_jet     = new TH1F("h_eta_forward_b_jet"     , ";Foward b quark eta;Entries"                                  , 25  , -5  , 5    );
 
-  TH1F *h_mass_tm_wboson    = new TH1F("h_mass_tm_wboson"    , ";MC-truth-matched W boson invariant mass [GeV/c^{2}];Entries" , 40 , 0   , 200  );
-  TH1F *h_mass_tm_top       = new TH1F("h_mass_tm_top"       , ";MC-truth-matched Top invariant mass [GeV/c^{2}];Entries"     , 40 , 100 , 300  );
-  TH1F *h_mass_tm_tprime    = new TH1F("h_mass_tm_tprime"    , ";MC-truth-matched Tprime invariant mass [GeV/c^{2}];Entries"  , 500, 0   , 2500 );
-  TH1F *h_mass_gen_wboson   = new TH1F("h_mass_gen_wboson"   , ";gen-leveled W boson invariant mass [GeV/c^{2}];Entries"      , 40 , 0   , 200  );
-  TH1F *h_mass_gen_top      = new TH1F("h_mass_gen_top"      , ";gen-leveled top invariant mass [GeV/c^{2}];Entries"          , 40 , 100 , 300  );
+  TH1F *h_num_jets              = new TH1F("h_num_jets"              , ";Jet multiplicity;Entries"                                    , 16  , 0   , 16   );
+  TH1F *h_num_gen_particles     = new TH1F("h_num_gen_particles"     , ";Number of gen-level particles;Entries"                       , 16  , 0   , 16   );
+  TH1F *h_mass_diphoton         = new TH1F("h_mass_diphoton"         , ";Diphoton invariant mass [GeV/c^{2}];Entries"                 , 40  , 100 , 180  );
 
-  TH1F *h_deltaR_partons    = new TH1F("h_deltaR_partons"    , "; Open angle (parton, matched jet)"                           , 40 , 0.  , 4.   );
-  TH1F *h_ptRatio_partons   = new TH1F("h_ptRatio_partons"   , "; abs(p_{T}^{reco} - p_{T}^{gen}) / p_{T}^{gen};Entries"      , 40 , 0.  , 4.   );
-  TH1F *h_deltaR_wjets      = new TH1F("h_deltaR_wjets"      , ";Open angle (wjet1, wjet2);Entries"                           , 40 , 0.  , 6.   );
+  TH1F *h_mass_tm_wboson        = new TH1F("h_mass_tm_wboson"        , ";MC-truth-matched W boson invariant mass [GeV/c^{2}];Entries" , 40  , 0   , 200  );
+  TH1F *h_mass_tm_top           = new TH1F("h_mass_tm_top"           , ";MC-truth-matched Top invariant mass [GeV/c^{2}];Entries"     , 40  , 100 , 300  );
+  TH1F *h_mass_tm_tprime        = new TH1F("h_mass_tm_tprime"        , ";MC-truth-matched Tprime invariant mass [GeV/c^{2}];Entries"  , 500 , 0   , 2500 );
+  TH1F *h_mass_gen_wboson       = new TH1F("h_mass_gen_wboson"       , ";gen-leveled W boson invariant mass [GeV/c^{2}];Entries"      , 40  , 0   , 200  );
+  TH1F *h_mass_gen_top          = new TH1F("h_mass_gen_top"          , ";gen-leveled top invariant mass [GeV/c^{2}];Entries"          , 40  , 100 , 300  );
 
-  h_num_bquarks       -> Sumw2();
-  h_num_wquarks       -> Sumw2();
-  h_gen_pdgIds        -> Sumw2();
-  h_mom_pdgIds        -> Sumw2();
+  TH1F *h_deltaR_partons        = new TH1F("h_deltaR_partons"    , "; Open angle (parton, matched jet)"                           , 40 , 0.  , 4.   );
+  TH1F *h_ptRatio_partons       = new TH1F("h_ptRatio_partons"   , "; abs(p_{T}^{reco} - p_{T}^{gen}) / p_{T}^{gen};Entries"      , 40 , 0.  , 4.   );
+  TH1F *h_deltaR_wjets          = new TH1F("h_deltaR_wjets"      , ";Open angle (wjet1, wjet2);Entries"                           , 40 , 0.  , 6.   );
 
-  h_num_jets          -> Sumw2();
-  h_num_gen_particles -> Sumw2();
-  h_mass_diphoton     -> Sumw2();
+  h_num_bquarks           -> Sumw2();
+  h_num_wquarks           -> Sumw2();
+  h_gen_pdgIds            -> Sumw2();
+  h_mom_pdgIds            -> Sumw2();
 
-  h_mass_tm_wboson    -> Sumw2();
-  h_mass_tm_top       -> Sumw2();
-  h_mass_tm_tprime    -> Sumw2();
-  h_mass_gen_wboson   -> Sumw2();
-  h_mass_gen_top      -> Sumw2();
+  h_pt_forward_light_jet  -> Sumw2();
+  h_pt_forward_b_jet      -> Sumw2();
+  h_eta_forward_light_jet -> Sumw2();
+  h_eta_forward_b_jet     -> Sumw2();
 
-  h_deltaR_partons    -> Sumw2();
-  h_ptRatio_partons   -> Sumw2();
-  h_deltaR_wjets      -> Sumw2();
+  h_num_jets              -> Sumw2();
+  h_num_gen_particles     -> Sumw2();
+  h_mass_diphoton         -> Sumw2();
+
+  h_mass_tm_wboson        -> Sumw2();
+  h_mass_tm_top           -> Sumw2();
+  h_mass_tm_tprime        -> Sumw2();
+  h_mass_gen_wboson       -> Sumw2();
+  h_mass_gen_top          -> Sumw2();
+
+  h_deltaR_partons        -> Sumw2();
+  h_ptRatio_partons       -> Sumw2();
+  h_deltaR_wjets          -> Sumw2();
 
   // Loop over events to Analyze
   unsigned int nEventsTotal = 0;
@@ -89,6 +109,9 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
     //================================================= Evaluate MeanValues ===================================================//
     for (unsigned int event = 0; event < nEventsTree; ++event) {
 
+      //if( !(event<30) ) break; // check with few events
+      //printf("\n>>> evt = %d\n", event);
+
       // Get Event Content
       if (nEventsTotal >= nEventsChain) continue;
       if (fast) tree->LoadTree(event);
@@ -108,6 +131,10 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
       TLorentzVector diphoton;
       diphoton.SetPtEtaPhiE(dipho_pt(), dipho_eta(), dipho_phi(), dipho_e());
       
+      // Note: assume process signal MC only!
+      double lumi = year == "2016" ? lumi_2016 : (year == "2017") ? lumi_2017 : lumi_2018;
+      float evt_weight = weight() * lumi;
+
       //--------------- MC truth information ---------------//
       vector<float> gen_pdgIds, gen_status;
       vector<float> mom_pdgIds, mom_status;
@@ -119,6 +146,11 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
       int counter_bquark = 0;
       int counter_wquark = 0;
       int counter_gen_particles = 0;
+
+      // flag_look_for_forward_jets
+      bool pass_criterion_for_forward_partons = !(gen_particles.size()<9);
+      if(!pass_criterion_for_forward_partons) continue;
+
       for( unsigned int i = 0; i < gen_particles.size(); ++i )
       {
           bool is_bquark = gen_status[i] == 23 && abs(gen_pdgIds[i]) == 5 && abs(mom_pdgIds[i]) == 6;
@@ -128,27 +160,46 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
           if(is_wquark && counter_wquark == 1){ wquark2 = gen_particles[i]; counter_wquark += 1; }
           if(is_wquark && counter_wquark == 0){ wquark1 = gen_particles[i]; counter_wquark += 1; }
 
-          //printf("gen status = %.0f, gen pdgId = %8.0f, mom pdgId = %.0f\n", gen_status[i], gen_pdgIds[i], mom_pdgIds[i]);
-          //printf("gen status = %.0f, pdgId = %8.0f, pt = %.2f\n", gen_status[i], gen_pdgIds[i], gen_particles[i].Pt());
+          bool is_forward_parton = (fabs(gen_status[i]) == 23) && fabs(gen_pdgIds[i]) < 6 && // outgoing particle && udsb
+                                   (fabs(mom_pdgIds[i]) < 3 || fabs(mom_pdgIds[i]) == 21); // coming from light quark or gluon
+
+          // flag_look_for_forward_jets
+          bool print_test_info = false;
+          if(print_test_info) {
+            if(is_forward_parton)
+              printf("*gen status = %.0f, gen pdgId = %8.0f, mom pdgId = %.0f, pt = %.2f\n", gen_status[i], gen_pdgIds[i], mom_pdgIds[i], gen_particles[i].Pt());
+            else
+              printf(" gen status = %.0f, gen pdgId = %8.0f, mom pdgId = %.0f, pt = %.2f\n", gen_status[i], gen_pdgIds[i], mom_pdgIds[i], gen_particles[i].Pt());
+          }
+
+          if(is_forward_parton) {
+              if(fabs(gen_pdgIds[i]) < 5) {
+                h_pt_forward_light_jet  -> Fill(gen_particles[i].Pt() , evt_weight);
+                h_eta_forward_light_jet -> Fill(gen_particles[i].Eta(), evt_weight);
+              } else {
+                h_pt_forward_b_jet      -> Fill(gen_particles[i].Pt() , evt_weight);
+                h_eta_forward_b_jet     -> Fill(gen_particles[i].Eta(), evt_weight);
+              }
+          }
 
           if( abs(gen_pdgIds[i]) == 5 ) counter_bquark += 1;
           counter_gen_particles += 1;
           
-          h_gen_pdgIds->Fill(gen_pdgIds[i], weight());
-          h_mom_pdgIds->Fill(mom_pdgIds[i], weight());
+          h_gen_pdgIds->Fill(gen_pdgIds[i], evt_weight);
+          h_mom_pdgIds->Fill(mom_pdgIds[i], evt_weight);
       }
       //printf("\n");
-      h_num_bquarks->Fill(counter_bquark, weight());
-      h_num_wquarks->Fill(counter_wquark, weight());
-      h_num_gen_particles->Fill(counter_gen_particles, weight());
+      h_num_bquarks->Fill(counter_bquark, evt_weight);
+      h_num_wquarks->Fill(counter_wquark, evt_weight);
+      h_num_gen_particles->Fill(counter_gen_particles, evt_weight);
 
       bool has_reasonable_gen_matching = counter_bquark >= 1 && counter_wquark >= 2;
       if(has_reasonable_gen_matching)
       {
           TLorentzVector gen_wboson = wquark1 + wquark2;
           TLorentzVector gen_top = bquark + gen_wboson;
-          h_mass_gen_wboson -> Fill(gen_wboson.M(), weight());
-          h_mass_gen_top    -> Fill(gen_top.M(), weight());
+          h_mass_gen_wboson -> Fill(gen_wboson.M(), evt_weight);
+          h_mass_gen_top    -> Fill(gen_top.M(), evt_weight);
           counter_has_reasonable_gen_match += 1;
       }
 
@@ -185,10 +236,10 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
               TLorentzVector truthMatched_top    = truthMatched_bjet + truthMatched_wboson;
               TLorentzVector truthMatched_tprime = truthMatched_top + diphoton;
 
-              h_deltaR_wjets   -> Fill(truthMatched_wjet1.DeltaR(truthMatched_wjet2), weight());
-              h_mass_tm_wboson -> Fill(truthMatched_wboson.M(), weight());
-              h_mass_tm_top    -> Fill(truthMatched_top.M(), weight());
-              h_mass_tm_tprime -> Fill(truthMatched_tprime.M(), weight());
+              h_deltaR_wjets   -> Fill(truthMatched_wjet1.DeltaR(truthMatched_wjet2), evt_weight);
+              h_mass_tm_wboson -> Fill(truthMatched_wboson.M(), evt_weight);
+              h_mass_tm_top    -> Fill(truthMatched_top.M(), evt_weight);
+              h_mass_tm_tprime -> Fill(truthMatched_tprime.M(), evt_weight);
 
               counter_has_reasonable_match += 1;
 
@@ -204,8 +255,8 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
       }
 
       //--------------- Other info ---------------//
-      h_num_jets         -> Fill(jets.size(), weight());
-      h_mass_diphoton    -> Fill(CMS_hgg_mass(), weight());
+      h_num_jets         -> Fill(jets.size(), evt_weight);
+      h_mass_diphoton    -> Fill(CMS_hgg_mass(), evt_weight);
       counter_total_selected_events += 1;
     } // end of event loop
 
@@ -217,6 +268,8 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
     nEventsTotal = 0; //NOTE: temporarily
     Nevents_pass_selection = 0.;
     for (unsigned int event = 0; event < nEventsTree; ++event) {
+
+      //if( !(event<30) ) break; // check with few events
 
       // Get Event Content
       if (nEventsTotal >= nEventsChain) continue;
@@ -327,39 +380,42 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
     char* message = new char[1024];
     ofstream myfile;
 
-    // output as a json file
-    //printf("%s\n", Form("json/covMatrix_Era%s_M%s.json", year.Data(), mass_tag.Data()) );
-    //myfile.open(Form("json/covMatrix_Era%s_M%s.json", year.Data(), mass_tag.Data()));
-    printf("%s\n", "json/covMatrix.json");
-    myfile.open("json/covMatrix.json");
-    myfile << "{\n";
-    sprintf( message, Form("    \"mass_reco_w\" : %.2f,\n"     , mean[0]) ); myfile << message;
-    sprintf( message, Form("    \"mass_reco_top\" : %.2f,\n"   , mean[1]) ); myfile << message;
-    sprintf( message, Form("    \"mass_reco_tprime\" : %.2f,\n", mean[2]) ); myfile << message;
-    sprintf( message, Form("    \"covMatrix_00\" : %.2f,\n", covarianceMatrix[0][0]) ); myfile << message;
-    sprintf( message, Form("    \"covMatrix_01\" : %.2f,\n", covarianceMatrix[0][1]) ); myfile << message;
-    sprintf( message, Form("    \"covMatrix_02\" : %.2f,\n", covarianceMatrix[0][2]) ); myfile << message;
-    sprintf( message, Form("    \"covMatrix_10\" : %.2f,\n", covarianceMatrix[1][0]) ); myfile << message;
-    sprintf( message, Form("    \"covMatrix_11\" : %.2f,\n", covarianceMatrix[1][1]) ); myfile << message;
-    sprintf( message, Form("    \"covMatrix_12\" : %.2f,\n", covarianceMatrix[1][2]) ); myfile << message;
-    sprintf( message, Form("    \"covMatrix_20\" : %.2f,\n", covarianceMatrix[2][0]) ); myfile << message;
-    sprintf( message, Form("    \"covMatrix_21\" : %.2f,\n", covarianceMatrix[2][1]) ); myfile << message;
-    sprintf( message, Form("    \"covMatrix_22\" : %.2f\n" , covarianceMatrix[2][2]) ); myfile << message;
-    myfile << "}\n";
-    myfile.close();
+    bool create_json_files = false;
+    if(create_json_files) {
+      // output as a json file
+      //printf("%s\n", Form("json/covMatrix_Era%s_M%s.json", year.Data(), mass_tag.Data()) );
+      //myfile.open(Form("json/covMatrix_Era%s_M%s.json", year.Data(), mass_tag.Data()));
+      printf("%s\n", "json/covMatrix.json");
+      myfile.open("json/covMatrix.json");
+      myfile << "{\n";
+      sprintf( message, Form("    \"mass_reco_w\" : %.2f,\n"     , mean[0]) ); myfile << message;
+      sprintf( message, Form("    \"mass_reco_top\" : %.2f,\n"   , mean[1]) ); myfile << message;
+      sprintf( message, Form("    \"mass_reco_tprime\" : %.2f,\n", mean[2]) ); myfile << message;
+      sprintf( message, Form("    \"covMatrix_00\" : %.2f,\n", covarianceMatrix[0][0]) ); myfile << message;
+      sprintf( message, Form("    \"covMatrix_01\" : %.2f,\n", covarianceMatrix[0][1]) ); myfile << message;
+      sprintf( message, Form("    \"covMatrix_02\" : %.2f,\n", covarianceMatrix[0][2]) ); myfile << message;
+      sprintf( message, Form("    \"covMatrix_10\" : %.2f,\n", covarianceMatrix[1][0]) ); myfile << message;
+      sprintf( message, Form("    \"covMatrix_11\" : %.2f,\n", covarianceMatrix[1][1]) ); myfile << message;
+      sprintf( message, Form("    \"covMatrix_12\" : %.2f,\n", covarianceMatrix[1][2]) ); myfile << message;
+      sprintf( message, Form("    \"covMatrix_20\" : %.2f,\n", covarianceMatrix[2][0]) ); myfile << message;
+      sprintf( message, Form("    \"covMatrix_21\" : %.2f,\n", covarianceMatrix[2][1]) ); myfile << message;
+      sprintf( message, Form("    \"covMatrix_22\" : %.2f\n" , covarianceMatrix[2][2]) ); myfile << message;
+      myfile << "}\n";
+      myfile.close();
 
-    // output as a txt file
-    //myfile.open(Form("dir_log/covMatrix_Era%s_M%s.txt", year.Data(), mass_tag.Data()));
-    myfile.open("dir_log/covMatrix.txt");
-    myfile << "//### Automatically generated by src/covMatrix_ScanChain.C ###//\n";
-    sprintf( message, Form("//### Dataset: %s\n", name_output_file.Data()) ); myfile << message;
-    sprintf( message, Form("    \"mass_reco_w\" : %.2f,\n"     , mean[0]) ); myfile << message;
-    sprintf( message, Form("    \"mass_reco_top\" : %.2f,\n"   , mean[1]) ); myfile << message;
-    sprintf( message, Form("    \"mass_reco_tprime\" : %.2f,\n", mean[2]) ); myfile << message;
-    sprintf( message, Form("%6.2f, %6.2f, %6.2f\n", covarianceMatrix[0][0], covarianceMatrix[0][1], covarianceMatrix[0][2]) ); myfile << message;
-    sprintf( message, Form("%6.2f, %6.2f, %6.2f\n", covarianceMatrix[1][0], covarianceMatrix[1][1], covarianceMatrix[1][2]) ); myfile << message;
-    sprintf( message, Form("%6.2f, %6.2f, %6.2f\n", covarianceMatrix[2][0], covarianceMatrix[2][1], covarianceMatrix[2][2]) ); myfile << message;
-    myfile.close();
+      // output as a txt file
+      //myfile.open(Form("dir_log/covMatrix_Era%s_M%s.txt", year.Data(), mass_tag.Data()));
+      myfile.open("dir_log/covMatrix.txt");
+      myfile << "//### Automatically generated by src/covMatrix_ScanChain.C ###//\n";
+      sprintf( message, Form("//### Dataset: %s\n", name_output_file.Data()) ); myfile << message;
+      sprintf( message, Form("    \"mass_reco_w\" : %.2f,\n"     , mean[0]) ); myfile << message;
+      sprintf( message, Form("    \"mass_reco_top\" : %.2f,\n"   , mean[1]) ); myfile << message;
+      sprintf( message, Form("    \"mass_reco_tprime\" : %.2f,\n", mean[2]) ); myfile << message;
+      sprintf( message, Form("%6.2f, %6.2f, %6.2f\n", covarianceMatrix[0][0], covarianceMatrix[0][1], covarianceMatrix[0][2]) ); myfile << message;
+      sprintf( message, Form("%6.2f, %6.2f, %6.2f\n", covarianceMatrix[1][0], covarianceMatrix[1][1], covarianceMatrix[1][2]) ); myfile << message;
+      sprintf( message, Form("%6.2f, %6.2f, %6.2f\n", covarianceMatrix[2][0], covarianceMatrix[2][1], covarianceMatrix[2][2]) ); myfile << message;
+      myfile.close();
+    }
 
     // Clean Up
     delete message;

@@ -153,11 +153,12 @@ if __name__ == "__main__":
         create_commands(sm.dict_trees['tHq'],  sm.signals_2018)
 
     if to_do_truthStudy:
-        create_commands(sm.dict_trees['tHq'], ["TprimeBToTH_total_covStudy.root"], location, "2017")
+        # create_commands(sm.dict_trees['tHq'], ["TprimeBToTH_total_covStudy.root"], location, "2017")
+        # create_commands(sm.dict_trees['tHq'] , [sm.signals_2016[0]])
         
-        # create_commands(sm.dict_trees['tHq'] , sm.signals_2016)
-        # create_commands(sm.dict_trees['tHq'],  sm.signals_2017)
-        # create_commands(sm.dict_trees['tHq'],  sm.signals_2018)
+        create_commands(sm.dict_trees['tHq'] , sm.signals_2016)
+        create_commands(sm.dict_trees['tHq'],  sm.signals_2017)
+        create_commands(sm.dict_trees['tHq'],  sm.signals_2018)
     #}}}
 
     if args.test:
