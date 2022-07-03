@@ -59,12 +59,12 @@ void p::Loop()
 
     Report();
     //Make_plots();
-    Make_plots_middle_purity();
-    if (is_SR1){ h_mass_map_SR1->Write(); }
-    if (is_SR2){ h_mass_map_SR2->Write(); }
-    if (is_SR3){ h_mass_map_SR3->Write(); }
+    //Make_plots_middle_purity();
+    //if (is_SR1){ h_mass_map_SR1->Write(); }
+    //if (is_SR2){ h_mass_map_SR2->Write(); }
+    //if (is_SR3){ h_mass_map_SR3->Write(); }
 
-    if (is_SR1){ h_mass_map_mp_SR1->Write(); }
+    //if (is_SR1){ h_mass_map_mp_SR1->Write(); }
 
     fout->cd();
     fout->Write();

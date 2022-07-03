@@ -56,11 +56,11 @@ void t::Loop()
         //++++++++++++++++++++++++++++++++++++++++++++++++++
         // (un)-blind mgg window
         //++++++++++++++++++++++++++++++++++++++++++++++++++
-        bool unblind_mgg_window = true;
-        if (Cut(ientry, unblind_mgg_window) < 0) continue;
+        //bool unblind_mgg_window = true;
+        //if (Cut(ientry, unblind_mgg_window) < 0) continue;
 
-        //bool is_in_mgg_window = dipho_mass > 115. && dipho_mass < 135.;
-        //if(!is_in_mgg_window) continue;
+        bool is_in_mgg_window = dipho_mass > 115. && dipho_mass < 135.;
+        if(!is_in_mgg_window) continue;
 
         //++++++++++++++++++++++++++++++++++++++++++++++++++
         // 2D BDT maps
@@ -96,9 +96,26 @@ void t::Loop()
         //++++++++++++++++++++++++++++++++++++++++++++++++++
         // signal regions
         //++++++++++++++++++++++++++++++++++++++++++++++++++
-        if (Cut(ientry , cut_SR1 , v_bdts_SR1) > 0) { yc_SR1.Add(weight); }
-        if (Cut(ientry , cut_SR2 , v_bdts_SR2) > 0) { yc_SR2.Add(weight); }
-        if (Cut(ientry , cut_SR3 , v_bdts_SR3) > 0) { yc_SR3.Add(weight); }
+        bool is_negative_bin = dipho_mass > 130. && dipho_mass < 135.;
+        if (Cut(ientry , cut_SR1 , v_bdts_SR1) > 0) {
+            printf(">>> weight in sr1: %.2f\n", weight);
+            if (is_negative_bin && weight<0.) yc_SR1.Add(0.);
+            else yc_SR1.Add(weight);
+        }
+        if (Cut(ientry , cut_SR2 , v_bdts_SR2) > 0) {
+            printf(">>> weight in sr2: %.2f\n", weight);
+            if (is_negative_bin && weight<0.) yc_SR2.Add(0.);
+            else yc_SR2.Add(weight);
+        }
+        if (Cut(ientry , cut_SR3 , v_bdts_SR3) > 0) {
+            printf(">>> weight in sr3: %.2f\n", weight);
+            if (is_negative_bin && weight<0.) yc_SR3.Add(0.);
+            else yc_SR3.Add(weight);
+        }
+
+        //if (Cut(ientry , cut_SR1 , v_bdts_SR1) > 0) { yc_SR1.Add(weight); }
+        //if (Cut(ientry , cut_SR2 , v_bdts_SR2) > 0) { yc_SR2.Add(weight); }
+        //if (Cut(ientry , cut_SR3 , v_bdts_SR3) > 0) { yc_SR3.Add(weight); }
         if (Cut(ientry , cut_SR1 , v_bdts_SR1) > 0) { h_counter_signal_region->Fill(0.5 , weight); }
         if (Cut(ientry , cut_SR2 , v_bdts_SR2) > 0) { h_counter_signal_region->Fill(1.5 , weight); }
         if (Cut(ientry , cut_SR3 , v_bdts_SR3) > 0) { h_counter_signal_region->Fill(2.5 , weight); }
@@ -117,12 +134,12 @@ void t::Loop()
     }
 
     Report();
-    Make_plots_2D_mass_middle_purity();
 
     if(false && is_data) {
         Make_plots_2D_mass();
         Make_plots_2D_phase_space();
         Make_plots_validation_regions();
+        Make_plots_2D_mass_middle_purity();
     }
 
     fout->cd();

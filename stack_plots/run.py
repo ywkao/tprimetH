@@ -111,5 +111,5 @@ if __name__ == "__main__":
         "hMVA_value_smh_varset8_mixed05_tmva_bdtg_mggWindow_n50",
     ]
 
-    for histname in bdts:
+    for histname in core:
         make_plot(histname)

@@ -30,10 +30,10 @@ int covMatrix_ScanChain(TChain* chain, TString name_output_file, TString year, T
   TH1F *h_gen_pdgIds            = new TH1F("h_gen_pdgIds"            , ";gen pdgIds;Entries"                                          , 60  , -30 , 30   );
   TH1F *h_mom_pdgIds            = new TH1F("h_mom_pdgIds"            , ";mom pdgIds;Entries"                                          , 60  , -30 , 30   );
 
-  TH1F *h_pt_forward_light_jet  = new TH1F("h_pt_forward_light_jet"  , ";Foward light quark pT [GeV];Entries"                         , 25  , 0   , 500  );
-  TH1F *h_pt_forward_b_jet      = new TH1F("h_pt_forward_b_jet"      , ";Foward b quark pT [GeV];Entries"                             , 25  , 0   , 500  );
-  TH1F *h_eta_forward_light_jet = new TH1F("h_eta_forward_light_jet" , ";Foward light quark eta;Entries"                              , 25  , -5  , 5    );
-  TH1F *h_eta_forward_b_jet     = new TH1F("h_eta_forward_b_jet"     , ";Foward b quark eta;Entries"                                  , 25  , -5  , 5    );
+  TH1F *h_pt_forward_light_jet  = new TH1F("h_pt_forward_light_jet"  , ";Forward light quark pT [GeV];Entries"                        , 100 , 0   , 500  );
+  TH1F *h_pt_forward_b_jet      = new TH1F("h_pt_forward_b_jet"      , ";Forward b quark pT [GeV];Entries"                            , 100 , 0   , 500  );
+  TH1F *h_eta_forward_light_jet = new TH1F("h_eta_forward_light_jet" , ";Forward light quark eta;Entries"                             , 25  , -5  , 5    );
+  TH1F *h_eta_forward_b_jet     = new TH1F("h_eta_forward_b_jet"     , ";Forward b quark eta;Entries"                                 , 25  , -5  , 5    );
 
   TH1F *h_num_jets              = new TH1F("h_num_jets"              , ";Jet multiplicity;Entries"                                    , 16  , 0   , 16   );
   TH1F *h_num_gen_particles     = new TH1F("h_num_gen_particles"     , ";Number of gen-level particles;Entries"                       , 16  , 0   , 16   );

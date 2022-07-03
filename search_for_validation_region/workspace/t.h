@@ -377,6 +377,8 @@ void t::Report()
     yc_SR2.Report("SR2");
     yc_SR3.Report("SR3");
 
+    return;
+
     yc_mp_SR1.Report("middle-purity SR1");
     yc_mp_SR2.Report("middle-purity SR2");
     yc_mp_SR3.Report("middle-purity SR3");

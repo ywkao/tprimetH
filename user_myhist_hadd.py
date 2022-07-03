@@ -111,10 +111,10 @@ if __name__ == "__main__":
     #customize_hadd()
     #exit()
 
-    #usuall_hadd("myhist")
+    usuall_hadd("myhist")
     #usuall_hadd("MVABaby")
 
-    merge_cov_root_files()
+    #merge_cov_root_files("plots_cov")
 
     #hadd_ul1718("MVABaby")
     #hadd_reReco16("MVABaby")

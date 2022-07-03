@@ -6,7 +6,7 @@ path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/
 
 def process(root):
     log = root.replace("root", "txt").replace("output", "log")
-    #command = "./bin/examine %s/%s 2>&1 > log/%s" % (path, root, log)
+    command = "./bin/examine %s/%s 2>&1 > log/%s" % (path, root, log)
     command = "./bin/examine %s/%s" % (path, root)
     print ">>>", command
     subprocess.call(command, shell=True)
@@ -53,7 +53,21 @@ if __name__ == "__main__":
 
     #process( "output_Data.root" )
     #process( "output_Data_v4p2.root" )
-    create_2D_plots()
+    #create_2D_plots()
+
+    #process( "output_Data_v4p2.root" )
+    #process_VLQ_signal()
+    #process_NRB()
+    #process_SMH()
+
+    process( "output_Data_600_700_leptonic.root" )
+    exit()
+
+    process( "output_Data_v4p2.root" )
+    process( "output_DiPhotonJets.root" )
+    process( "output_TTGG.root" )
+    process( "output_TTGJets.root" )
+    process( "output_TTJets.root" )
 
     exit()
 

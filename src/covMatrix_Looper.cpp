@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
     TChain *ch = new TChain("tagsDumper/trees/tHq_13TeV_THQHadronicTag");
     ch -> Add(fullpath);
 
-    TString name_output_file = "plots/covMatrix_" + rootfile;
+    TString name_output_file = "plots_cov/covMatrix_" + rootfile;
     printf("[check] name_output_file = %s\n", name_output_file.Data());
     covMatrix_ScanChain(ch, name_output_file, year, mass);
 

@@ -1012,7 +1012,15 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
       //****************************************************************************************************
       // Fill histograms
       //****************************************************************************************************
+      //--- mgg sideband ---//
       //if ( !(CMS_hgg_mass() > 115. && CMS_hgg_mass() < 135.) ) continue; // consider evt in [115, 135]
+
+      //--- middle purity region ---//
+      bool mp_bdt_nrb = mva_value_nrb_varset8_mixed03_tmva_bdtg > 0.910 && mva_value_nrb_varset8_mixed03_tmva_bdtg < 0.943;
+      bool mp_bdt_smh = mva_value_smh_varset8_mixed03_tmva_bdtg > 0.700;
+      bool mp_tprime = pass_tprime_low_mass_criterion_mixed03;
+      if( !(mp_bdt_nrb && mp_bdt_smh && mp_tprime) ) continue;
+
       if(evt_weight>15.) counter_evtWeight += 1;
       vProcess[processId]->fill_histogram("h" + syst_ext + "Mass", CMS_hgg_mass(), evt_weight, vId);
       vProcess[processId]->fill_histogram("h" + syst_ext + "Mass_fine", CMS_hgg_mass(), evt_weight, vId);
