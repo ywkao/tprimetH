@@ -1,17 +1,17 @@
 #!/usr/bin/env python2
 import ROOT
-import metaData as m
-import plot_utils as p
+import toolbox.metaData as m
+import toolbox.plot_utils as p
 ROOT.gROOT.SetBatch(True)
 
 path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots_20220328_ultraLegacy/myhist_combine_RunII.root"
 path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots_20220419_ultraLegacy_unblind/myhist_combine_RunII.root"
 path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots_20220420_v2/myhist_combine_RunII.root"
-
 path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots/myhist_combine_RunII.root"
 path = "/afs/cern.ch/user/y/ykao/work/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots_20220419_ultraLegacy_unblind/myhist_combine_RunII.root"
-
 path = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/plots_20220422_v4p1/myhist_combine_RunII.root"
+
+path = "/afs/cern.ch/work/y/ykao/tPrimeExcessHgg/CMSSW_10_6_8/src/tprimetH/shortcut_plots/plots_20220425_v4p2_v1/myhist_combine_RunII.root"
 
 fin = ROOT.TFile(path, 'R')
 
@@ -47,9 +47,13 @@ def make_plot(histname):
     hs.Draw("hist")
 
     myRange = m.map_range[histname]
-    hs.GetXaxis().SetRangeUser(myRange[0], myRange[1])
+    #hs.GetXaxis().SetRangeUser(myRange[0], myRange[1])
+    #print ">>>>> check hs: p.idx_xmin = ", p.idx_xmin
+    #print ">>>>> check hs: p.idx_xmax = ", p.idx_xmax
+    hs.GetXaxis().SetRange(p.idx_xmin, p.idx_xmax)
     hs.GetYaxis().SetTitle("Events")
-    hs.GetYaxis().SetTitleSize(0.04)
+    hs.GetYaxis().SetTitleSize(0.05)
+    hs.GetYaxis().SetTitleOffset(1.1)
     hs.GetXaxis().SetLabelOffset(999)
     hs.GetXaxis().SetLabelSize(0)
 
@@ -70,7 +74,7 @@ def make_plot(histname):
     ratPad.Draw()
     ratPad.cd()
     hr = dh["ratio"]
-    hr.GetXaxis().SetRangeUser(myRange[0], myRange[1])
+    #hr.GetXaxis().SetRangeUser(myRange[0], myRange[1])
     hr.Draw("e1")
 
     # save
@@ -88,9 +92,11 @@ if __name__ == "__main__":
         "hMass_pass_BDTG_smh_cut_mixed03",
         "hMass_pass_BDTG_smh_cut_mixed04",
         "hMass_pass_BDTG_smh_cut_mixed05",
-        "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_fine",
-        "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_fine",
-        "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_fine",
+        "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_n50",
+        "hMVA_value_smh_varset8_mixed03_tmva_bdtg_n50",
+        #"hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_fine",
+        #"hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_fine",
+        #"hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_fine",
         #"hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine",
         #"hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine",
         #"hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine",

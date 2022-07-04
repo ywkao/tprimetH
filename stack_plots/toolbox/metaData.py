@@ -47,11 +47,13 @@ map_range = {
 }
 
 signals = "TprimeBToTH_M-600|TprimeBToTH_M-900|TprimeBToTH_M-1200"
+signals = "TprimeBToTH_M-600|TprimeBToTH_M-700"
 smHiggs = "ttH|ggH|THQ|VH|VBF"
 backgrounds = "DiPhoton|QCD_GammaJets_imputed|TTGG|TTGJets|TTJets|VG" # data-driven
 
 map_colors = {
     "TprimeBToTH_M-600"     : ROOT.kRed,
+    "TprimeBToTH_M-700"     : ROOT.kBlue,
     "TprimeBToTH_M-900"     : ROOT.kBlue,
     "TprimeBToTH_M-1200"    : ROOT.kMagenta,
     "SMH"                   : ROOT.kBlack,
@@ -378,18 +380,18 @@ map_xtitles = {
     "hPhotonSubleadSigmaEOverE"                                   : "#sigma_{E}/E (#gamma_{2})",
 
     # BDT scores
-    "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_n50"           : "BDT-NRB score",
-    "hMVA_value_nrb_varset8_mixed04_tmva_bdtg_n50"           : "BDT-NRB score",
-    "hMVA_value_nrb_varset8_mixed05_tmva_bdtg_n50"           : "BDT-NRB score",
-    "hMVA_value_smh_varset8_mixed03_tmva_bdtg_n50"           : "BDT-SMH score",
-    "hMVA_value_smh_varset8_mixed04_tmva_bdtg_n50"           : "BDT-SMH score",
-    "hMVA_value_smh_varset8_mixed05_tmva_bdtg_n50"           : "BDT-SMH score",
-    "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_mggWindow_n50" : "BDT-NRB score",
-    "hMVA_value_nrb_varset8_mixed04_tmva_bdtg_mggWindow_n50" : "BDT-NRB score",
-    "hMVA_value_nrb_varset8_mixed05_tmva_bdtg_mggWindow_n50" : "BDT-NRB score",
-    "hMVA_value_smh_varset8_mixed03_tmva_bdtg_mggWindow_n50" : "BDT-SMH score",
-    "hMVA_value_smh_varset8_mixed04_tmva_bdtg_mggWindow_n50" : "BDT-SMH score",
-    "hMVA_value_smh_varset8_mixed05_tmva_bdtg_mggWindow_n50" : "BDT-SMH score",
+    "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_n50"           : "BDT-NRB discriminant",
+    "hMVA_value_nrb_varset8_mixed04_tmva_bdtg_n50"           : "BDT-NRB discriminant",
+    "hMVA_value_nrb_varset8_mixed05_tmva_bdtg_n50"           : "BDT-NRB discriminant",
+    "hMVA_value_smh_varset8_mixed03_tmva_bdtg_n50"           : "BDT-SMH discriminant",
+    "hMVA_value_smh_varset8_mixed04_tmva_bdtg_n50"           : "BDT-SMH discriminant",
+    "hMVA_value_smh_varset8_mixed05_tmva_bdtg_n50"           : "BDT-SMH discriminant",
+    "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_mggWindow_n50" : "BDT-NRB discriminant",
+    "hMVA_value_nrb_varset8_mixed04_tmva_bdtg_mggWindow_n50" : "BDT-NRB discriminant",
+    "hMVA_value_nrb_varset8_mixed05_tmva_bdtg_mggWindow_n50" : "BDT-NRB discriminant",
+    "hMVA_value_smh_varset8_mixed03_tmva_bdtg_mggWindow_n50" : "BDT-SMH discriminant",
+    "hMVA_value_smh_varset8_mixed04_tmva_bdtg_mggWindow_n50" : "BDT-SMH discriminant",
+    "hMVA_value_smh_varset8_mixed05_tmva_bdtg_mggWindow_n50" : "BDT-SMH discriminant",
 }
 
 #--------------------------------------------------

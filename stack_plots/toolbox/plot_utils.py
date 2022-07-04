@@ -4,8 +4,11 @@ import ROOT
 import metaData as m
 ROOT.gROOT.SetBatch(True)
 
-def register(fin, histname, tag, samples, legend):
+# init bins for x range
+idx_xmin, idx_xmax = 1, 50
 
+def register(fin, histname, tag, samples, legend):
+    global idx_xmin, idx_xmax
     vh, tot_yields, tot_unc = [], 0., 0.
 
     for s in samples:
@@ -15,6 +18,8 @@ def register(fin, histname, tag, samples, legend):
         rebin_factor = 5 if 'fine' in histname else 1
         h.Rebin(rebin_factor)
 
+        nbins = h.GetSize()-2
+
         if tag == "data":
             h.SetLineWidth(2)
             h.SetLineColor(ROOT.kBlack)
@@ -22,6 +27,21 @@ def register(fin, histname, tag, samples, legend):
             h.SetMarkerSize(1.25)
             h.SetMarkerColor(ROOT.kBlack)
             legend.AddEntry(h, "Data", 'lep')
+
+            # obtain idx of bins for x range
+            for i in range(0, nbins):
+                idx = nbins - i
+                idx_yields = h.GetBinContent(idx)
+                if idx_yields > 0:
+                    idx_xmax = idx
+                    break
+
+            for i in range(0, nbins):
+                idx = i+1
+                idx_yields = h.GetBinContent(idx)
+                if idx_yields > 0:
+                    idx_xmin = idx
+                    break
 
         elif tag == "signals" or tag == "smHiggs":
             h.SetLineWidth(3)
@@ -35,14 +55,20 @@ def register(fin, histname, tag, samples, legend):
             h.SetFillColor(m.map_colors[s])
             legend.AddEntry(h, m.map_labels[s], 'f')
 
+        #print ">>>>> check: idx_xmin = ", idx_xmin
+        #print ">>>>> check: idx_xmax = ", idx_xmax
+        h.GetXaxis().SetRange(idx_xmin, idx_xmax)
+
+        overflow = h.Integral(idx_xmax+1, nbins+1)
+        h.AddBinContent(idx_xmax, overflow)
+
         vh.append(h)
 
         #++++++++++++++++++++++++++++++++++++++++++++++++++
         # calculate yields
         #++++++++++++++++++++++++++++++++++++++++++++++++++
         unc = ROOT.Double(0)
-        nbins = h.GetSize()-1;
-        yields = h.IntegralAndError(0, nbins, unc);
+        yields = h.IntegralAndError(0, nbins+1, unc);
         if tag == "backgrounds" or tag == "smHiggs":
             tot_yields += yields
             tot_unc += pow(unc, 2)
@@ -112,6 +138,10 @@ def get_ratio(histname, h_data, h_nrb):
     h.GetXaxis().SetTitleOffset(1.1)
     h.GetXaxis().SetTitleSize(0.13)
 
+    global idx_xmin, idx_xmax
+    #print ">>>>> check ratio: idx_xmin = ", idx_xmin
+    #print ">>>>> check ratio: idx_xmax = ", idx_xmax
+    h.GetXaxis().SetRange(idx_xmin, idx_xmax)
     return h
 
 def init_canvas():
@@ -157,9 +187,10 @@ def annotate():
     latex.SetNDC()
     latex.SetTextFont(43)
     latex.SetTextAlign(11)
-    latex.SetTextSize(24)
-    latex.DrawLatex( 0.12, 0.935, "#bf{CMS} #it{work in progress}" )
-    latex.DrawLatex( 0.65, 0.935, "138 fb^{-1} (13#scale[0.75]{ }TeV)" )
+    latex.SetTextSize(26)
+    #latex.DrawLatex( 0.12, 0.935, "#bf{CMS} #it{work in progress}" )
+    latex.DrawLatex( 0.12, 0.935, "#bf{CMS} #it{Preliminary}" )
+    latex.DrawLatex( 0.64, 0.935, "138 fb^{-1} (13#scale[0.75]{ }TeV)" )
 
 def signal_selector(histname):
     if   histname == "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine" : return "TprimeBToTH_M-600"
