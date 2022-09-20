@@ -108,13 +108,13 @@ variables = [
     #"Ratio2ndTop13"                       , #TH1F 1 #frac{P_{T}^{2nd top} - P_{T}^{top}}{P_{T}^{2nd top}}
     "HT13"                                , #TH1F 1  H_{T}
     #"HT2p413"                             , #TH1F 1   H_{T}^{2p4}
-    #"RelHT13"                             , #TH1F 1   Relative H_{T}
+    "RelHT13"                             , #TH1F 1   Relative H_{T}
     #"NewRelHT13"                          , #TH1F 1    New Relative H_{T}
     "DRbb13"                              , #TH1F 1    #Delta R(b_{Higgs} b_{Higgs})
-    "DRbFHbTop13"                         , #TH1F 1   #Delta R(b_{First_Higgs} b_{Top})
-    "DRbTopbSH13"                         , #TH1F 1   #Delta R(b_{Second_Higgs} b_{Top})
+    #"DRbFHbTop13"                         , #TH1F 1   #Delta R(b_{First_Higgs} b_{Top})
+    #"DRbTopbSH13"                         , #TH1F 1   #Delta R(b_{Second_Higgs} b_{Top})
     "DRjj13"                              , #TH1F 1    #Delta R(j_{W} j_{W})
-    "DRHT13"                              , #TH1F 1    DR(Higgs                                           , Top)
+    #"DRHT13"                              , #TH1F 1    DR(Higgs                                           , Top)
     #"RatioPt13"                           , #TH1F 1 TpPt/HPt - TpPt/TopPt
     #"DEtaWH13"                            , #TH1F 1  DEta (W                                              , H)
     #"DPtOverTpPt13"                       , #TH1F 1 Diff Pt (H                                            , Top) /Tp Pt
@@ -128,7 +128,7 @@ variables = [
     #"Jet7thPt13"                          , #TH1F 1    Jet7thPt
     #"Jet8thPt13"                          , #TH1F 1    Jet8thPt
     #"Jet9thPt13"                          , #TH1F 1    Jet9thPt
-    "BJet4Pt13"                           , #TH1F 1 BJet4Pt
+    #"BJet4Pt13"                           , #TH1F 1 BJet4Pt
     "FirstHiggsPtoM513"                   , #TH1F 1 FirstHiggsPt / M5J
     "SecondHiggsPtoM513"                  , #TH1F 1    SecondHiggsPt /M5J
     "FirstWPtoM513"                       , #TH1F 1 FirstWPt /M5J
@@ -142,7 +142,7 @@ variables = [
     #"Jet7thEta13"                         , #TH1F 1   Jet7th #eta
     #"Jet8thEta13"                         , #TH1F 1   Jet8th #eta
     #"Jet9thEta13"                         , #TH1F 1   Jet9th #eta
-    "BJet4Eta13"                          , #TH1F 1    BJet4Eta
+    #"BJet4Eta13"                          , #TH1F 1    BJet4Eta
     "Reconstructed_TprimeEta13"           , #TH1F 1 TPrime #eta
     "Reconstructed_TprimePhi13"           , #TH1F 1 TPrime #phi
     "TopBJetEta13"                        , #TH1F 1  TopBJet #eta
@@ -153,7 +153,7 @@ variables = [
     "SecondWPhi13"                        , #TH1F 1  SecondW #phi
     "TopBJetPhi13"                        , #TH1F 1  TopBJet #phi
     #"Jet6Phi13"                           , #TH1F 1 Jet6 #phi
-    "NbBTag3L13"                          , #TH1F 1    Nb Loose B-tag
+    #"NbBTag3L13"                          , #TH1F 1    Nb Loose B-tag
     #"NbBTag3M13"                          , #TH1F 1    Nb Medium B-tag
     #"NbBTag3T13"                          , #TH1F 1    Nb Tight B-tag
     "DR(BTopJet,W)13"                     , #TH1F 1   DR(BTopJet,W)
@@ -161,15 +161,15 @@ variables = [
     #"Higgschi213"                         , #TH1F 1   Higgs #Chi^{2}
     "Topchi213"                           , #TH1F 1 Top #Chi^{2}
     #"Wchi213"                             , #TH1F 1   W #Chi^{2}
-    "2ndTopMass13"                        , #TH1F 1  2nd Top Mass
+    #"2ndTopMass13"                        , #TH1F 1  2nd Top Mass
     #"MaxChi213"                           , #TH1F 1 Max Chi2
     #"MaxDR13"                             , #TH1F 1   Max DR
     #"Chi2PlusDR13"                        , #TH1F 1  Chi2 + DR
     "NbGoodJets13"                        , #TH1F 1  Nb Good Jets
-    "MHt_5j13"                            , #TH1F 1  MHt 5J
-    "MHt_6j13"                            , #TH1F 1  MHt 6J
-    "WHMass13"                            , #TH1F 1  Invariant Mass W+Higgs
-    "Mass6J13"                            , #TH1F 1  Invariant Mass 6 Jets
+    #"MHt_5j13"                            , #TH1F 1  MHt 5J
+    #"MHt_6j13"                            , #TH1F 1  MHt 6J
+    #"WHMass13"                            , #TH1F 1  Invariant Mass W+Higgs
+    #"Mass6J13"                            , #TH1F 1  Invariant Mass 6 Jets
     #"Mass6th7thJ13"                       , #TH1F 1 Invariant Mass of 6th+7th
     #"Mass6th7th8thJ13"                    , #TH1F 1  Invariant Mass of 6th+7th+8th
     #"Mass6th7th8th9thJ13"                 , #TH1F 1   Invariant Mass of 6th+7th+8th+9th
@@ -194,10 +194,10 @@ variables = [
     #"DR(Tprime,8th)13"                    , #TH1F 1  DR(Tprime,8th)
     #"DR(Tprime,9th)13"                    , #TH1F 1  DR(Tprime,9th)
     #"MassT4thB13"                         , #TH1F 1   Invariant Mass Tprime+4th B Jets
-    "3JetMassCloseTopMass13"              , #TH1F 1    3JetMass Invariant Mass at TopMass
-    "3JetMassCloseTopMass_Jet1Jet2_13"    , #TH1F 1  3JetMass Invariant Mass at TopMassJet1Jet2
-    "3JetMassCloseTopMass_Jet1Jet3_13"    , #TH1F 1  3JetMass Invariant Mass at TopMassJet1Jet3
-    "3JetMassCloseTopMass_Jet2Jet3_13"    , #TH1F 1  3JetMass Invariant Mass at TopMassJet1Jet3
+    #"3JetMassCloseTopMass13"              , #TH1F 1    3JetMass Invariant Mass at TopMass
+    #"3JetMassCloseTopMass_Jet1Jet2_13"    , #TH1F 1  3JetMass Invariant Mass at TopMassJet1Jet2
+    #"3JetMassCloseTopMass_Jet1Jet3_13"    , #TH1F 1  3JetMass Invariant Mass at TopMassJet1Jet3
+    #"3JetMassCloseTopMass_Jet2Jet3_13"    , #TH1F 1  3JetMass Invariant Mass at TopMassJet1Jet3
     #"3JetMassClose68013"                  , #TH1F 1    3JetMass Invariant Mass at 680
     #"3JetMassClose680_Jet1Jet2_13"        , #TH1F 1  3JetMass Invariant Mass at 680Jet1Jet2
     #"3JetMassClose680_Jet1Jet3_13"        , #TH1F 1  3JetMass Invariant Mass at 680Jet1Jet3
@@ -207,11 +207,11 @@ variables = [
     #"TotalInvMass8Jets_13"                , #TH1F 1  Invariant Mass Tprime+3jets at 680
     #"TotalInvMass8JetsWith4thB_13"        , #TH1F 1  Invariant Mass Tprime+3jetsWith4thB at 680
     #"2JetMassClose240_Jet1Jet2_13"        , #TH1F 1  2JetMass Invariant Mass at 240Jet1Jet2
-    "3JetMassFrom24013"                   , #TH1F 1 3JetMass Invariant Mass
-    "2JetMassClose240_Jet1Jet2NonB_13"    , #TH1F 1  2JetMass Invariant Mass at 240Jet1Jet2NonB
-    "3JetMassBIncludedFrom24013"          , #TH1F 1    3JetMassBIncluded Invariant Mass
-    "TotalInvMass8JetsFrom240_13"         , #TH1F 1   Invariant Mass Tprime+3jets from 240
-    "TotalInvMass8JetsWith4thBFrom240_13" , #TH1F 1   Invariant Mass Tprime+3jetsWith4thB from 240
+    #"3JetMassFrom24013"                   , #TH1F 1 3JetMass Invariant Mass
+    #"2JetMassClose240_Jet1Jet2NonB_13"    , #TH1F 1  2JetMass Invariant Mass at 240Jet1Jet2NonB
+    #"3JetMassBIncludedFrom24013"          , #TH1F 1    3JetMassBIncluded Invariant Mass
+    #"TotalInvMass8JetsFrom240_13"         , #TH1F 1   Invariant Mass Tprime+3jets from 240
+    #"TotalInvMass8JetsWith4thBFrom240_13" , #TH1F 1   Invariant Mass Tprime+3jetsWith4thB from 240
     "WM13"                                , #TH1F 1  W Mass
     "Jet1Pt13"                            , #TH1F 1  Pt Jet 1
     "Jet2Pt13"                            , #TH1F 1  Pt Jet 2
@@ -231,36 +231,36 @@ variables = [
     "CSVBJet413"                          , #TH1F 1    CSVBJet4
     #"CSVBSum13"                           , #TH1F 1 CSVBSum
     #"MinCSVB13"                           , #TH1F 1 MinCSVB
-    "DPhiHT13"                            , #TH1F 1  D#phi(Higgs                                          , Top)
+    #"DPhiHT13"                            , #TH1F 1  D#phi(Higgs                                          , Top)
     #"Jet7Pt13"                            , #TH1F 1  Pt Jet 7
     #"Jet8Pt13"                            , #TH1F 1  Pt Jet 8
     #"Jet9Pt13"                            , #TH1F 1  Pt Jet 9
     #"Jet10Pt13"                           , #TH1F 1 Pt Jet 10
     #"RatioM4JM6J13"                       , #TH1F 1 M(W+H)/M(Top+H+6thJet)
-    "FirstLooseBJetEta13"                 , #TH1F 1   Loose B Jet #eta
-    "SecondLooseBJetEta13"                , #TH1F 1  Loose B Jet #eta
-    "ThirdLooseBJetEta13"                 , #TH1F 1   Loose B Jet #eta
-    "FirstMediumBJetEta13"                , #TH1F 1  Medium B Jet #eta
-    "SecondMediumBJetEta13"               , #TH1F 1 Medium B Jet #eta
-    "ThirdMediumBJetEta13"                , #TH1F 1  Medium B Jet #eta
+    #"FirstLooseBJetEta13"                 , #TH1F 1   Loose B Jet #eta
+    #"SecondLooseBJetEta13"                , #TH1F 1  Loose B Jet #eta
+    #"ThirdLooseBJetEta13"                 , #TH1F 1   Loose B Jet #eta
+    #"FirstMediumBJetEta13"                , #TH1F 1  Medium B Jet #eta
+    #"SecondMediumBJetEta13"               , #TH1F 1 Medium B Jet #eta
+    #"ThirdMediumBJetEta13"                , #TH1F 1  Medium B Jet #eta
     "FirstTightBJetEta13"                 , #TH1F 1   Tight B Jet #eta
     "SecondTightBJetEta13"                , #TH1F 1  Tight B Jet #eta
     "ThirdTightBJetEta13"                 , #TH1F 1   Tight B Jet #eta
-    "FirstLooseBJetPhi13"                 , #TH1F 1   Loose B Jet Phi
-    "SecondLooseBJetPhi13"                , #TH1F 1  Loose B Jet Phi
-    "ThirdLooseBJetPhi13"                 , #TH1F 1   Loose B Jet Phi
-    "FirstMediumBJetPhi13"                , #TH1F 1  Medium B Jet Phi
-    "SecondMediumBJetPhi13"               , #TH1F 1 Medium B Jet Phi
-    "ThirdMediumBJetPhi13"                , #TH1F 1  Medium B Jet Phi
+#    "FirstLooseBJetPhi13"                 , #TH1F 1   Loose B Jet Phi
+#    "SecondLooseBJetPhi13"                , #TH1F 1  Loose B Jet Phi
+#    "ThirdLooseBJetPhi13"                 , #TH1F 1   Loose B Jet Phi
+#    "FirstMediumBJetPhi13"                , #TH1F 1  Medium B Jet Phi
+#    "SecondMediumBJetPhi13"               , #TH1F 1 Medium B Jet Phi
+#    "ThirdMediumBJetPhi13"                , #TH1F 1  Medium B Jet Phi
     "FirstTightBJetPhi13"                 , #TH1F 1   Tight B Jet Phi
     "SecondTightBJetPhi13"                , #TH1F 1  Tight B Jet Phi
     "ThirdTightBJetPhi13"                 , #TH1F 1   Tight B Jet Phi
-    "FirstLooseBJetP13"                   , #TH1F 1 Loose B Jet P
-    "SecondLooseBJetP13"                  , #TH1F 1    Loose B Jet P
-    "ThirdLooseBJetP13"                   , #TH1F 1 Loose B Jet P
-    "FirstMediumBJetP13"                  , #TH1F 1    Medium B Jet P
-    "SecondMediumBJetP13"                 , #TH1F 1   Medium B Jet P
-    "ThirdMediumBJetP13"                  , #TH1F 1    Medium B Jet P
+#    "FirstLooseBJetP13"                   , #TH1F 1 Loose B Jet P
+#    "SecondLooseBJetP13"                  , #TH1F 1    Loose B Jet P
+#    "ThirdLooseBJetP13"                   , #TH1F 1 Loose B Jet P
+#    "FirstMediumBJetP13"                  , #TH1F 1    Medium B Jet P
+#    "SecondMediumBJetP13"                 , #TH1F 1   Medium B Jet P
+#    "ThirdMediumBJetP13"                  , #TH1F 1    Medium B Jet P
     "FirstTightBJetP13"                   , #TH1F 1 Tight B Jet P
     "SecondTightBJetP13"                  , #TH1F 1    Tight B Jet P
     "ThirdTightBJetP13"                   , #TH1F 1 Tight B Jet P
@@ -276,7 +276,7 @@ variables = [
     #"ForwardJetPt13"                      , #TH1F 1    Forward Jet p_{T}
     #"TprimeMass13SigPl"                   , #TH1F 1 Invariant Mass Higgs+top (SigmaPlus)
     #"TprimeMass13SigMo"                   , #TH1F 1 Invariant Mass Higgs+top(SigmaMinus)
-    "TprimeMass13NoWeight"                , #TH1F 1  Invariant Mass Higgs+top (NoWeight)
+    #"TprimeMass13NoWeight"                , #TH1F 1  Invariant Mass Higgs+top (NoWeight)
     #"TprimeMass13L1Prefiring"             , #TH1F 1   Invariant Mass Higgs+top (NoWeight)
     #"HT2p4_3p013"                         , #TH1F 1   H_{T}^{2p4}_{3p0}
     #"HT2p4_3p013WithL1PreFiring"          , #TH1F 1    H_{T}^{2p4}_{3p0}
@@ -292,21 +292,21 @@ variables = [
     "HiggsEta13"                          , #TH1F 1    Higgs #eta
     "TopPhi13"                            , #TH1F 1  Top #phi
     "HiggsPhi13"                          , #TH1F 1    Higgs #phi
-    "BTagLoosePhi13"                      , #TH1F 1    Loose BTag #phi
-    "BTagMediumPhi13"                     , #TH1F 1   Medium BTag #phi
-    "BTagTightPhi13"                      , #TH1F 1    Tight BTag #phi
-    "BTagExtraLooseEta13"                 , #TH1F 1   Extra Loose BTag #eta
-    "BTagLooseEta13"                      , #TH1F 1    Loose BTag #eta
-    "BTagMediumEta13"                     , #TH1F 1   Medium BTag #eta
-    "BTagTightEta13"                      , #TH1F 1    Tight BTag #eta
-    "BTagExtraLooseMomentum13"            , #TH1F 1  Extra Loose BTag Momentum
-    "BTagLooseMomentum13"                 , #TH1F 1   Loose BTag Momentum
-    "BTagMediumMomentum13"                , #TH1F 1  Medium BTag Momentum
-    "BTagTightMomentum13"                 , #TH1F 1   Tight BTag Momentum
-    "BTagExtraLoosePt13"                  , #TH1F 1    Extra Loose BTag Pt
-    "BTagLoosePt13"                       , #TH1F 1 Loose BTag Pt
-    "BTagMediumPt13"                      , #TH1F 1    Medium BTag Pt
-    "BTagTightPt13"                       , #TH1F 1 Tight BTag Pt
+    #"BTagLoosePhi13"                      , #TH1F 1    Loose BTag #phi
+    #"BTagMediumPhi13"                     , #TH1F 1   Medium BTag #phi
+    #"BTagTightPhi13"                      , #TH1F 1    Tight BTag #phi
+    #"BTagExtraLooseEta13"                 , #TH1F 1   Extra Loose BTag #eta
+    #"BTagLooseEta13"                      , #TH1F 1    Loose BTag #eta
+    #"BTagMediumEta13"                     , #TH1F 1   Medium BTag #eta
+    #"BTagTightEta13"                      , #TH1F 1    Tight BTag #eta
+    #"BTagExtraLooseMomentum13"            , #TH1F 1  Extra Loose BTag Momentum
+    #"BTagLooseMomentum13"                 , #TH1F 1   Loose BTag Momentum
+    #"BTagMediumMomentum13"                , #TH1F 1  Medium BTag Momentum
+    #"BTagTightMomentum13"                 , #TH1F 1   Tight BTag Momentum
+    #"BTagExtraLoosePt13"                  , #TH1F 1    Extra Loose BTag Pt
+    #"BTagLoosePt13"                       , #TH1F 1 Loose BTag Pt
+    #"BTagMediumPt13"                      , #TH1F 1    Medium BTag Pt
+    #"BTagTightPt13"                       , #TH1F 1 Tight BTag Pt
 ]
 
 raw = [ #{{{
