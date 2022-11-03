@@ -991,16 +991,70 @@ int ScanChain_tprimetHHadronic_signal(TChain* chain, TString name_output_file, T
           {
               printf("[crosscheck-03] Run:Lumi:Event = %ld:%ld:%ld, ", run_, lumi_, evt_);
               printf("CMS_hgg_mass = %f\n", CMS_hgg_mass());
+
+              bool check_var = true;
+              if(check_var)
+              {
+                  long evt_  = analyzer.event();
+                  long run_  = analyzer.run();
+                  long lumi_ = analyzer.lumi();
+                  printf("[Info] Run:Lumi:Event = %ld:%ld:%ld\n", run_, lumi_, evt_);
+                  printf("[check] processId = %d, minIDMVA = %.2f, maxIDMVA = %.2f, ", processId, minIDMVA_, maxIDMVA_);
+                  printf("mass_tprime = %.2f\n", mass_tprime);
+
+                  std::cout << "diphoton_mass_: " << CMS_hgg_mass() << ", ";
+                  std::cout << "diphoton_pt_: "   << dipho_pt()   << ", ";
+                  tprimeTagger_nrb->print_details_cout( MVAvarList );
+                  std::cout << "score_nrb_: "     << mva_value_nrb << ", ";
+                  std::cout << "score_smh_: "     << mva_value_smh << ", ";
+                  printf("\n\n");
+              }
           }
           if(is_within_crosscheck_mixed04 && in_mgg_window)
           {
               printf("[crosscheck-04] Run:Lumi:Event = %ld:%ld:%ld, ", run_, lumi_, evt_);
               printf("CMS_hgg_mass = %f\n", CMS_hgg_mass());
+
+              bool check_var = true;
+              if(check_var)
+              {
+                  long evt_  = analyzer.event();
+                  long run_  = analyzer.run();
+                  long lumi_ = analyzer.lumi();
+                  printf("[Info] Run:Lumi:Event = %ld:%ld:%ld\n", run_, lumi_, evt_);
+                  printf("[check] processId = %d, minIDMVA = %.2f, maxIDMVA = %.2f, ", processId, minIDMVA_, maxIDMVA_);
+                  printf("mass_tprime = %.2f\n", mass_tprime);
+
+                  std::cout << "diphoton_mass_: " << CMS_hgg_mass() << ", ";
+                  std::cout << "diphoton_pt_: "   << dipho_pt()   << ", ";
+                  tprimeTagger_nrb->print_details_cout( MVAvarList );
+                  std::cout << "score_nrb_: "     << mva_value_nrb << ", ";
+                  std::cout << "score_smh_: "     << mva_value_smh << ", ";
+                  printf("\n\n");
+              }
           }
           if(is_within_crosscheck_mixed05 && in_mgg_window)
           {
               printf("[crosscheck-05] Run:Lumi:Event = %ld:%ld:%ld, ", run_, lumi_, evt_);
               printf("CMS_hgg_mass = %f\n", CMS_hgg_mass());
+
+              bool check_var = true;
+              if(check_var)
+              {
+                  long evt_  = analyzer.event();
+                  long run_  = analyzer.run();
+                  long lumi_ = analyzer.lumi();
+                  printf("[Info] Run:Lumi:Event = %ld:%ld:%ld\n", run_, lumi_, evt_);
+                  printf("[check] processId = %d, minIDMVA = %.2f, maxIDMVA = %.2f, ", processId, minIDMVA_, maxIDMVA_);
+                  printf("mass_tprime = %.2f\n", mass_tprime);
+
+                  std::cout << "diphoton_mass_: " << CMS_hgg_mass() << ", ";
+                  std::cout << "diphoton_pt_: "   << dipho_pt()   << ", ";
+                  tprimeTagger_nrb->print_details_cout( MVAvarList );
+                  std::cout << "score_nrb_: "     << mva_value_nrb << ", ";
+                  std::cout << "score_smh_: "     << mva_value_smh << ", ";
+                  printf("\n\n");
+              }
           }
       }
       //----------------------------------------------------------------------------------------------------}}}

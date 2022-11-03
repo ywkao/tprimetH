@@ -26,7 +26,7 @@ def register(fin, histname, tag, samples, legend):
             h.SetMarkerStyle(20)
             h.SetMarkerSize(1.25)
             h.SetMarkerColor(ROOT.kBlack)
-            legend.AddEntry(h, "Data", 'lep')
+            legend.AddEntry(h, "Data", 'ep')
 
             # obtain idx of bins for x range
             for i in range(0, nbins):
@@ -58,6 +58,9 @@ def register(fin, histname, tag, samples, legend):
         #print ">>>>> check: idx_xmin = ", idx_xmin
         #print ">>>>> check: idx_xmax = ", idx_xmax
         h.GetXaxis().SetRange(idx_xmin, idx_xmax)
+
+        h.GetYaxis().SetLabelSize(0.10)
+        h.GetYaxis().SetLabelOffset(0.010)
 
         overflow = h.Integral(idx_xmax+1, nbins+1)
         h.AddBinContent(idx_xmax, overflow)
@@ -99,25 +102,44 @@ def register(fin, histname, tag, samples, legend):
 
     return vh
 
-def merge(samples, legend):
+def merge(samples, tag, legend):
     h_tot = samples[0].Clone()
     for i, h in enumerate(samples):
         if i == 0: continue
         h_tot.Add(h)
 
     h_tot.SetLineColor(ROOT.kBlack)
-    if legend: legend.AddEntry(h_tot, "SMH", 'f')
+    if legend:
+        if tag == "SMH":
+            legend.AddEntry(h_tot, "SMH", 'f')
+        elif tag == "NRB":
+            legend.AddEntry(h_tot, "Stat. Unc.", 'f')
 
     return [h_tot]
 
-def get_ratio(histname, h_data, h_nrb):
+def get_ratio(ratioName, histname, h_data, h_nrb):
+    global idx_xmin, idx_xmax
     h = h_data.Clone()
-    h.Divide(h_nrb)
+
+    if ratioName == 'ratio_mc':
+        for i in range(idx_xmin, idx_xmax+1):
+            relative_error = h_nrb.GetBinError(i) / h_nrb.GetBinContent(i)
+            h.SetBinContent(i, 1.)
+            h.SetBinError(i, relative_error)
+
+        h.SetLineColor(ROOT.kRed)
+        h.SetMarkerSize(0)
+        h.SetFillColorAlpha(ROOT.kRed, 0.25)
+
+    else:
+        h.Divide(h_nrb)
+        h.SetMarkerStyle(20)
+        h.SetMarkerSize(1.25)
+        h.SetMarkerColor(ROOT.kBlack)
+        h.SetLineColor(ROOT.kBlack)
+
+    # common
     h.SetStats(0)
-    h.SetMarkerStyle(20)
-    h.SetMarkerSize(1.25)
-    h.SetMarkerColor(ROOT.kBlack)
-    h.SetLineColor(ROOT.kBlack)
     h.SetMaximum(2.)
     h.SetMinimum(0.)
 
@@ -128,24 +150,30 @@ def get_ratio(histname, h_data, h_nrb):
     h.GetXaxis().SetLabelSize(0.08)
 
     # titles
-    h.GetYaxis().SetTitle("#frac{Data}{MC}")
-    h.GetYaxis().SetTitleSize(0.08)
-    h.GetYaxis().SetTitleOffset(0.65)
+    #h.GetYaxis().SetTitle("#frac{Data}{MC}")
+    h.GetYaxis().SetTitle("Data / MC")
+    h.GetYaxis().SetTitleSize(0.13)
+    h.GetYaxis().SetTitleOffset(0.40)
     h.GetYaxis().CenterTitle()
+
+    h.GetXaxis().SetLabelSize(0.10)
+    h.GetYaxis().SetLabelSize(0.10)
+    h.GetXaxis().SetLabelOffset(0.035)
+    h.GetYaxis().SetLabelOffset(0.010)
 
     xtitle = m.map_xtitles[histname]
     h.GetXaxis().SetTitle(xtitle)
     h.GetXaxis().SetTitleOffset(1.1)
     h.GetXaxis().SetTitleSize(0.13)
 
-    global idx_xmin, idx_xmax
     #print ">>>>> check ratio: idx_xmin = ", idx_xmin
     #print ">>>>> check ratio: idx_xmax = ", idx_xmax
     h.GetXaxis().SetRange(idx_xmin, idx_xmax)
     return h
 
 def init_canvas():
-    c1 = ROOT.TCanvas("c1", "", 600, 800)
+    #c1 = ROOT.TCanvas("c1", "", 600, 800)
+    c1 = ROOT.TCanvas("c1", "", 600, 700)
     c1.SetGrid()
     c1.SetTicks()
     c1.SetLogy()
@@ -153,29 +181,31 @@ def init_canvas():
 
 def init_legend():
     #legend = ROOT.TLegend(0.37, 0.70, 0.92, 0.91)
-    #legend.SetTextSize(0.04)
-    legend = ROOT.TLegend(0.35, 0.70, 0.90, 0.91)
+    #legend = ROOT.TLegend(0.35, 0.70, 0.90, 0.91)
+    #legend = ROOT.TLegend(0.33, 0.62, 0.88, 0.82)
+    legend = ROOT.TLegend(0.25, 0.65, 0.90, 0.84)
+    legend.SetTextSize(0.04)
     legend.SetNColumns(4)
     legend.SetLineColor(0)
     return legend
 
 def init_pads():
     mainPad = ROOT.TPad("p_main", "p_main", 0.0, 0.3, 1.0, 1.0)
-    mainPad.SetTopMargin(0.08)
-    mainPad.SetBottomMargin(0.02)
+    mainPad.SetTopMargin(0.075)
+    mainPad.SetBottomMargin(0.01)
     mainPad.SetRightMargin(0.07)
-    mainPad.SetLeftMargin(0.12)
+    mainPad.SetLeftMargin(0.15)
     mainPad.SetLogy()
-    mainPad.SetGrid()
+    #mainPad.SetGrid()
 
     # this is not work ??
     mainPad.SetTicks()
     
     ratPad = ROOT.TPad( "p_rat", "p_rat", 0.0, 0.0, 1.0, 0.3)
-    ratPad.SetTopMargin(0.07)
-    ratPad.SetBottomMargin(0.36)
+    ratPad.SetTopMargin(0.10)
+    ratPad.SetBottomMargin(0.35)
     ratPad.SetRightMargin(0.07)
-    ratPad.SetLeftMargin(0.12)
+    ratPad.SetLeftMargin(0.15)
     mainPad.SetTicks(1,0)
     ratPad.SetGridy()
     ratPad.SetTicks()
@@ -185,12 +215,13 @@ def init_pads():
 def annotate():
     latex = ROOT.TLatex()
     latex.SetNDC()
-    latex.SetTextFont(43)
-    latex.SetTextAlign(11)
-    latex.SetTextSize(26)
-    #latex.DrawLatex( 0.12, 0.935, "#bf{CMS} #it{work in progress}" )
-    latex.DrawLatex( 0.12, 0.935, "#bf{CMS} #it{Preliminary}" )
-    latex.DrawLatex( 0.64, 0.935, "138 fb^{-1} (13#scale[0.75]{ }TeV)" )
+    latex.SetTextFont(42)
+    latex.SetTextAlign(13)
+    latex.SetTextSize(0.04)
+    latex.DrawLatex( 0.18, 0.890, "#bf{CMS} #it{Preliminary}" )
+
+    latex.SetTextSize(0.03)
+    latex.DrawLatex( 0.73, 0.97, "#scale[1.2]{138 fb^{-1} (13#scale[0.75]{ }TeV)}" )
 
 def signal_selector(histname):
     if   histname == "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine" : return "TprimeBToTH_M-600"
@@ -213,4 +244,4 @@ def get_scale(histname):
 
     # others
     else:
-        return [1e-4, 1e+9]
+        return [1e-3, 1e+9]

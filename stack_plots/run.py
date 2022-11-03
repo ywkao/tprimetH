@@ -20,10 +20,11 @@ def load(fin, histname, my_signals):
     dh["data"]        = p.register( fin, histname, "data"       , ["Data"]                 , legend )
     dh["signals"]     = p.register( fin, histname, "signals"    , my_signals.split("|")    , legend )
     dh["smHiggs"]     = p.register( fin, histname, "smHiggs"    , m.smHiggs.split("|")     , None   )
-    dh["SMH"]         = p.merge(dh["smHiggs"], legend)
+    dh["SMH"]         = p.merge(dh["smHiggs"], "SMH", legend)
     dh["backgrounds"] = p.register( fin, histname, "backgrounds", m.backgrounds.split("|") , legend )
-    dh["NRB"]         = p.merge(dh["backgrounds"], None)
-    dh["ratio"]       = p.get_ratio( histname, dh["data"][0], dh["NRB"][0] )
+    dh["NRB"]         = p.merge(dh["backgrounds"], "NRB", legend)
+    dh["ratio"]       = p.get_ratio( "ratio"   , histname, dh["data"][0], dh["NRB"][0] )
+    dh["ratio_mc"]    = p.get_ratio( "ratio_mc", histname, dh["data"][0], dh["NRB"][0] )
     return dh, legend
 
 def make_plot(histname):
@@ -52,14 +53,18 @@ def make_plot(histname):
     #print ">>>>> check hs: p.idx_xmax = ", p.idx_xmax
     hs.GetXaxis().SetRange(p.idx_xmin, p.idx_xmax)
     hs.GetYaxis().SetTitle("Events")
-    hs.GetYaxis().SetTitleSize(0.05)
-    hs.GetYaxis().SetTitleOffset(1.1)
-    hs.GetXaxis().SetLabelOffset(999)
+    hs.GetYaxis().SetTitleSize(0.062)
+    hs.GetYaxis().SetTitleOffset(0.80)
+    hs.GetYaxis().SetLabelSize(0.038)
+    hs.GetYaxis().SetLabelOffset(0.003)
     hs.GetXaxis().SetLabelSize(0)
+    hs.GetXaxis().SetLabelOffset(999)
 
-    dh["data"][0].Draw("ep;same")
     dh["SMH"][0].Draw("hist;same")
     for h in dh["signals"]:h.Draw("hist;same")
+    dh["NRB"][0].SetFillColorAlpha(ROOT.kRed, 0.25)
+    dh["NRB"][0].Draw("e2;same")
+    dh["data"][0].Draw("e0;x0;same")
 
     if len(dh["signals"]) == 1:
         dh["signals"][0].SetLineColor(ROOT.kMagenta)
@@ -73,9 +78,10 @@ def make_plot(histname):
     c1.cd()
     ratPad.Draw()
     ratPad.cd()
-    hr = dh["ratio"]
-    #hr.GetXaxis().SetRangeUser(myRange[0], myRange[1])
-    hr.Draw("e1")
+
+    hr, hr_mc = dh["ratio"], dh["ratio_mc"]
+    hr_mc.Draw("e2")
+    hr.Draw("e0,x0,same")
 
     # save
     output = "eos/" + histname.replace("h", "THQHadronicTag_", 1)
@@ -94,6 +100,11 @@ if __name__ == "__main__":
         "hMass_pass_BDTG_smh_cut_mixed05",
         "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_n50",
         "hMVA_value_smh_varset8_mixed03_tmva_bdtg_n50",
+        #"hMVA_value_nrb_varset8_mixed04_tmva_bdtg_n50",
+        #"hMVA_value_nrb_varset8_mixed05_tmva_bdtg_n50",
+        #"hMVA_value_smh_varset8_mixed04_tmva_bdtg_n50",
+        #"hMVA_value_smh_varset8_mixed05_tmva_bdtg_n50",
+
         #"hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_fine",
         #"hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_fine",
         #"hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_MggWindow_fine",
