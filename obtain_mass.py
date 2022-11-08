@@ -16,7 +16,7 @@ rootfile = "plots_20211128/myhist_combine_RunII.root"
 rootfile = "shortcut_plots/plots_20211128/myhist_combine_RunII.root"
 rootfile = "shortcut_plots/plots_20220120_results_ReReco/myhist_combine_RunII.root"
 rootfile = "shortcut_plots/plots_20220215_ultraLegacy/myhist_combine_RunII.root"
-rootfile = "shortcut_plots/plots_20220310_updatedLumi/myhist_combine_RunII.root"
+rootfile = "EOS_backup_path/plots_20220310_updatedLumi/myhist_combine_RunII.root"
 fin = ROOT.TFile.Open(rootfile, "R")
 
 ROOT.gStyle.SetOptStat("e")
@@ -32,8 +32,17 @@ c1.SetRightMargin(0.08)
 
 c2 = ROOT.TCanvas("c2", "", 1200, 600)
 c2.SetGrid()
+c2.SetTopMargin(0.10)
+c2.SetBottomMargin(0.12)
 c2.SetLeftMargin(0.12)
 c2.SetRightMargin(0.08)
+
+c3 = ROOT.TCanvas("c3", "", 800, 800)
+c3.SetGrid()
+c3.SetTopMargin(0.10)
+c3.SetBottomMargin(0.12)
+c3.SetLeftMargin(0.15)
+c3.SetRightMargin(0.05)
 
 d_fit_const = {"central":[], "error":[]}
 d_fit_mean  = {"central":[], "error":[]}
@@ -295,13 +304,18 @@ def get_maximum(v): #{{{
 
     return result
 #}}}
-def annotate(rshift=0): #{{{
+def annotate(rshift=0., r2shift=0.): #{{{
     latex = ROOT.TLatex()
     latex.SetNDC()
-    latex.SetTextFont(43)
+    latex.SetTextFont(42)
     latex.SetTextAlign(11)
-    latex.SetTextSize(24)
-    latex.DrawLatex( 0.12, 0.912, "#bf{CMS} #it{work in progress}" )
+    #latex.SetTextSize(24)
+    latex.SetTextSize(0.04)
+    #latex.DrawLatex( 0.12, 0.912, "#bf{CMS} #it{work in progress}" )
+    #latex.DrawLatex( 0.12, 0.912, "#bf{CMS} #it{Preliminary}" )
+    #latex.DrawLatex( 0.18+r2shift, 0.850, "#bf{CMS} #it{Preliminary}" )
+    latex.DrawLatex( 0.14, 0.840, "#bf{CMS} #it{Preliminary}" )
+    #latex.DrawLatex( 0.18, 0.840, "#bf{CMS} #it{Preliminary}" )
     latex.DrawLatex( 0.70+rshift, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
 
     #latex.DrawLatex( 0.60, 0.800, "Pre-selection" )
@@ -330,8 +344,11 @@ def set_graph(gr, ytitle, color): #{{{
     gr.SetMarkerStyle(20)
     gr.SetMarkerColor(color)
     gr.GetXaxis().SetTitle("Hypothetical M_{T'} (GeV)")
+    gr.GetXaxis().SetTitleSize(0.045)
+    gr.GetXaxis().SetTitleOffset(1.05)
     gr.GetYaxis().SetTitle(ytitle)
-    gr.GetXaxis().SetTitleOffset(1.2)
+    gr.GetYaxis().SetTitleSize(0.052)
+    gr.GetYaxis().SetTitleOffset(1.2)
 #}}}
 def init_fit_containers(): #{{{
     global d_fit_const, d_fit_mean, d_fit_sigma
@@ -561,17 +578,32 @@ def make_collective_plot(v_varName, v_myMasses, plotType): #{{{
 
     maximum = get_maximum(v_hists)
     v_hists[0].SetMaximum(maximum*1.2)
+    v_hists[0].GetXaxis().SetTitleSize(0.045)
+    v_hists[0].GetXaxis().SetTitleOffset(1.02)
+    v_hists[0].GetYaxis().SetTitleSize(0.052)
+    v_hists[0].GetYaxis().SetTitleOffset(0.80)
 
     legend.Draw("same")
     output = dir_output + "/" + nameTag
 
     if isTprime and plotType == "normalized":
-        annotate()
+        annotate(0.0, -0.04)
         c2.SetLogy(0)
         c2.SaveAs(output + ".png")
         c2.SaveAs(output + ".pdf")
     else:
-        annotate(0.08)
+        #annotate(0.08)
+        myLatex = ROOT.TLatex()
+        myLatex.SetNDC()
+        myLatex.SetTextFont(42)
+        myLatex.SetTextAlign(11)
+        myLatex.SetTextSize(0.05)
+        #myLatex.DrawLatex( 0.32, 0.840, "Hadronic channel, T' #rightarrow t(bjj) H(#gamma#gamma)" )
+        #myLatex.DrawLatex( 0.40, 0.840, "T' #rightarrow t(bjj) H(#gamma#gamma)" )
+        #myLatex.DrawLatex( 0.14, 0.840, "#bf{CMS} #it{Preliminary}" )
+        myLatex.DrawLatex( 0.14, 0.840, "#bf{CMS} #it{Preliminary}, T' #rightarrow t(bjj) H(#gamma#gamma)" )
+        myLatex.DrawLatex( 0.75, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
+
         v_hists[0].SetMaximum(0.6)
         v_hists[0].SetMinimum(0.0)
         c2.SetLogy(0)
@@ -827,7 +859,8 @@ def run():
 myParameterSets = {
     "eff":{
         "ybound" : [0.0, 0.5],
-        "legend" : [0.17, 0.60, 0.42, 0.85],
+        #"legend" : [0.17, 0.60, 0.42, 0.85],
+        "legend" : [0.17, 0.55, 0.45, 0.80],
     },
     "ratio":{
         "ybound" : [0.8, 2.0],
@@ -895,7 +928,7 @@ def get_significance(tag, key): #{{{
     return result
 #}}}
 def make_efficiency(ytitle, myParameters, tag, output_stem): #{{{
-    c1.cd()
+    c3.cd()
     ymin = myParameters["ybound"][0]
     ymax = myParameters["ybound"][1]
     leg = myParameters["legend"]
@@ -957,10 +990,10 @@ def make_efficiency(ytitle, myParameters, tag, output_stem): #{{{
     legend.Draw("same")
 
     # wrap up
-    annotate()
+    annotate(-0.02)
     output = dir_output + "/" + output_stem
-    c1.SaveAs(output + ".png")
-    c1.SaveAs(output + ".pdf")
+    c3.SaveAs(output + ".png")
+    c3.SaveAs(output + ".pdf")
 #}}}
 def print_table(): #{{{
     d_truthMatched = {
@@ -1020,6 +1053,8 @@ def print_table(): #{{{
 if __name__ == "__main__":
     run()
     #print_table()
+
+    #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set3"               ,  "signal_efficiency"     )
 
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set0"               ,  "signal_efficiency_old"        )
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set1"               ,  "signal_efficiency"            )

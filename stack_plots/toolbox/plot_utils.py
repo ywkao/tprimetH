@@ -220,8 +220,9 @@ def annotate():
     latex.SetTextSize(0.04)
     latex.DrawLatex( 0.18, 0.890, "#bf{CMS} #it{Preliminary}" )
 
-    latex.SetTextSize(0.03)
-    latex.DrawLatex( 0.73, 0.97, "#scale[1.2]{138 fb^{-1} (13#scale[0.75]{ }TeV)}" )
+    latex.SetTextSize(0.04)
+    latex.DrawLatex( 0.67, 0.98, "#scale[1.2]{138 fb^{-1} (13#scale[0.75]{ }TeV)}" )
+    #latex.DrawLatex( 0.73, 0.97, "#scale[1.2]{138 fb^{-1} (13#scale[0.75]{ }TeV)}" )
 
 def signal_selector(histname):
     if   histname == "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine" : return "TprimeBToTH_M-600"
