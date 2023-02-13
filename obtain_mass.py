@@ -60,15 +60,15 @@ mass_M1100_M1200 = [1100, 1200]
 
 ytitles = {
     "yields": {
-        "hMass_fine":"Yields / 0.5 GeV",
-        "hMass_pass_BDTG_smh_cut_mixed03_fine":"Yields / 0.5 GeV",
-        "hMass_pass_BDTG_smh_cut_mixed04_fine":"Yields / 0.5 GeV",
-        "hMass_pass_BDTG_smh_cut_mixed05_fine":"Yields / 0.5 GeV",
-        "hmass_tprime_cov_fine":"Yields / 5 GeV",
-        "h_mass_tm_tprime":"Yields / 5 GeV",
-        "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine":"Yields / 5 GeV",
-        "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine":"Yields / 5 GeV",
-        "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine":"Yields / 5 GeV",
+        "hMass_fine":"Events / 0.5 GeV",
+        "hMass_pass_BDTG_smh_cut_mixed03_fine":"Events / 0.5 GeV",
+        "hMass_pass_BDTG_smh_cut_mixed04_fine":"Events / 0.5 GeV",
+        "hMass_pass_BDTG_smh_cut_mixed05_fine":"Events / 0.5 GeV",
+        "hmass_tprime_cov_fine":"Events / 5 GeV",
+        "h_mass_tm_tprime":"Events / 5 GeV",
+        "hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_fine":"Events / 5 GeV",
+        "hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_fine":"Events / 5 GeV",
+        "hTprime_Mass_pass_BDTG_smh_cut_mixed05_SR_fine":"Events / 5 GeV",
     },
     "normalized": {
         "hMass_fine":"Arbitrary unit / 0.5 GeV",
@@ -314,8 +314,8 @@ def annotate(rshift=0., r2shift=0.): #{{{
     #latex.DrawLatex( 0.12, 0.912, "#bf{CMS} #it{work in progress}" )
     #latex.DrawLatex( 0.12, 0.912, "#bf{CMS} #it{Preliminary}" )
     #latex.DrawLatex( 0.18+r2shift, 0.850, "#bf{CMS} #it{Preliminary}" )
-    latex.DrawLatex( 0.14, 0.840, "#bf{CMS} #it{Preliminary}" )
-    #latex.DrawLatex( 0.18, 0.840, "#bf{CMS} #it{Preliminary}" )
+    #latex.DrawLatex( 0.14, 0.840, "#bf{CMS} #it{Preliminary}" )
+    latex.DrawLatex( 0.18, 0.840, "#bf{CMS} #it{Preliminary}" )
     latex.DrawLatex( 0.70+rshift, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
 
     #latex.DrawLatex( 0.60, 0.800, "Pre-selection" )
@@ -343,7 +343,8 @@ def set_graph(gr, ytitle, color): #{{{
     gr.SetLineWidth(2)
     gr.SetMarkerStyle(20)
     gr.SetMarkerColor(color)
-    gr.GetXaxis().SetTitle("Hypothetical M_{T'} (GeV)")
+    #gr.GetXaxis().SetTitle("Hypothetical M_{T'} (GeV)")
+    gr.GetXaxis().SetTitle("M_{T'} (GeV)")
     gr.GetXaxis().SetTitleSize(0.045)
     gr.GetXaxis().SetTitleOffset(1.05)
     gr.GetYaxis().SetTitle(ytitle)
@@ -601,7 +602,7 @@ def make_collective_plot(v_varName, v_myMasses, plotType): #{{{
         #myLatex.DrawLatex( 0.32, 0.840, "Hadronic channel, T' #rightarrow t(bjj) H(#gamma#gamma)" )
         #myLatex.DrawLatex( 0.40, 0.840, "T' #rightarrow t(bjj) H(#gamma#gamma)" )
         #myLatex.DrawLatex( 0.14, 0.840, "#bf{CMS} #it{Preliminary}" )
-        myLatex.DrawLatex( 0.14, 0.840, "#bf{CMS} #it{Preliminary}, T' #rightarrow t(bjj) H(#gamma#gamma)" )
+        myLatex.DrawLatex( 0.14, 0.840, "#bf{CMS} #it{Simulation Preliminary}, T' #rightarrow t(bjj) H(#gamma#gamma)" )
         myLatex.DrawLatex( 0.75, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
 
         v_hists[0].SetMaximum(0.6)
@@ -860,7 +861,12 @@ myParameterSets = {
     "eff":{
         "ybound" : [0.0, 0.5],
         #"legend" : [0.17, 0.60, 0.42, 0.85],
-        "legend" : [0.17, 0.55, 0.45, 0.80],
+        #"legend" : [0.17, 0.55, 0.45, 0.80],
+        "legend" : [0.18, 0.55, 0.45, 0.80],
+    },
+    "eff-leptonic":{
+        "ybound" : [0.0, 0.2],
+        "legend" : [0.18, 0.55, 0.45, 0.80],
     },
     "ratio":{
         "ybound" : [0.8, 2.0],
@@ -897,6 +903,11 @@ collection_efficiency = {
         "raw_M600_M700"  : [ 0.07114, 0.08517, 0.09706, 0.10479, 0.10776, 0.06358, 0.01886, 0.01027, 0.00701, 0.00462 ],
         "raw_M800_M1000" : [ 0.01006, 0.01513, 0.02305, 0.03451, 0.04970, 0.12768, 0.18943, 0.21193, 0.18650, 0.09700 ],
         "raw_M1100_1200" : [ 0.00320, 0.00438, 0.00594, 0.00822, 0.01101, 0.03480, 0.10923, 0.20500, 0.26490, 0.29458 ],
+    },
+    "leptonic":{
+        "raw_M600_M700"  : [ 0.0377784, 0.0407727, 0.0430395, 0.0446526, 0.0452286, 0.030533, 0.0104256, 0.00559142, 0.00352654, 0.00229087 ],
+        "raw_M800_M1000" : [ 0.0404852, 0.0468421, 0.0522516, 0.0563517, 0.0596403, 0.0687015, 0.0725982, 0.0726485, 0.0652187, 0.0332645 ],
+        "raw_M1100_1200" : [ 0.00888833, 0.0138209, 0.0219249, 0.0315641, 0.0398544, 0.0603796, 0.0709918, 0.076363, 0.0789114, 0.0786163 ],
     },
 }
 #}}}
@@ -990,7 +1001,18 @@ def make_efficiency(ytitle, myParameters, tag, output_stem): #{{{
     legend.Draw("same")
 
     # wrap up
-    annotate(-0.02)
+    latex = ROOT.TLatex()
+    latex.SetNDC()
+    latex.SetTextFont(42)
+    latex.SetTextAlign(11)
+    latex.SetTextSize(0.04)
+    if "hadronic" in output_stem:
+        latex.DrawLatex( 0.185, 0.840, "#bf{CMS} #it{Simulation Preliminary}, T' #rightarrow t(bjj) H(#gamma#gamma)" )
+    if "leptonic" in output_stem:
+        latex.DrawLatex( 0.185, 0.840, "#bf{CMS} #it{Simulation Preliminary}, T' #rightarrow t(bl#nu) H(#gamma#gamma)" )
+
+    latex.DrawLatex( 0.68, 0.912, "%s fb^{-1} (13 TeV)" % str(lumi["RunII"]) )
+
     output = dir_output + "/" + output_stem
     c3.SaveAs(output + ".png")
     c3.SaveAs(output + ".pdf")
@@ -1054,7 +1076,8 @@ if __name__ == "__main__":
     run()
     #print_table()
 
-    #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set3"               ,  "signal_efficiency"     )
+    make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set3"               ,  "signal_efficiency_hadronic_channel"     )
+    make_efficiency("Efficiency"         ,  myParameterSets["eff-leptonic"]  ,  "leptonic"           ,  "signal_efficiency_leptonic_channel"     )
 
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set0"               ,  "signal_efficiency_old"        )
     #make_efficiency("Efficiency"         ,  myParameterSets["eff"]           ,  "set1"               ,  "signal_efficiency"            )

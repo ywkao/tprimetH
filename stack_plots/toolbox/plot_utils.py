@@ -218,7 +218,8 @@ def annotate():
     latex.SetTextFont(42)
     latex.SetTextAlign(13)
     latex.SetTextSize(0.04)
-    latex.DrawLatex( 0.18, 0.890, "#bf{CMS} #it{Preliminary}" )
+    #latex.DrawLatex( 0.18, 0.890, "#bf{CMS} #it{Preliminary}" )
+    latex.DrawLatex( 0.18, 0.890, "#bf{CMS}" )
 
     latex.SetTextSize(0.04)
     latex.DrawLatex( 0.67, 0.98, "#scale[1.2]{138 fb^{-1} (13#scale[0.75]{ }TeV)}" )

@@ -95,15 +95,15 @@ if __name__ == "__main__":
 
     core = [
         "hMass",
-        "hMass_pass_BDTG_smh_cut_mixed03",
-        "hMass_pass_BDTG_smh_cut_mixed04",
-        "hMass_pass_BDTG_smh_cut_mixed05",
+        #"hMass_pass_BDTG_smh_cut_mixed03",
+        #"hMass_pass_BDTG_smh_cut_mixed04",
+        #"hMass_pass_BDTG_smh_cut_mixed05",
         "hMVA_value_nrb_varset8_mixed03_tmva_bdtg_n50",
         "hMVA_value_smh_varset8_mixed03_tmva_bdtg_n50",
-        #"hMVA_value_nrb_varset8_mixed04_tmva_bdtg_n50",
-        #"hMVA_value_nrb_varset8_mixed05_tmva_bdtg_n50",
-        #"hMVA_value_smh_varset8_mixed04_tmva_bdtg_n50",
-        #"hMVA_value_smh_varset8_mixed05_tmva_bdtg_n50",
+        "hMVA_value_nrb_varset8_mixed04_tmva_bdtg_n50",
+        "hMVA_value_nrb_varset8_mixed05_tmva_bdtg_n50",
+        "hMVA_value_smh_varset8_mixed04_tmva_bdtg_n50",
+        "hMVA_value_smh_varset8_mixed05_tmva_bdtg_n50",
 
         #"hTprime_Mass_pass_BDTG_smh_cut_mixed03_SR_MggWindow_fine",
         #"hTprime_Mass_pass_BDTG_smh_cut_mixed04_SR_MggWindow_fine",
