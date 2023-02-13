@@ -81,6 +81,16 @@ def make_plot(histname):
 
     hr, hr_mc = dh["ratio"], dh["ratio_mc"]
     hr_mc.Draw("e2")
+
+    lower_bound = ratPad.GetUxmin() if "MVA" in histname else p.binwidth * (p.idx_xmin - 1)
+    upper_bound = p.binwidth * (p.idx_xmax - p.idx_xmin + 1) if "MVA" in histname else p.binwidth * p.idx_xmax
+    print ">>> check: p.binwidth = %f, p.idx_xmin = %d, p.idx_xmax = %d, lower_bound = %f, upper_bound = %f" % (p.binwidth, p.idx_xmin, p.idx_xmax, lower_bound, upper_bound) 
+    line = ROOT.TLine(lower_bound, 1.0, upper_bound, 1.0)
+    line.SetLineColor(ROOT.kBlack)
+    line.SetLineWidth(1)
+    line.Draw()
+
+    hr_mc.Draw("e2,same")
     hr.Draw("e0,x0,same")
 
     # save

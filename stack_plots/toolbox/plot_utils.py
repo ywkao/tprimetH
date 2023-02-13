@@ -7,8 +7,10 @@ ROOT.gROOT.SetBatch(True)
 # init bins for x range
 idx_xmin, idx_xmax = 1, 50
 
+binwidth = 0.
+
 def register(fin, histname, tag, samples, legend):
-    global idx_xmin, idx_xmax
+    global idx_xmin, idx_xmax, binwidth
     vh, tot_yields, tot_unc = [], 0., 0.
 
     for s in samples:
@@ -27,6 +29,8 @@ def register(fin, histname, tag, samples, legend):
             h.SetMarkerSize(1.25)
             h.SetMarkerColor(ROOT.kBlack)
             legend.AddEntry(h, "Data", 'ep')
+
+            binwidth = h.GetXaxis().GetBinWidth(1)
 
             # obtain idx of bins for x range
             for i in range(0, nbins):
@@ -174,7 +178,7 @@ def get_ratio(ratioName, histname, h_data, h_nrb):
 def init_canvas():
     #c1 = ROOT.TCanvas("c1", "", 600, 800)
     c1 = ROOT.TCanvas("c1", "", 600, 700)
-    c1.SetGrid()
+    #c1.SetGrid()
     c1.SetTicks()
     c1.SetLogy()
     return c1
@@ -207,8 +211,8 @@ def init_pads():
     ratPad.SetRightMargin(0.07)
     ratPad.SetLeftMargin(0.15)
     mainPad.SetTicks(1,0)
-    ratPad.SetGridy()
-    ratPad.SetTicks()
+    #ratPad.SetGridy()
+    #ratPad.SetTicks()
 
     return mainPad, ratPad
 
