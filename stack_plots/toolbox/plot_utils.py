@@ -133,7 +133,7 @@ def get_ratio(ratioName, histname, h_data, h_nrb):
 
         h.SetLineColor(ROOT.kRed)
         h.SetMarkerSize(0)
-        h.SetFillColorAlpha(ROOT.kRed, 0.15)
+        h.SetFillColorAlpha(ROOT.kRed, 0.13)
 
     else:
         h.Divide(h_nrb)

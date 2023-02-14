@@ -62,7 +62,7 @@ def make_plot(histname):
 
     dh["SMH"][0].Draw("hist;same")
     for h in dh["signals"]:h.Draw("hist;same")
-    dh["NRB"][0].SetFillColorAlpha(ROOT.kRed, 0.15)
+    dh["NRB"][0].SetFillColorAlpha(ROOT.kRed, 0.25)
     dh["NRB"][0].Draw("e2;same")
     dh["data"][0].Draw("e0;x0;same")
 
