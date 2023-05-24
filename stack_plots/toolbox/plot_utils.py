@@ -138,14 +138,17 @@ def get_ratio(ratioName, histname, h_data, h_nrb):
     else:
         h.Divide(h_nrb)
         h.SetMarkerStyle(20)
-        h.SetMarkerSize(1.25)
+        #h.SetMarkerSize(1.25)
+        h.SetMarkerSize(0.25)
         h.SetMarkerColor(ROOT.kBlack)
         h.SetLineColor(ROOT.kBlack)
 
     # common
     h.SetStats(0)
-    h.SetMaximum(2.)
-    h.SetMinimum(0.)
+    #h.SetMaximum(2.)
+    #h.SetMinimum(0.)
+    h.SetMaximum(1.3)
+    h.SetMinimum(0.7)
 
     # label
     h.GetYaxis().SetNdivisions(5)
@@ -199,7 +202,7 @@ def init_pads():
     mainPad.SetBottomMargin(0.01)
     mainPad.SetRightMargin(0.07)
     mainPad.SetLeftMargin(0.15)
-    mainPad.SetLogy()
+    #mainPad.SetLogy()
     #mainPad.SetGrid()
 
     # this is not work ??
@@ -221,9 +224,10 @@ def annotate():
     latex.SetNDC()
     latex.SetTextFont(42)
     latex.SetTextAlign(13)
-    latex.SetTextSize(0.04)
+    latex.SetTextSize(0.06)
     #latex.DrawLatex( 0.18, 0.890, "#bf{CMS} #it{Preliminary}" )
-    latex.DrawLatex( 0.18, 0.890, "#bf{CMS}" )
+    latex.DrawLatex( 0.185, 0.890, "#bf{CMS}" )
+    #latex.DrawLatex( 0.15, 0.830, "#bf{CMS}" )
 
     latex.SetTextSize(0.04)
     latex.DrawLatex( 0.67, 0.98, "#scale[1.2]{138 fb^{-1} (13#scale[0.75]{ }TeV)}" )

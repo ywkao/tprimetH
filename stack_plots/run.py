@@ -38,6 +38,7 @@ def make_plot(histname):
     scale = p.get_scale(histname)
     hs.SetMinimum(scale[0])
     hs.SetMaximum(scale[1])
+    hs.SetMaximum(20000)
 
     mainPad, ratPad = p.init_pads()
 
